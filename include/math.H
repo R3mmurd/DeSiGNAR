@@ -1,0 +1,109 @@
+/*
+  This file is part of Designar Library.
+  Copyright (C) 2017 by Alejandro J. Mujica
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  Any user request of this software, write to 
+
+  Alejandro Mujica
+
+  aledrums@gmail.com
+*/
+
+# ifndef DSGMATH_H
+# define DSGMATH_H
+
+# include <types.H>
+
+namespace Designar
+{
+
+  constexpr real_t PI      = 3.1415926535897932384626433832795028841971693993751;
+  constexpr real_t PI_2    = PI/2.;
+  constexpr real_t PI_4    = PI/4.;
+  constexpr real_t PI3_2   = 3.*PI/2.;
+  constexpr real_t EPSILON = 1e-9;
+  constexpr real_t INF     = std::numeric_limits<real_t>::infinity();
+
+  real_t abs(real_t);
+
+  bool real_equal(real_t, real_t);
+
+  class Vector2D;
+
+  real_t area_of_parallelogram(const Vector2D &,
+			       const Vector2D &,
+			       const Vector2D &);
+  
+  template <typename BT, typename ET>
+  BT fast_integral_pow(BT, ET);
+
+  template <typename BT, typename ET>
+  BT pow(BT, ET);
+  
+  template <typename BT, typename ET>
+  BT fast_integral_pow(BT base, ET exp)
+  {
+    static_assert(std::is_integral<BT>::value and std::is_integral<ET>::value,
+    		  "Arguments must be integral types");
+    static_assert(std::is_unsigned<ET>::value,
+    		  "Exponent must be an unsigned type");
+    
+    BT ret_val = BT(1);
+    
+    while (exp > ET(0))
+      {
+	if (exp & ET(1))
+	  ret_val *= base;
+	
+	exp >>= 1;
+	base *= base;
+      }
+
+    return ret_val;
+  }
+
+  template <typename BT, typename ET>
+  struct FastIntegralPow
+  {
+    BT operator () (BT base, ET exp)
+    {
+      return fast_integral_pow(base, exp);
+    }
+  };
+
+  template <typename BT, typename ET>
+  struct StdPow
+  {
+    BT operator () (BT base, ET exp)
+    {
+      return std::pow(base, exp);
+    }
+  };
+
+  template <typename BT, typename ET>
+  BT pow(BT base, ET exp)
+  {
+    auto fct = typename std::conditional<std::is_integral<BT>::value and
+					 std::is_integral<ET>::value and
+					 std::is_unsigned<ET>::value,
+					 FastIntegralPow<BT, ET>,
+					 StdPow<BT, ET>>::type();
+    return fct(base, exp);    
+  }
+ 
+} // end namespace Designar
+
+# endif // DSGMATH_H

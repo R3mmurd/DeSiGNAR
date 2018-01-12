@@ -1,0 +1,48 @@
+/*
+  This file is part of Designar Library.
+  Copyright (C) 2017 by Alejandro J. Mujica
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  Any user request of this software, write to 
+
+  Alejandro Mujica
+
+  aledrums@gmail.com
+*/
+
+# include <math.H>
+# include <vector2D.H>
+
+namespace Designar
+{
+  real_t abs(real_t x)
+  {
+    return (x < 0. ? -x : x);
+  }
+
+  bool real_equal(real_t a, real_t b)
+  {
+    return abs(a-b) <= EPSILON;
+  }
+
+  real_t area_of_parallelogram(const Vector2D & a,
+			       const Vector2D & b,
+			       const Vector2D & c)
+  {
+    return (b.get_x() - a.get_x()) * (c.get_y() - a.get_y()) -
+      (c.get_x() - a.get_x()) * (b.get_y() - a.get_y());
+  }
+  
+} // end namespace Designar

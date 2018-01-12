@@ -1,0 +1,153 @@
+/*
+  This file is part of Designar Library.
+  Copyright (C) 2017 by Alejandro J. Mujica
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  Any user request of this software, write to 
+
+  Alejandro Mujica
+
+  aledrums@gmail.com
+*/
+
+# ifndef DSGSETALGORITHMS_H
+# define DSGSETALGORITHMS_H
+
+# include <types.H>
+
+namespace Designar
+{
+  template <class T> class SLList;
+  
+  template <template <typename, class> class Set,
+	    typename Key, class Cmp>
+  class SetAlgorithms
+  {
+    using SetType = Set<Key, Cmp>;
+    
+    SetType * me()
+    {
+      return static_cast<SetType *>(this);
+    }
+
+    const SetType * const_me() const
+    {
+      return static_cast<const SetType *>(this);
+    }
+
+  public:
+    SetAlgorithms()
+    {
+      // empty
+    }
+
+    SetAlgorithms(const SetAlgorithms &)
+    {
+      // empty
+    }
+    
+    SetAlgorithms(SetAlgorithms &&)
+    {
+      // empty
+    }
+
+    SetAlgorithms & operator = (const SetAlgorithms &)
+    {
+      return *this;
+    }
+
+    SetAlgorithms & operator = (SetAlgorithms &&)
+    {
+      return *this;
+    }
+
+    bool contains(const Key & k) const
+    {
+      return const_me()->search(k) != nullptr;
+    }
+
+    bool has(const Key & k) const
+    {
+      return contains(k);
+    }
+
+    static SetType join(const SetType & s1, const SetType & s2)
+    {
+      SetType ret_val = s1;
+
+      s2.for_each([&ret_val] (const Key & item)
+		  {
+		    ret_val.append(item);
+		  });
+
+      return ret_val;
+    }
+
+    SetType join(const SetType & s) const
+    {
+      return join(*const_me(), s);
+    }
+
+    static SetType intersect(const SetType & s1, const SetType & s2)
+    {
+      return s1.template filter<SetType>([&s2] (const Key & item)
+					 {
+					   return s2.contains(item);
+					 });
+    }
+
+    SetType intersect(const SetType & s) const
+    {
+      return intersect(*const_me(), s);
+    }
+
+    static SetType difference(const SetType & s1, const SetType & s2)
+    {
+      return s1.template filter<SetType>([&s2] (const Key & item)
+					 {
+					   return not s2.contains(item);
+					 });
+    }
+
+    SetType difference(const SetType & s) const
+    {
+      return difference(*const_me(), s);
+    }
+
+    static SLList<std::pair<Key, Key>>
+      cartesian_product(const SetType & s1, const SetType & s2)
+    {
+      SLList<std::pair<Key, Key>> ret_val;
+
+      s1.for_each([&ret_val, &s2] (const Key & item1)
+		  {
+		    s2.for_each([&ret_val, &item1] (const Key & item2)
+				{
+				  ret_val.append(std::make_pair(item1, item2));
+				});
+		  });
+      
+      return ret_val;
+    }
+	
+    SLList<std::pair<Key, Key>> cartesian_product(const SetType & s) const
+    {
+      return cartesian_product(*const_me(), s);
+    }
+  };
+  
+} // end namespace Designar
+
+# endif // DSGSETALGORITHMS_H

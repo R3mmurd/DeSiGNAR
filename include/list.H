@@ -1,0 +1,1645 @@
+/*
+  This file is part of Designar Library.
+  Copyright (C) 2017 by Alejandro J. Mujica
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+  Any user request of this software, write to 
+
+  Alejandro Mujica
+
+  aledrums@gmail.com
+*/
+
+# ifndef DSGLIST_H
+# define DSGLIST_H
+
+# include <types.H>
+# include <containeralgorithms.H>
+
+namespace Designar
+{
+
+  template<typename T>
+  class SLNode
+  {
+    T        item;
+    SLNode * next;
+
+  public:
+    SLNode()
+      : item(), next(nullptr)
+    {
+      // empty
+    }
+
+    SLNode(const T & i)
+      : item(i), next(nullptr)
+    {
+      // empty
+    }
+
+    SLNode(T && i)
+      : item(std::forward<T>(i)), next(nullptr)
+    {
+      // empty
+    }
+
+    SLNode(const SLNode &) = delete;
+
+    SLNode & operator = (const SLNode &) = delete;
+
+    bool is_empty() const
+    {
+      return next == nullptr;
+    }
+
+    void reset()
+    {
+      next = nullptr;
+    }
+    
+    T & get_item()
+    {
+      return item;
+    }
+
+    const T & get_item() const
+    {
+      return item;
+    }
+
+    SLNode *& get_next()
+    {
+      return next;
+    }
+
+    void insert_next(SLNode * p)
+    {
+      assert(p != nullptr);
+      assert(p->is_empty());
+      next = p;
+    }
+
+    SLNode * remove_next()
+    {
+      if (next == nullptr)
+	return nullptr;
+
+      SLNode * ret_val = next;
+      next = ret_val->next;
+      ret_val->reset();
+      return ret_val;
+    }
+  };
+
+  template <typename T>
+  class NodeSLList
+  {
+  public:
+    using Node = SLNode<T>;
+
+  private:
+    Node * head;
+    Node * tail;
+
+    void add_to_empty_list(Node * node)
+    {
+      assert(head == nullptr);
+      assert(tail == nullptr);
+      head = tail = node;
+    }
+
+  public:
+    NodeSLList()
+      : head(nullptr), tail(nullptr)
+    {
+      // empty
+    }
+
+    NodeSLList(const NodeSLList &) = delete;
+
+    NodeSLList(NodeSLList && l)
+      : NodeSLList()
+    {
+      swap(l);
+    }
+
+    NodeSLList & operator = (const NodeSLList &) = delete;
+
+    NodeSLList & operator = (NodeSLList && l)
+    {
+      swap(l);
+      return *this;
+    }
+
+    void swap(NodeSLList & l)
+    {
+      std::swap(head, l.head);
+      std::swap(tail, l.tail);
+    }
+
+    bool is_empty() const
+    {
+      return head == nullptr;
+    }
+
+    bool is_unitarian_or_empty() const
+    {
+      return head == tail;
+    }
+
+    bool is_unitarian() const
+    {
+      return head == tail and head != nullptr;
+    }
+    
+    void insert(Node * node)
+    {
+      if (head == nullptr)
+	add_to_empty_list(node);
+      else
+	{
+	  node->get_next() = head;
+	  head = node;
+	}
+    }
+
+    void append(Node * node)
+    {
+      if (head == nullptr)
+	add_to_empty_list(node);
+      else
+	{
+	  tail->insert_next(node);
+	  tail = node;
+	}
+    }
+
+    Node *& get_first()
+    {
+      return head;
+    }
+
+    const Node *& get_first() const
+    {
+      return head;
+    }
+
+    Node *& get_last()
+    {
+      return tail;
+    }
+
+    const Node *& get_last() const
+    {
+      return tail;
+    }
+
+    Node * remove_first()
+    {
+      if (head == nullptr)
+	return nullptr;
+
+      Node * ret_val = head;
+      head = ret_val->get_next();
+      ret_val->reset();
+
+      if (head == nullptr)
+	tail = nullptr;
+
+      return ret_val;
+    }
+
+    void concat(NodeSLList * l)
+    {
+      if (l->is_empty())
+	return;
+      
+      if (this->is_empty())
+	{
+	  this->head = l->head;
+	  this->tail = l->tail;
+	}
+      else
+	{
+	  this->tail->get_next() = l->head;
+	  this->tail = l->tail;
+	}
+
+      l->head = l->tail = nullptr;
+    }
+
+    void concat(NodeSLList & l)
+    {
+      concat(&l);
+    }
+
+    void split(NodeSLList &, NodeSLList &);
+  };
+
+  template <typename T>
+  void NodeSLList<T>::split(NodeSLList & l, NodeSLList & r)
+  {
+    assert(l.is_empty());
+    assert(r.is_empty());
+    
+    while (not this->is_empty())
+      {
+	l->append(this->remove_first());
+
+	if (not l->is_empty())
+	  r->append(this->remove_first());
+      }
+  }
+  
+  template <typename T>
+  class SLList : public NodeSLList<T>,
+		 public ContainerAlgorithms<SLList<T>, T>
+  {
+    using Node     = SLNode<T>;
+    using BaseList = NodeSLList<T>;
+    
+    nat_t num_items;
+
+    void copy_list(const SLList &);
+    
+    void empty_list();
+    
+  public:
+    using ItemType  = T;
+    using KeyType   = T;
+    using DataType  = T;
+    using ValueType = T;
+    using SizeType  = nat_t;
+
+    SLList()
+      : BaseList(), num_items(0)
+    {
+      // empty
+    }
+
+    SLList(const SLList & l)
+      : SLList()
+    {
+      copy_list(l);
+    }
+
+    SLList(SLList && l)
+      : SLList()
+    {
+      this->swap(l);
+    }
+
+    SLList(const std::initializer_list<T> &);
+
+    ~SLList()
+    {
+      clear();
+    }
+
+    nat_t size() const
+    {
+      return num_items;
+    }
+
+    void clear()
+    {
+      empty_list();
+    }
+
+    T & insert(const T & item)
+    {
+      Node * node = new Node(item);
+      BaseList::insert(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & insert(T && item)
+    {
+      Node * node = new Node(std::forward<T>(item));
+      BaseList::insert(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & append(const T & item)
+    {
+      Node * node = new Node(item);
+      BaseList::append(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & append(T && item)
+    {
+      Node * node = new Node(std::forward<T>(item));
+      BaseList::append(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & get_first()
+    {
+      if (num_items == 0)
+	throw std::underflow_error("List is empty");
+      
+      return BaseList::get_first()->get_item();
+    }
+
+    const T & get_first() const
+    {
+      if (num_items == 0)
+	throw std::underflow_error("List is empty");
+      
+      return BaseList::get_first()->get_item();
+    }
+
+    T & get_last()
+    {
+      if (num_items == 0)
+	throw std::underflow_error("List is empty");
+	  
+      return BaseList::get_last()->get_item();
+    }
+
+    const T & get_last() const
+    {
+      if (num_items == 0)
+	throw std::underflow_error("There is not element in list");
+      
+      return BaseList::get_last()->get_item();
+    }
+
+    T remove_first()
+    {
+      if (num_items == 0)
+	throw std::underflow_error("There is not element in list");
+
+      Node * p = BaseList::remove_first();
+      T ret_val = std::move(p->get_item());
+      delete p;
+      --num_items;
+      return ret_val;
+    }
+
+    void swap(SLList & l)
+    {
+      BaseList::swap(l);
+      std::swap(num_items, l.num_items);
+    }
+
+    SLList & operator = (const SLList & l)
+    {
+      if (this == &l)
+	return *this;
+
+      clear();
+      copy_list(l);
+      return *this;
+    }
+
+    SLList & operator = (SLList && l)
+    {
+      swap(l);
+      return *this;
+    }
+
+    class Iterator
+    {
+      SLList * list_ptr;
+      Node   * curr;
+      Node   * pred;
+      lint_t    pos;
+
+      void locate_position();
+      
+    public:
+      Iterator()
+	: list_ptr(nullptr), curr(nullptr), pred(nullptr), pos(-1)
+      {
+	// empty
+      }
+      
+      Iterator(const SLList<T> & l)
+	: list_ptr(&const_cast<SLList<T> &>(l)),
+	  curr(((BaseList &)l).get_first()), pred(nullptr), pos(0)
+      {
+	// empty
+      }
+
+      Iterator(const SLList<T> & l, Node * c)
+	: list_ptr(&const_cast<SLList<T> &>(l)), curr(c), pred(nullptr), pos(0)
+      {
+	locate_position();
+      }
+
+      Iterator(const Iterator & it)
+	: list_ptr(it.list_ptr), curr(it.curr), pred(it.pred), pos(it.pos)
+      {
+	// empty
+      }
+
+      Iterator(Iterator && it)
+	: Iterator()
+      {
+	swap(it);
+      }
+
+      Iterator & operator = (const Iterator & it)
+      {
+	if (this == &it)
+	  return *this;
+
+	list_ptr = it.list_ptr;
+	curr = it.curr;
+	pred = it.pred;
+	pos = it.pos;
+
+	return *this;
+      }
+
+      Iterator & operator = (Iterator && it)
+      {
+	swap(it);
+	return *this;
+      }
+
+      void swap(Iterator & it)
+      {
+	std::swap(list_ptr, it.list_ptr);
+	std::swap(curr, it.curr);
+	std::swap(pred, it.pred);
+	std::swap(pos, it.pos);
+      }
+      
+      lint_t get_position() const
+      {
+	return pos;
+      }
+
+      bool has_current() const
+      {
+	return curr != nullptr;
+      }
+
+      T & get_current()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr->get_item();
+      }
+
+      const T & get_current() const
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr->get_item();
+      }
+
+      void next()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+
+	pred = curr;
+	++pos;
+	curr = curr->get_next();
+      }
+
+      void reset_first()
+      {
+	curr = ((BaseList *) list_ptr)->get_first();
+	pos = 0;
+      }
+
+      void reset_last()
+      {
+	curr = ((BaseList *) list_ptr)->get_last();
+	locate_position();
+      }
+
+      T del()
+      {
+	if (not has_current())
+	  throw std::logic_error("There is not current element");
+	
+	if (pred == nullptr)
+	  {
+	    T ret_val = list_ptr->remove_first();
+	    curr = ((BaseList *) list_ptr)->get_first();
+	    return ret_val;
+	  }
+
+	curr = curr->get_next();
+
+	if (curr == nullptr)
+	  ((BaseList *) list_ptr)->get_last() = pred;
+
+	Node * p = pred->remove_next();
+	T ret_val = std::move(p->get_item());
+	delete p;
+	--list_ptr->num_items;
+	return ret_val;
+      }
+
+      void operator ++ ()
+      {
+	next();
+      }
+
+      bool operator == (const Iterator & it) const
+      {
+	return list_ptr == it.list_ptr and curr == it.curr and pos == it.pos;
+      }
+
+      bool operator != (const Iterator & it) const
+      {
+	return not (it == *this);
+      }
+
+      T & operator * ()
+      {
+	return get_current();
+      }
+
+      const T & operator * () const
+      {
+	return get_current();
+      }
+    };
+
+    Iterator begin()
+    {
+      return Iterator(*this);
+    }
+
+    Iterator begin() const
+    {
+      return Iterator(*this);
+    }
+
+    Iterator end()
+    {
+      if (this->is_empty())
+	return Iterator(*this);
+      
+      return Iterator(*this, ((BaseList *) this)->get_last()->get_next());
+    }
+
+    Iterator end() const
+    {
+      if (this->is_empty())
+	return Iterator(*this);
+      
+      return Iterator(*this, ((BaseList *) this)->get_last()->get_next());
+    }
+
+    T & select(nat_t);
+
+    const T & select(nat_t) const;
+
+    T & operator [] (nat_t i)
+    {
+      return select(i);
+    }
+
+    const T & operator [] (nat_t i) const
+    {
+      return select(i);
+    }
+  };
+
+  template <typename T>
+  SLList<T>::SLList(const std::initializer_list<T> & l)
+    : SLList()
+  {
+    for (const T & item : l)
+      append(item);
+  }
+
+  template <typename T>
+  void SLList<T>::copy_list(const SLList & l)
+  {
+    Node * n = ((BaseList &) l).get_first();
+    
+    while (n != nullptr)
+      {
+	append(n->get_item());
+	n = n->get_next();
+      }
+  }
+  
+  template <typename T>
+  void SLList<T>::empty_list()
+  {
+    while (not this->is_empty())
+      remove_first();
+  }
+
+  template <typename T>
+  T & SLList<T>::select(nat_t i)
+  {
+    for (T & item : *this)
+      {
+	if (i-- == 0)
+	  return item;
+      }
+    throw std::out_of_range("Index out of range");
+  }
+
+  template <typename T>
+  const T & SLList<T>::select(nat_t i) const
+  {
+    for (const T & item : *this)
+      {
+	if (i-- == 0)
+	  return item;
+      }
+    throw std::out_of_range("Index out of range");
+  }
+
+  template <typename T>
+  void SLList<T>::Iterator::locate_position()
+  {
+    Node * ptr = ((BaseList *)list_ptr)->get_first();
+
+    while (ptr != curr)
+      {
+	pred = ptr;
+	ptr = ptr->get_next();
+	++pos;
+      }
+  }
+
+  class DL
+  {
+    DL * next;
+    DL * prev;
+
+  public:
+    DL()
+      : next(this), prev(this)
+    {
+      // empty
+    }
+
+    DL(const DL &)
+      : DL()
+    {
+      // empty
+    }
+
+    DL(DL && l)
+      : DL()
+    {
+      swap(l);
+    }
+
+    DL & operator = (const DL &)
+    {
+      return *this;
+    }
+
+    DL & operator = (DL && l)
+    {
+      swap(l);
+      return *this;
+    }
+
+    void reset()
+    {
+      next = prev = this;
+    }
+
+    bool is_empty() const
+    {
+      return next == prev and next == this;
+    }
+
+    bool is_unitarian_or_empty() const
+    {
+      return next == prev;
+    }
+
+    bool is_unitarian() const
+    {
+      return next == prev and next != this;
+    }
+    
+    DL *& get_next()
+    {
+      return next;
+    }
+
+    DL *& get_prev()
+    {
+      return prev;
+    }
+
+    void insert_next(DL * node)
+    {
+      assert(node != nullptr);
+      assert(node->is_empty());
+      node->next = next;
+      node->prev = this;
+      next->prev = node;
+      next = node;
+    }
+
+    void insert_prev(DL * node)
+    {
+      assert(node != nullptr);
+      assert(node->is_empty());
+      node->next = this;
+      node->prev = prev;
+      prev->next = node;
+      prev = node;
+    }
+
+    void del()
+    {
+      next->prev = prev;
+      prev->next = next;
+      reset();
+    }
+
+    DL * remove_next()
+    {
+      DL * ret_val = next;
+      ret_val->del();
+      return ret_val;
+    }
+    
+    DL * remove_prev()
+    {
+      DL * ret_val = prev;
+      ret_val->del();
+      return ret_val;
+    }
+
+    void swap(DL * node)
+    {
+      if (is_empty() and node->is_empty())
+	return;
+
+      if (is_empty())
+	{
+	  next = node->next;
+	  prev = node->prev;
+	  node->next->prev = node->prev->next = this;
+	  node->reset();
+	  return;
+	}
+
+      if (node->is_empty())
+	{
+	  node->next = next;
+	  node->prev = prev;
+	  next->prev = prev->next = node;
+	  reset();
+	  return;
+	}
+
+      std::swap(next->prev, node->next->prev);
+      std::swap(prev->next, node->prev->next);
+      std::swap(next, node->next);
+      std::swap(prev, node->prev);
+    }
+
+    void swap(DL & node)
+    {
+      swap(&node);
+    }
+
+    void concat(DL * l)
+    {
+      if (l->is_empty())
+	return;
+
+      if (this->is_empty())
+	{
+	  this->next = l->next;
+	  l->next->prev = this;
+	  this->prev = l->prev;
+	  l->prev->next = this;
+	}
+      else
+	{
+	  this->prev->next = l->next;
+	  l->next->prev = this->prev;
+	  l->prev->next = this;
+	  this->prev = l->prev;
+	}
+
+      l->reset();
+    }
+
+    void concat(DL & l)
+    {
+      concat(&l);
+    }
+
+    void split(DL &, DL &);
+
+    class Iterator
+    {
+      DL * head;
+      DL * curr;
+      
+    public:
+      Iterator()
+	: head(nullptr), curr(nullptr)
+      {
+	// empty
+      }
+      
+      Iterator(DL * h)
+	: head(h), curr(h->get_next())
+      {
+	// empty
+      }
+
+      Iterator(DL * h, DL * c)
+	: head(h), curr(c)
+      {
+	// empty
+      }
+
+      Iterator(const Iterator & it)
+	: head(it.head), curr(it.curr)
+      {
+	// empty
+      }
+
+      Iterator(Iterator && it)
+	: Iterator()
+      {
+	swap(it);
+      }
+
+      Iterator & operator = (const Iterator & it)
+      {
+	if (this == &it)
+	  return *this;
+
+	head = it.head;
+	curr = it.curr;
+	return *this;
+      }
+
+      Iterator & operator = (Iterator && it)
+      {
+	swap(it);
+	return *this;
+      }
+
+      void swap(Iterator & it)
+      {
+	std::swap(head, it.head);
+	std::swap(curr, it.curr);
+      }
+
+      bool has_current() const
+      {
+	return curr != head;
+      }
+
+      DL * get_current()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr;
+      }
+
+      DL * get_current() const
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr;
+      }
+
+      void next()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+
+	curr = curr->get_next();
+      }
+
+      void prev()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+
+	curr = curr->get_prev();
+      }
+
+      void reset_first()
+      {
+	curr = head->get_next(); 
+      }
+
+      void reset_last()
+      {
+	curr = head->get_prev();
+      }
+
+      DL * del()
+      {
+	DL * ret_val = curr;
+	curr = curr->get_next();
+	ret_val->del();
+	return ret_val;
+      }
+
+      void operator ++ ()
+      {
+	next();
+      }
+
+      void operator -- ()
+      {
+	prev();
+      }
+
+      bool operator == (const Iterator & it) const
+      {
+	return head == it.head and curr == it.curr;
+      }
+
+      bool operator != (const Iterator & it) const
+      {
+	return not (it == *this);
+      }
+
+      DL * operator * ()
+      {
+	return get_current();
+      }
+
+      DL * operator * () const
+      {
+	return get_current();
+      }
+    };
+  };
+
+  template <typename T>
+  class DLNode : public DL
+  {
+    T item;
+    
+  public:
+    DLNode()
+      : DL(), item()
+    {
+      // item
+    }
+
+    DLNode(const T & i)
+      : DL(), item(i)
+    {
+      // empty
+    }
+
+    DLNode(T && i)
+      : DL(), item(std::forward<T>(i))
+    {
+      // empty
+    }
+
+    DLNode(const DLNode &) = delete;
+
+    DLNode(DLNode && n)
+      : DLNode()
+    {
+      DL::swap(n);
+    }
+
+    DLNode & operator = (const DLNode &) = delete;
+
+    DLNode & operator = (DLNode && n)
+    {
+      DL::swap(n);
+      return *this;
+    }
+
+    T & get_item()
+    {
+      return item;
+    }
+
+    const T & get_item() const
+    {
+      return item;
+    }
+
+    DLNode *& get_next()
+    {
+      return (DLNode *&) DL::get_next();
+    }
+
+    DLNode *& get_prev()
+    {
+      return (DLNode *&) DL::get_prev();
+    }
+
+    DLNode * remove_next()
+    {
+      return static_cast<DLNode *>(DL::remove_next());
+    }
+
+    DLNode * remove_prev()
+    {
+      return static_cast<DLNode *>(DL::remove_prev());
+    }
+
+    class Iterator : public DL::Iterator
+    {
+      using Base = DL::Iterator;
+      using Base::Base;
+      
+    public:
+      DLNode * get_current()
+      {
+	return static_cast<DLNode *>(Base::get_current());
+      }
+
+      DLNode * get_current() const
+      {
+	return static_cast<DLNode *>(Base::get_current());
+      }
+
+      DLNode * del()
+      {
+	return static_cast<DLNode *>(Base::del());
+      }
+
+      DLNode * operator * ()
+      {
+	return get_current();
+      }
+
+      DLNode * operator * () const
+      {
+	return get_current();
+      }
+    };
+  };
+
+  template <typename T>
+  class DLList : public DLNode<T>,
+		 public ContainerAlgorithms<DLList<T>, T>
+  {
+    using Node = DLNode<T>;
+    
+    nat_t num_items;
+    
+    void copy_list(const DLList &);
+    
+    void empty_list();
+
+  public:
+    using ItemType  = T;
+    using KeyType   = T;
+    using DataType  = T;
+    using ValueType = T;
+    using SizeType  = nat_t;
+    
+    DLList()
+      : Node(), num_items(0)
+    {
+      // empty
+    }
+    
+    DLList(const DLList & l)
+      : DLList()
+    {
+      copy_list(l);
+    }
+    
+    DLList(DLList && l)
+      : DLList()
+    {
+      swap(l);
+    }
+
+    DLList(const std::initializer_list<T> &);
+
+    ~DLList()
+    {
+      clear();
+    }
+
+    nat_t size() const
+    {
+      return num_items;
+    }
+
+    void clear()
+    {
+      empty_list();
+    }
+
+    void swap(DLList & l)
+    {
+      std::swap(num_items, l.num_items);
+      Node::swap(&l);
+    }
+
+    T & insert(const T & item)
+    {
+      Node * node = new Node(item);
+      Node::insert_next(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & insert(T && item)
+    {
+      Node * node = new Node(std::forward<T>(item));
+      Node::insert_next(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & append(const T & item)
+    {
+      Node * node = new Node(item);
+      Node::insert_prev(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & append(T && item)
+    {
+      Node * node = new Node(std::forward<T>(item));
+      Node::insert_prev(node);
+      ++num_items;
+      return node->get_item();
+    }
+
+    T & get_first()
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+
+      return Node::get_next()->get_item();
+    }
+    
+    const T & get_first() const
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+
+      return Node::get_next()->get_item();
+    }
+
+    T & get_last()
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+
+      return Node::get_prev()->get_item();
+    }
+    
+    const T & get_last() const
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+
+      return Node::get_prev()->get_item();
+    }
+
+    T remove_first()
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+      
+      Node * node = Node::remove_next();
+      T ret_val = std::move(node->get_item());
+      delete node;
+      --num_items;
+      return ret_val;
+    }
+
+    T remove_last()
+    {
+      if (Node::is_empty())
+	throw std::underflow_error("List is empty");
+      
+      Node * node = Node::remove_prev();
+      T ret_val = std::move(node->get_item());
+      delete node;
+      --num_items;
+      return ret_val;
+    }
+
+    void remove(T & item)
+    {
+      Node * zero = 0;
+      nat_t off_set = nat_t(&zero->item);
+      Node * item_node = (Node *) (nat_t(&item) - off_set);
+      item_node->del();
+      delete item_node;
+      --num_items;
+    }
+
+    DLList & operator = (const DLList & l)
+    {
+      if (this == &l)
+	return *this;
+
+      clear();
+      copy_list(l);
+    }
+
+    DLList & operator = (DLList && l)
+    {
+      swap(l);
+      return *this;
+    }
+
+    class Iterator : public Node::Iterator
+    {
+      using Base = typename Node::Iterator;
+      
+      DLList * list_ptr;
+      lint_t    pos;
+
+      void locate_position();
+
+    public:
+      Iterator()
+	: Base(), list_ptr(nullptr), pos(-1)
+      {
+	// empty
+      }
+      
+      Iterator(const DLList & l)
+	: Base(&const_cast<DLList &>(l)), list_ptr(&const_cast<DLList &>(l)),
+	  pos(0)
+      {
+	// empty
+      }
+      
+      Iterator(const DLList & l, Node * c)
+	: Base(&const_cast<DLList &>(l), c), list_ptr(&const_cast<DLList &>(l)),
+	  pos(0)
+      {
+	locate_position();
+      }
+
+      Iterator(const Iterator & it)
+	: Base(it), list_ptr(it.list_ptr), pos(it.pos)
+      {
+	// empty
+      }
+
+      Iterator(Iterator && it)
+	: Iterator()
+      {
+	swap(it);
+      }
+
+      Iterator & operator = (const Iterator & it)
+      {
+	if (this == &it)
+	  return *this;
+
+	(Base &) *this = it;
+	list_ptr = it.list_ptr;
+	pos = it.pos;
+	return *this;
+      }
+
+      Iterator & operator = (Iterator && it)
+      {
+	swap(it);
+	return *this;
+      }
+
+      void swap(Iterator & it)
+      {
+	Base::swap(it);
+	std::swap(list_ptr, it.list_ptr);
+	std::swap(pos, it.pos);
+      }
+
+      lint_t get_position() const
+      {
+	return pos;
+      }
+
+      T & get_current()
+      {
+	return Base::get_current()->get_item();
+      }
+
+      const T & get_current() const
+      {
+	return Base::get_current()->get_item();
+      }
+
+      void reset_last()
+      {
+	Base::reset_last();
+	locate_position();
+      }
+
+      T del()
+      {
+	Node * p = Base::del();
+	T ret_val = std::move(p->get_item());
+	delete p;
+	--list_ptr->num_items;
+	return ret_val;
+      }
+
+      void next()
+      {
+	Base::next();
+	++pos;
+      }
+
+      void prev()
+      {
+	Base::prev();
+	--pos;
+      }
+
+      void operator ++ ()
+      {
+	next();
+      }
+
+      void operator -- ()
+      {
+	prev();
+      }
+
+      T & operator * ()
+      {
+	return get_current();
+      }
+
+      const T & operator * () const
+      {
+	return get_current();
+      }
+    };
+
+    Iterator begin()
+    {
+      return Iterator(*this);
+    }
+
+    Iterator begin() const
+    {
+      return Iterator(*this);
+    }
+
+    Iterator end()
+    {
+      Iterator it(*this);
+
+      if (not it.has_current())
+	return it;
+      
+      it.reset_last();
+      it.next();
+      return it;
+    }
+
+    Iterator end() const
+    {
+      Iterator it(*this);
+
+      if (not it.has_current())
+	return it;
+      
+      it.reset_last();
+      it.next();
+      return it;
+    }
+
+    T & select(nat_t);
+
+    const T & select(nat_t) const;
+
+    T & operator [] (nat_t i)
+    {
+      return select(i);
+    }
+
+    const T & operator [] (nat_t i) const
+    {
+      return select(i);
+    }
+  };
+
+  template <typename T>
+  DLList<T>::DLList(const std::initializer_list<T> & l)
+    : DLList()
+  {
+    for (const T & item : l)
+      append(item);
+  }
+  
+  template <typename T>
+  void DLList<T>::copy_list(const DLList & l)
+  {
+    Node * node = const_cast<DLList &>(l).get_next();
+    
+    while (node != &l)
+      {
+	append(node->get_item());
+	node = node->get_next();
+      }
+  }
+
+  template <typename T>
+  void DLList<T>::empty_list()
+  {
+    while (not this->is_empty())
+      remove_first();
+  }
+
+  template <typename T>
+  T & DLList<T>::select(nat_t i)
+  {
+    for (T & item : *this)
+      {
+	if (i-- == 0)
+	  return item;
+      }
+    throw std::out_of_range("Index out of range");
+  }
+
+  template <typename T>
+  const T & DLList<T>::select(nat_t i) const
+  {
+    for (const T & item : *this)
+      {
+	if (i-- == 0)
+	  return item;
+      }
+    throw std::out_of_range("Index out of range");
+  }
+
+  template <typename T>
+  void DLList<T>::Iterator::locate_position()
+  {
+    DL * ptr = list_ptr;
+    
+    while (ptr != Base::get_current())
+      {
+	ptr = ptr->get_next();
+	++pos;
+      }
+  }
+  
+  template <typename T, class Cmp>
+  inline std::tuple<NodeSLList<T>,
+		    typename NodeSLList<T>::Node *,
+		    NodeSLList<T>>
+    partition(NodeSLList<T> & l, Cmp & cmp)
+  {
+    auto pivot = l.remove_first();
+
+    NodeSLList<T> ls, gs;
+
+    while (not l.is_empty())
+      {
+	auto p = l.remove_first();
+
+	if (cmp(p->get_item(), pivot->get_item()))
+	  ls.append(p);
+	else
+	  gs.append(p);
+      }
+
+    return std::make_tuple(std::move(ls), pivot, std::move(gs));
+  }
+
+  template <typename T, class Cmp>
+  inline void quicksort(NodeSLList<T> & l, Cmp & cmp)
+  {
+    if (l.is_unitarian_or_empty())
+      return;
+
+    auto part = partition(l, cmp);
+
+    quicksort(std::get<0>(part), cmp);
+    quicksort(std::get<2>(part), cmp);
+
+    l.concat(std::get<0>(part));
+    l.append(std::get<1>(part));
+    l.concat(std::get<2>(part));
+  }
+
+  template <typename T, class Cmp = std::less<T>>
+  inline void quicksort(NodeSLList<T> & l, Cmp && cmp = Cmp())
+  {
+    quicksort<T, Cmp>(l, cmp);
+  }
+
+  template <class Cmp>
+  inline std::tuple<DL, DL *, DL> partition(DL & l, Cmp & cmp)
+  {
+    auto pivot = l.remove_next();
+
+    DL ls, gs;
+
+    while (not l.is_empty())
+      {
+	auto p = l.remove_next();
+
+	if (cmp(p, pivot))
+	  ls.insert_prev(p);
+	else
+	  gs.insert_prev(p);
+      }
+
+    return std::make_tuple(std::move(ls), pivot, std::move(gs));
+  }
+
+  template <class Cmp>
+  inline void quicksort(DL & l, Cmp & cmp)
+  {
+    if (l.is_unitarian_or_empty())
+      return;
+
+    auto part = partition(l, cmp);
+
+    quicksort(std::get<0>(part), cmp);
+    quicksort(std::get<2>(part), cmp);
+
+    l.concat(std::get<0>(part));
+    l.insert_prev(std::get<1>(part));
+    l.concat(std::get<2>(part));
+  }
+
+  template <class Cmp>
+  inline void quicksort(DL & l, Cmp && cmp = Cmp())
+  {
+    quicksort<Cmp>(l, cmp);
+  }
+
+  template <typename T, class Cmp>
+  struct KeyCmp
+  {
+    Cmp & cmp;
+
+    KeyCmp(Cmp & _cmp)
+      : cmp(_cmp)
+    {
+      // empty
+    }
+
+    KeyCmp(Cmp && _cmp = Cmp())
+      : cmp(_cmp)
+    {
+      // empty
+    }
+
+    bool operator () (DL * l, DL * r) const
+    {
+      return cmp(static_cast<DLNode<T> *>(l)->get_item(),
+		 static_cast<DLNode<T> *>(r)->get_item());
+    }
+  };
+  
+  template <typename T, class Cmp>
+  inline void quicksort(DLNode<T> & l, Cmp & cmp)
+  {
+    KeyCmp<T, Cmp> key_cmp(cmp);
+    quicksort<KeyCmp<T, Cmp>>(l, key_cmp);
+  }
+
+  template <typename T, class Cmp = std::less<T>>
+  inline void quicksort(DLNode<T> & l, Cmp && cmp = Cmp())
+  {
+    quicksort<T, Cmp>(l, cmp);
+  }
+  
+} // end namespace Designar
+
+# endif // DSGLIST_H
