@@ -7,12 +7,12 @@ WARN = -Wall -Wextra -Wcast-align -Wno-sign-compare -Wno-write-strings \
 
 DEBUG = -g -O0 -DDEBUG $(WARN)
 
-OPT = -Ofast -DNDEBUG $(WARN)
+RELEASE = -Ofast -DNDEBUG $(WARN)
 
-# comment this for release mode
-FLAGS = $(DEBUG)
-# uncomment this for release mode
-# FLAGS = $(OPT)
+# comment next line to compile library in release mode
+#OPT = $(DEBUG)
+# uncomment next line to compile library in release mode
+OPT = $(RELEASE)
 
 INCLUDEDIR  = ./include
 SRCDIR      = ./src
@@ -35,7 +35,7 @@ library : $(OBJECTS)
 	$(AR) -cvq $(LIBDIR)/$(LOCALLIB) $(OBJECTS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.C
-	$(CXX) $(DEBUG) $(INCLUDEPATH) -c $< -o $@
+	$(CXX) $(OPT) $(INCLUDEPATH) -c $< -o $@
 
 $(BINDIR)/%: $(SAMPLESDIR)/%.C
 	$(CXX) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
