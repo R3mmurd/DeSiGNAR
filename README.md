@@ -1,4 +1,4 @@
-DeSiGNAR (Data Structures GeNeral librARy)
+# DeSiGNAR (Data Structures GeNeral librARy)
 
 This is the beginning of a complete project which is expected to be
 a general library to make different kinds of models and simulation.
