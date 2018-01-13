@@ -91,53 +91,6 @@ namespace Designar
       return in;
     }
   };
-
-  template <typename T>
-  class ReturnValue
-  {
-  public:
-    virtual T & get_item() = 0;
-
-    virtual const T & get_item() const = 0;
-  };
-
-  template <typename T>
-  class None : public ReturnValue<T>
-  {
-  public:
-    T & get_item() override
-    {
-      throw std::invalid_argument("None type has not a value");
-    }
-
-    const T & get_item() const override
-    {
-      throw std::invalid_argument("None type has not a value");
-    }
-  };
-
-  template <typename T>
-  class Some : public ReturnValue<T>
-  {
-    T & item;
-    
-  public:
-    Some(T & _item)
-      : item(_item)
-    {
-      // empty
-    }
-
-    T & get_item() override
-    {
-      return item;
-    }
-
-    const T & get_item() const override
-    {
-      return item;
-    }
-  };
   
 } // end namespace Designar
 
