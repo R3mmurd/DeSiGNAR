@@ -25,13 +25,10 @@
 # ifndef CONTAINERALGORITHMS_H
 # define CONTAINERALGORITHMS_H
 
-# include <types.H>
+# include <rangealgorithms.H>
 
 namespace Designar
 {
-  template <typename T> class DynArray;
-  template <typename T> class SLList;
-
   template<class ContainerType, typename T>
   class ContainerAlgorithms
   {
@@ -73,8 +70,6 @@ namespace Designar
 
     T * nth_ptr(nat_t);
 
-    const T * nth_ptr(nat_t) const;
-    
     T & nth(nat_t);
 
     const T & nth(nat_t) const;
@@ -85,12 +80,6 @@ namespace Designar
     template <class Op>
     void for_each(Op && op = Op()) const;
 
-    template <class Op>
-    void mutable_for_each(Op &);
-
-    template <class Op>
-    void mutable_for_each(Op && op = Op());
-    
     template <class ContainerRet, class Pred>
     ContainerRet filter(Pred &) const;
 
@@ -143,16 +132,10 @@ namespace Designar
     bool exists(Pred && pred = Pred()) const;
 
     template <class Pred>
-    T * search_ptr(Pred &);
+    T * search_ptr(Pred &) const;
 
     template <class Pred>
-    T * search_ptr(Pred && pred = Pred());
-
-    template <class Pred>
-    const T * search_ptr(Pred &) const;
-
-    template <class Pred>
-    const T * search_ptr(Pred && pred = Pred()) const;
+    T * search_ptr(Pred && pred = Pred()) const;
 
     template <class Pred>
     bool remove_first_if(Pred &);
@@ -202,57 +185,26 @@ namespace Designar
   template <class ContainerType, typename T>
   T * ContainerAlgorithms<ContainerType, T>::nth_ptr(nat_t i)
   {
-    for (T & item : me())
-      {
-	if (i == 0)
-	  return &item;
-	--i;
-      }
-
-    return nullptr;
+    return nth_ptr_it<T>(me().begin(), me().end(), i);
   }
 
-  template <class ContainerType, typename T>
-  const T * ContainerAlgorithms<ContainerType, T>::nth_ptr(nat_t i) const
-  {
-    for (const T & item : me())
-      {
-	if (i == 0)
-	  return &item;
-	--i;
-      }
-
-    return nullptr;
-  }
-  
   template <class ContainerType, typename T>
   T & ContainerAlgorithms<ContainerType, T>::nth(nat_t i)
   {
-    T * ret_ptr = nth_ptr(i);
-
-    if (ret_ptr == nullptr)
-      throw std::overflow_error("index too large");
-
-    return *ret_ptr;
+    return nth_it<T>(me().begin(), me().end(), i);
   }
 
   template <class ContainerType, typename T>
   const T & ContainerAlgorithms<ContainerType, T>::nth(nat_t i) const
   {
-    const T * ret_ptr = nth_ptr(i);
-
-    if (ret_ptr == nullptr)
-      throw std::overflow_error("index too large");
-
-    return *ret_ptr;
+    return nth_it(const_me().begin(), const_me().end(), i);
   }
   
   template <class ContainerType, typename T>
   template <class Op>
   void ContainerAlgorithms<ContainerType, T>::for_each(Op & op) const
   {
-    for (const T & item : const_me())
-      op(item);
+    for_each_it(const_me().begin(), const_me().end(), op);
   }
 
   template <class ContainerType, typename T>
@@ -263,31 +215,10 @@ namespace Designar
   }
 
   template <class ContainerType, typename T>
-  template <class Op>
-  void ContainerAlgorithms<ContainerType, T>::mutable_for_each(Op & op)
-  {
-    for (T & item : me())
-      op(item);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Op>
-  void ContainerAlgorithms<ContainerType, T>::mutable_for_each(Op && op)
-  {
-    mutable_for_each<Op>(op);
-  }
-
-  template <class ContainerType, typename T>
   template <class ContainerRet, class Pred>
   ContainerRet ContainerAlgorithms<ContainerType, T>::filter(Pred & pred) const
   {
-    ContainerRet ret_val;
-    
-    for (const T & item : const_me())
-      if (pred(item))
-	ret_val.append(item);
-
-    return ret_val;
+    return filter_it<ContainerRet>(const_me().begin(), const_me().end(), pred);
   }
   
   template <class ContainerType, typename T>
@@ -298,22 +229,17 @@ namespace Designar
   }
 
   template <class ContainerType, typename T>
-  template <typename RetT, class ContainerRet, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Pred & pred) const
+  template <typename RetT, class ContainerRet, class Op>
+  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Op & op) const
   {
-    ContainerRet ret_val;
-    
-    for (const T & item : const_me())
-      ret_val.append(pred(item));
-
-    return ret_val;
+    return map_it<ContainerRet>(const_me().begin(), const_me().end(), op);
   }
   
   template <class ContainerType, typename T>
-  template <typename RetT, class ContainerRet, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Pred && pred) const
+  template <typename RetT, class ContainerRet, class Op>
+  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Op && op) const
   {
-    return map<RetT, ContainerRet, Pred>(pred);
+    return map<RetT, ContainerRet, Op>(op);
   }
 
   template <class ContainerType, typename T>
@@ -321,13 +247,8 @@ namespace Designar
   ContainerRet
   ContainerAlgorithms<ContainerType, T>::map_if(Op & op, Pred & pred) const
   {
-    ContainerRet ret_val;
-    
-    for (const T & item : const_me())
-      if (pred(item))
-	ret_val.append(op(item));
-
-    return ret_val;
+    return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				   op, pred);
   }
   
   template <class ContainerType, typename T>
@@ -359,12 +280,7 @@ namespace Designar
   RetT ContainerAlgorithms<ContainerType, T>::
   fold(const RetT & init_val, Op & op) const
   {
-    RetT ret_val = init_val;
-
-    for (const T & item : const_me())
-      ret_val = op(item, ret_val);
-
-    return ret_val;
+    return fold_it<RetT>(const_me().begin(), const_me().end(), init_val, op);
   }
   
   template <class ContainerType, typename T>
@@ -380,12 +296,8 @@ namespace Designar
   RetT ContainerAlgorithms<ContainerType, T>::
   fold(RetT && init_val, Op & op) const
   {
-    RetT ret_val = std::move(init_val);
-
-    for (const T & item : const_me())
-      ret_val = op(item, ret_val);
-
-    return ret_val;
+    return fold_it<RetT>(const_me().begin(), const_me().end(),
+			 std::forward<RetT>(init_val), op);
   }
 
   template <class ContainerType, typename T>
@@ -400,11 +312,7 @@ namespace Designar
   template <class Pred>
   bool ContainerAlgorithms<ContainerType, T>::all(Pred & pred) const
   {
-    for (const T & item : const_me())
-      if (not pred(item))
-	return false;
-
-    return true;
+    return all_it(const_me().begin(), const_me().end(), pred);
   }
 
   template <class ContainerType, typename T>
@@ -418,11 +326,7 @@ namespace Designar
   template <class Pred>
   bool ContainerAlgorithms<ContainerType, T>::exists(Pred & pred) const
   {
-    for (const T & item : const_me())
-      if (pred(item))
-	return true;
-
-    return false;
+    return exists_it(const_me().begin(), const_me().end(), pred);
   }
 
   template <class ContainerType, typename T>
@@ -434,36 +338,14 @@ namespace Designar
 
   template <class ContainerType, typename T>
   template <class Pred>
-  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred & pred)
+  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred & pred) const
   {
-    for (T & item : me())
-      if (pred(item))
-	return &item;
-
-    return nullptr;
+    return search_ptr_it<T>(const_me().begin(), const_me().end(), pred);
   }
 
   template <class ContainerType, typename T>
   template <class Pred>
-  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred && pred)
-  {
-    return search_ptr<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  const T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred & pred) const
-  {
-    for (const T & item : const_me())
-      if (pred(item))
-	return &item;
-
-    return nullptr;
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  const T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred && pred) const
+  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred && pred) const
   {
     return search_ptr<Pred>(pred);
   }
@@ -472,13 +354,7 @@ namespace Designar
   template <class Pred>
   bool ContainerAlgorithms<ContainerType, T>::remove_first_if(Pred & pred)
   {
-    for (auto it = me().begin(); it != me().end(); ++it)
-      if (pred(*it))
-	{
-	  it.del();
-	  return true;
-	}
-    return false;
+    return remove_first_if_it(me().begin(), me().end(), pred);
   }
 
   template <class ContainerType, typename T>
@@ -492,9 +368,7 @@ namespace Designar
   template <class Pred>
   void ContainerAlgorithms<ContainerType, T>::remove_if(Pred & pred)
   {
-    for (auto it = me().begin(); it != me().end(); ++it)
-      if (pred(*it))
-	it.del();
+    remove_if_it(me().begin(), me().end(), pred);
   }
 
   template <class ContainerType, typename T>
@@ -509,17 +383,8 @@ namespace Designar
   bool ContainerAlgorithms<ContainerType, T>::
   equal(const ContainerType & c, Eq & eq) const
   {
-    typename ContainerType::Iterator it1(const_me());
-    typename ContainerType::Iterator it2(c);
-
-    for ( ; it1.has_current() and it2.has_current(); it1.next(), it2.next())
-      if (not eq(it1.get_current(), it2.get_current()))
-	return false;
-
-    if (it1.has_current() or it2.has_current())
-      return false;
-    
-    return true;
+    return equal_it(const_me().begin(), const_me().end(),
+		    c.begin(), c.end(), eq);
   }
 
   template <class ContainerType, typename T>
@@ -534,18 +399,7 @@ namespace Designar
   template <class Cmp>
   bool ContainerAlgorithms<ContainerType, T>::is_sorted(Cmp & cmp) const
   {
-    if (const_me().size() < 2)
-      return true;
-
-    auto it1 = const_me().begin();
-    auto it2 = const_me().begin();
-    it2.next();
-
-    for ( ; it2.has_current(); it1.next(), it2.next())
-      if (cmp(it2.get_current(), it1.get_current()))
-	return false;
-
-    return true;
+    return is_sorted_it(const_me().begin(), const_me().end(), cmp);
   }
 
   template <class ContainerType, typename T>
@@ -562,15 +416,8 @@ namespace Designar
   {
     using T2 = typename ContainerType2::KeyType;
 
-    auto it1 = const_me().begin();
-    auto it2 = c.begin();
-
-    SLList<std::pair<T, T2>> ret_val;
-
-    for ( ; it1.has_current() and it2.has_current(); it1.next(), it2.next())
-      ret_val.append(std::make_pair(it1.get_current(), it2.get_current()));
-
-    return ret_val;
+    return zip_it<T, T2>(const_me().begin(), const_me().end(),
+			 c.begin(), c.end());
   }
 
   template <class ContainerType, typename T>
@@ -581,18 +428,8 @@ namespace Designar
   {
     using T2 = typename ContainerType2::KeyType;
 
-    auto it1 = const_me().begin();
-    auto it2 = c.begin();
-
-    SLList<std::pair<T, T2>> ret_val;
-
-    for ( ; it1.has_current() and it2.has_current(); it1.next(), it2.next())
-      ret_val.append(std::make_pair(it1.get_current(), it2.get_current()));
-
-    if (it1.has_current() or it2.has_current())
-      throw std::length_error("Container sizes mismatch");
-
-    return ret_val;
+    return zip_eq_it<T, T2>(const_me().begin(), const_me().end(),
+			    c.begin(), c.end());    
   }
 
   template <class ContainerType, typename T>
@@ -603,22 +440,8 @@ namespace Designar
   {
     using T2 = typename ContainerType2::KeyType;
 
-    auto it1 = const_me().begin();
-    auto it2 = c.begin();
-
-    SLList<std::pair<T, T2>> ret_val;
-
-    for ( ; it1.has_current(); it1.next())
-      {
-	ret_val.append(std::make_pair(it1.get_current(), it2.get_current()));
-
-	it2.next();
-
-	if (not it2.has_current())
-	  it2.reset_first();
-      }
-
-    return ret_val;
+    return zip_left_it<T, T2>(const_me().begin(), const_me().end(),
+			      c.begin(), c.end());
   }
 
   template <class ContainerType, typename T>
@@ -629,44 +452,20 @@ namespace Designar
   {
     using T2 = typename ContainerType2::KeyType;
 
-    auto it1 = const_me().begin();
-    auto it2 = c.begin();
-
-    SLList<std::pair<T, T2>> ret_val;
-
-    for ( ; it2.has_current(); it2.next())
-      {
-	ret_val.append(std::make_pair(it1.get_current(), it2.get_current()));
-
-	it1.next();
-
-	if (not it1.has_current())
-	  it1.reset_first();
-      }
-
-    return ret_val;
+    return zip_right_it<T, T2>(const_me().begin(), const_me().end(),
+			       c.begin(), c.end());
   }
   
   template <class ContainerType, typename T>
   DynArray<T> ContainerAlgorithms<ContainerType, T>::to_array() const
   {
-    DynArray<T> ret_val;
-      
-    for (const T & item : const_me())
-      ret_val.append(item);
-
-    return ret_val;
+    return to_array_it<T>(const_me().begin(), const_me().end());
   }
   
   template <class ContainerType, typename T>
   SLList<T> ContainerAlgorithms<ContainerType, T>::to_list() const
   {
-    SLList<T> ret_val;
-      
-    for (const T & item : const_me())
-      ret_val.append(item);
-
-    return ret_val;
+    return to_list_it<T>(const_me().begin(), const_me().end());
   }
   
 } // end namespace Designar
