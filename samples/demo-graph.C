@@ -22,7 +22,7 @@
   aledrums@gmail.com
 */
 
-# include <graph.H>
+# include <graphalgorithms.H>
 
 using namespace std;
 using namespace Designar;
