@@ -25,6 +25,7 @@
 # ifndef DSGTREE_H
 # define DSGTREE_H
 
+# include <nodesdef.H>
 # include <containeralgorithms.H>
 # include <setalgorithms.H>
 # include <stack.H>
@@ -32,57 +33,38 @@
 namespace Designar
 {
   template <typename Key>
-  class BinNode
+  class TreapRkNode : public BaseBinTreeNode<Key, TreapRkNode<Key>,
+					     BinTreeNodeNullValue::SENTINEL>
   {
-    enum class Ctor { SENTINEL_CTOR };
+    using BaseNode = BaseBinTreeNode<Key, TreapRkNode<Key>,
+				     BinTreeNodeNullValue::SENTINEL>;
     
-    Key        key;
     nat_t      count;
     rng_seed_t prior;
-    BinNode  * l;
-    BinNode  * r;
-    
-    static BinNode sentinel_node;
     
   public:
-    static BinNode * null;
-    
-    BinNode()
-      : key(), count(1), prior(0), l(null), r(null)
+    TreapRkNode()
+      : BaseNode()
     {
       // empty
     }
     
-    BinNode(const Key & k)
-      : key(k), count(1), prior(0), l(null), r(null)
+    TreapRkNode(const Key & k)
+      : BaseNode(k), count(1), prior(0)
     {
       // empty
     }
     
-    BinNode(Key && k)
-      : key(std::forward<Key>(k)), count(1), prior(0), l(null), r(null)
+    TreapRkNode(Key && k)
+      : BaseNode(std::forward<Key>(k)), count(1), prior(0)
     {
       // empty
     }
     
-    BinNode(Ctor)
-      : key(), count(0), prior(rng_t::max()), l(nullptr), r(nullptr)
+    TreapRkNode(BinTreeNodeCtor ctor)
+      : BaseNode(ctor), count(0), prior(rng_t::max())
     {
       // empty
-    }
-    
-    BinNode(const BinNode &) = delete;
-    
-    BinNode & operator = (const BinNode &) = delete;
-    
-    Key & get_key()
-    {
-      return key;
-    }
-    
-    const Key & get_key() const
-    {
-      return key;
     }
     
     nat_t & get_count()
@@ -94,30 +76,27 @@ namespace Designar
     {
       return prior;
     }
-    
-    BinNode *& get_l()
-    {
-      return l;
-    }
-    
-    BinNode *& get_r()
-    {
-      return r;
-    }
   };
+
+  template <class RkNode>
+  inline nat_t & COUNT(RkNode * p)
+  {
+    return p->get_count();
+  }
+
+  template <class TreapNode>
+  inline rng_seed_t & PRIOR(TreapNode * p)
+  {
+    return p->get_priority();
+  }
   
-  template <typename Key>
-  BinNode<Key> BinNode<Key>::sentinel_node(BinNode::Ctor::SENTINEL_CTOR);
-  
-  template <typename Key>
-  BinNode<Key> * BinNode<Key>::null = &BinNode<Key>::sentinel_node;
   
   template <typename Key, class Cmp = std::less<Key>>
     class TreeSet : public ContainerAlgorithms<TreeSet<Key, Cmp>, Key>,
 		    public SetAlgorithms<TreeSet, Key, Cmp>
   {
   public:
-    using Node = BinNode<Key>;
+    using Node = TreapRkNode<Key>;
       
   private:    
     Node    head;
@@ -127,31 +106,6 @@ namespace Designar
     rng_t rng;
 
     static bool verify(Node *, Cmp & cmp);
-
-    static Key & KEY(Node * p)
-    {
-      return p->get_key();
-    }
-
-    static nat_t & COUNT(Node * p)
-    {
-      return p->get_count();
-    }
-
-    static rng_seed_t & PRIOR(Node * p)
-    {
-      return p->get_priority();
-    }
-
-    static Node *& L(Node * p)
-    {
-      return p->get_l();
-    }
-
-    static Node *& R(Node * p)
-    {
-      return p->get_r();
-    }
 
     static Node * copy(Node *);
 
@@ -565,7 +519,7 @@ namespace Designar
       }
 
       PreorderIterator(const PreorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.root), pos(it.pos)
+	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
       {
 	// empty
       }
@@ -719,7 +673,7 @@ namespace Designar
       }
 
       InorderIterator(const InorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.root), pos(it.pos)
+	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
       {
 	// empty
       }
@@ -867,7 +821,7 @@ namespace Designar
       }
 
       PostorderIterator(const PostorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.root), pos(it.pos)
+	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
       {
 	// empty
       }
