@@ -22,8 +22,8 @@
   aledrums@gmail.com
 */
 
-# ifndef MAP_H
-# define MAP_H
+# ifndef DSGMAP_H
+# define DSGMAP_H
 
 # include <array.H>
 # include <tree.H>
@@ -525,4 +525,4 @@ namespace Designar
   
 } // end namespace Designar
 
-# endif // MAP_H
+# endif // DSGMAP_H

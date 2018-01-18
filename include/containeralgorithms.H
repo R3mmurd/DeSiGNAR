@@ -22,8 +22,8 @@
   aledrums@gmail.com
 */
 
-# ifndef CONTAINERALGORITHMS_H
-# define CONTAINERALGORITHMS_H
+# ifndef DSGCONTAINERALGORITHMS_H
+# define DSGCONTAINERALGORITHMS_H
 
 # include <rangealgorithms.H>
 
@@ -470,4 +470,4 @@ namespace Designar
   
 } // end namespace Designar
 
-# endif // CONTAINERALGORITHMS_H
+# endif // DSGCONTAINERALGORITHMS_H

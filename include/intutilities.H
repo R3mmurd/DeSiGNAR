@@ -22,8 +22,8 @@
   aledrums@gmail.com
 */
 
-# ifndef INTUTILITIES_H
-# define INTUTILITIES_H
+# ifndef DSGINTUTILITIES_H
+# define DSGINTUTILITIES_H
 
 # include <types.H>
 
@@ -107,4 +107,4 @@ namespace Designar
   
 } // end namespace Designar
 
-# endif
+# endif // DSGINTUTILITIES_H

@@ -22,8 +22,8 @@
   aledrums@gmail.com
 */
 
-# ifndef NODESDEF_H
-# define NODESDEF_H
+# ifndef DSGNODESDEF_H
+# define DSGNODESDEF_H
 
 # include <types.H>
 
@@ -755,4 +755,4 @@ namespace Designar
   
 } // end namespace Designar
 
-# endif // NODESDEF_H
+# endif // DSGNODESDEF_H

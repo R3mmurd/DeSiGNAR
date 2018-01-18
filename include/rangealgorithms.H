@@ -22,8 +22,8 @@
   aledrums@gmail.com
 */
 
-# ifndef RANGEALGORITHMS_H
-# define RANGEALGORITHMS_H
+# ifndef DSGRANGEALGORITHMS_H
+# define DSGRANGEALGORITHMS_H
 
 # include <types.H>
 
@@ -510,4 +510,4 @@ namespace Designar
 
 } // end namespace Designar
 
-# endif // RANGEALGORITHMS_H
+# endif // DSGRANGEALGORITHMS_H
