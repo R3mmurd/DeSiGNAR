@@ -59,6 +59,8 @@ namespace Designar
 
     void normalize();
 
+    void negate();
+
     bool is_opposite(const Vector2D &) const;
 
     Vector2D get_opposite() const;
@@ -103,8 +105,6 @@ namespace Designar
 
     /// Accumulative vector substraction.
     void operator -= (const Vector2D &);
-
-    std::string to_string() const;
 
     static std::tuple<Vector2D, Vector2D>
     make_orthonormal_basis(const Vector2D &);

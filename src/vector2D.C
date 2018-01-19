@@ -78,11 +78,17 @@ namespace Designar
     return magnitude();
   }
 
+  void Vector2D::negate()
+  {
+    x *= -1.;
+    y *= -1.;
+  }
+
   void Vector2D::normalize()
   {
     real_t length = magnitude();
 
-    if (real_equal(length, 0.))
+    if (real_equal(length, 0.) or real_equal(length, 1.))
       return;
 
     (*this) *= 1. / length;
@@ -96,7 +102,7 @@ namespace Designar
     a.normalize();
     b.normalize();
 
-    return a.x == -b.x and a.y == -b.y;
+    return real_equal(a.x, -b.x) and real_equal(a.y, -b.y);
   }
 
   Vector2D Vector2D::get_opposite() const
@@ -211,13 +217,6 @@ namespace Designar
   {
     x -= v.x;
     y -= v.y;
-  }
-
-  std::string Vector2D::to_string() const
-  {
-    std::stringstream sstr;
-    sstr << "(" << x << "," << y << ")";
-    return sstr.str();
   }
 
   std::tuple<Vector2D, Vector2D>
