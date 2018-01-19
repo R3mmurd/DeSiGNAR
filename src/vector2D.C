@@ -26,50 +26,33 @@
 
 namespace Designar
 {
-  const Vector2D Vector2D::ZERO;
+  const Vector2D Vector2D::ZERO(0., 0.);
+
+  bool Vector2D::is_to_right_from(const Vector2D & v) const
+  {
+    return Base::is_to_right_from(ZERO, v);
+  }
+    
+  bool Vector2D::is_to_right_on_from(const Vector2D & v) const
+  {
+    return Base::is_to_right_on_from(ZERO, v);
+  }
+    
+  bool Vector2D::is_to_left_from(const Vector2D & v) const
+  {
+    return Base::is_to_left_from(ZERO, v);
+  }
+
+  bool Vector2D::is_to_left_on_from(const Vector2D & v) const
+  {
+    return Base::is_to_left_on_from(ZERO, v);
+  }
+
+  bool Vector2D::is_collinear_with(const Vector2D & v) const
+  {
+    return Base::is_collinear_with(ZERO, v);
+  }
   
-  Vector2D::Vector2D()
-    : x(0.), y(0.)
-  {
-    // Empty
-  }
-
-  Vector2D::Vector2D(real_t _x, real_t _y)
-    : x(_x), y(_y)
-  {
-    // Empty
-  }
-
-  real_t Vector2D::get_x() const
-  {
-    return x;
-  }
-
-  real_t Vector2D::get_y() const
-  {
-    return y;
-  }
-
-  void Vector2D::set_x(real_t _x)
-  {
-    x = _x;
-  }
-
-  void Vector2D::set_y(real_t _y)
-  {
-    y = _y;
-  }
-
-  bool Vector2D::is_null() const
-  {
-    return *this == ZERO;
-  }
-
-  bool Vector2D::is_zero() const
-  {
-    return is_null();
-  }
-
   bool Vector2D::is_normalized() const
   {
     return real_equal(square_magnitude(), 1.);
@@ -80,19 +63,14 @@ namespace Designar
     return is_normalized();
   }
 
-  void Vector2D::nullify()
-  {
-    x = y = 0.;
-  }
-
   real_t Vector2D::square_magnitude() const
   {
-    return x * x + y * y;
+    return square_distance_to_origin();
   }
 
   real_t Vector2D::magnitude() const
   {
-    return std::sqrt(square_magnitude());
+    return distance_to_origin();
   }
 
   real_t Vector2D::length() const
@@ -126,25 +104,9 @@ namespace Designar
     return Vector2D(-x, -y);
   }
 
-  void Vector2D::negate()
-  {
-    x *= -1;
-    y *= -1;
-  }
-
   real_t Vector2D::angle_with(const Vector2D & v) const
   {
     return atan2(cross_product(v), dot_product(v));
-  }
-
-  bool Vector2D::is_to_right_from(const Vector2D & v) const
-  {
-    return area_of_parallelogram(ZERO, v, *this) < 0.;
-  }
-  
-  bool Vector2D::is_to_left_from(const Vector2D & v) const
-  {
-    return area_of_parallelogram(ZERO, v, *this) > 0.;
   }
 
   void Vector2D::add_scaled_vector(const Vector2D & v, real_t scale)
@@ -181,11 +143,6 @@ namespace Designar
   real_t Vector2D::vector_product(const Vector2D & v) const
   {
     return cross_product(v);
-  }
-
-  bool Vector2D::operator ! () const
-  {
-    return is_null();
   }
 
   Vector2D Vector2D::operator - () const
@@ -256,16 +213,6 @@ namespace Designar
     y -= v.y;
   }
 
-  bool Vector2D::operator == (const Vector2D & v) const
-  {
-    return real_equal(x, v.x) and real_equal(y, v.y);
-  }
-
-  bool Vector2D::operator != (const Vector2D & v) const
-  {
-    return not(*this == v);
-  }
-
   std::string Vector2D::to_string() const
   {
     std::stringstream sstr;
@@ -283,4 +230,5 @@ namespace Designar
     b.set_x(a.get_y());
     return std::make_tuple(a, b);
   }
+  
 } // end namespace Designar
