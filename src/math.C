@@ -37,12 +37,5 @@ namespace Designar
     return abs(a-b) <= EPSILON;
   }
 
-  real_t area_of_parallelogram(const Vector2D & a,
-			       const Vector2D & b,
-			       const Vector2D & c)
-  {
-    return (b.get_x() - a.get_x()) * (c.get_y() - a.get_y()) -
-      (c.get_x() - a.get_x()) * (b.get_y() - a.get_y());
-  }
   
 } // end namespace Designar

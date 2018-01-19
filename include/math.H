@@ -41,17 +41,27 @@ namespace Designar
 
   bool real_equal(real_t, real_t);
 
-  class Vector2D;
+  template <class NumberType> class GenPoint2D;
 
-  real_t area_of_parallelogram(const Vector2D &,
-			       const Vector2D &,
-			       const Vector2D &);
+  template <typename NumberType>
+  real_t area_of_parallelogram(const GenPoint2D<NumberType> &,
+			       const GenPoint2D<NumberType> &,
+			       const GenPoint2D<NumberType> &);
   
   template <typename BT, typename ET>
   BT fast_integral_pow(BT, ET);
 
   template <typename BT, typename ET>
   BT pow(BT, ET);
+
+  template <typename NumberType>
+  real_t area_of_parallelogram(const GenPoint2D<NumberType> & a,
+			       const GenPoint2D<NumberType> & b,
+			       const GenPoint2D<NumberType> & c)
+  {
+    return (b.get_x() - a.get_x()) * (c.get_y() - a.get_y()) -
+      (c.get_x() - a.get_x()) * (b.get_y() - a.get_y());
+  }
   
   template <typename BT, typename ET>
   BT fast_integral_pow(BT base, ET exp)
