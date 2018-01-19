@@ -22,20 +22,23 @@
   aledrums@gmail.com
 */
 
-# include <math.H>
-# include <vector2D.H>
+# include <nodesdef.H>
 
 namespace Designar
 {
-  real_t abs(real_t x)
-  {
-    return (x < 0. ? -x : x);
-  }
-
-  bool real_equal(real_t a, real_t b)
-  {
-    return abs(a-b) <= EPSILON;
-  }
-
   
+  void DL::split(DL & l, DL & r)
+  {
+    assert(l.is_empty());
+    assert(r.is_empty());
+    
+    while (not this->is_empty())
+      {
+	l.insert_prev(this->remove_next());
+	
+	if (not this->is_empty())
+	  r.insert_next(this->remove_prev());
+      }
+  }
+
 } // end namespace Designar

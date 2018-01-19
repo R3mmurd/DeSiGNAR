@@ -158,7 +158,7 @@ int main()
 
   assert(s1.zip(s2).equal({{1,3},{2,4},{3,5},{4,6}}));
   
-  cout << "Everything ok\n";
+  cout << "Everything ok!\n";
 
   return 0;
 }

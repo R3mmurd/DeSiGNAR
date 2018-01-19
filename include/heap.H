@@ -27,6 +27,7 @@
 
 # include <array.H>
 # include <queue.H>
+# include <nodesdef.H>
 
 namespace Designar
 {
@@ -381,8 +382,12 @@ namespace Designar
   }
 
   template <typename Key>
-  class HeapNode
+  class HeapNode :
+    public BaseBinTreeNode<Key, HeapNode<Key>, BinTreeNodeNullValue::NULLPTR>
   {
+    using BaseNode =
+      BaseBinTreeNode<Key, HeapNode<Key>, BinTreeNodeNullValue::NULLPTR>;
+    
     struct HeapNodeBits
     {
       unsigned int is_left : 4;
@@ -395,61 +400,32 @@ namespace Designar
       }
     };
     
-    Key          key;
     HeapNode   * parent = nullptr;
-    HeapNode   * left   = nullptr;
-    HeapNode   * right  = nullptr;
     HeapNodeBits bits;
 
   public:
     HeapNode()
-      : key()
+      : BaseNode()
     {
       // empty
     }
 
     HeapNode(const Key & k)
-      : key(k)
+      : BaseNode(k)
     {
       // empty
     }
 
     HeapNode(Key && k)
-      : key(std::forward<Key>(k))
+      : BaseNode(std::forward<Key>(k))
     {
       // empty
     }
 
-    HeapNode(const HeapNode &)
-      : HeapNode()
+    HeapNode(BinTreeNodeCtor ctor)
+      : BaseNode(ctor)
     {
       // empty
-    }
-
-    HeapNode(HeapNode &&)
-      : HeapNode()
-    {
-      // empty
-    }
-
-    HeapNode & operator = (const HeapNode &)
-    {
-      return *this;
-    }
-
-    HeapNode & operator = (HeapNode &&)
-    {
-      return *this;
-    }
-
-    Key & get_key()
-    {
-      return key;
-    }
-
-    const Key & get_key() const
-    {
-      return key;
     }
 
     HeapNode *& get_parent()
@@ -457,19 +433,29 @@ namespace Designar
       return parent;
     }
 
-    HeapNode *& get_left()
-    {
-      return left;
-    }
-
-    HeapNode *& get_right()
-    {
-      return right;
-    }
-
     HeapNodeBits & get_bits()
     {
       return bits;
+    }
+
+    unsigned int is_leaf() const
+    {
+      return bits.is_leaf;
+    }
+
+    void set_leaf(unsigned int value)
+    {
+      bits.is_leaf = value;
+    }
+
+    unsigned int is_left() const
+    {
+      return bits.is_left;
+    }
+
+    void set_left(unsigned int value)
+    {
+      bits.is_left = value;
     }
 
     void reset()
@@ -477,11 +463,14 @@ namespace Designar
       bits.is_leaf = true;
       bits.is_left = true;
     }
-  };  
+  };
 
-# define IS_LEAF(p) (((p)->get_bits()).is_leaf)
-# define IS_LEFT(p) (((p)->get_bits()).is_left)
-  
+  template <class HeapNode>
+  inline HeapNode *& U(HeapNode * p)
+  {
+    return p->get_parent();
+  }
+
   template <typename Key, class Cmp = std::less<Key>>
   class LHeap
   {
@@ -495,29 +484,9 @@ namespace Designar
       return (Node*) (addr - offset);
     }
 
-    static Key & KEY(Node * p)
-    {
-      return p->get_key();
-    }
-
-    static Node *& U(Node * p)
-    {
-      return p->get_parent();
-    }
-
-    static Node *& L(Node * p)
-    {
-      return p->get_left();
-    }
-
-    static Node *& R(Node * p)
-    {
-      return p->get_right();
-    }
-
     static bool is_in_list(Node * p)
     {
-      if (IS_LEAF(p))
+      if (p->is_leaf())
 	return true;
 
       return U(L(p)) == R(L(p));
@@ -540,7 +509,7 @@ namespace Designar
       const bool p_has_sibling = has_sibling(p); 
       const bool p_is_in_list  = is_in_list(p);
       const bool pp_is_in_list = is_in_list(pp);
-      const bool p_has_child   = not IS_LEAF(p);
+      const bool p_has_child   = not p->is_leaf();
 
       std::swap(pp->get_bits(), p->get_bits());
 
@@ -654,8 +623,8 @@ namespace Designar
     {
       assert(num_items > 1);
       assert(U(root) == head);
-      assert(not IS_LEAF(root));
-      assert(IS_LEAF(last));
+      assert(not root->is_leaf());
+      assert(last->is_leaf());
 
       if (num_items > 3)
 	{
@@ -735,7 +704,7 @@ namespace Designar
       L(new_node) = left_child;
       R(new_node) = right_child;
 
-      if (IS_LEFT(node))
+      if (node->is_left())
 	{
 	  assert(L(parent) == node);
 	  L(parent) = new_node;
@@ -746,7 +715,7 @@ namespace Designar
 	  R(parent) = new_node;
 	}
 
-      if (IS_LEAF(node))
+      if (node->is_leaf())
 	{
 	  R(left_child)  = new_node;
 	  L(right_child) = new_node;
@@ -770,7 +739,7 @@ namespace Designar
     
     Node * insert_node(Node * p)
     {
-      assert(IS_LEAF(p));
+      assert(p->is_leaf());
 
       if (root == nullptr)
 	{
@@ -779,8 +748,8 @@ namespace Designar
 	  root       = p;
 	  L(p)       = R(p) = p;
 	  U(p)       = head;
-	  IS_LEAF(p) = true;
-	  IS_LEFT(p) = false;
+	  p->set_leaf(true);
+	  p->set_left(false);
 	  last       = root;
 	  num_items  = 1;
 	  return p;
@@ -790,22 +759,22 @@ namespace Designar
       L(p) = last;
       U(p) = pp;
 
-      if (IS_LEFT(last)) 
+      if (last->is_left()) 
 	{
-	  IS_LEFT(p) = false;
+	  p->set_left(false);
 	  R(p)       = R(pp);
 	  L(R(pp))   = p;
 	  R(pp)      = p;
 	}
       else
 	{
-	  IS_LEFT(p)  = true;
+	  p->set_left(true);
 	  R(p)        = pp;
-	  IS_LEAF(pp) = false;
+	  pp->set_leaf(false);
 	  L(pp)       = p;
 	}
       
-      assert(not IS_LEAF(pp));
+      assert(not pp->is_leaf());
 
       R(last) = p;
       last    = p;
@@ -840,15 +809,15 @@ namespace Designar
     Node * remove_last()
     {
       assert(last != root and num_items > 0);
-      assert(IS_LEAF(last));
+      assert(last->is_leaf());
       
       Node * ret_val  = last;
       Node * pp       = U(last);
       Node * new_last = L(last);
       
-      if (IS_LEFT(last))
+      if (last->is_left())
 	{
-	  IS_LEAF(pp) = true;
+	  pp->set_leaf(true);
 	  L(pp)       = new_last;
 	}
       else
@@ -1016,7 +985,7 @@ namespace Designar
   template <typename Key, class Cmp>
   void LHeap<Key, Cmp>::destroy_rec(Node * p, Node * n)
   {
-    if (IS_LEAF(p))
+    if (p->is_leaf())
       {
 	delete p;
 	return;
@@ -1040,7 +1009,7 @@ namespace Designar
   template <typename Key, class Cmp>
   void LHeap<Key, Cmp>::sift_down(Node * p)
   {
-    while (not IS_LEAF(p))
+    while (not p->is_leaf())
       {
 	Node * c = L(p);
 	
@@ -1068,7 +1037,7 @@ namespace Designar
 	return;
       }
 
-    if (IS_LEFT(last))
+    if (last->is_left())
       destroy_rec(root, U(last));
     else
       destroy_rec(root, nullptr);

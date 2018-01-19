@@ -25,39 +25,31 @@
 # ifndef DSGVECTOR2D_H
 # define DSGVECTOR2D_H
 
-# include <math.H>
+# include <point2D.H>
 
 namespace Designar
 {
-  class Vector2D
+  class Vector2D : public Point2D
   {
-    real_t x;
-    real_t y;
+    using Base = Point2D;
+    using Base::Base;
 
   public:
     static const Vector2D ZERO;
+
+    bool is_to_right_from(const Vector2D &) const;
+
+    bool is_to_right_on_from(const Vector2D &) const;
+
+    bool is_to_left_from(const Vector2D &) const;
+
+    bool is_to_left_on_from(const Vector2D &) const;
+
+    bool is_collinear_with(const Vector2D &) const;
     
-    Vector2D();
-
-    Vector2D(real_t, real_t);
-
-    real_t get_x() const;
-
-    real_t get_y() const;
-
-    void set_x(real_t);
-
-    void set_y(real_t);
-
-    bool is_null() const;
-
-    bool is_zero() const;
-
     bool is_normalized() const;
 
     bool is_unitarian() const;
-    
-    void nullify();
 
     real_t square_magnitude() const;
 
@@ -67,17 +59,13 @@ namespace Designar
 
     void normalize();
 
+    void negate();
+
     bool is_opposite(const Vector2D &) const;
 
     Vector2D get_opposite() const;
 
-    void negate();
-
     real_t angle_with(const Vector2D &) const;
-
-    bool is_to_right_from(const Vector2D &) const;
-
-    bool is_to_left_from(const Vector2D &) const;
 
     void add_scaled_vector(const Vector2D &, real_t);
 
@@ -91,10 +79,7 @@ namespace Designar
 
     Vector2D component_product(const Vector2D &) const;
 
-    /// Performs is_null.
-    bool operator ! () const;
-
-    /// Performs get_opossite.
+     /// Performs get_opossite.
     Vector2D operator - () const;
 
     /// Multiplies this by a scalar value
@@ -120,14 +105,6 @@ namespace Designar
 
     /// Accumulative vector substraction.
     void operator -= (const Vector2D &);
-
-    /// Equality test.
-    bool operator == (const Vector2D &) const;
-
-    /// Diference test.
-    bool operator != (const Vector2D &) const;
-
-    std::string to_string() const;
 
     static std::tuple<Vector2D, Vector2D>
     make_orthonormal_basis(const Vector2D &);

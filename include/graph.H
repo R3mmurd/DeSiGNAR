@@ -25,7 +25,9 @@
 # ifndef DSGGRAPH_H
 # define DSGGRAPH_H
 
+# include <nodesdef.H>
 # include <graphutilities.H>
+# include <rangealgorithms.H>
 
 namespace Designar
 {
@@ -34,167 +36,31 @@ namespace Designar
 
   template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
   class Digraph;
-  
-  template <typename NodeInfo>
-  class BaseGraphNode : public CommonNodeArc
-  {
-  protected:
-    NodeInfo info;
-    nat_t    num_arcs;
-    DL       adjacent_arc_list;
-    
-    BaseGraphNode()
-      : CommonNodeArc(), info(), num_arcs(0), adjacent_arc_list()
-    {
-      // empty
-    }
-    
-    BaseGraphNode(const NodeInfo & _info)
-      : CommonNodeArc(), info(_info), num_arcs(0), adjacent_arc_list()
-    {
-      // empty
-    }
-    
-    BaseGraphNode(NodeInfo && _info)
-      : CommonNodeArc(), info(std::forward<NodeInfo>(_info)), num_arcs(0),
-	adjacent_arc_list()
-    {
-      // empty
-    }
-    
-    BaseGraphNode(BaseGraphNode * ptr)
-      : CommonNodeArc(), info(ptr->info), num_arcs(0), adjacent_arc_list()
-    {
-      // empty
-    }
-    
-  public:
-    NodeInfo & get_info()
-    {
-      return info;
-    }
-    
-    const NodeInfo & get_info() const
-    {
-      return info;
-    }
-    
-    nat_t get_num_arcs() const
-    {
-      return num_arcs;
-    }
-  };
 
   template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
-  class GraphNode : public BaseGraphNode<NodeInfo>
+  class GraphNode : public BaseGraphNode<NodeInfo, CommonNodeArc>
   {
     friend class Graph<NodeInfo, ArcInfo, GraphInfo>;
     friend class DLNode<GraphNode>;
-    using Base = BaseGraphNode<NodeInfo>;
+    using Base = BaseGraphNode<NodeInfo, CommonNodeArc>;
     using Base::Base;
   };
 
   template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
-  class DigraphNode : public BaseGraphNode<NodeInfo>
+  class DigraphNode : public BaseGraphNode<NodeInfo, CommonNodeArc>
   {
     friend class Digraph<NodeInfo, ArcInfo, GraphInfo>;
     friend class DLNode<DigraphNode>;
-    using Base = BaseGraphNode<NodeInfo>;
+    using Base = BaseGraphNode<NodeInfo, CommonNodeArc>;
     using Base::Base;
-  };
-  
-  template <class Node, typename ArcInfo>
-  class BaseGraphArc : public CommonNodeArc
-  {    
-  protected:
-    Node    * src_node;
-    Node    * tgt_node;
-    ArcInfo   info;
-
-    BaseGraphArc()
-      : src_node(nullptr), tgt_node(nullptr), info()
-    {
-      // empty
-    }
-    
-    BaseGraphArc(Node * src, Node * tgt)
-      : src_node(src), tgt_node(tgt), info()
-    {
-      // empty
-    }
-    
-    BaseGraphArc(Node * src, Node * tgt, const ArcInfo & _info)
-      : src_node(src), tgt_node(tgt), info(_info)
-    {
-      // empty
-    }
-    
-    BaseGraphArc(Node * src, Node * tgt, ArcInfo && _info)
-      : src_node(src), tgt_node(tgt), info(std::forward<ArcInfo>(_info))
-    {
-      // empty
-    }
-    
-  public:
-    Node & get_src_node()
-    {
-      return *src_node;
-    }
-    
-    const Node & get_src_node() const
-    {
-      return *src_node;
-    }
-    
-    Node & get_tgt_node()
-    {
-      return *tgt_node;
-    }
-    
-    const Node & get_tgt_node() const
-    {
-      return *tgt_node;
-    }
-    
-    Node & get_connected_node(Node & node)
-    {
-      if (&node == &get_src_node())
-	return get_tgt_node();
-      
-      if (&node == &get_tgt_node())
-	return get_src_node();
-      
-      throw std::logic_error("Arc is not adjacent to node");
-    }
-    
-    const Node & get_connected_node(Node & node) const
-    {
-      if (&node == &get_src_node())
-	return get_tgt_node();
-      
-      if (&node == &get_tgt_node())
-	return get_src_node();
-      
-      throw std::logic_error("Arc is not adjacent to node");
-    }
-
-    ArcInfo & get_info()
-    {
-      return info;
-    }
-    
-    const ArcInfo & get_info() const
-    {
-      return info;
-    }
   };
 
   template <class Node, typename NodeInfo, typename ArcInfo, typename GraphInfo>
-  class GraphArc : public BaseGraphArc<Node, ArcInfo>
+  class GraphArc : public BaseGraphArc<Node, ArcInfo, CommonNodeArc>
   {
     friend class Graph<NodeInfo, ArcInfo, GraphInfo>;
     friend class DLNode<GraphArc>;
-    using Base = BaseGraphArc<Node, ArcInfo>;
+    using Base = BaseGraphArc<Node, ArcInfo, CommonNodeArc>;
     using Base::Base;
     
   protected:
@@ -203,11 +69,11 @@ namespace Designar
   };
   
   template <class Node, typename NodeInfo, typename ArcInfo, typename GraphInfo>
-  class DigraphArc : public BaseGraphArc<Node, ArcInfo>
+  class DigraphArc : public BaseGraphArc<Node, ArcInfo, CommonNodeArc>
   {
     friend class Digraph<NodeInfo, ArcInfo, GraphInfo>;
     friend class DLNode<DigraphArc>;
-    using Base = BaseGraphArc<Node, ArcInfo>;
+    using Base = BaseGraphArc<Node, ArcInfo, CommonNodeArc>;
     using Base::Base;
 
   protected:
@@ -240,12 +106,6 @@ namespace Designar
     template <class Op>
     void for_each_node(Op && op = Op()) const;
     
-    template <class Op>
-    void mutable_for_each_node(Op &);
-
-    template <class Op>
-    void mutable_for_each_node(Op && op = Op());
-
     template <class Pred>
     bool all_nodes(Pred &) const;
 
@@ -263,12 +123,6 @@ namespace Designar
 
     template <class Pred>
     Node * search_node_ptr(Pred && pred = Pred());
-
-    template <class Pred>
-    const Node * search_node_ptr(Pred &) const;
-
-    template <class Pred>
-    const Node * search_node_ptr(Pred && pred = Pred()) const;
 
     template <class Pred>
     bool remove_first_node_if(Pred &);
@@ -293,12 +147,6 @@ namespace Designar
 
     template <class Op>
     void for_each_arc(Op && op = Op()) const;
-
-    template <class Op>
-    void mutable_for_each_arc(Op &);
-
-    template <class Op>
-    void mutable_for_each_arc(Op && op = Op());
     
     template <class Pred>
     bool all_arcs(Pred &) const;
@@ -317,12 +165,6 @@ namespace Designar
 
     template <class Pred>
     Arc * search_arc_ptr(Pred && pred = Pred());
-
-    template <class Pred>
-    const Arc * search_arc_ptr(Pred &) const;
-
-    template <class Pred>
-    const Arc * search_arc_ptr(Pred && pred = Pred()) const;
 
     template <class Pred>
     bool remove_first_arc_if(Pred &);
@@ -347,12 +189,6 @@ namespace Designar
 
     template <class Op>
     void for_each_adjacent_arc(Node &, Op && op = Op()) const;
-
-    template <class Op>
-    void mutable_for_each_adjacent_arc(Node &, Op &);
-
-    template <class Op>
-    void mutable_for_each_adjacent_arc(Node &, Op && op = Op());
     
     template <class Pred>
     bool all_adjacent_arcs(Node &, Pred &) const;
@@ -373,13 +209,6 @@ namespace Designar
     Arc * search_adjacent_arc_ptr(Node &, Pred && pred = Pred());
 
     template <class Pred>
-    const Arc * search_adjacent_arc_ptr(Node &, Pred &) const;
-
-    template <class Pred>
-    const Arc * search_adjacent_arc_ptr(Node &,
-					    Pred && pred = Pred()) const;
-
-    template <class Pred>
     bool remove_first_adjacent_arc_if(Node &, Pred &);
 
     template <class Pred>
@@ -395,34 +224,34 @@ namespace Designar
     
     void reset_all_node_tag(GraphTag tag)
     {
-      mutable_for_each_node([&tag](Node & node)
-			    {
-			      node.unvisit(tag);
-			    });
+      for_each_node([&tag](Node & node)
+		    {
+		      node.unvisit(tag);
+		    });
     }
 
     void reset_all_node_tag()
     {
-      mutable_for_each_node([](Node & node)
-			    {
-			      node.reset_tag();
-			    });
+      for_each_node([](Node & node)
+		    {
+		      node.reset_tag();
+		    });
     }
 
     void reset_all_arc_tag(GraphTag tag)
     {
-      mutable_for_each_arc([&tag](Arc & arc)
-			    {
-			      arc.unvisit(tag);
-			    });
+      for_each_arc([&tag](Arc & arc)
+		   {
+		     arc.unvisit(tag);
+		   });
     }
 
     void reset_all_arc_tag()
     {
-      mutable_for_each_arc([](Arc & arc)
-			    {
-			      arc.reset_tag();
-			    });
+      for_each_arc([](Arc & arc)
+		   {
+		     arc.reset_tag();
+		   });
     }
 
     void reset_tag(GraphTag tag)
@@ -439,34 +268,34 @@ namespace Designar
 
     void reset_node_cookies()
     {
-      mutable_for_each_node([](Node & node)
-			    {
-			      node.cookie() = nullptr;
-			    });
+      for_each_node([](Node & node)
+		    {
+		      node.cookie() = nullptr;
+		    });
     }
 
     void reset_arc_cookies()
     {
-      mutable_for_each_arc([](Arc & arc)
-			   {
-			     arc.cookie() = nullptr;
-			   });
+      for_each_arc([](Arc & arc)
+		   {
+		     arc.cookie() = nullptr;
+		   });
     }
 
    void reset_node_counter()
     {
-      mutable_for_each_node([](Node & node)
-			    {
-			      node.counter() = 0;
-			    });
+      for_each_node([](Node & node)
+		    {
+		      node.counter() = 0;
+		    });
     }
 
     void reset_arc_counter()
     {
-      mutable_for_each_arc([](Arc & arc)
-			   {
-			     arc.counter() = 0;
-			   });
+      for_each_arc([](Arc & arc)
+		   {
+		     arc.counter() = 0;
+		   });
     }
 
     void reset_counters()
@@ -483,18 +312,18 @@ namespace Designar
 
     void reset_nodes()
     {
-      mutable_for_each_node([](Node & node)
-			    {
-			      node.reset();
-			    });
+      for_each_node([](Node & node)
+		    {
+		      node.reset();
+		    });
     }
 
     void reset_arcs()
     {
-      mutable_for_each_arc([](Arc & arc)
-			   {
-			     arc.reset();
-			   });
+      for_each_arc([](Arc & arc)
+		   {
+		     arc.reset();
+		   });
     }
   };
 
@@ -524,35 +353,20 @@ namespace Designar
   template <class GT, class Node, class Arc>
   Node & BaseGraph<GT, Node, Arc>::nth_node(nat_t i)
   {
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(me().nodes_begin(), me().nodes_end(), i);
   }
   
   template <class GT, class Node, class Arc>
   const Node & BaseGraph<GT, Node, Arc>::nth_node(nat_t i) const
   {
-    for (auto it = const_me().nodes_begin(); it != const_me().nodes_end(); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
   }
 
   template <class GT, class Node, class Arc>
   template <class Op>
   void BaseGraph<GT, Node, Arc>::for_each_node(Op & op) const
   {
-    for (auto it = const_me().nodes_begin(); it != const_me().nodes_end(); ++it)
-      op(*it);
+    for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
   }
 
   template <class GT, class Node, class Arc>
@@ -563,29 +377,10 @@ namespace Designar
   }
 
   template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::mutable_for_each_node(Op & op)
-  {
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      op(*it);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::mutable_for_each_node(Op && op)
-  {
-    mutable_for_each_node<Op>(op);
-  }
-
-  template <class GT, class Node, class Arc>
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::all_nodes(Pred & pred) const
   {
-    for (auto it = const_me().nodes_begin(); it != const_me().nodes_end(); ++it)
-      if (not pred(*it))
-	return false;
-
-    return true;
+    return all_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -599,11 +394,7 @@ namespace Designar
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::exists_node(Pred & pred) const
   {
-    for (auto it = const_me().nodes_begin(); it != const_me().nodes_end(); ++it)
-      if (pred(*it))
-	return true;
-
-    return false;
+    return exists_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -617,11 +408,7 @@ namespace Designar
   template <class Pred>
   Node * BaseGraph<GT, Node, Arc>::search_node_ptr(Pred & pred)
   {
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
+    return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -633,34 +420,9 @@ namespace Designar
 
   template <class GT, class Node, class Arc>
   template <class Pred>
-  const Node * BaseGraph<GT, Node, Arc>::search_node_ptr(Pred & pred) const
-  {
-    for (auto it = const_me().nodes_begin(); it != const_me().nodes_end(); ++it)
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  const Node * BaseGraph<GT, Node, Arc>::search_node_ptr(Pred && pred) const
-  {
-    return search_node_ptr<Pred>(pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
   bool BaseGraph<GT, Node, Arc>::remove_first_node_if(Pred & pred)
   {
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      if (pred(*it))
-	{
-	  it.del();
-	  return true;
-	}
-
-    return false;
+    return remove_first_if_it(me().nodes_begin(), me().nodes_end(), pred);
   }
   
   template <class GT, class Node, class Arc>
@@ -674,9 +436,7 @@ namespace Designar
   template <class Pred>
   void BaseGraph<GT, Node, Arc>::remove_node_if(Pred & pred)
   {
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      if (pred(*it))
-	it.del();
+    remove_if_it(me().nodes_begin(), me().nodes_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -689,46 +449,26 @@ namespace Designar
   template <class GT, class Node, class Arc>
   SLList<Node *> BaseGraph<GT, Node, Arc>::nodes() const
   {
-    SLList<Node *> ret_val;
-
-    for (auto it = me().nodes_begin(); it != me().nodes_end(); ++it)
-      ret_val.append(&*it);
-
-    return ret_val;
+    return to_list_it<Node *>(const_me().nodes_begin(), const_me().nodes_end());
   }
 
   template <class GT, class Node, class Arc>
   Arc & BaseGraph<GT, Node, Arc>::nth_arc(nat_t i)
   {
-    for (auto it = me().arcs_begin(); it != me().arcs_end(); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(me().arcs_begin(), me().arcs_end(), i);
   }
   
   template <class GT, class Node, class Arc>
   const Arc & BaseGraph<GT, Node, Arc>::nth_arc(nat_t i) const
   {
-    for (auto it = const_me().arcs_begin(); it != const_me().arcs_end(); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
   }
 
   template <class GT, class Node, class Arc>
   template <class Op>
   void BaseGraph<GT, Node, Arc>::for_each_arc(Op & op) const
   {
-    for (auto it = const_me().arcs_begin(); it != const_me().arcs_end(); ++it)
-      op(*it);
+    for_each_it(const_me().arcs_begin(), const_me().arcs_end(), op);
   }
 
   template <class GT, class Node, class Arc>
@@ -739,29 +479,10 @@ namespace Designar
   }
 
   template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::mutable_for_each_arc(Op & op)
-  {
-    for (auto it = me().arcs_begin(); it != me().arcs_end(); ++it)
-      op(*it);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::mutable_for_each_arc(Op && op)
-  {
-    mutable_for_each_arc<Op>(op);
-  }
-  
-  template <class GT, class Node, class Arc>
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::all_arcs(Pred & pred) const
   {
-    for (auto it = const_me().arcs_begin(); it != const_me().arcs_end(); ++it)
-      if (not pred(*it))
-	return false;
-
-    return true;
+    return all_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -775,11 +496,7 @@ namespace Designar
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::exists_arc(Pred & pred) const
   {
-    for (auto it = const_me().arcs_begin(); it != const_me().arcs_end(); ++it)
-      if (pred(*it))
-	return true;
-
-    return false;
+    return exists_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -793,11 +510,7 @@ namespace Designar
   template <class Pred>
   Arc * BaseGraph<GT, Node, Arc>::search_arc_ptr(Pred & pred)
   {
-    for (auto it = me().arcs_begin(); it != me().arcs_end(); ++it)
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
+    return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -809,34 +522,9 @@ namespace Designar
 
   template <class GT, class Node, class Arc>
   template <class Pred>
-  const Arc * BaseGraph<GT, Node, Arc>::search_arc_ptr(Pred & pred) const
-  {
-    for (ArcIt<GT> it(*this); it.has_current(); it.next())
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  const Arc * BaseGraph<GT, Node, Arc>::search_arc_ptr(Pred && pred) const
-  {
-    return search_arc_ptr<Pred>(pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
   bool BaseGraph<GT, Node, Arc>::remove_first_arc_if(Pred & pred)
   {
-    for (ArcIt<GT> it(*this); it.has_current(); it.next())
-      if (pred(*it))
-	{
-	  it.del();
-	  return true;
-	}
-
-    return false;
+    return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
   }
   
   template <class GT, class Node, class Arc>
@@ -850,9 +538,7 @@ namespace Designar
   template <class Pred>
   void BaseGraph<GT, Node, Arc>::remove_arc_if(Pred & pred)
   {
-    for (ArcIt<GT> it(*this); it.has_current(); it.next())
-      if (pred(*it))
-	it.del();
+    remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -865,46 +551,26 @@ namespace Designar
   template <class GT, class Node, class Arc>
   SLList<Arc *> BaseGraph<GT, Node, Arc>::arcs() const
   {
-    SLList<Arc *> ret_val;
-    
-    for (ArcIt<GT> it(*this); it.has_current(); it.next())
-      ret_val.append(&*it);
-
-    return ret_val;
+    return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
   }
 
   template <class GT, class Node, class Arc>
   Arc & BaseGraph<GT, Node, Arc>::nth_adjacent_arc(Node & p, nat_t i)
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
   }
   
   template <class GT, class Node, class Arc>
   const Arc & BaseGraph<GT, Node, Arc>::nth_adjacent_arc(Node & p, nat_t i) const
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      {
-	if (i == 0)
-	  return *it;
-	--i;
-      }
-    
-    throw std::overflow_error("index too large");
+    return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
   }
 
   template <class GT, class Node, class Arc>
   template <class Op>
   void BaseGraph<GT, Node, Arc>::for_each_adjacent_arc(Node & p, Op & op) const
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      op(*it);
+    for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
   }
 
   template <class GT, class Node, class Arc>
@@ -915,30 +581,10 @@ namespace Designar
   }
 
   template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::mutable_for_each_adjacent_arc(Node & p, Op & op)
-  {
-    for (auto it = me().arcs_begin(p); it != me().arcs_end(p); ++it)
-      op(*it);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void
-  BaseGraph<GT, Node, Arc>::mutable_for_each_adjacent_arc(Node & p, Op && op)
-  {
-    mutable_for_each_adjacent_arc<Op>(p, op);
-  }
-
-  template <class GT, class Node, class Arc>
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::all_adjacent_arcs(Node & p, Pred & pred) const
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      if (not pred(*it))
-	return false;
-
-    return true;
+    return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -952,11 +598,7 @@ namespace Designar
   template <class Pred>
   bool BaseGraph<GT, Node, Arc>::exists_adjacent_arc(Node & p, Pred & pred) const
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      if (pred(*it))
-	return true;
-
-    return false;
+    return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -971,11 +613,7 @@ namespace Designar
   template <class Pred>
   Arc * BaseGraph<GT, Node, Arc>::search_adjacent_arc_ptr(Node & p, Pred & pred)
   {
-    for (auto it = me().arcs_begin(p); it != me().arcs_end(p); ++it)
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
+    return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -987,41 +625,10 @@ namespace Designar
 
   template <class GT, class Node, class Arc>
   template <class Pred>
-  const Arc *
-  BaseGraph<GT, Node, Arc>::search_adjacent_arc_ptr(Node & p, Pred & pred) const
-  {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      if (pred(*it))
-	return &*it;
-
-    return nullptr;
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  const Arc *
-  BaseGraph<GT, Node, Arc>::search_adjacent_arc_ptr(Node & p, Pred && pred) const
-  {
-    return search_adjacent_arc_ptr<Pred>(p, pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
   bool
   BaseGraph<GT, Node, Arc>::remove_first_adjacent_arc_if(Node & p, Pred & pred)
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); )
-      {
-	Arc & arc = *it;
-	it.next();
-	if (pred(arc))
-	{
-	  remove_arc(arc);
-	  return true;
-	}
-      }
-
-    return false;
+    return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
   }
   
   template <class GT, class Node, class Arc>
@@ -1036,13 +643,7 @@ namespace Designar
   template <class Pred>
   void BaseGraph<GT, Node, Arc>::remove_adjacent_arc_if(Node & p, Pred & pred)
   {
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); )
-      {
-	Arc & arc = *it;
-	it.next();
-	if (pred(arc))
-	  remove_arc(arc);
-      }
+    remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
   }
 
   template <class GT, class Node, class Arc>
@@ -1056,12 +657,7 @@ namespace Designar
   template <class GT, class Node, class Arc>
   SLList<Arc *>BaseGraph<GT, Node, Arc>::adjacent_arcs(Node & p) const
   {
-    SLList<Arc *> ret_val;
-    
-    for (auto it = const_me().arcs_begin(p); it != const_me().arcs_end(p); ++it)
-      ret_val.append(&*it);
-    
-    return ret_val;
+    return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
   }
   
   template <typename NodeInfo,

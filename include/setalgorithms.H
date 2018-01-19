@@ -37,14 +37,14 @@ namespace Designar
   {
     using SetType = Set<Key, Cmp>;
     
-    SetType * me()
+    SetType & me()
     {
       return static_cast<SetType *>(this);
     }
 
-    const SetType * const_me() const
+    const SetType & const_me() const
     {
-      return static_cast<const SetType *>(this);
+      return *static_cast<const SetType *>(this);
     }
 
   public:
@@ -75,7 +75,7 @@ namespace Designar
 
     bool contains(const Key & k) const
     {
-      return const_me()->search(k) != nullptr;
+      return const_me().search(k) != nullptr;
     }
 
     bool has(const Key & k) const
@@ -97,20 +97,26 @@ namespace Designar
 
     SetType join(const SetType & s) const
     {
-      return join(*const_me(), s);
+      return join(const_me(), s);
     }
 
     static SetType intersect(const SetType & s1, const SetType & s2)
     {
-      return s1.template filter<SetType>([&s2] (const Key & item)
-					 {
-					   return s2.contains(item);
-					 });
+      if (s1.size() < s2.size())
+	return s1.template filter<SetType>([&s2] (const Key & item)
+					   {
+					     return s2.contains(item);
+					   });
+      
+      return s2.template filter<SetType>([&s1] (const Key & item)
+					   {
+					     return s1.contains(item);
+					   });
     }
 
     SetType intersect(const SetType & s) const
     {
-      return intersect(*const_me(), s);
+      return intersect(const_me(), s);
     }
 
     static SetType difference(const SetType & s1, const SetType & s2)
@@ -123,7 +129,7 @@ namespace Designar
 
     SetType difference(const SetType & s) const
     {
-      return difference(*const_me(), s);
+      return difference(const_me(), s);
     }
 
     static SLList<std::pair<Key, Key>>
@@ -144,7 +150,7 @@ namespace Designar
 	
     SLList<std::pair<Key, Key>> cartesian_product(const SetType & s) const
     {
-      return cartesian_product(*const_me(), s);
+      return cartesian_product(const_me(), s);
     }
   };
   

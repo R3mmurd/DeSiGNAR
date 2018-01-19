@@ -22,20 +22,38 @@
   aledrums@gmail.com
 */
 
-# include <math.H>
-# include <vector2D.H>
+# include <iostream>
 
-namespace Designar
+using namespace std;
+
+# include <intutilities.H>
+
+using namespace Designar;
+
+int main()
 {
-  real_t abs(real_t x)
-  {
-    return (x < 0. ? -x : x);
-  }
+  assert(factorial(0) == 1);
+  assert(factorial(1) == 1);
+  assert(factorial(2) == 2);
+  assert(factorial(3) == 6);
+  assert(factorial(4) == 24);
+  assert(factorial(5) == 120);
+  assert(factorial(6) == 720);
 
-  bool real_equal(real_t a, real_t b)
-  {
-    return abs(a-b) <= EPSILON;
-  }
+  assert(count_permutations(3, 3) == 6);
 
-  
-} // end namespace Designar
+  for (nat_t i = 0; i <= 10; ++i)
+    assert(count_permutations(i,i) == factorial(i));
+
+  for (nat_t i = 0; i <= 10; ++i)
+    assert(count_permutations(i, nat_t(0)) == 1);
+
+  assert(count_permutations(10, 5) == 30240);
+
+  assert(count_combinations(52, 3) == 22100);
+
+  assert(count_combinations(10, 7) == 120);
+
+  cout << "Everything ok!\n";
+  return 0;
+}

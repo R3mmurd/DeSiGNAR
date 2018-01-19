@@ -22,20 +22,4 @@
   aledrums@gmail.com
 */
 
-# include <math.H>
-# include <vector2D.H>
-
-namespace Designar
-{
-  real_t abs(real_t x)
-  {
-    return (x < 0. ? -x : x);
-  }
-
-  bool real_equal(real_t a, real_t b)
-  {
-    return abs(a-b) <= EPSILON;
-  }
-
-  
-} // end namespace Designar
+# include <point2D.H>

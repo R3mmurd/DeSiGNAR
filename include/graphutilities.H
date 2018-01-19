@@ -1,6 +1,6 @@
 /*
-  This file is part of Designar Library.
-  Copyright (C) 2017 by Alejandro J. Mujica
+  This file is part of Designar Library.  Copyright (C) 2017 by
+  Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -380,16 +380,16 @@ namespace Designar
     }
 
     template <class Op>
-    void mutable_for_each(Op & op)
+    void for_each(Op & op)
     {
       for (const PathDesc & path_desc : list)
         op(path_desc.node, path_desc.arc);
     }
 
     template <class Op>
-    void mutable_for_each(Op && op = Op())
+    void for_each(Op && op = Op())
     {
-      mutable_for_each<Op>(op);
+      for_each<Op>(op);
     }
 
     Path & operator = (const Path & path)
@@ -506,63 +506,63 @@ namespace Designar
   template <class GT, class Distance>
   inline void allocate_node_info(GT & g)
   {
-    g.mutable_for_each_node([&](auto & node)
-			    {
-			      NI<GT, Distance>(node) =
-				new MinPathNodeInfo<GT, Distance>;
-			    });
+    g.for_each_node([&](auto & node)
+		    {
+		      NI<GT, Distance>(node) =
+			new MinPathNodeInfo<GT, Distance>;
+		    });
   }
   
   template <class GT, class Distance>
   inline void allocate_arc_info(GT & g)
   {
-    g.mutable_for_each_arc([&](auto & arc)
-			   {
-			     AI<GT, Distance>(arc) =
-			       new MinPathArcInfo<GT, Distance>;
-			   });
+    g.for_each_arc([&](auto & arc)
+		   {
+		     AI<GT, Distance>(arc) =
+		       new MinPathArcInfo<GT, Distance>;
+		   });
   }
   
   template <class GT, class Distance>
   void destroy_node_info(GT & g)
   {
-    g.mutable_for_each_node([&](auto & node)
-			    {
-			      auto to_destroy = NI<GT, Distance>(node);
-			      auto ptr_tree_node =
-				TREE_NODE<GT, Distance>(node);
+    g.for_each_node([&](auto & node)
+		    {
+		      auto to_destroy = NI<GT, Distance>(node);
+		      auto ptr_tree_node =
+			TREE_NODE<GT, Distance>(node);
 			      
-			      if (ptr_tree_node == nullptr)
-				node.cookie() = nullptr;
-			      else
-				{
-				  node.cookie()           = ptr_tree_node;
-				  ptr_tree_node->cookie() = &node;
-				}
+		      if (ptr_tree_node == nullptr)
+			node.cookie() = nullptr;
+		      else
+			{
+			  node.cookie()           = ptr_tree_node;
+			  ptr_tree_node->cookie() = &node;
+			}
 			      
-			      delete to_destroy;
-			    });
+		      delete to_destroy;
+		    });
   }
 
   template <class GT, class Distance>
   void destroy_arc_info(GT & g)
   {
-    g.mutable_for_each_arc([&](auto & arc)
-			   {
-			     auto to_destroy = AI<GT, Distance>(arc);
-			     auto ptr_tree_arc =
-			       TREE_ARC<GT, Distance>(arc);
+    g.for_each_arc([&](auto & arc)
+		   {
+		     auto to_destroy = AI<GT, Distance>(arc);
+		     auto ptr_tree_arc =
+		       TREE_ARC<GT, Distance>(arc);
 			     
-			     if (ptr_tree_arc == nullptr)
-			       arc.cookie() = nullptr;
-			     else
-			       {
-				 arc.cookie()           = ptr_tree_arc;
-				 ptr_tree_arc->cookie() = &arc;
-			       }
+		     if (ptr_tree_arc == nullptr)
+		       arc.cookie() = nullptr;
+		     else
+		       {
+			 arc.cookie()           = ptr_tree_arc;
+			 ptr_tree_arc->cookie() = &arc;
+		       }
 			     
-			     delete to_destroy;
-			   });
+		     delete to_destroy;
+		   });
   }
 
   template <class GT, class Distance, class Heap>
