@@ -57,6 +57,18 @@ namespace Designar
       // empty
     }
 
+    GenPoint2D(const NumT & _x, NumT && _y)
+      : x(_x), y(std::forward<NumT>(_y))
+    {
+      // empty
+    }
+
+    GenPoint2D(NumT && _x, const NumT & _y)
+      : x(std::forward<NumT>(_x)), y(_y)
+    {
+      // empty
+    }
+
     GenPoint2D(NumT && _x, NumT && _y)
       : x(std::forward<NumT>(_x)), y(std::forward<NumT>(_y))
     {
