@@ -401,6 +401,13 @@ namespace Designar
       std::swap(num_items, l.num_items);
     }
 
+    void concat(SLList & l)
+    {
+      num_items += l.num_items;
+      BaseList::concat(l);
+      l.num_items = 0;
+    }
+
     SLList & operator = (const SLList & l)
     {
       if (this == &l)

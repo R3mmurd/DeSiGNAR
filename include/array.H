@@ -212,7 +212,7 @@ namespace Designar
 
   template <typename T>
   class DynArray : private FixedArray<T>,
-		public ContainerAlgorithms<DynArray<T>, T>
+		   public ContainerAlgorithms<DynArray<T>, T>
   {
     using BaseArray = FixedArray<T>;
     
@@ -258,6 +258,12 @@ namespace Designar
   public:
     DynArray(nat_t cap)
       : BaseArray(cap), num_items(0)
+    {
+      // empty
+    }
+
+    DynArray(nat_t cap, const T & init_val)
+      : BaseArray(cap, init_val), num_items(cap)
     {
       // empty
     }

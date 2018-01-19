@@ -25,7 +25,7 @@
 # ifndef DSGGRAPH_H
 # define DSGGRAPH_H
 
-# include <graphalgorithms.H>
+# include <graphutilities.H>
 
 namespace Designar
 {
@@ -1209,7 +1209,7 @@ namespace Designar
     Graph(const Graph & g)
       : info(g.info), num_nodes(0), num_arcs(0)
     {
-      copy_graph(g, *this);
+      BaseGraph::copy_graph(g, *this);
     }
 
     Graph(Graph && g)

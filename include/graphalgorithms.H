@@ -26,7 +26,8 @@
 # define DSGGRAPHALGORITHMS_H
 
 # include <relation.H>
-# include <graphutilities.H>
+# include <graph.H>
+# include <random.H>
 
 namespace Designar
 {
@@ -2127,8 +2128,234 @@ namespace Designar
     
     return std::make_tuple(true, std::move(tree));
   }
+
+  template <class GT>
+  class KargerMinCut
+  {
+    using Node      = typename GT::Node;
+    using Arc       = typename GT::Arc;
+    using MNodeInfo = SLList<Node *>;
+    using MArcInfo  = Arc *;
+    using MGraph    = Graph<MNodeInfo, MArcInfo>;
+    using MNode     = typename MGraph::Node;
+    using MArc      = typename MGraph::Arc;
+    using ArcSet    = TreeSet<MArc *>;
+
+    static constexpr real_t SQ_TWO = 1.414213562;
+
+    rng_t rng;
+    
+    MGraph build_mgraph(GT & g)
+    {
+      g.reset_nodes();
+      g.reset_arcs();
+
+      MGraph mg;
+
+      g.mutable_for_each_node([&] (Node & p)
+			      {
+				MNode * mp = &mg.insert_node();
+				mp->get_info().append(&p);
+				map_nodes<GT, MGraph>(p, *mp);
+			      });
+
+      g.mutable_for_each_arc([&] (Arc & a)
+			     {
+			       Node & p = a.get_src_node();
+			       Node & q = a.get_tgt_node();
+			       
+			       MNode & mp = *mapped_node_ptr<GT, MGraph>(p);
+			       MNode & mq = *mapped_node_ptr<GT, MGraph>(q);
+
+			       mg.insert_arc(mp, mq, &a);
+			     });
+
+      return mg;
+    }
+
+    ArcSet build_arcs(MGraph & mg)
+    {
+      ArcSet ret;
+      mg.mutable_for_each_arc([&] (MArc & a) { ret.insert(&a); });
+      return ret;
+    }
+
+    void contract_arc(MGraph &, MNode &, MNode &, MNode &, ArcSet &);
+
+    void contract(MGraph &, ArcSet &, nat_t);
+
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut(MGraph &, nat_t);
+
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut(MGraph & mg)
+    {
+      nat_t n = mg.get_num_nodes();
+      nat_t num_it = n * n * std::log(n);
+      return compute_min_cut(mg, num_it);
+    }
+
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut_fast_rec(MGraph &);
+    
+  public:
+    KargerMinCut(rng_seed_t seed)
+      : rng(seed)
+    {
+      // empty
+    }
+
+    KargerMinCut()
+      : KargerMinCut(get_random_seed())
+    {
+      // empty
+    }
+    
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut(GT & g, nat_t num_it)
+    {
+      if (g.get_num_arcs() == 0)
+	throw std::domain_error("Graph has not arcs");
+
+      MGraph mg = build_mgraph(g);
+      return compute_min_cut(mg, num_it);
+    }
+
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut(GT & g)
+    {
+      nat_t n = g.get_num_nodes();
+      nat_t num_it = n * n * std::log(n);
+      return compute_min_cut(g, num_it);
+    }
+    
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      compute_min_cut_fast(GT & g)
+    {
+      MGraph mg = build_mgraph(g);
+      return compute_min_cut_fast_rec(mg);
+    }    
+
+    std::tuple<SLList<Node *>, SLList<Node *>, SLList<Arc *>>
+      operator () (GT & g)
+    {
+      return compute_min_cut_fast(g);
+    }
+  };
+
+  template <class GT>
+  void KargerMinCut<GT>::contract_arc(MGraph & mg, MNode & p, MNode & q,
+				      MNode & r, ArcSet & arcs)
+  {
+    for (AdArcIt<MGraph> it(mg, p); it.has_current(); it.next())
+      {
+	MArc  & a = it.get_current();
+	MNode & t = it.get_tgt_node();
+	
+	arcs.remove(&a);
+	
+	if (&t == &q)
+	  continue;
+	
+	MArc & aa = mg.insert_arc(t, r, a.get_info());
+	arcs.insert(&aa);
+      }
+  }
   
-  
+  template <class GT>
+  void KargerMinCut<GT>::contract(MGraph & mg, ArcSet & arcs, nat_t limit)
+  {
+    while (mg.get_num_nodes() > limit)
+      {
+	auto i = random_uniform(rng, arcs.size());
+	MArc * ma = arcs.select(i);
+	arcs.remove(ma);
+
+	MNode & x = ma->get_src_node();
+	MNode & y = ma->get_tgt_node();	
+	MNode & z = mg.insert_node();
+
+	contract_arc(mg, x, y, z, arcs);
+	contract_arc(mg, y, x, z, arcs);
+
+	z.get_info().swap(x.get_info());
+	z.get_info().concat(y.get_info());
+
+	mg.remove_node(x);
+	mg.remove_node(y);
+      }
+  }
+
+  template <class GT>
+  std::tuple<SLList<Node<GT> *>, SLList<Node<GT> *>, SLList<Arc<GT> *>>
+  KargerMinCut<GT>::compute_min_cut(MGraph & _mg, nat_t num_it)
+  {
+    nat_t min_cut = std::numeric_limits<nat_t>::max();
+
+    SLList<Node *> ss;
+    SLList<Node *> ts;
+    SLList<Arc *> cut;
+    
+    for (int i = 0; i < num_it; ++i)
+      {
+	MGraph mg(_mg);
+        ArcSet arcs = build_arcs(mg);
+
+	contract(mg, arcs, 2);
+
+	assert(mg.get_num_nodes() == 2);
+
+	nat_t cut_size = mg.get_num_arcs();
+
+	if (cut_size >= min_cut)
+	  continue;
+
+	SLList<Arc *> tmp_cut;
+
+	for (ArcIt<MGraph> it(mg); it.has_current(); it.next())
+	  tmp_cut.append(it.get_current().get_info());
+
+	cut.swap(tmp_cut);
+
+	MArc & first_arc = mg.get_first_arc();
+
+	MNode & src = first_arc.get_src_node();
+	ss.swap(src.get_info());
+	
+	MNode & tgt = first_arc.get_tgt_node();
+	ts.swap(tgt.get_info());
+      }
+
+    return std::make_tuple(std::move(ss), std::move(ts), std::move(cut));
+  }
+
+  template <class GT>
+  std::tuple<SLList<Node<GT> *>, SLList<Node<GT> *>, SLList<Arc<GT> *>>
+  KargerMinCut<GT>::compute_min_cut_fast_rec(MGraph & mg)
+  {
+    nat_t n = mg.get_num_nodes();
+
+    if (n <= 6)
+      return compute_min_cut(mg, n);
+
+    nat_t t = 1 + n / SQ_TWO;
+
+    MGraph h1(mg);
+    ArcSet arcs1 = build_arcs(h1);
+    contract(h1, arcs1, t);
+    auto r1 = compute_min_cut_fast_rec(h1);
+    
+    MGraph h2(mg);
+    ArcSet arcs2 = build_arcs(h2);
+    contract(h2, arcs2, t);
+    auto r2 = compute_min_cut_fast_rec(h2);
+
+    if (std::get<2>(r1).size() < std::get<2>(r2).size())
+      return r1;
+
+    return r2;
+  }
+
   template <class GT,
 	    class NodeAttr  = DftDotNodeAttr<GT>,
 	    class ArcAttr   = DftDotArcAttr<GT>,
