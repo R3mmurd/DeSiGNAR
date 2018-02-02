@@ -26,6 +26,7 @@
 # define DSGSETALGORITHMS_H
 
 # include <types.H>
+# include <typetraits.H>
 
 namespace Designar
 {
@@ -132,14 +133,17 @@ namespace Designar
       return difference(const_me(), s);
     }
 
-    static SLList<std::pair<Key, Key>>
-      cartesian_product(const SetType & s1, const SetType & s2)
+    template <class SetType2 = SetType>
+    static SLList<std::pair<Key, typename SetType2::KeyType>>
+      cartesian_product(const SetType & s1, const SetType2 & s2)
     {
-      SLList<std::pair<Key, Key>> ret_val;
+      using Key2 = typename SetType2::KeyType;
+      
+      SLList<std::pair<Key, Key2>> ret_val;
 
       s1.for_each([&ret_val, &s2] (const Key & item1)
 		  {
-		    s2.for_each([&ret_val, &item1] (const Key & item2)
+		    s2.for_each([&ret_val, &item1] (const Key2 & item2)
 				{
 				  ret_val.append(std::make_pair(item1, item2));
 				});
@@ -147,10 +151,12 @@ namespace Designar
       
       return ret_val;
     }
-	
-    SLList<std::pair<Key, Key>> cartesian_product(const SetType & s) const
+    
+    template <class SetType2 = SetType>
+    SLList<std::pair<Key, typename SetType2::KeyType>>
+    cartesian_product(const SetType2 & s) const
     {
-      return cartesian_product(const_me(), s);
+      return cartesian_product<SetType2>(const_me(), s);
     }
   };
   
