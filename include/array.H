@@ -1,5 +1,5 @@
 /*
-  This file is part of Designar Library.
+  This file is part of Designar.
   Copyright (C) 2017 by Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
@@ -47,9 +47,9 @@ namespace Designar
     using ValueType = T;
     using SizeType  = nat_t;
 
-    nat_t data_to_pos(T & data)
+    nat_t item_to_pos(T & item)
     {
-      return nat_t(&data) - nat_t(array_ptr);
+      return nat_t(&item) - nat_t(array_ptr);
     }
 
     FixedArray()
@@ -82,14 +82,7 @@ namespace Designar
       swap(a);
     }
 
-    FixedArray(const std::initializer_list<T> & l)
-      : cap(l.size()), array_ptr(new T[cap])
-    {
-      nat_t i = 0;
-      
-      for (const T & item : l)
-	array_ptr[i++] = item;
-    }
+    FixedArray(const std::initializer_list<T> &);
 
     ~FixedArray()
     {
@@ -211,6 +204,16 @@ namespace Designar
   }
 
   template <typename T>
+  FixedArray<T>::FixedArray(const std::initializer_list<T> & l)
+    : FixedArray(l.size())
+  {
+    nat_t i = 0;
+
+    for (const T & item : l)
+      array_ptr[i++] = item;
+  }
+
+  template <typename T>
   class DynArray : private FixedArray<T>,
 		   public ContainerAlgorithms<DynArray<T>, T>
   {
@@ -254,6 +257,10 @@ namespace Designar
       
       BaseArray::resize(new_cap);
     }
+
+    void open_breach(nat_t);
+
+    void close_breach(nat_t);
     
   public:
     DynArray(nat_t cap)
@@ -339,7 +346,7 @@ namespace Designar
     T & get_last()
     {
       if (num_items == 0)
-	throw std::underflow_error("Array is empty");
+	throw std::overflow_error("Array is empty");
       
       return BaseArray::get_item(num_items - 1);
     }
@@ -347,14 +354,42 @@ namespace Designar
     const T & get_last() const
     {
       if (num_items == 0)
-	throw std::underflow_error("Array is empty");
+	throw std::overflow_error("Array is empty");
       
       return BaseArray::get_item(num_items - 1);
     }
     
-    T & insert(nat_t, const T &);
+    T & insert(nat_t pos, const T & item)
+    {
+      if (pos > num_items)
+	throw std::out_of_range("Index is out of range");
+      
+      open_breach(pos);
+      
+      BaseArray::set_item(pos, item);
+      
+      ++num_items;
+      
+      resize_up();
+      
+      return BaseArray::get_item(pos);
+    }
     
-    T & insert(nat_t, T &&);
+    T & insert(nat_t pos, T && item)
+    {
+      if (pos > num_items)
+	throw std::out_of_range("Index is out of range");
+
+      open_breach(pos);
+      
+      BaseArray::set_item(pos, std::forward<T>(item));
+      
+      ++num_items;
+      
+      resize_up();
+      
+      return BaseArray::get_item(pos);
+    }
     
     T & insert(const T & item)
     {
@@ -381,11 +416,25 @@ namespace Designar
       return BaseArray::get_item(num_items - 1);
     }
     
-    T remove_pos(nat_t);
+    T remove_pos(nat_t pos)
+    {
+      if (pos >= num_items)
+	throw std::out_of_range("Index is out of range");
+      
+      T ret_val = std::move(BaseArray::get_item(pos));
+      
+      --num_items;
+      
+      close_breach(pos);
+      
+      resize_down();
+      
+      return ret_val;;
+    }
     
     T remove(T & item)
     {
-      nat_t i = BaseArray::data_to_pos(item);
+      nat_t i = BaseArray::item_to_pos(item);
       
       if (i >= num_items)
 	throw std::logic_error("Item does not belong to array");
@@ -413,7 +462,7 @@ namespace Designar
       if (this == &a)
 	return *this;
       
-      (DynArray &) *this = a;
+      (BaseArray &) *this = a;
       num_items = a.num_items;
       return *this;
     }
@@ -453,7 +502,7 @@ namespace Designar
     class Iterator
     {
       DynArray * array_ptr;
-      nat_t curr;
+      nat_t      curr;
       
     public:
       Iterator()
@@ -629,513 +678,497 @@ namespace Designar
       BaseArray::set_item(i, a.get_item(i));
   }
 
-  template <typename T> 
-  T & DynArray<T>::insert(nat_t pos, const T & item)
-  {
-    BaseArray::set_item(num_items, item);
-    
-    for (nat_t i = num_items; i > pos; --i)
-      std::swap(BaseArray::get_item(i), BaseArray::get_item(i - 1));
-    
-    ++num_items;
-    
-    resize_up();
-
-    return BaseArray::get_item(pos);
-  }
-  
   template <typename T>
-  T & DynArray<T>::insert(nat_t pos, T && item)
+  void DynArray<T>::open_breach(nat_t p)
   {
-    BaseArray::set_item(num_items, std::forward<T>(item));
-    
-    for (nat_t i = num_items; i > pos; --i)
-      std::swap(BaseArray::get_item(i), BaseArray::get_item(i - 1));
-    
-    ++num_items;
-    
-    resize_up();
-
-    return BaseArray::get_item(pos);
+    for (nat_t i = num_items; i > p; --i)
+      BaseArray::set_item(i, std::move(BaseArray::get_item(i - 1)));
   }
 
   template <typename T>
-  T DynArray<T>::remove_pos(nat_t pos)
+  void DynArray<T>::close_breach(nat_t p)
   {
-    if (pos >= num_items)
-      throw std::out_of_range("Index is out of range");
-    
-    T ret_val = std::move(BaseArray::get_item(pos));
-    
-    --num_items;
-    
-    for (nat_t i = pos; i < num_items; ++i)
-      std::swap(BaseArray::get_item(i), BaseArray::get_item(i + 1));
-    
-    resize_down();
-    
-    return ret_val;;
+    for (nat_t i = p; i < num_items; ++i)
+      BaseArray::set_item(i, std::move(BaseArray::get_item(i + 1)));
   }
   
   template <typename Key, class Cmp = std::less<Key>>
-    class ArraySet : public ContainerAlgorithms<ArraySet<Key, Cmp>, Key>,
-		     public SetAlgorithms<ArraySet, Key, Cmp>
+  class ArraySet : public ContainerAlgorithms<ArraySet<Key, Cmp>, Key>,
+		   public SetAlgorithms<ArraySet, Key, Cmp>
+  {
+  public:
+    using ItemType  = Key;
+    using KeyType   = Key;
+    using DataType  = Key;
+    using ValueType = Key;
+    using SizeType  = nat_t;
+    
+    enum class SortingFlag { UNSORTED, SORTED };
+    
+    DynArray<Key> array;
+    Cmp         & cmp;
+    SortingFlag   flag;
+    
+    bool not_equal_key(const Key & e1, const Key & e2) const
     {
-    public:
-      using ItemType  = Key;
-      using KeyType   = Key;
-      using DataType  = Key;
-      using ValueType = Key;
-      using SizeType  = nat_t;
+      return cmp(e1, e2) or cmp(e2, e1);
+    }
+    
+    bool equal_key(const Key & e1, const Key & e2) const
+    {
+      return not not_equal_key(e1, e2);
+    }
+    
+    Key * insert_sorted(const Key &);
+    
+    Key * insert_sorted(Key &&);
+    
+    lint_t binary_search(const Key &, lint_t, lint_t) const;
+    
+    lint_t sequential_search(const Key &, lint_t, lint_t) const;
+    
+  public:
+    ArraySet(nat_t cap, SortingFlag f, Cmp & _cmp)
+      : array(cap), cmp(_cmp), flag(f)
+    {
+      // empty
+    }
+    
+    ArraySet(SortingFlag f, Cmp && _cmp = Cmp())
+      : array(), cmp(_cmp), flag(f)
+    {
+      // empty
+    }
+    
+    ArraySet(nat_t cap, Cmp && _cmp = Cmp())
+      : ArraySet(cap, SortingFlag::UNSORTED, _cmp)
+    {
+      // empty
+    }
+    
+    ArraySet(Cmp && _cmp = Cmp())
+      : array(), cmp(_cmp), flag(SortingFlag::UNSORTED)
+    {
+      // empty
+    }
+    
+    ArraySet(const ArraySet & a)
+      : array(a.array), cmp(a.cmp), flag(a.flag)
+    {
+      // empty
+    }
+    
+    ArraySet(ArraySet && a)
+      : ArraySet()
+    {
+      swap(a);
+    }
+    
+    ArraySet(const std::initializer_list<Key> &);
 
-      enum class SortingFlag { UNSORTED, SORTED };
+    ArraySet & operator = (const ArraySet & a)
+    {
+      if (&a == this)
+	return *this;
 
-      DynArray<Key> array;
-      Cmp         & cmp;
-      SortingFlag   flag;
+      array = a.array;
+      cmp = a.cmp;
+      flag = a.flag;
 
-      bool not_equal_key(const Key & e1, const Key & e2) const
-      {
-	return cmp(e1, e2) or cmp(e2, e1);
-      }
+      return *this;
+    }
 
-      bool equal_key(const Key & e1, const Key & e2) const
-      {
-	return not not_equal_key(e1, e2);
-      }
-
-      Key * insert_sorted(const Key &);
-
-      Key * insert_sorted(Key &&);
-
-      lint_t binary_search(const Key &, lint_t, lint_t) const;
-
-      lint_t sequential_search(const Key &, lint_t, lint_t) const;
-
-    public:
-      ArraySet(nat_t cap, SortingFlag f, Cmp & _cmp)
-	: array(cap), cmp(_cmp), flag(f)
-      {
-	// empty
-      }
-
-      ArraySet(SortingFlag f, Cmp && _cmp = Cmp())
-	: array(), cmp(_cmp), flag(f)
-      {
-	// empty
-      }
-
-      ArraySet(nat_t cap, Cmp && _cmp = Cmp())
-	: ArraySet(cap, SortingFlag::UNSORTED, _cmp)
-      {
-	// empty
-      }
-
-      ArraySet(Cmp && _cmp = Cmp())
-	: array(), cmp(_cmp), flag(SortingFlag::UNSORTED)
-      {
-	// empty
-      }
-
-      ArraySet(const ArraySet & a)
-	: array(a.array), cmp(a.cmp), flag(a.flag)
-      {
-	// empty
-      }
-
-      ArraySet(ArraySet && a)
-	: ArraySet()
-      {
-	swap(a);
-      }
-
-      ArraySet(const std::initializer_list<Key> &);
-
-      void swap(ArraySet & a)
-      {
-	array.swap(a.array);
-	std::swap(cmp, a.cmp);
-	std::swap(flag, a.flag);
-      }
-
-      Cmp & get_cmp()
-      {
-	return cmp;
-      }
-
-      const Cmp & get_cmp() const
-      {
-	return cmp;
-      }
-
-      bool is_sorted() const
-      {
-	if (flag == SortingFlag::SORTED)
-	  return true;
-	
-	return array.template is_sorted<Cmp>(cmp);
-      }
-      
-      bool is_empty() const
-      {
-	return array.is_empty();
-      }
-
-      nat_t size() const
-      {
-	return array.size();
-      }
-
-      void clear()
-      {
-	array.clear();
-      }
-
-      SortingFlag get_sorting_flag() const
-      {
-	return flag;
-      }
-
-      Key * insert(const Key & item)
-      {
-	if (flag == SortingFlag::UNSORTED)
-	  {
-	    lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	    
-	    if (pos < this->size())
-	      return nullptr;
-	  
-	    return &array.append(item);
-	  }
-	else
-	  return insert_sorted(item);
-      }
-
-      Key * insert(Key && item)
-      {
-	if (flag == SortingFlag::UNSORTED)
-	  {
-	    lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	    
-	    if (pos < this->size())
-	      return nullptr;
-	  
-	    return &array.append(std::forward<Key>(item));
-	  }
-	else
-	  return insert_sorted(std::forward<Key>(item));
-      }
-
-      Key * append(const Key & k)
-      {
-	return insert(k);
-      }
-      
-      Key * append(Key && k)
-      {
-	return insert(std::forward<Key>(k));
-      }
-
-      Key * search_or_insert(const Key & item)
-      {
-	if (flag == SortingFlag::UNSORTED)
-	  {
-	    lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	    
-	    if (pos < this->size())
-	      return &array[pos];
-	  
-	    return &array.append(item);
-	  }
-	else
-	  {
-	    lint_t pos = binary_search(item, 0, this->size() - 1);
-	    
-	    if (pos == this->size())
-	      return &array.append(item);
-	    
-	    if (equal_key(item, array.select(pos)))
-	      return &array[pos];
-	    
-	    return &array.insert(pos, item);
-	  }
-      }
-
-      Key * search_or_insert(Key && item)
-      {
-	if (flag == SortingFlag::UNSORTED)
-	  {
-	    lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	    
-	    if (pos < this->size())
-	      return &array[pos];
-	  
-	    return &array.append(std::forward<Key>(item));
-	  }
-	else
-	  {
-	    lint_t pos = binary_search(item, 0, this->size() - 1);
-	    
-	    if (pos == this->size())
-	      return &array.append(std::forward<Key>(item));
-	    
-	    if (equal_key(item, array.select(pos)))
-	      return &array[pos];
-	    
-	    return &array.insert(pos, std::forward<Key>(item));
-	  }
-      }      
-
-      Key * search(const Key & item)
-      {
-	lint_t pos;
-
-	if (flag == SortingFlag::UNSORTED)
-	  pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	else
-	  pos = binary_search(item, 0, lint_t(this->size()) - 1);
-
-	if (pos >= this->size() or not_equal_key(item, array.select(pos)))
-	  return nullptr;
-
-	return &array.select(pos);
-      }
-
-      const Key * search(const Key & item) const
-      {
-	lint_t pos;
-
-	if (flag == SortingFlag::UNSORTED)
-	  pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	else
-	  pos = binary_search(item, 0, lint_t(this->size()) - 1);
-
-	if (pos >= this->size() or not_equal_key(item, array.select(pos)))
-	  return nullptr;
-
-	return &array.select(pos);
-      }
-
-      Key & find(const Key & item)
-      {
-	Key * result = search(item);
-	if (result == nullptr)
-	  throw std::domain_error("Item does not exist");
-	return *result;
-      }
-
-      const Key & find(const Key & item) const
-      {
-	Key * result = search(item);
-	if (result == nullptr)
-	  throw std::domain_error("Item does not exist");
-	return *result;
-      }
-
-      Key remove_pos(nat_t pos)
-      {
-	return array.remove_pos(pos);
-      }
-
-      bool remove(const Key & item)
-      {
-	lint_t pos;
-	
-	if (flag == SortingFlag::UNSORTED)
-	  pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	else
-	  pos = binary_search(item, 0, lint_t(this->size()) - 1);
-
-	if (pos >= this->size() or not_equal_key(array.select(pos), item))
-	  return false;
-
-	array.remove_pos(pos);
+    ArraySet & operator = (ArraySet && a)
+    {
+      swap(a);
+      return *this;
+    }
+    
+    void swap(ArraySet & a)
+    {
+      array.swap(a.array);
+      std::swap(cmp, a.cmp);
+      std::swap(flag, a.flag);
+    }
+    
+    Cmp & get_cmp()
+    {
+      return cmp;
+    }
+    
+    const Cmp & get_cmp() const
+    {
+      return cmp;
+    }
+    
+    bool is_sorted() const
+    {
+      if (flag == SortingFlag::SORTED)
 	return true;
-      }
-
-      Key & select(nat_t i)
-      {
-	return array.select(i);
-      }
-
-      const Key & select(nat_t i) const
-      {
-	return array.select(i);
-      }
-
-      Key & operator [] (nat_t i)
-      {
-	return array[i];
-      }
-
-      const Key & operator [] (nat_t i) const
-      {
-	return array[i];
-      }
-
-      class Iterator
-      {
-        typename DynArray<Key>::Iterator it;
-
-      public:
-	Iterator()
-	  : it()
+      
+      return array.template is_sorted<Cmp>(cmp);
+    }
+    
+    bool is_empty() const
+    {
+      return array.is_empty();
+    }
+    
+    nat_t size() const
+    {
+      return array.size();
+    }
+    
+    void clear()
+    {
+      array.clear();
+    }
+    
+    SortingFlag get_sorting_flag() const
+    {
+      return flag;
+    }
+    
+    Key * insert(const Key & item)
+    {
+      if (flag == SortingFlag::UNSORTED)
 	{
-	  // empty
+	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+	  
+	  if (pos < this->size())
+	    return nullptr;
+	  
+	  return &array.append(item);
 	}
-	
-	Iterator(const ArraySet & a)
-	  : it(a.array)
+      else
+	return insert_sorted(item);
+    }
+    
+    Key * insert(Key && item)
+    {
+      if (flag == SortingFlag::UNSORTED)
 	{
-	  // empty
+	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+	  
+	  if (pos < this->size())
+	    return nullptr;
+	  
+	  return &array.append(std::forward<Key>(item));
 	}
-
-	Iterator(const ArraySet & a, nat_t c)
-	  : it(a.array, c)
+      else
+	return insert_sorted(std::forward<Key>(item));
+    }
+    
+    Key * append(const Key & k)
+    {
+      return insert(k);
+    }
+    
+    Key * append(Key && k)
+    {
+      return insert(std::forward<Key>(k));
+    }
+    
+    Key * search_or_insert(const Key & item)
+    {
+      if (flag == SortingFlag::UNSORTED)
 	{
-	  // empty
+	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+	  
+	  if (pos < this->size())
+	    return &array[pos];
+	  
+	  return &array.append(item);
 	}
-
-	Iterator(const Iterator & itor)
-	  : it(itor.it)
+      else
 	{
-	  // empty
+	  lint_t pos = binary_search(item, 0, this->size() - 1);
+	  
+	  if (pos == this->size())
+	    return &array.append(item);
+	  
+	  if (equal_key(item, array.select(pos)))
+	    return &array[pos];
+	  
+	  return &array.insert(pos, item);
 	}
-
-	Iterator(Iterator && itor)
-	  : Iterator()
+    }
+    
+    Key * search_or_insert(Key && item)
+    {
+      if (flag == SortingFlag::UNSORTED)
 	{
-	  swap(itor);
+	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+	  
+	  if (pos < this->size())
+	    return &array[pos];
+	  
+	  return &array.append(std::forward<Key>(item));
 	}
-
-	Iterator & operator = (const Iterator & itor)
+      else
 	{
-	  if (this == &it)
-	    return *this;
-
-	  it = itor.it;
+	  lint_t pos = binary_search(item, 0, this->size() - 1);
+	  
+	  if (pos == this->size())
+	    return &array.append(std::forward<Key>(item));
+	  
+	  if (equal_key(item, array.select(pos)))
+	    return &array[pos];
+	  
+	  return &array.insert(pos, std::forward<Key>(item));
+	}
+    }      
+    
+    Key * search(const Key & item)
+    {
+      lint_t pos;
+      
+      if (flag == SortingFlag::UNSORTED)
+	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+      else
+	pos = binary_search(item, 0, lint_t(this->size()) - 1);
+      
+      if (pos >= this->size() or not_equal_key(item, array.select(pos)))
+	return nullptr;
+      
+      return &array.select(pos);
+    }
+    
+    const Key * search(const Key & item) const
+    {
+      lint_t pos;
+      
+      if (flag == SortingFlag::UNSORTED)
+	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+      else
+	pos = binary_search(item, 0, lint_t(this->size()) - 1);
+      
+      if (pos >= this->size() or not_equal_key(item, array.select(pos)))
+	return nullptr;
+      
+      return &array.select(pos);
+    }
+    
+    Key & find(const Key & item)
+    {
+      Key * result = search(item);
+      if (result == nullptr)
+	throw std::domain_error("Item does not exist");
+      return *result;
+    }
+    
+    const Key & find(const Key & item) const
+    {
+      Key * result = search(item);
+      if (result == nullptr)
+	throw std::domain_error("Item does not exist");
+      return *result;
+    }
+    
+    Key remove_pos(nat_t pos)
+    {
+      return array.remove_pos(pos);
+    }
+    
+    bool remove(const Key & item)
+    {
+      lint_t pos;
+      
+      if (flag == SortingFlag::UNSORTED)
+	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
+      else
+	pos = binary_search(item, 0, lint_t(this->size()) - 1);
+      
+      if (pos >= this->size() or not_equal_key(array.select(pos), item))
+	return false;
+      
+      array.remove_pos(pos);
+      return true;
+    }
+    
+    Key & select(nat_t i)
+    {
+      return array.select(i);
+    }
+    
+    const Key & select(nat_t i) const
+    {
+      return array.select(i);
+    }
+    
+    Key & operator [] (nat_t i)
+    {
+      return array[i];
+    }
+    
+    const Key & operator [] (nat_t i) const
+    {
+      return array[i];
+    }
+    
+    class Iterator
+    {
+      typename DynArray<Key>::Iterator it;
+      
+    public:
+      Iterator()
+	: it()
+      {
+	// empty
+      }
+      
+      Iterator(const ArraySet & a)
+	: it(a.array)
+      {
+	// empty
+      }
+      
+      Iterator(const ArraySet & a, nat_t c)
+	: it(a.array, c)
+      {
+	// empty
+      }
+      
+      Iterator(const Iterator & itor)
+	: it(itor.it)
+      {
+	// empty
+      }
+      
+      Iterator(Iterator && itor)
+	: Iterator()
+      {
+	swap(itor);
+      }
+      
+      Iterator & operator = (const Iterator & itor)
+      {
+	if (this == &it)
 	  return *this;
-	}
-
-	Iterator & operator = (Iterator && itor)
-	{
-	  swap(itor);
-	  return *this;
-	}
-
-	void swap(Iterator & itor)
-	{
-	  std::swap(it, itor.it);
-	}
-      
-	bool has_current() const
-	{
-	  return it.has_current();
-	}
 	
-	Key & get_current()
-	{
-	  return it.get_current();
-	}
-
-	const Key & get_current() const
-	{
-	  return it.get_current();
-	}
-
-	void next()
-	{
-	  it.next();
-	}
-
-	void prev()
-	{
-	  it.prev();
-	}
-
-	void reset_first()
-	{
-	  it.reset_first();
-	}
-
-	void reset_last()
-	{
-	  it.reset_last();
-	}
-
-	nat_t get_position() const
-	{
-	  return it.get_position();
-	}
-
-	Key del()
-	{
-	  return it.del();
-	}
-
-	void operator ++ ()
-	{
-	  next();
-	}
-
-	void operator -- ()
-	{
-	  prev();
-	}
-
-	Key & operator * ()
-	{
-	  return get_current();
-	}
-
-	const Key & operator * () const
-	{
-	  return get_current();
-	}
-	
-	bool operator == (const Iterator & itor) const
-	{
-	  return it == itor.it;
-	}
-
-	bool operator != (const Iterator & itor) const
-	{
-	  return not (*this == itor);
-	}
-      };
-
-      Iterator begin()
-      {
-	return Iterator(*this);
+	it = itor.it;
+	return *this;
       }
       
-      Iterator begin() const
+      Iterator & operator = (Iterator && itor)
       {
-	return Iterator(*this);
+	swap(itor);
+	return *this;
       }
       
-      Iterator end()
+      void swap(Iterator & itor)
       {
-	return Iterator(*this, size());
+	std::swap(it, itor.it);
       }
       
-      Iterator end() const
+      bool has_current() const
       {
-	return Iterator(*this, size());
+	return it.has_current();
+      }
+      
+      Key & get_current()
+      {
+	return it.get_current();
+      }
+      
+      const Key & get_current() const
+      {
+	return it.get_current();
+      }
+      
+      void next()
+      {
+	it.next();
+      }
+      
+      void prev()
+      {
+	it.prev();
+      }
+      
+      void reset_first()
+      {
+	it.reset_first();
+      }
+      
+      void reset_last()
+      {
+	it.reset_last();
+      }
+      
+      nat_t get_position() const
+      {
+	return it.get_position();
+      }
+      
+      Key del()
+      {
+	return it.del();
+      }
+      
+      void operator ++ ()
+      {
+	next();
+      }
+      
+      void operator -- ()
+      {
+	prev();
+      }
+      
+      Key & operator * ()
+      {
+	return get_current();
+      }
+      
+      const Key & operator * () const
+      {
+	return get_current();
+      }
+      
+      bool operator == (const Iterator & itor) const
+      {
+	return it == itor.it;
+      }
+      
+      bool operator != (const Iterator & itor) const
+      {
+	return not (*this == itor);
       }
     };
-
+    
+    Iterator begin()
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator begin() const
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator end()
+    {
+      return Iterator(*this, size());
+    }
+    
+    Iterator end() const
+    {
+      return Iterator(*this, size());
+    }
+  };
+  
   template <typename Key, class Cmp>
   Key * ArraySet<Key, Cmp>::insert_sorted(const Key & item)
   {
     lint_t pos = binary_search(item, 0, this->size() - 1);
-
+    
     if (pos == this->size())
       return &array.append(item);
-
+    
     if (equal_key(item, array.select(pos)))
       return nullptr;
-
+    
     return &array.insert(pos, item);
   }
 
@@ -1195,9 +1228,9 @@ namespace Designar
     
     class Slice
     {
-      nat_t sz;              // size of linear array
-      FixedArray<nat_t> exts;  // extents
-      FixedArray<nat_t> strs;  // strides
+      nat_t sz;               // size of linear array
+      FixedArray<nat_t> exts; // extents
+      FixedArray<nat_t> strs; // strides
       
       void init();
       
@@ -1287,7 +1320,7 @@ namespace Designar
     using SizeType  = nat_t;
 
   private:
-    Slice       slice;
+    Slice         slice;
     FixedArray<T> array;
 
     void swap(MultiDimArray & another)

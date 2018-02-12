@@ -1,5 +1,5 @@
 /*
-  This file is part of Designar Library.
+  This file is part of Designar.
   Copyright (C) 2017 by Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
@@ -142,7 +142,7 @@ namespace Designar
 
     bool is_null() const
     {
-      return x == 0 and y == 0;
+      return x == NumT(0) and y == NumT(0);
     }
 
     bool is_zero() const
@@ -210,9 +210,9 @@ namespace Designar
 	  or ((p.get_y() >= this->get_y()) and (this->get_y() >= q.get_y()));
     }
 
-    bool operator ! () const
+    explicit operator bool() const
     {
-      return is_null();
+      return not is_null();
     }
 
     bool operator == (const GenPoint2D & p) const

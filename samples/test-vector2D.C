@@ -1,5 +1,5 @@
 /*
-  This file is part of Designar Library.
+  This file is part of Designar.
   Copyright (C) 2017 by Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
@@ -47,8 +47,8 @@ int main()
   assert(real_equal(v.square_magnitude(), 25.));
   assert(real_equal(v.magnitude(), 5.));
 
-  assert(not !v);
-  assert(!Vector2D(0.,0.));
+  assert(v);
+  assert(not Vector2D(0.,0.));
 
   assert(v.get_opposite() == Vector2D(3.,-4.));
 

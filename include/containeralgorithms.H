@@ -1,5 +1,5 @@
 /*
-  This file is part of Designar Library.
+  This file is part of Designar.
   Copyright (C) 2017 by Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 # ifndef DSGCONTAINERALGORITHMS_H
 # define DSGCONTAINERALGORITHMS_H
 
-# include <rangealgorithms.H>
+# include <italgorithms.H>
 
 namespace Designar
 {
