@@ -61,8 +61,8 @@ int main()
 					      value(acc)+value(p));
 			    });
 
-  sum.first.pop_back();
-  assert(sum.first == "One+Two+Three+Four+Five+Six" and sum.second == 21);
+  key(sum).pop_back();
+  assert(key(sum) == "One+Two+Three+Four+Five+Six" and value(sum) == 21);
 
   auto prod = array_map.fold(map_item(string(""), 1), [] (const auto & p,
 							  const auto & acc)
@@ -71,8 +71,8 @@ int main()
 					       value(acc)*value(p));
 			     });
   
-  prod.first.pop_back();
-  assert(prod.first == "One*Two*Three*Four*Five*Six" and prod.second == 720);
+  key(prod).pop_back();
+  assert(key(prod) == "One*Two*Three*Four*Five*Six" and value(prod) == 720);
 
   TreeMap<string, lint_t> tree_map = {{"One",1},{"Two",2},
 				      {"Three",3},{"Four",4}};
@@ -97,8 +97,8 @@ int main()
   
   assert(tree_map.equal({{"One",1},{"Two",2},{"Three",3},{"Four",4},{"Five",5},{"Six",6}}));
 
-  sum.first.clear();
-  sum.second = 0;
+  key(sum).clear();
+  value(sum) = 0;
   
   sum = tree_map.fold(map_item(string(""), 0), [] (const auto & p,
 						   const auto & acc)
@@ -110,11 +110,11 @@ int main()
 
 
   
-  sum.first.pop_back();
-  assert(sum.first == "Five+Four+One+Six+Three+Two" and sum.second == 21);
+  key(sum).pop_back();
+  assert(key(sum) == "Five+Four+One+Six+Three+Two" and value(sum) == 21);
 
-  prod.first.clear();
-  prod.second = 0;
+  key(prod).clear();
+  value(prod) = 0;
   
   prod = tree_map.fold(map_item(string(""), 1), [] (const auto & p,
 						    const auto & acc)
@@ -123,8 +123,8 @@ int main()
 					 value(acc)*value(p));
 		       });
   
-  prod.first.pop_back();
-  assert(prod.first == "Five*Four*One*Six*Three*Two" and prod.second == 720);
+  key(prod).pop_back();
+  assert(key(prod) == "Five*Four*One*Six*Three*Two" and value(prod) == 720);
   
   HashMap<string, lint_t> hash_map = {{"One",1},{"Two",2},
 				      {"Three",3},{"Four",4}};
@@ -148,8 +148,8 @@ int main()
   assert(hash_map["Six"] == 6);
   
   
-  sum.first.clear();
-  sum.second = 0;
+  key(sum).clear();
+  value(sum) = 0;
   
   sum = hash_map.fold(map_item(string(""), 0), [] (const auto & p,
 						   const auto & acc)
@@ -161,11 +161,11 @@ int main()
 
 
   
-  sum.first.pop_back();
-  assert(sum.second == 21);
+  key(sum).pop_back();
+  assert(value(sum) == 21);
 
-  prod.first.clear();
-  prod.second = 0;
+  key(prod).clear();
+  value(prod) = 0;
   
   prod = hash_map.fold(map_item(string(""), 1), [] (const auto & p,
 						     const auto & acc)
@@ -174,8 +174,8 @@ int main()
 					  value(acc)*value(p));
 			});
   
-  prod.first.pop_back();
-  assert(prod.second == 720);
+  key(prod).pop_back();
+  assert(value(prod) == 720);
   
   cout << "Everything ok!\n";
   

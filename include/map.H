@@ -52,39 +52,63 @@ namespace Designar
   }
 
   template <typename Key, typename Value>
-  auto key(const MapKey<Key, Value> & item)
+  Key & key(MapKey<Key, Value> & item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  auto key(MapKey<Key, Value> && item)
+  const Key & key(const MapKey<Key, Value> & item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  auto key(const MapKey<Key, Value> * item_ptr)
+  Key key(MapKey<Key, Value> && item)
   {
-    return key(*item_ptr);
+    return item.first;
   }
 
   template <typename Key, typename Value>
-  auto value(const MapKey<Key, Value> & item)
+  Key & key(MapKey<Key, Value> * item_ptr)
+  {
+    return item_ptr->first;
+  }
+
+  template <typename Key, typename Value>
+  const Key & key(const MapKey<Key, Value> * item_ptr)
+  {
+    return item_ptr->first;
+  }
+
+  template <typename Key, typename Value>
+  Value & value(MapKey<Key, Value> & item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  auto value(MapKey<Key, Value> && item)
+  const Value & value(const MapKey<Key, Value> & item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  auto value(const MapKey<Key, Value> * item_ptr)
+  Value value(MapKey<Key, Value> && item)
   {
-    return value(*item_ptr);
+    return item.second;
+  }
+
+  template <typename Key, typename Value>
+  Value & value(MapKey<Key, Value> * item_ptr)
+  {
+    return item_ptr->second;
+  }
+
+  template <typename Key, typename Value>
+  const Value & value(const MapKey<Key, Value> * item_ptr)
+  {
+    return item_ptr->second;
   }
   
   template <typename Key, typename Value, class Cmp>
