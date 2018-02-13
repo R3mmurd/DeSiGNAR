@@ -24,7 +24,7 @@ INCLUDES    = $(wildcard $(INCLUDEDIR)/*.H)
 SOURCES     = $(wildcard $(SRCDIR)/*.C)
 SAMPLES     = $(wildcard $(SAMPLESDIR)/*.C)
 OBJECTS     = $(SOURCES:$(SRCDIR)/%.C=$(OBJDIR)/%.o)
-BIN         = $(SAMPLES:$(SAMPLESDIR)/%.C=$(BINDIR)/%)
+BIN         = $(SAMPLES:$(SAMPLESDIR)/%.C=$(BINDIR)/%.out)
 LIBNAME     = Designar
 LOCALLIB    = lib$(LIBNAME).a
 INCLUDEPATH = -I$(INCLUDEDIR)
