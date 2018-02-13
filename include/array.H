@@ -166,6 +166,143 @@ namespace Designar
     {
       return get_item(i);
     }
+
+    class Iterator
+    {
+      FixedArray * array_ptr;
+      nat_t        curr;
+      
+    public:
+      Iterator()
+	: array_ptr(nullptr), curr(0)
+      {
+	// empty
+      }
+      
+      Iterator(const FixedArray & a)
+	: array_ptr(&const_cast<FixedArray &>(a)), curr(0)
+      {
+	// empty
+      }
+      
+      Iterator(const FixedArray & a, nat_t c)
+	: array_ptr(&const_cast<FixedArray &>(a)), curr(c)
+      {
+	// empty
+      }
+      
+      Iterator(const Iterator & it)
+	: array_ptr(it.array_ptr), curr(it.curr)
+      {
+	// empty
+      }
+      
+      Iterator(Iterator && it)
+	: Iterator()
+      {
+	swap(it);
+      }
+      
+      Iterator & operator = (const Iterator & it)
+      {
+	if (this == &it)
+	  return *this;
+	
+	array_ptr = it.array_ptr;
+	curr = it.curr;
+	return *this;
+      }
+      
+      Iterator & operator = (Iterator && it)
+      {
+	swap(it);
+	return *this;
+      }
+      
+      void swap(Iterator & it)
+      {
+	std::swap(array_ptr, it.array_ptr);
+	std::swap(curr, it.curr);
+      }
+      
+      bool has_current() const
+      {
+	return curr < array_ptr->size();
+      }
+      
+      T & get_current()
+      {
+	return (*array_ptr)[curr];
+      }
+      
+      const T & get_current() const
+      {
+	return (*array_ptr)[curr];
+      }
+      
+      void next()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not next element");
+	
+	++curr;
+      }
+            
+      void reset_first()
+      {
+	curr = 0;
+      }
+      
+      nat_t get_position() const
+      {
+	return curr;
+      }
+      
+      void operator ++ ()
+      {
+	next();
+      }
+      
+      T & operator * ()
+      {
+	return get_current();
+      }
+      
+      const T & operator * () const
+      {
+	return get_current();
+      }
+      
+      bool operator == (const Iterator & it) const
+      {
+	return array_ptr == it.array_ptr and curr == it.curr;
+      }
+      
+      bool operator != (const Iterator & it) const
+      {
+	return not (*this == it);
+      }
+    };
+    
+    Iterator begin()
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator begin() const
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator end()
+    {
+      return Iterator(*this, cap);
+    }
+    
+    Iterator end() const
+    {
+      return Iterator(*this, cap);
+    }
   };
 
   template <typename T>
@@ -580,22 +717,9 @@ namespace Designar
 	++curr;
       }
       
-      void prev()
-      {
-	if (not has_current())
-	  throw std::underflow_error("There is not prev element");
-	
-	--curr;
-      }
-      
       void reset_first()
       {
 	curr = 0;
-      }
-      
-      void reset_last()
-      {
-	curr = array_ptr->size() - 1;
       }
       
       nat_t get_position() const
@@ -614,11 +738,6 @@ namespace Designar
       void operator ++ ()
       {
 	next();
-      }
-      
-      void operator -- ()
-      {
-	prev();
       }
       
       T & operator * ()
@@ -1081,19 +1200,9 @@ namespace Designar
 	it.next();
       }
       
-      void prev()
-      {
-	it.prev();
-      }
-      
       void reset_first()
       {
 	it.reset_first();
-      }
-      
-      void reset_last()
-      {
-	it.reset_last();
       }
       
       nat_t get_position() const
@@ -1109,11 +1218,6 @@ namespace Designar
       void operator ++ ()
       {
 	next();
-      }
-      
-      void operator -- ()
-      {
-	prev();
       }
       
       Key & operator * ()

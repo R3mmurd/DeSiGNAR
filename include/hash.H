@@ -480,14 +480,12 @@ namespace Designar
 
     class Iterator
     {
-      HashSet * set_ptr;
-      lint_t set_pos;
+      HashSet               * set_ptr;
+      lint_t                  set_pos;
       typename List::Iterator list_it;
-      lint_t pos;
+      lint_t                  pos;
 
       void locate_next(nat_t);
-
-      void locate_last();
 
     public:
       Iterator()
@@ -498,6 +496,13 @@ namespace Designar
 
       Iterator(const HashSet & h)
 	: set_ptr(&const_cast<HashSet &>(h)), set_pos(0), list_it(), pos(0)
+      {
+	locate_next(set_pos);
+      }
+
+      Iterator(const HashSet & h, lint_t _set_pos)
+	: set_ptr(&const_cast<HashSet &>(h)), set_pos(_set_pos), list_it(),
+	  pos(0)
       {
 	locate_next(set_pos);
       }
@@ -546,12 +551,6 @@ namespace Designar
       {
 	pos = 0;
 	locate_next(0);
-      }
-
-      void reset_last()
-      {
-	pos = -1;
-	locate_last();
       }
 
       lint_t get_position() const
@@ -632,26 +631,12 @@ namespace Designar
 
     Iterator end()
     {
-      Iterator it(*this);
-      
-      if (this->is_empty())
-	return it;
-	  
-      it.reset_last();
-      it.next();
-      return it;
+      return Iterator(*this, BaseArray::get_capacity());
     }
     
     Iterator end() const
     {
-      Iterator it(*this);
-
-      if (this->is_empty())
-	return it;
-      
-      it.reset_last();
-      it.next();
-      return it;
+      return Iterator(*this, BaseArray::get_capacity());
     }
   };
 
@@ -684,6 +669,22 @@ namespace Designar
   template <typename Key, class Cmp>
   void HashSet<Key, Cmp>::Iterator::locate_next(nat_t i)
   {
+    if (set_ptr->is_empty())
+      return;
+    
+    if (i == set_ptr->get_capacity())
+      {
+	set_pos = i;
+
+	while (i > 0 and set_ptr->get_item(i - 1).is_empty())
+	  --i;
+
+	if (i > 0)
+	  list_it = set_ptr->get_item(i - 1).end();
+	
+	return;
+      }
+    
     while (i < set_ptr->get_capacity() and
 	   set_ptr->get_item(i).is_empty())
       ++i;
@@ -695,23 +696,6 @@ namespace Designar
       }
 
     set_pos = i;
-  }
-
-  template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::Iterator::locate_last()
-  {
-    nat_t i = set_ptr->get_capacity();
-    
-    while (i > 0 and set_ptr->get_item(i - 1).is_empty())
-      --i;
-
-    if (i > 0)
-      {
-	list_it = set_ptr->get_item(i - 1).begin();
-	list_it.reset_last();
-      }
-
-    set_pos = i - 1;
   }
   
 } // end namespace Designar

@@ -461,12 +461,6 @@ namespace Designar
 	pos = 0;
       }
 
-      void reset_last()
-      {
-	curr = ((BaseList *) list_ptr)->get_last();
-	locate_position();
-      }
-
       T del()
       {
 	if (not has_current())
@@ -529,18 +523,12 @@ namespace Designar
 
     Iterator end()
     {
-      if (this->is_empty())
-	return Iterator(*this);
-      
-      return Iterator(*this, ((BaseList *) this)->get_last()->get_next());
+      return Iterator(*this, nullptr);
     }
 
     Iterator end() const
     {
-      if (this->is_empty())
-	return Iterator(*this);
-      
-      return Iterator(*this, ((BaseList *) this)->get_last()->get_next());
+      return Iterator(*this, nullptr);
     }
 
     T & select(nat_t);
@@ -610,6 +598,13 @@ namespace Designar
   template <typename T>
   void SLList<T>::Iterator::locate_position()
   {
+    if (curr == nullptr)
+      {
+	pos = list_ptr->size();
+	pred = ((BaseList *)list_ptr)->get_last();
+	return;
+      }
+    
     Node * ptr = ((BaseList *)list_ptr)->get_first();
 
     while (ptr != curr)
@@ -798,7 +793,7 @@ namespace Designar
       using Base = typename Node::Iterator;
       
       DLList * list_ptr;
-      lint_t    pos;
+      lint_t   pos;
 
       void locate_position();
 
