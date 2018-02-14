@@ -115,7 +115,7 @@ namespace Designar
     }
 
     template <typename RetT = T, class ContainerRet = SLList<RetT>, class Op>
-    ContainerRet map(Op && op = Op()) const;
+    ContainerRet map(Op && op = Op()) const
     {
       return map<RetT, ContainerRet, Op>(op);
     }
