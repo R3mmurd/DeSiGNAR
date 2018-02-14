@@ -67,7 +67,7 @@ namespace Designar
     {
       return *this;
     }
-
+    
     T * nth_ptr(nat_t i)
     {
       return nth_ptr_it<T>(me().begin(), me().end(), i);
@@ -78,7 +78,6 @@ namespace Designar
       return nth_it<T>(me().begin(), me().end(), i);
     }
 
-    
     const T & nth(nat_t i) const
     {
       return nth_it(const_me().begin(), const_me().end(), i);
