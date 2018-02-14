@@ -96,131 +96,268 @@ namespace Designar
   public:
     static void copy_graph(const GT &, GT &);
     
-    Node & nth_node(nat_t);
+    Node & nth_node(nat_t i)
+    {
+      return nth_it(me().nodes_begin(), me().nodes_end(), i);
+    }
 
-    const Node & nth_node(nat_t) const;
+    const Node & nth_node(nat_t i) const
+    {
+      return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
+    }
 
     template <class Op>
-    void for_each_node(Op &) const;
+    void for_each_node(Op & op) const
+    {
+      for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
+    }
 
     template <class Op>
-    void for_each_node(Op && op = Op()) const;
+    void for_each_node(Op && op = Op()) const
+    {
+      for_each_node<Op>(op);
+    }
     
     template <class Pred>
-    bool all_nodes(Pred &) const;
+    bool all_nodes(Pred & pred) const
+    {
+      return all_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
+    }
 
     template <class Pred>
-    bool all_nodes(Pred && pred = Pred()) const;
+    bool all_nodes(Pred && pred = Pred()) const
+    {
+      return all_nodes<Pred>(pred);
+    }
 
     template <class Pred>
-    bool exists_node(Pred &) const;
+    bool exists_node(Pred & pred) const
+    {
+      return exists_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
+    }
 
     template <class Pred>
-    bool exists_node(Pred && pred = Pred()) const;
-
-    template <class Pred>
-    Node * search_node_ptr(Pred &);
-
-    template <class Pred>
-    Node * search_node_ptr(Pred && pred = Pred());
-
-    template <class Pred>
-    bool remove_first_node_if(Pred &);
-
-    template <class Pred>
-    bool remove_first_node_if(Pred && pred = Pred());
-
-    template <class Pred>
-    void remove_node_if(Pred &);
-
-    template <class Pred>
-    void remove_node_if(Pred && pred = Pred());
-     
-    SLList<Node *> nodes() const;
-
-    Arc & nth_arc(nat_t);
-
-    const Arc & nth_arc(nat_t) const;
-
-    template <class Op>
-    void for_each_arc(Op &) const;
-
-    template <class Op>
-    void for_each_arc(Op && op = Op()) const;
+    bool exists_node(Pred && pred = Pred()) const
+    {
+      return exists_node<Pred>(pred);
+    }
     
     template <class Pred>
-    bool all_arcs(Pred &) const;
+    Node * search_node_ptr(Pred & pred)
+    {
+      return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
+    }
 
     template <class Pred>
-    bool all_arcs(Pred && pred = Pred()) const;
+    Node * search_node_ptr(Pred && pred = Pred())
+    {
+      return search_node_ptr<Pred>(pred);
+    }
 
     template <class Pred>
-    bool exists_arc(Pred &) const;
+    bool remove_first_node_if(Pred & pred)
+    {
+      return remove_first_if_it(me().nodes_begin(), me().nodes_end(), pred);
+    }
 
     template <class Pred>
-    bool exists_arc(Pred && pred = Pred()) const;
+    bool remove_first_node_if(Pred && pred = Pred())
+    {
+      return remove_first_node_if<Pred>(pred);
+    }
 
     template <class Pred>
-    Arc * search_arc_ptr(Pred &);
+    void remove_node_if(Pred & pred)
+    {
+      remove_if_it(me().nodes_begin(), me().nodes_end(), pred);
+    }
 
     template <class Pred>
-    Arc * search_arc_ptr(Pred && pred = Pred());
-
-    template <class Pred>
-    bool remove_first_arc_if(Pred &);
-
-    template <class Pred>
-    bool remove_first_arc_if(Pred && pred = Pred());
-
-    template <class Pred>
-    void remove_arc_if(Pred &);
-
-    template <class Pred>
-    void remove_arc_if(Pred && pred = Pred());
+    void remove_node_if(Pred && pred = Pred())
+    {
+      remove_node_if<Pred>(pred);
+    }
      
-    SLList<Arc *> arcs() const;
+    SLList<Node *> nodes() const
+    {
+      return to_list_it<Node *>(const_me().nodes_begin(),
+				const_me().nodes_end());
+    }
 
-    Arc & nth_adjacent_arc(Node &, nat_t);
-
-    const Arc & nth_adjacent_arc(Node &, nat_t) const;
-
+    Arc & nth_arc(nat_t i)
+    {
+      return nth_it(me().arcs_begin(), me().arcs_end(), i);
+    }
+  
+    const Arc & nth_arc(nat_t i) const
+    {
+      return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
+    }
+  
     template <class Op>
-    void for_each_adjacent_arc(Node &, Op &) const;
-
+    void for_each_arc(Op & op) const
+    {
+      for_each_it(const_me().arcs_begin(), const_me().arcs_end(), op);
+    }
+  
     template <class Op>
-    void for_each_adjacent_arc(Node &, Op && op = Op()) const;
-    
+    void for_each_arc(Op && op) const
+    {
+      for_each_arc<Op>(op);
+    }
+  
     template <class Pred>
-    bool all_adjacent_arcs(Node &, Pred &) const;
+    bool all_arcs(Pred & pred) const
+    {
+      return all_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
+    }
+  
+    template <class Pred>
+    bool all_arcs(Pred && pred) const
+    {
+      return all_arcs<Pred>(pred);
+    }
+  
+    template <class Pred>
+    bool exists_arc(Pred & pred) const
+    {
+      return exists_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
+    }
+  
+    template <class Pred>
+    bool exists_arc(Pred && pred) const
+    {
+      return exists_arc<Pred>(pred);
+    }
+  
+    template <class Pred>
+    Arc * search_arc_ptr(Pred & pred)
+    {
+      return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
+    }
+  
+    template <class Pred>
+    Arc * search_arc_ptr(Pred && pred)
+    {
+      return search_arc_ptr<Pred>(pred);
+    }
+  
+    template <class Pred>
+    bool remove_first_arc_if(Pred & pred)
+    {
+      return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
+    }
+  
+    template <class Pred>
+    bool remove_first_arc_if(Pred && pred)
+    {
+      return remove_first_arc_if<Pred>(pred);
+    }
+  
+    template <class Pred>
+    void remove_arc_if(Pred & pred)
+    {
+      remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
+    }
+  
+    template <class Pred>
+    void remove_arc_if(Pred && pred)
+    {
+      remove_arc_if<Pred>(pred);
+    }
+  
+    SLList<Arc *> arcs() const
+    {
+      return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
+    }
+  
+    Arc & nth_adjacent_arc(Node & p, nat_t i)
+    {
+      return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
+    }
+  
+    const Arc & nth_adjacent_arc(Node & p, nat_t i) const
+    {
+      return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
+    }
+  
+    template <class Op>
+    void for_each_adjacent_arc(Node & p, Op & op) const
+    {
+      for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
+    }
+  
+    template <class Op>
+    void for_each_adjacent_arc(Node & p, Op && op) const
+    {
+      for_each_adjacent_arc<Op>(p, op);
+    }
+  
+    template <class Pred>
+    bool all_adjacent_arcs(Node & p, Pred & pred) const
+    {
+      return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    bool all_adjacent_arcs(Node & p, Pred && pred) const
+    {
+      return all_adjacent_arcs<Pred>(p, pred);
+    }
+  
+    template <class Pred>
+    bool exists_adjacent_arc(Node & p, Pred & pred) const
+    {
+      return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    bool exists_adjacent_arc(Node & p, Pred && pred) const
+    {
+      return exists_adjacent_arc<Pred>(p, pred);
+    }
+  
+    template <class Pred>
+    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
+    {
+      return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
+    {
+      return search_adjacent_arc_ptr<Pred>(p, pred);
+    }
+  
+    template <class Pred>
+    bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
+    {
+      return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
+    {
+      return remove_first_adjacent_arc_if<Pred>(p, pred);
+    }
+  
+    template <class Pred>
+    void remove_adjacent_arc_if(Node & p, Pred & pred)
+    {
+      remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    void remove_adjacent_arc_if(Node & p, Pred && pred)
+    {
+      remove_adjacent_arc_if<Pred>(p, pred);
+    }
 
-    template <class Pred>
-    bool all_adjacent_arcs(Node &, Pred && pred = Pred()) const;
-
-    template <class Pred>
-    bool exists_adjacent_arc(Node &, Pred &) const;
-
-    template <class Pred>
-    bool exists_adjacent_arc(Node &, Pred && pred = Pred()) const;
-
-    template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node &, Pred &);
-
-    template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node &, Pred && pred = Pred());
-
-    template <class Pred>
-    bool remove_first_adjacent_arc_if(Node &, Pred &);
-
-    template <class Pred>
-    bool remove_first_adjacent_arc_if(Node &, Pred && pred = Pred());
-
-    template <class Pred>
-    void remove_adjacent_arc_if(Node &, Pred &);
-
-    template <class Pred>
-    void remove_adjacent_arc_if(Node &, Pred && pred = Pred());
-     
-    SLList<Arc *> adjacent_arcs(Node &) const;
+    SLList<Arc *>adjacent_arcs(Node & p) const
+    {
+      return to_list_it<Arc *>(const_me().arcs_begin(p),
+			       const_me().arcs_end(p));
+    }
     
     void reset_all_node_tag(GraphTag tag)
     {
@@ -348,316 +485,6 @@ namespace Designar
         Node & ttgt = *map_nodes[&stgt];
         tgt.insert_arc(tsrc, ttgt, a.get_info());
       }
-  }
-
-  template <class GT, class Node, class Arc>
-  Node & BaseGraph<GT, Node, Arc>::nth_node(nat_t i)
-  {
-    return nth_it(me().nodes_begin(), me().nodes_end(), i);
-  }
-  
-  template <class GT, class Node, class Arc>
-  const Node & BaseGraph<GT, Node, Arc>::nth_node(nat_t i) const
-  {
-    return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_node(Op & op) const
-  {
-    for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_node(Op && op) const
-  {
-    for_each_node<Op>(op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_nodes(Pred & pred) const
-  {
-    return all_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_nodes(Pred && pred) const
-  {
-    return all_nodes<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::exists_node(Pred & pred) const
-  {
-    return exists_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::exists_node(Pred && pred) const
-  {
-    return exists_node<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Node * BaseGraph<GT, Node, Arc>::search_node_ptr(Pred & pred)
-  {
-    return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Node * BaseGraph<GT, Node, Arc>::search_node_ptr(Pred && pred)
-  {
-    return search_node_ptr<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::remove_first_node_if(Pred & pred)
-  {
-    return remove_first_if_it(me().nodes_begin(), me().nodes_end(), pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::remove_first_node_if(Pred && pred)
-  {
-    return remove_first_node_if<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::remove_node_if(Pred & pred)
-  {
-    remove_if_it(me().nodes_begin(), me().nodes_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::remove_node_if(Pred && pred)
-  {
-    remove_node_if<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  SLList<Node *> BaseGraph<GT, Node, Arc>::nodes() const
-  {
-    return to_list_it<Node *>(const_me().nodes_begin(), const_me().nodes_end());
-  }
-
-  template <class GT, class Node, class Arc>
-  Arc & BaseGraph<GT, Node, Arc>::nth_arc(nat_t i)
-  {
-    return nth_it(me().arcs_begin(), me().arcs_end(), i);
-  }
-  
-  template <class GT, class Node, class Arc>
-  const Arc & BaseGraph<GT, Node, Arc>::nth_arc(nat_t i) const
-  {
-    return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_arc(Op & op) const
-  {
-    for_each_it(const_me().arcs_begin(), const_me().arcs_end(), op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_arc(Op && op) const
-  {
-    for_each_arc<Op>(op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_arcs(Pred & pred) const
-  {
-    return all_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_arcs(Pred && pred) const
-  {
-    return all_arcs<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::exists_arc(Pred & pred) const
-  {
-    return exists_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::exists_arc(Pred && pred) const
-  {
-    return exists_arc<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Arc * BaseGraph<GT, Node, Arc>::search_arc_ptr(Pred & pred)
-  {
-    return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Arc * BaseGraph<GT, Node, Arc>::search_arc_ptr(Pred && pred)
-  {
-    return search_arc_ptr<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::remove_first_arc_if(Pred & pred)
-  {
-    return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::remove_first_arc_if(Pred && pred)
-  {
-    return remove_first_arc_if<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::remove_arc_if(Pred & pred)
-  {
-    remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::remove_arc_if(Pred && pred)
-  {
-    remove_arc_if<Pred>(pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  SLList<Arc *> BaseGraph<GT, Node, Arc>::arcs() const
-  {
-    return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
-  }
-
-  template <class GT, class Node, class Arc>
-  Arc & BaseGraph<GT, Node, Arc>::nth_adjacent_arc(Node & p, nat_t i)
-  {
-    return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
-  }
-  
-  template <class GT, class Node, class Arc>
-  const Arc & BaseGraph<GT, Node, Arc>::nth_adjacent_arc(Node & p, nat_t i) const
-  {
-    return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_adjacent_arc(Node & p, Op & op) const
-  {
-    for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Op>
-  void BaseGraph<GT, Node, Arc>::for_each_adjacent_arc(Node & p, Op && op) const
-  {
-    for_each_adjacent_arc<Op>(p, op);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_adjacent_arcs(Node & p, Pred & pred) const
-  {
-    return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::all_adjacent_arcs(Node & p, Pred && pred) const
-  {
-    return all_adjacent_arcs<Pred>(p, pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool BaseGraph<GT, Node, Arc>::exists_adjacent_arc(Node & p, Pred & pred) const
-  {
-    return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool
-  BaseGraph<GT, Node, Arc>::exists_adjacent_arc(Node & p, Pred && pred) const
-  {
-    return exists_adjacent_arc<Pred>(p, pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Arc * BaseGraph<GT, Node, Arc>::search_adjacent_arc_ptr(Node & p, Pred & pred)
-  {
-    return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  Arc * BaseGraph<GT, Node, Arc>::search_adjacent_arc_ptr(Node & p, Pred && pred)
-  {
-    return search_adjacent_arc_ptr<Pred>(p, pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool
-  BaseGraph<GT, Node, Arc>::remove_first_adjacent_arc_if(Node & p, Pred & pred)
-  {
-    return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
-  }
-  
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  bool
-  BaseGraph<GT, Node, Arc>::remove_first_adjacent_arc_if(Node & p, Pred && pred)
-  {
-    return remove_first_adjacent_arc_if<Pred>(p, pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::remove_adjacent_arc_if(Node & p, Pred & pred)
-  {
-    remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  template <class Pred>
-  void BaseGraph<GT, Node, Arc>::
-  remove_adjacent_arc_if(Node & p, Pred && pred)
-  {
-    remove_adjacent_arc_if<Pred>(p, pred);
-  }
-
-  template <class GT, class Node, class Arc>
-  SLList<Arc *>BaseGraph<GT, Node, Arc>::adjacent_arcs(Node & p) const
-  {
-    return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
   }
   
   template <typename NodeInfo,
