@@ -68,405 +68,247 @@ namespace Designar
       return *this;
     }
 
-    T * nth_ptr(nat_t);
+    T * nth_ptr(nat_t i)
+    {
+      return nth_ptr_it<T>(me().begin(), me().end(), i);
+    }
 
-    T & nth(nat_t);
+    T & nth(nat_t i)
+    {
+      return nth_it<T>(me().begin(), me().end(), i);
+    }
 
-    const T & nth(nat_t) const;
+    
+    const T & nth(nat_t i) const
+    {
+      return nth_it(const_me().begin(), const_me().end(), i);
+    }
 
     template <class Op>
-    void for_each(Op &) const;
+    void for_each(Op & op) const
+    {
+      for_each_it(const_me().begin(), const_me().end(), op);
+    }
 
     template <class Op>
-    void for_each(Op && op = Op()) const;
-
+    void for_each(Op && op = Op()) const
+    {
+      for_each<Op>(op);
+    }
+    
     template <class ContainerRet, class Pred>
-    ContainerRet filter(Pred &) const;
+    ContainerRet filter(Pred & pred) const
+    {
+      return filter_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     pred);
+    }
 
     template <class ContainerRet = SLList<T>, class Pred>
-    ContainerRet filter(Pred && pred = Pred()) const;
-
+    ContainerRet filter(Pred && pred = Pred()) const
+    {
+      return filter<ContainerRet, Pred>(pred);
+    }
+    
     template <typename RetT, class ContainerRet, class Op>
-    ContainerRet map(Op &) const;
+    ContainerRet map(Op & op) const
+    {
+      return map_it<ContainerRet>(const_me().begin(), const_me().end(), op);
+    }
 
     template <typename RetT = T, class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map(Op && op = Op()) const;
+    {
+      return map<RetT, ContainerRet, Op>(op);
+    }
 
     template <typename RetT, class ContainerRet, class Op, class Pred>
-    ContainerRet map_if(Op &, Pred &) const;
+    ContainerRet map_if(Op & op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, pred);
+    }
 
     template <typename RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
-    ContainerRet map_if(Op &, Pred && pred = Pred()) const;
+    ContainerRet map_if(Op & op, Pred && pred = Pred()) const
+    {
+      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+    }
+    
+    template <typename RetT = T, class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_if(Op && op, Pred & pred) const
+    {
+      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+    }
 
     template <typename RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
-    ContainerRet map_if(Op &&, Pred &) const;
-
-    template <typename RetT = T, class ContainerRet = SLList<RetT>,
-	      class Op, class Pred>
-    ContainerRet map_if(Op && op = Op(), Pred && pred = Pred()) const;
+    ContainerRet map_if(Op && op = Op(), Pred && pred = Pred()) const
+    {
+      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+    }
     
     template <typename RetT, class Op>
-    RetT fold(const RetT &, Op &) const;
+    RetT fold(const RetT & init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().begin(), const_me().end(), init_val, op);
+    }
+    
+    template <typename RetT = T, class Op>
+    RetT fold(const RetT & init_val, Op && op = Op()) const
+    {
+      return fold<RetT, Op>(init_val, op);
+    }
 
     template <typename RetT = T, class Op>
-    RetT fold(const RetT &, Op && op = Op()) const;
+    RetT fold(RetT && init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().begin(), const_me().end(),
+			   std::forward<RetT>(init_val), op);
+    }
 
     template <typename RetT = T, class Op>
-    RetT fold(RetT &&, Op &) const;
-
-    template <typename RetT = T, class Op>
-    RetT fold(RetT &&, Op && op = Op()) const;
-
-    template <class Pred>
-    bool all(Pred &) const;
+    RetT fold(RetT && init_val, Op && op = Op()) const
+    {
+      return fold<RetT, Op>(std::forward<RetT>(init_val), op);
+    }
 
     template <class Pred>
-    bool all(Pred && pred = Pred()) const;
+    bool all(Pred & pred) const
+    {
+      return all_it(const_me().begin(), const_me().end(), pred);
+    }
 
     template <class Pred>
-    bool exists(Pred &) const;
+    bool all(Pred && pred = Pred()) const
+    {
+      return all<Pred>(pred);
+    }
+    
+    template <class Pred>
+    bool exists(Pred & pred) const
+    {
+      return exists_it(const_me().begin(), const_me().end(), pred);
+    }
 
     template <class Pred>
-    bool exists(Pred && pred = Pred()) const;
+    bool exists(Pred && pred = Pred()) const
+    {
+      return exists<Pred>(pred);
+    }
+    
+    template <class Pred>
+    T * search_ptr(Pred & pred) const
+    {
+      return search_ptr_it<T>(const_me().begin(), const_me().end(), pred);
+    }
+    
+    template <class Pred>
+    T * search_ptr(Pred && pred = Pred()) const
+    {
+      return search_ptr<Pred>(pred);
+    }
 
     template <class Pred>
-    T * search_ptr(Pred &) const;
-
+    bool remove_first_if(Pred & pred)
+    {
+      return remove_first_if_it(me().begin(), me().end(), pred);
+    }
+    
     template <class Pred>
-    T * search_ptr(Pred && pred = Pred()) const;
-
+    bool remove_first_if(Pred && pred = Pred())
+    {
+      return remove_first_if<Pred>(pred);
+    }
+    
     template <class Pred>
-    bool remove_first_if(Pred &);
-
+    void remove_if(Pred & pred)
+    {
+      remove_if_it(me().begin(), me().end(), pred);
+    }
+    
     template <class Pred>
-    bool remove_first_if(Pred && pred = Pred());
-
-    template <class Pred>
-    void remove_if(Pred &);
-
-    template <class Pred>
-    void remove_if(Pred && pred = Pred());
-
+    void remove_if(Pred && pred = Pred())
+    {
+      remove_if<Pred>(pred);
+    }
+    
     template <class Eq>
-    bool equal(const ContainerType &, Eq &) const;
-
+    bool equal(const ContainerType & c, Eq & eq) const
+    {
+      return equal_it(const_me().begin(), const_me().end(),
+		      c.begin(), c.end(), eq);
+    }
+    
     template <class Eq = std::equal_to<T>>
-    bool equal(const ContainerType &, Eq && eq = Eq()) const;
-
+    bool equal(const ContainerType & c, Eq && eq = Eq()) const
+    {
+      return equal<Eq>(c, eq);
+    }
+    
     template <class Cmp>
-    bool is_sorted(Cmp &) const;
-
+    bool is_sorted(Cmp & cmp) const
+    {
+      return is_sorted_it(const_me().begin(), const_me().end(), cmp);
+    }
+    
     template <class Cmp = std::less<T>>
-    bool is_sorted(Cmp && cmp = Cmp()) const;
+    bool is_sorted(Cmp && cmp = Cmp()) const
+    {
+      return is_sorted<Cmp>(cmp);
+    }
 
     template <class ContainerType2 = ContainerType>
     SLList<std::pair<T, typename ContainerType2::KeyType>>
-      zip(const ContainerType2 &) const;
-
-    template <class ContainerType2 = ContainerType>
-    SLList<std::pair<T, typename ContainerType2::KeyType>>
-      zip_eq(const ContainerType2 &) const;
-
-    template <class ContainerType2 = ContainerType>
-    SLList<std::pair<T, typename ContainerType2::KeyType>>
-      zip_left(const ContainerType2 &) const;
-
-    template <class ContainerType2 = ContainerType>
-    SLList<std::pair<T, typename ContainerType2::KeyType>>
-      zip_right(const ContainerType2 &) const;
+      zip(const ContainerType2 & c) const
+    {
+      using T2 = typename ContainerType2::KeyType;
       
-    DynArray<T> to_array() const;
+      return zip_it<T, T2>(const_me().begin(), const_me().end(),
+			   c.begin(), c.end());
+    }
 
-    SLList<T> to_list() const;
+    template <class ContainerType2 = ContainerType>
+    SLList<std::pair<T, typename ContainerType2::KeyType>>
+      zip_eq(const ContainerType2 & c) const
+    {
+      using T2 = typename ContainerType2::KeyType;
+      
+      return zip_eq_it<T, T2>(const_me().begin(), const_me().end(),
+			      c.begin(), c.end());    
+    }
+
+    template <class ContainerType2 = ContainerType>
+    SLList<std::pair<T, typename ContainerType2::KeyType>>
+      zip_left(const ContainerType2 & c) const
+    {
+      using T2 = typename ContainerType2::KeyType;
+      
+      return zip_left_it<T, T2>(const_me().begin(), const_me().end(),
+				c.begin(), c.end());
+    }
+    
+    template <class ContainerType2 = ContainerType>
+    SLList<std::pair<T, typename ContainerType2::KeyType>>
+      zip_right(const ContainerType2 & c) const
+    {
+      using T2 = typename ContainerType2::KeyType;
+      
+      return zip_right_it<T, T2>(const_me().begin(), const_me().end(),
+				 c.begin(), c.end());
+    }
+    
+    DynArray<T> to_array() const
+    {
+      return to_array_it<T>(const_me().begin(), const_me().end());
+    }
+
+    SLList<T> to_list() const
+    {
+      return to_list_it<T>(const_me().begin(), const_me().end());
+    }
   };
-
-  template <class ContainerType, typename T>
-  T * ContainerAlgorithms<ContainerType, T>::nth_ptr(nat_t i)
-  {
-    return nth_ptr_it<T>(me().begin(), me().end(), i);
-  }
-
-  template <class ContainerType, typename T>
-  T & ContainerAlgorithms<ContainerType, T>::nth(nat_t i)
-  {
-    return nth_it<T>(me().begin(), me().end(), i);
-  }
-
-  template <class ContainerType, typename T>
-  const T & ContainerAlgorithms<ContainerType, T>::nth(nat_t i) const
-  {
-    return nth_it(const_me().begin(), const_me().end(), i);
-  }
-  
-  template <class ContainerType, typename T>
-  template <class Op>
-  void ContainerAlgorithms<ContainerType, T>::for_each(Op & op) const
-  {
-    for_each_it(const_me().begin(), const_me().end(), op);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Op>
-  void ContainerAlgorithms<ContainerType, T>::for_each(Op && op) const
-  {
-    for_each<Op>(op);
-  }
-
-  template <class ContainerType, typename T>
-  template <class ContainerRet, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::filter(Pred & pred) const
-  {
-    return filter_it<ContainerRet>(const_me().begin(), const_me().end(), pred);
-  }
-  
-  template <class ContainerType, typename T>
-  template <class ContainerRet, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::filter(Pred && pred) const
-  {
-    return filter<ContainerRet, Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT, class ContainerRet, class Op>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Op & op) const
-  {
-    return map_it<ContainerRet>(const_me().begin(), const_me().end(), op);
-  }
-  
-  template <class ContainerType, typename T>
-  template <typename RetT, class ContainerRet, class Op>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::map(Op && op) const
-  {
-    return map<RetT, ContainerRet, Op>(op);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT, class ContainerRet, class Op, class Pred>
-  ContainerRet
-  ContainerAlgorithms<ContainerType, T>::map_if(Op & op, Pred & pred) const
-  {
-    return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
-				   op, pred);
-  }
-  
-  template <class ContainerType, typename T>
-  template <typename RetT,class ContainerRet, class Op, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::
-  map_if(Op & op, Pred && pred) const
-  {
-    return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT,class ContainerRet, class Op, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::
-  map_if(Op && op, Pred & pred) const
-  {
-    return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT,class ContainerRet, class Op, class Pred>
-  ContainerRet ContainerAlgorithms<ContainerType, T>::
-  map_if(Op && op, Pred && pred) const
-  {
-    return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT, class Op>
-  RetT ContainerAlgorithms<ContainerType, T>::
-  fold(const RetT & init_val, Op & op) const
-  {
-    return fold_it<RetT>(const_me().begin(), const_me().end(), init_val, op);
-  }
-  
-  template <class ContainerType, typename T>
-  template <typename RetT, class Op>
-  RetT ContainerAlgorithms<ContainerType, T>::
-  fold(const RetT & init_val, Op && op) const
-  {
-    return fold<RetT, Op>(init_val, op);
-  }
-  
-  template <class ContainerType, typename T>
-  template <typename RetT, class Op>
-  RetT ContainerAlgorithms<ContainerType, T>::
-  fold(RetT && init_val, Op & op) const
-  {
-    return fold_it<RetT>(const_me().begin(), const_me().end(),
-			 std::forward<RetT>(init_val), op);
-  }
-
-  template <class ContainerType, typename T>
-  template <typename RetT, class Op>
-  RetT ContainerAlgorithms<ContainerType, T>::
-  fold(RetT && init_val, Op && op) const
-  {
-    return fold<RetT, Op>(std::forward<RetT>(init_val), op);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::all(Pred & pred) const
-  {
-    return all_it(const_me().begin(), const_me().end(), pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::all(Pred && pred) const
-  {
-    return all<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::exists(Pred & pred) const
-  {
-    return exists_it(const_me().begin(), const_me().end(), pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::exists(Pred && pred) const
-  {
-    return exists<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred & pred) const
-  {
-    return search_ptr_it<T>(const_me().begin(), const_me().end(), pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  T * ContainerAlgorithms<ContainerType, T>::search_ptr(Pred && pred) const
-  {
-    return search_ptr<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::remove_first_if(Pred & pred)
-  {
-    return remove_first_if_it(me().begin(), me().end(), pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  bool ContainerAlgorithms<ContainerType, T>::remove_first_if(Pred && pred)
-  {
-    return remove_first_if<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  void ContainerAlgorithms<ContainerType, T>::remove_if(Pred & pred)
-  {
-    remove_if_it(me().begin(), me().end(), pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Pred>
-  void ContainerAlgorithms<ContainerType, T>::remove_if(Pred && pred)
-  {
-    remove_if<Pred>(pred);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Eq>
-  bool ContainerAlgorithms<ContainerType, T>::
-  equal(const ContainerType & c, Eq & eq) const
-  {
-    return equal_it(const_me().begin(), const_me().end(),
-		    c.begin(), c.end(), eq);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Eq>
-  bool ContainerAlgorithms<ContainerType, T>::
-  equal(const ContainerType & c, Eq && eq) const
-  {
-    return equal<Eq>(c, eq);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Cmp>
-  bool ContainerAlgorithms<ContainerType, T>::is_sorted(Cmp & cmp) const
-  {
-    return is_sorted_it(const_me().begin(), const_me().end(), cmp);
-  }
-
-  template <class ContainerType, typename T>
-  template <class Cmp>
-  bool ContainerAlgorithms<ContainerType, T>::is_sorted(Cmp && cmp) const
-  {
-    return is_sorted<Cmp>(cmp);
-  }
-  
-  template <class ContainerType, typename T>
-  template <class ContainerType2>
-  SLList<std::pair<T, typename ContainerType2::KeyType>>
-    ContainerAlgorithms<ContainerType, T>::zip(const ContainerType2 & c) const
-  {
-    using T2 = typename ContainerType2::KeyType;
-
-    return zip_it<T, T2>(const_me().begin(), const_me().end(),
-			 c.begin(), c.end());
-  }
-
-  template <class ContainerType, typename T>
-  template <class ContainerType2>
-  SLList<std::pair<T, typename ContainerType2::KeyType>>
-    ContainerAlgorithms<ContainerType, T>::
-    zip_eq(const ContainerType2 & c) const
-  {
-    using T2 = typename ContainerType2::KeyType;
-
-    return zip_eq_it<T, T2>(const_me().begin(), const_me().end(),
-			    c.begin(), c.end());    
-  }
-
-  template <class ContainerType, typename T>
-  template <class ContainerType2>
-  SLList<std::pair<T, typename ContainerType2::KeyType>>
-    ContainerAlgorithms<ContainerType, T>::
-    zip_left(const ContainerType2 & c) const
-  {
-    using T2 = typename ContainerType2::KeyType;
-
-    return zip_left_it<T, T2>(const_me().begin(), const_me().end(),
-			      c.begin(), c.end());
-  }
-
-  template <class ContainerType, typename T>
-  template <class ContainerType2>
-  SLList<std::pair<T, typename ContainerType2::KeyType>>
-    ContainerAlgorithms<ContainerType, T>::
-    zip_right(const ContainerType2 & c) const
-  {
-    using T2 = typename ContainerType2::KeyType;
-
-    return zip_right_it<T, T2>(const_me().begin(), const_me().end(),
-			       c.begin(), c.end());
-  }
-  
-  template <class ContainerType, typename T>
-  DynArray<T> ContainerAlgorithms<ContainerType, T>::to_array() const
-  {
-    return to_array_it<T>(const_me().begin(), const_me().end());
-  }
-  
-  template <class ContainerType, typename T>
-  SLList<T> ContainerAlgorithms<ContainerType, T>::to_list() const
-  {
-    return to_list_it<T>(const_me().begin(), const_me().end());
-  }
   
 } // end namespace Designar
 
