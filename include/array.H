@@ -30,6 +30,15 @@
 
 namespace Designar
 {
+  template <class ArrayType, class Cmp>
+  void insertion_sort(ArrayType &, lint_t, lint_t, Cmp &);
+  
+  template <typename ArrayType, class Cmp>
+  lint_t partition(ArrayType &, lint_t, lint_t, Cmp &);
+  
+  template <typename ArrayType, class Cmp>
+  void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
+
   template <typename T>
   class FixedArray
   {
@@ -125,7 +134,7 @@ namespace Designar
       return get_capacity();
     }
 
-    T & get_item(nat_t i)
+    T & at(nat_t i)
     {
       if (i >= cap)
 	throw std::out_of_range("Index out of range");
@@ -133,38 +142,22 @@ namespace Designar
       return array_ptr[i];
     }
 
-    const T & get_item(nat_t i) const
+    const T & at(nat_t i) const
     {
       if (i >= cap)
 	throw std::out_of_range("Index out of range");
 
       return array_ptr[i];
-    }
-
-    void set_item(nat_t i, const T & value)
-    {
-      if (i >= cap)
-	throw std::out_of_range("Index out of range");
-
-      array_ptr[i] = value;
-    }
-
-    void set_item(nat_t i, T && value)
-    {
-      if (i >= cap)
-	throw std::out_of_range("Index out of range");
-
-      array_ptr[i] = std::move(value);
     }
 
     T & operator [] (nat_t i)
     {
-      return get_item(i);
+      return at(i);
     }
 
     const T & operator [] (nat_t i) const
     {
-      return get_item(i);
+      return at(i);
     }
 
     class Iterator
@@ -469,7 +462,7 @@ namespace Designar
       if (num_items == 0)
 	throw std::underflow_error("Array is empty");
       
-      return BaseArray::get_item(0);
+      return BaseArray::at(0);
     }
     
     const T & get_first() const
@@ -477,7 +470,7 @@ namespace Designar
       if (num_items == 0)
 	throw std::underflow_error("Array is empty");
       
-      return BaseArray::get_item(0);
+      return BaseArray::at(0);
     }
     
     T & get_last()
@@ -485,7 +478,7 @@ namespace Designar
       if (num_items == 0)
 	throw std::overflow_error("Array is empty");
       
-      return BaseArray::get_item(num_items - 1);
+      return BaseArray::at(num_items - 1);
     }
     
     const T & get_last() const
@@ -493,7 +486,7 @@ namespace Designar
       if (num_items == 0)
 	throw std::overflow_error("Array is empty");
       
-      return BaseArray::get_item(num_items - 1);
+      return BaseArray::at(num_items - 1);
     }
     
     T & insert(nat_t pos, const T & item)
@@ -503,13 +496,13 @@ namespace Designar
       
       open_breach(pos);
       
-      BaseArray::set_item(pos, item);
+      BaseArray::at(pos) = item;
       
       ++num_items;
       
       resize_up();
       
-      return BaseArray::get_item(pos);
+      return BaseArray::at(pos);
     }
     
     T & insert(nat_t pos, T && item)
@@ -519,13 +512,13 @@ namespace Designar
 
       open_breach(pos);
       
-      BaseArray::set_item(pos, std::forward<T>(item));
+      BaseArray::at(pos) = std::move(item);
       
       ++num_items;
       
       resize_up();
       
-      return BaseArray::get_item(pos);
+      return BaseArray::at(pos);
     }
     
     T & insert(const T & item)
@@ -538,27 +531,46 @@ namespace Designar
       return insert(0, std::forward<T>(item));
     }
     
-    
     T & append(const T & item)
     {
-      BaseArray::set_item(num_items++, item);
+      BaseArray::at(num_items++) = item;
       resize_up();
-      return BaseArray::get_item(num_items - 1);
+      return BaseArray::at(num_items - 1);
     }
     
     T & append(T && item)
     {
-      BaseArray::set_item(num_items++, std::forward<T>(item));
+      BaseArray::at(num_items++) = std::move(item);
       resize_up();
-      return BaseArray::get_item(num_items - 1);
+      return BaseArray::at(num_items - 1);
     }
-    
+
     T remove_pos(nat_t pos)
     {
       if (pos >= num_items)
 	throw std::out_of_range("Index is out of range");
       
-      T ret_val = std::move(BaseArray::get_item(pos));
+      T ret_val = std::move(BaseArray::at(pos));
+      BaseArray::at(pos) = std::move(BaseArray::at(--num_items));
+      return ret_val;
+    }
+
+    T remove(T & item)
+    {
+      nat_t i = BaseArray::item_to_pos(item);
+      
+      if (i >= num_items)
+	throw std::logic_error("Item does not belong to array");
+      
+      return remove_pos(i);
+    }
+    
+    T remove_pos_closing_breach(nat_t pos)
+    {
+      if (pos >= num_items)
+	throw std::out_of_range("Index is out of range");
+      
+      T ret_val = std::move(BaseArray::at(pos));
       
       --num_items;
       
@@ -569,14 +581,14 @@ namespace Designar
       return ret_val;;
     }
     
-    T remove(T & item)
+    T remove_closing_breach(T & item)
     {
       nat_t i = BaseArray::item_to_pos(item);
       
       if (i >= num_items)
 	throw std::logic_error("Item does not belong to array");
       
-      return remove_pos(i);
+      return remove_pos_closing_breach(i);
     }
     
     T remove_first()
@@ -589,7 +601,7 @@ namespace Designar
     
     T remove_last()
     {
-      T ret_val = std::move(BaseArray::get_item(--num_items));
+      T ret_val = std::move(BaseArray::at(--num_items));
       resize_down();
       return ret_val;
     }
@@ -610,30 +622,30 @@ namespace Designar
       return *this;
     }
     
-    T & select(nat_t i)
+    T & at(nat_t i)
     {
       if (i >= num_items)
 	throw std::out_of_range("Index is out of range");
       
-      return BaseArray::get_item(i);
+      return BaseArray::at(i);
     }
     
-    const T & select(nat_t i) const
+    const T & at(nat_t i) const
     {
       if (i >= num_items)
 	throw std::out_of_range("Index is out of range");
       
-      return BaseArray::get_item(i);
+      return BaseArray::at(i);
     }
     
     T & operator [] (nat_t i)
     {
-      return select(i);
+      return at(i);
     }
     
     const T & operator [] (nat_t i) const
     {
-      return select(i);
+      return at(i);
     }
     
     class Iterator
@@ -794,27 +806,252 @@ namespace Designar
   void DynArray<T>::copy_array(const DynArray & a)
   {
     for (nat_t i = 0; i < num_items; ++i)
-      BaseArray::set_item(i, a.get_item(i));
+      BaseArray::at(i) = a.at(i);
   }
 
   template <typename T>
   void DynArray<T>::open_breach(nat_t p)
   {
     for (nat_t i = num_items; i > p; --i)
-      BaseArray::set_item(i, std::move(BaseArray::get_item(i - 1)));
+      BaseArray::at(i) = std::move(BaseArray::at(i - 1));
   }
 
   template <typename T>
   void DynArray<T>::close_breach(nat_t p)
   {
     for (nat_t i = p; i < num_items; ++i)
-      BaseArray::set_item(i, std::move(BaseArray::get_item(i + 1)));
+      BaseArray::at(i) = std::move(BaseArray::at(i + 1));
+  }
+
+  template <typename Key, class Cmp>
+  class SortedArraySetOp
+  {
+    DynArray<Key> & array;
+    Cmp           & cmp;
+
+  protected:
+    bool not_equal_key(const Key & k1, const Key & k2) const
+    {
+      return cmp(k1, k2) or cmp(k2, k1);
+    }
+
+    bool equal_key(const Key & k1, const Key & k2) const
+    {
+      return not not_equal_key(k1, k2);
+    }
+    
+    lint_t search(const Key &, lint_t, lint_t) const;
+
+  public:
+    SortedArraySetOp(DynArray<Key> & a, Cmp & c)
+      : array(a), cmp(c)
+    {
+      // empty
+    }
+    
+    bool is_sorted() const
+    {
+      return true;
+    }
+
+    Key * insert(const Key &);
+    
+    Key * insert(Key &&);
+    
+    Key * search_or_insert(const Key & item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(item);
+      
+      if (equal_key(item, array.at(pos)))
+	return &array[pos];
+      
+      return &array.insert(pos, item);
+    }
+    
+    Key * search_or_insert(Key && item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(std::forward<Key>(item));
+      
+      if (equal_key(item, array.at(pos)))
+	return &array[pos];
+      
+      return &array.insert(pos, std::forward<Key>(item));
+    }
+
+    Key remove_pos(nat_t pos)
+    {
+      return array.remove_pos_closing_breach(pos);
+    }
+
+    const Key & select(nat_t i)
+    {
+      return array.at(i);
+    }
+    
+    nat_t position(const Key & item)
+    {
+      return search(item, 0, array.size() - 1);
+    }
+  };
+
+  template <typename Key, class Cmp>
+  Key * SortedArraySetOp<Key, Cmp>::insert(const Key & item)
+  {
+    lint_t pos = search(item, 0, array.size() - 1);
+    
+    if (pos == array.size())
+      return &array.append(item);
+    
+    if (equal_key(item, array.at(pos)))
+      return nullptr;
+    
+    return &array.insert(pos, item);
+  }
+
+  template <typename Key, class Cmp>
+  Key * SortedArraySetOp<Key, Cmp>::insert(Key && item)
+  {
+    lint_t pos = search(item, 0, array.size() - 1);
+
+    if (pos == array.size())
+      return &array.append(std::forward<Key>(item));
+
+    if (equal_key(item, array.at(pos)))
+      return nullptr;
+
+    return &array.insert(pos, std::forward<Key>(item));
+  }
+
+  template <typename Key, class Cmp>
+  lint_t SortedArraySetOp<Key, Cmp>::
+  search(const Key & k, lint_t l, lint_t r) const
+  {
+    if (l > r)
+      return l;
+
+    lint_t m = (l + r) / 2;
+
+    if (cmp(k, array.at(m)))
+      return search(k, l, m - 1);
+    else if (cmp(array.at(m), k))
+      return search(k, m + 1, r);
+
+    return m;
+  }
+
+  template <typename Key, class Cmp>
+  class UnsortedArraySetOp
+  {
+    DynArray<Key> & array;
+    Cmp           & cmp;
+    
+  protected:
+    bool not_equal_key(const Key & k1, const Key & k2) const
+    {
+      return cmp(k1, k2) or cmp(k2, k1);
+    }
+
+    bool equal_key(const Key & k1, const Key & k2) const
+    {
+      return not not_equal_key(k1, k2);
+    }
+    
+    lint_t search(const Key &, lint_t, lint_t) const;
+    
+  public:
+    UnsortedArraySetOp(DynArray<Key> & a, Cmp & c)
+      : array(a), cmp(c)
+    {
+      // empty
+    }
+    
+    bool is_sorted() const
+    {
+      return array.template is_sorted<Cmp>(cmp);
+    }
+
+    Key * insert(const Key & item)
+    {
+      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      
+      if (pos < array.size())
+	return nullptr;
+      
+      return &array.append(item);
+    }
+    
+    Key * insert(Key && item)
+    {
+      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      
+      if (pos < array.size())
+	return nullptr;
+      
+      return &array.append(std::forward<Key>(item));
+    }
+
+    Key * search_or_insert(const Key & item)
+    {
+      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      
+      if (pos < array.size())
+	return &array[pos];
+      
+      return &array.append(item);
+    }
+    
+    Key * search_or_insert(Key && item)
+    {
+      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      
+      if (pos < array.size())
+	return &array[pos];
+      
+      return &array.append(std::forward<Key>(item));
+    }
+
+    Key remove_pos(nat_t pos)
+    {
+      return array.remove_pos(pos);
+    }
+
+    const Key & select(nat_t i)
+    {
+      quicksort(array, 0, array.size() - 1, cmp);
+      return array.at(i);
+    }
+    
+    nat_t position(const Key & item)
+    {
+      quicksort(array, 0, array.size() - 1, cmp);
+      return search(item, 0, array.size() - 1);
+    }
+  };
+
+  template <typename Key, class Cmp>
+  lint_t UnsortedArraySetOp<Key, Cmp>::
+  search(const Key & k, lint_t l, lint_t r) const
+  {
+    lint_t i = l;
+    
+    while (i <= r and not_equal_key(k, array.at(i)))
+      ++i;
+    
+    return i;
   }
   
-  template <typename Key, class Cmp = std::less<Key>>
-  class ArraySet : public ContainerAlgorithms<ArraySet<Key, Cmp>, Key>,
-		   public SetAlgorithms<ArraySet, Key, Cmp>
-  {
+  template <typename Key, class Cmp, class ArraySetOp>
+  class GenArraySet :
+    public ArraySetOp,
+    public ContainerAlgorithms<GenArraySet<Key, Cmp, ArraySetOp>, Key>,
+    public SetAlgorithms<GenArraySet<Key, Cmp, ArraySetOp>, Key>
+  {   
   public:
     using ItemType  = Key;
     using KeyType   = Key;
@@ -822,11 +1059,8 @@ namespace Designar
     using ValueType = Key;
     using SizeType  = nat_t;
     
-    enum class SortingFlag { UNSORTED, SORTED };
-    
     DynArray<Key> array;
     Cmp         & cmp;
-    SortingFlag   flag;
     
     bool not_equal_key(const Key & e1, const Key & e2) const
     {
@@ -838,76 +1072,60 @@ namespace Designar
       return not not_equal_key(e1, e2);
     }
     
-    Key * insert_sorted(const Key &);
-    
-    Key * insert_sorted(Key &&);
-    
-    lint_t binary_search(const Key &, lint_t, lint_t) const;
-    
-    lint_t sequential_search(const Key &, lint_t, lint_t) const;
-    
   public:
-    ArraySet(nat_t cap, SortingFlag f, Cmp & _cmp)
-      : array(cap), cmp(_cmp), flag(f)
+    GenArraySet(nat_t cap, Cmp & _cmp)
+      : ArraySetOp(array, _cmp), array(cap), cmp(_cmp)
     {
       // empty
     }
     
-    ArraySet(SortingFlag f, Cmp && _cmp = Cmp())
-      : array(), cmp(_cmp), flag(f)
+    GenArraySet(Cmp && _cmp = Cmp())
+      : ArraySetOp(array, _cmp), array(), cmp(_cmp)
     {
       // empty
     }
     
-    ArraySet(nat_t cap, Cmp && _cmp = Cmp())
-      : ArraySet(cap, SortingFlag::UNSORTED, _cmp)
+    GenArraySet(nat_t cap, Cmp && _cmp = Cmp())
+      : GenArraySet(cap, _cmp)
     {
       // empty
     }
     
-    ArraySet(Cmp && _cmp = Cmp())
-      : array(), cmp(_cmp), flag(SortingFlag::UNSORTED)
+    GenArraySet(const GenArraySet & a)
+      : ArraySetOp(array, a.cmp), array(a.array), cmp(a.cmp)
     {
       // empty
     }
     
-    ArraySet(const ArraySet & a)
-      : array(a.array), cmp(a.cmp), flag(a.flag)
-    {
-      // empty
-    }
-    
-    ArraySet(ArraySet && a)
-      : ArraySet()
+    GenArraySet(GenArraySet && a)
+      : GenArraySet()
     {
       swap(a);
     }
     
-    ArraySet(const std::initializer_list<Key> &);
+    GenArraySet(const std::initializer_list<Key> &);
 
-    ArraySet & operator = (const ArraySet & a)
+    GenArraySet & operator = (const GenArraySet & a)
     {
       if (&a == this)
 	return *this;
 
       array = a.array;
       cmp = a.cmp;
-      flag = a.flag;
 
       return *this;
     }
 
-    ArraySet & operator = (ArraySet && a)
+    GenArraySet & operator = (GenArraySet && a)
     {
       swap(a);
       return *this;
     }
     
-    void swap(ArraySet & a)
+    void swap(GenArraySet & a)
     {
       array.swap(a.array);
       std::swap(cmp, a.cmp);
-      std::swap(flag, a.flag);
     }
     
     Cmp & get_cmp()
@@ -918,14 +1136,6 @@ namespace Designar
     const Cmp & get_cmp() const
     {
       return cmp;
-    }
-    
-    bool is_sorted() const
-    {
-      if (flag == SortingFlag::SORTED)
-	return true;
-      
-      return array.template is_sorted<Cmp>(cmp);
     }
     
     bool is_empty() const
@@ -943,129 +1153,34 @@ namespace Designar
       array.clear();
     }
     
-    SortingFlag get_sorting_flag() const
-    {
-      return flag;
-    }
-    
-    Key * insert(const Key & item)
-    {
-      if (flag == SortingFlag::UNSORTED)
-	{
-	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	  
-	  if (pos < this->size())
-	    return nullptr;
-	  
-	  return &array.append(item);
-	}
-      else
-	return insert_sorted(item);
-    }
-    
-    Key * insert(Key && item)
-    {
-      if (flag == SortingFlag::UNSORTED)
-	{
-	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	  
-	  if (pos < this->size())
-	    return nullptr;
-	  
-	  return &array.append(std::forward<Key>(item));
-	}
-      else
-	return insert_sorted(std::forward<Key>(item));
-    }
-    
     Key * append(const Key & k)
     {
-      return insert(k);
+      return ArraySetOp::insert(k);
     }
     
     Key * append(Key && k)
     {
-      return insert(std::forward<Key>(k));
+      return ArraySetOp::insert(std::forward<Key>(k));
     }
-    
-    Key * search_or_insert(const Key & item)
-    {
-      if (flag == SortingFlag::UNSORTED)
-	{
-	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	  
-	  if (pos < this->size())
-	    return &array[pos];
-	  
-	  return &array.append(item);
-	}
-      else
-	{
-	  lint_t pos = binary_search(item, 0, this->size() - 1);
-	  
-	  if (pos == this->size())
-	    return &array.append(item);
-	  
-	  if (equal_key(item, array.select(pos)))
-	    return &array[pos];
-	  
-	  return &array.insert(pos, item);
-	}
-    }
-    
-    Key * search_or_insert(Key && item)
-    {
-      if (flag == SortingFlag::UNSORTED)
-	{
-	  lint_t pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-	  
-	  if (pos < this->size())
-	    return &array[pos];
-	  
-	  return &array.append(std::forward<Key>(item));
-	}
-      else
-	{
-	  lint_t pos = binary_search(item, 0, this->size() - 1);
-	  
-	  if (pos == this->size())
-	    return &array.append(std::forward<Key>(item));
-	  
-	  if (equal_key(item, array.select(pos)))
-	    return &array[pos];
-	  
-	  return &array.insert(pos, std::forward<Key>(item));
-	}
-    }      
     
     Key * search(const Key & item)
     {
-      lint_t pos;
+      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (flag == SortingFlag::UNSORTED)
-	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-      else
-	pos = binary_search(item, 0, lint_t(this->size()) - 1);
-      
-      if (pos >= this->size() or not_equal_key(item, array.select(pos)))
+      if (pos >= this->size() or not_equal_key(item, array.at(pos)))
 	return nullptr;
       
-      return &array.select(pos);
+      return &array.at(pos);
     }
     
     const Key * search(const Key & item) const
     {
-      lint_t pos;
+      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (flag == SortingFlag::UNSORTED)
-	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-      else
-	pos = binary_search(item, 0, lint_t(this->size()) - 1);
-      
-      if (pos >= this->size() or not_equal_key(item, array.select(pos)))
+      if (pos >= this->size() or not_equal_key(item, array.at(pos)))
 	return nullptr;
       
-      return &array.select(pos);
+      return &array.at(pos);
     }
     
     Key & find(const Key & item)
@@ -1083,36 +1198,16 @@ namespace Designar
 	throw std::domain_error("Item does not exist");
       return *result;
     }
-    
-    Key remove_pos(nat_t pos)
-    {
-      return array.remove_pos(pos);
-    }
-    
+
     bool remove(const Key & item)
     {
-      lint_t pos;
+      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (flag == SortingFlag::UNSORTED)
-	pos = sequential_search(item, 0, lint_t(this->size()) - 1);
-      else
-	pos = binary_search(item, 0, lint_t(this->size()) - 1);
-      
-      if (pos >= this->size() or not_equal_key(array.select(pos), item))
+      if (pos >= this->size() or not_equal_key(array.at(pos), item))
 	return false;
       
-      array.remove_pos(pos);
+      ArraySetOp::remove_pos(pos);
       return true;
-    }
-    
-    Key & select(nat_t i)
-    {
-      return array.select(i);
-    }
-    
-    const Key & select(nat_t i) const
-    {
-      return array.select(i);
     }
     
     Key & operator [] (nat_t i)
@@ -1136,13 +1231,13 @@ namespace Designar
 	// empty
       }
       
-      Iterator(const ArraySet & a)
+      Iterator(const GenArraySet & a)
 	: it(a.array)
       {
 	// empty
       }
       
-      Iterator(const ArraySet & a, nat_t c)
+      Iterator(const GenArraySet & a, nat_t c)
 	: it(a.array, c)
       {
 	// empty
@@ -1261,69 +1356,30 @@ namespace Designar
       return Iterator(*this, size());
     }
   };
-  
-  template <typename Key, class Cmp>
-  Key * ArraySet<Key, Cmp>::insert_sorted(const Key & item)
-  {
-    lint_t pos = binary_search(item, 0, this->size() - 1);
-    
-    if (pos == this->size())
-      return &array.append(item);
-    
-    if (equal_key(item, array.select(pos)))
-      return nullptr;
-    
-    return &array.insert(pos, item);
-  }
 
-  template <typename Key, class Cmp>
-  Key * ArraySet<Key, Cmp>::insert_sorted(Key && item)
-  {
-    lint_t pos = binary_search(item, 0, this->size() - 1);
-
-    if (pos == this->size())
-      return &array.append(std::forward<Key>(item));
-
-    if (equal_key(item, array.select(pos)))
-      return nullptr;
-
-    return &array.insert(pos, std::forward<Key>(item));
-  }
-
-  template <typename Key, class Cmp>
-  lint_t ArraySet<Key, Cmp>::
-  binary_search(const Key & k, lint_t l, lint_t r) const
-  {
-    if (l > r)
-      return l;
-
-    lint_t m = (l + r) / 2;
-
-    if (cmp(k, array.select(m)))
-      return binary_search(k, l, m - 1);
-    else if (cmp(array.select(m), k))
-      return binary_search(k, m + 1, r);
-
-    return m;
-  }
-
-  template <typename Key, class Cmp>
-  lint_t ArraySet<Key, Cmp>::
-  sequential_search(const Key & k, lint_t l, lint_t r) const
-  {
-    lint_t i = l;
-    while (i <= r and not_equal_key(k, array.select(i)))
-      ++i;
-    return i;
-  }
-
-  template <typename Key, class Cmp>
-  ArraySet<Key, Cmp>::ArraySet(const std::initializer_list<Key> & l)
-    : ArraySet(l.size())
+  template <typename Key, class Cmp, class ArraySetOp>
+  GenArraySet<Key, Cmp, ArraySetOp>::
+  GenArraySet(const std::initializer_list<Key> & l)
+    : GenArraySet(l.size())
   {
     for (const Key & item : l)
       append(item);
-  }
+  } 
+
+  template <typename Key, class Cmp = std::less<Key>>
+  class ArraySet : public GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>
+  {
+    using Base = GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>;
+    using Base::Base;
+  };
+
+  template <typename Key, class Cmp = std::less<Key>>
+  class SortedArraySet :
+    public GenArraySet<Key, Cmp, SortedArraySetOp<Key, Cmp>>
+  {
+    using Base = GenArraySet<Key, Cmp, SortedArraySetOp<Key, Cmp>>;
+    using Base::Base;
+  };
 
   template <typename T, nat_t N = 2>
   class MultiDimArray
@@ -1550,7 +1606,7 @@ namespace Designar
   
 
   template <class ArrayType, class Cmp>
-  inline void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
   {
     for (lint_t i = l + 1; i <= r; ++i)
       {
@@ -1611,7 +1667,7 @@ namespace Designar
   }
 
   template <typename ArrayType, class Cmp>
-  inline lint_t partition(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  lint_t partition(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
   {
     int pivot = select_pivot(a, l, r, cmp);
     
@@ -1640,7 +1696,7 @@ namespace Designar
   }
 
   template <typename ArrayType, class Cmp>
-  inline void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
   {
     if (l >= r)
       return;

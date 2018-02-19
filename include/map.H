@@ -52,63 +52,39 @@ namespace Designar
   }
 
   template <typename Key, typename Value>
-  Key & key(MapKey<Key, Value> & item)
+  auto key(const MapKey<Key, Value> & item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  const Key & key(const MapKey<Key, Value> & item)
+  auto key(MapKey<Key, Value> && item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  Key key(MapKey<Key, Value> && item)
+  auto key(const MapKey<Key, Value> * item_ptr)
   {
-    return item.first;
+    return key(*item_ptr);
   }
 
   template <typename Key, typename Value>
-  Key & key(MapKey<Key, Value> * item_ptr)
-  {
-    return item_ptr->first;
-  }
-
-  template <typename Key, typename Value>
-  const Key & key(const MapKey<Key, Value> * item_ptr)
-  {
-    return item_ptr->first;
-  }
-
-  template <typename Key, typename Value>
-  Value & value(MapKey<Key, Value> & item)
+  auto value(const MapKey<Key, Value> & item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  const Value & value(const MapKey<Key, Value> & item)
+  auto value(MapKey<Key, Value> && item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  Value value(MapKey<Key, Value> && item)
+  auto value(const MapKey<Key, Value> * item_ptr)
   {
-    return item.second;
-  }
-
-  template <typename Key, typename Value>
-  Value & value(MapKey<Key, Value> * item_ptr)
-  {
-    return item_ptr->second;
-  }
-
-  template <typename Key, typename Value>
-  const Value & value(const MapKey<Key, Value> * item_ptr)
-  {
-    return item_ptr->second;
+    return value(*item_ptr);
   }
   
   template <typename Key, typename Value, class Cmp>
@@ -363,14 +339,14 @@ namespace Designar
     using MapKey         = MapKey<Key, Value>;
 
   public:
-    ArrayMap(nat_t cap, typename BaseMap::SortingFlag f, Cmp & _cmp)
-      : BaseMap(cap, f, CmpWrapperType(_cmp))
+    ArrayMap(nat_t cap, Cmp & _cmp)
+      : BaseMap(cap, CmpWrapperType(_cmp))
     {
       // empty
     }
     
-    ArrayMap(typename BaseMap::SortingFlag f, Cmp && _cmp = Cmp())
-      : BaseMap(f, CmpWrapperType(std::forward<Cmp>(_cmp)))
+    ArrayMap(Cmp && _cmp = Cmp())
+      : BaseMap(CmpWrapperType(std::forward<Cmp>(_cmp)))
     {
       // empty
     }
@@ -381,12 +357,6 @@ namespace Designar
       // empty
     }
     
-    ArrayMap(Cmp && _cmp = Cmp())
-      : BaseMap(CmpWrapperType(std::forward<Cmp>(_cmp)))
-    {
-      // empty
-    }
-
     ArrayMap(const std::initializer_list<MapKey> & l)
       : BaseMap(l)
     {

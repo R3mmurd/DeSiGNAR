@@ -93,7 +93,7 @@ namespace Designar
   
   template <typename Key, class Cmp = std::less<Key>>
     class TreeSet : public ContainerAlgorithms<TreeSet<Key, Cmp>, Key>,
-		    public SetAlgorithms<TreeSet, Key, Cmp>
+		    public SetAlgorithms<TreeSet<Key, Cmp>, Key>
   {
   public:
     using Node = TreapRkNode<Key>;

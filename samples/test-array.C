@@ -67,14 +67,14 @@ int main()
   array.remove_first();
   assert(not array.is_empty());
   assert(array.size() == 12);
-  assert(array.get_first() == 2);
-  assert(array.get_last() == 13);
+  assert(array.get_first() == 13);
+  assert(array.get_last() == 12);
 
   array.remove_last();
   assert(not array.is_empty());
   assert(array.size() == 11);
-  assert(array.get_first() == 2);
-  assert(array.get_last() == 12);
+  assert(array.get_first() == 13);
+  assert(array.get_last() == 11);
 
   array.clear();
 
@@ -186,8 +186,7 @@ int main()
 
   assert(unsorted_array_set.equal({3,4,1,5,7}));
   
-  ArraySet<lint_t>
-    sorted_array_set(ArraySet<lint_t>::SortingFlag::SORTED);
+  SortedArraySet<lint_t> sorted_array_set;
 
   assert(sorted_array_set.insert(3) != nullptr);
   assert(sorted_array_set.insert(4) != nullptr);

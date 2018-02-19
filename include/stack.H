@@ -31,10 +31,10 @@
 namespace Designar
 {
 
-  template <typename T, nat_t cap = 100>
+  template <typename T, nat_t CAP = 100>
   class FixedStack
   {
-    T     array[cap];
+    T     array[CAP];
     nat_t num_items;
 
     void copy_stack(const FixedStack &);
@@ -94,7 +94,7 @@ namespace Designar
 
     bool is_full() const
     {
-      return num_items == cap;
+      return num_items == CAP;
     }
 
     void clear()
@@ -109,7 +109,7 @@ namespace Designar
 
     nat_t get_capacity() const
     {
-      return cap;
+      return CAP;
     }
 
     T & push(const T & item)
@@ -163,8 +163,8 @@ namespace Designar
     }
   };
 
-  template <typename T, nat_t cap>
-  void FixedStack<T, cap>::copy_stack(const FixedStack & s)
+  template <typename T, nat_t CAP>
+  void FixedStack<T, CAP>::copy_stack(const FixedStack & s)
   {
     for (nat_t i = 0; i < num_items; ++i)
       array[i] = s.array[i];

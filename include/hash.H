@@ -71,7 +71,7 @@ namespace Designar
 	    class Cmp = std::equal_to<Key>>
   class HashSet: private FixedArray<SLList<Key>>,
 		 public ContainerAlgorithms<HashSet<Key, Cmp>, Key>,
-		 public SetAlgorithms<HashSet, Key, Cmp>
+		 public SetAlgorithms<HashSet<Key, Cmp>, Key>
   {
     using List      = SLList<Key>;
     using BaseArray = FixedArray<List>;
@@ -303,7 +303,7 @@ namespace Designar
     {
       nat_t i = h(item);
 
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
 
       if (not list.is_empty() and search_in_list(list, item) != nullptr)
 	return nullptr;
@@ -317,14 +317,14 @@ namespace Designar
       resize(BaseArray::get_capacity() * 2);
       i = h(item);
       ++num_items;
-      return &BaseArray::get_item(i).insert(item);
+      return &BaseArray::at(i).insert(item);
     }
 
     Key * insert(Key && item)
     {
       nat_t i = h(item);
       
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
 
       if (not list.is_empty() and search_in_list(list, item) != nullptr)
 	return nullptr;
@@ -338,7 +338,7 @@ namespace Designar
       resize(BaseArray::get_capacity() * 2);
       i = h(item);
       ++num_items;
-      return &BaseArray::get_item(i).insert(std::forward<Key>(item));
+      return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
     Key * append(const Key & k)
@@ -356,7 +356,7 @@ namespace Designar
     {
       nat_t i = h(k);
 
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
       
       if (list.is_empty())
 	return nullptr;
@@ -368,7 +368,7 @@ namespace Designar
     {
       nat_t i = h(k);
 
-      const List & list = BaseArray::get_item(i);
+      const List & list = BaseArray::at(i);
       
       if (list.is_empty())
 	return nullptr;
@@ -380,7 +380,7 @@ namespace Designar
     {
       nat_t i = h(item);
 
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
 
       if (not list.is_empty())
 	{
@@ -399,14 +399,14 @@ namespace Designar
       resize(BaseArray::get_capacity() * 2);
       i = h(item);
       ++num_items;
-      return &BaseArray::get_item(i).insert(item);
+      return &BaseArray::at(i).insert(item);
     }
 
     Key * search_or_insert(Key && item)
     {
       nat_t i = h(item);
       
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
 
       if (not list.is_empty())
 	{
@@ -425,7 +425,7 @@ namespace Designar
       resize(BaseArray::get_capacity() * 2);
       i = h(item);
       ++num_items;
-      return &BaseArray::get_item(i).insert(std::forward<Key>(item));
+      return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
     Key & find(const Key & k)
@@ -452,7 +452,7 @@ namespace Designar
     {
       nat_t i = h(k);
       
-      List & list = BaseArray::get_item(i);
+      List & list = BaseArray::at(i);
       
       if (list.is_empty())
 	return false;
@@ -644,7 +644,7 @@ namespace Designar
   void HashSet<Key, Cmp>::clear_lists()
   {
     for (nat_t i = 0; i < BaseArray::get_capacity(); ++i)
-      BaseArray::get_item(i).clear();
+      BaseArray::at(i).clear();
   }
     
   template <typename Key, class Cmp>
@@ -676,23 +676,23 @@ namespace Designar
       {
 	set_pos = i;
 
-	while (i > 0 and set_ptr->get_item(i - 1).is_empty())
+	while (i > 0 and set_ptr->at(i - 1).is_empty())
 	  --i;
 
 	if (i > 0)
-	  list_it = set_ptr->get_item(i - 1).end();
+	  list_it = set_ptr->at(i - 1).end();
 	
 	return;
       }
     
     while (i < set_ptr->get_capacity() and
-	   set_ptr->get_item(i).is_empty())
+	   set_ptr->at(i).is_empty())
       ++i;
 
     if (i < set_ptr->get_capacity())
       {
-	assert(not set_ptr->get_item(i).is_empty());
-	list_it = set_ptr->get_item(i).begin();
+	assert(not set_ptr->at(i).is_empty());
+	list_it = set_ptr->at(i).begin();
       }
 
     set_pos = i;

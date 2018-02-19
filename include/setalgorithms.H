@@ -32,11 +32,9 @@ namespace Designar
 {
   template <class T> class SLList;
   
-  template <template <typename, class> class Set,
-	    typename Key, class Cmp>
+  template <class SetType, typename Key>
   class SetAlgorithms
   {
-    using SetType = Set<Key, Cmp>;
     
     SetType & me()
     {

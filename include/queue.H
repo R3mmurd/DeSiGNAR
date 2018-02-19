@@ -31,10 +31,10 @@
 namespace Designar
 {
 
-  template <typename T, nat_t cap = 100>
+  template <typename T, nat_t CAP = 100>
   class FixedQueue
   {
-    T     array[cap];
+    T     array[CAP];
     nat_t num_items;
     nat_t f;
     nat_t r;
@@ -57,7 +57,7 @@ namespace Designar
     using SizeType  = nat_t;
 
     FixedQueue()
-      : num_items(0), f(0), r(cap - 1)
+      : num_items(0), f(0), r(CAP - 1)
     {
       // empty
     }
@@ -100,7 +100,7 @@ namespace Designar
 
     bool is_full() const
     {
-      return num_items == cap;
+      return num_items == CAP;
     }
 
     nat_t size() const
@@ -110,14 +110,14 @@ namespace Designar
 
     nat_t get_capacity() const
     {
-      return cap;
+      return CAP;
     }
 
     void clear()
     {
       num_items = 0;
       f = 0;
-      r = cap - 1;
+      r = CAP - 1;
     }
 
     T & front()
@@ -157,7 +157,7 @@ namespace Designar
       if (is_full())
 	throw std::overflow_error("Queue is full");
       
-      r = (r + 1) % cap;
+      r = (r + 1) % CAP;
       array[r] = item;
       ++num_items;
       return array[r];
@@ -168,7 +168,7 @@ namespace Designar
       if (is_full())
 	throw std::overflow_error("Queue is full");
       
-      r = (r + 1) % cap;
+      r = (r + 1) % CAP;
       array[r] = std::move(item);
       ++num_items;
       return array[r];
@@ -180,21 +180,21 @@ namespace Designar
 	throw std::underflow_error("Queue is empty");
 
       T ret_val = std::move(array[f]);
-      f = (f + 1) % cap;
+      f = (f + 1) % CAP;
       --num_items;
       return ret_val;
     }
   };
 
-  template <typename T, nat_t cap>
-  void FixedQueue<T, cap>::copy_queue(const FixedQueue & q)
+  template <typename T, nat_t CAP>
+  void FixedQueue<T, CAP>::copy_queue(const FixedQueue & q)
   {
     nat_t ii = q.f;
     
     for (nat_t i = 0; i < num_items; ++i)
       {
 	array[i] = q.array[ii];
-	ii = (ii + 1) % cap;
+	ii = (ii + 1) % CAP;
       }
 
     f = 0;
@@ -319,7 +319,7 @@ namespace Designar
       if (is_empty())
 	throw std::underflow_error("Queue is empty");
 
-      return BaseArray::get_item(f);
+      return BaseArray::at(f);
     }
     
     const T & front() const
@@ -327,7 +327,7 @@ namespace Designar
       if (is_empty())
 	throw std::underflow_error("Queue is empty");
 
-      return BaseArray::get_item(f);
+      return BaseArray::at(f);
     }
 
     T & rear()
@@ -335,7 +335,7 @@ namespace Designar
       if (is_empty())
 	throw std::underflow_error("Queue is empty");
 
-      return BaseArray::get_item(r);
+      return BaseArray::at(r);
     }
     
     const T & rear() const
@@ -343,25 +343,25 @@ namespace Designar
       if (is_empty())
 	throw std::underflow_error("Queue is empty");
 
-      return BaseArray::get_item(r);
+      return BaseArray::at(r);
     }
 
     T & put(const T & item)
     {
       r = (r + 1) % BaseArray::get_capacity();
-      BaseArray::set_item(r, item);
+      BaseArray::at(r) = item;
       ++num_items;
       resize_up();
-      return BaseArray::get_item(r);
+      return BaseArray::at(r);
     }
 
     T & put(T && item)
     {
       r = (r + 1) % BaseArray::get_capacity();
-      BaseArray::set_item(r, std::forward<T>(item));
+      BaseArray::at(r) = std::move(item);
       ++num_items;
       resize_up();
-      return BaseArray::get_item(r);
+      return BaseArray::at(r);
     }
 
     T get()
@@ -369,7 +369,7 @@ namespace Designar
       if (is_empty())
 	throw std::underflow_error("Queue is empty");
 
-      T ret_val = std::move(BaseArray::get_item(f));
+      T ret_val = std::move(BaseArray::at(f));
       f = (f + 1) % BaseArray::get_capacity();
       --num_items;
       resize_down();
@@ -384,7 +384,7 @@ namespace Designar
     
     for (nat_t i = 0; i < num_items; ++i)
       {
-	BaseArray::set_item(i, q.get_item(ii));
+	BaseArray::at(i) = q.at(ii);
 	ii = (ii + 1) % BaseArray::get_capacity();
       }
     
@@ -404,7 +404,7 @@ namespace Designar
     
     for (nat_t i = 0; i < num_items; ++i)
       {
-	new_array.set_item(i, BaseArray::get_item(ii));
+	new_array.at(i) = BaseArray::at(ii);
 	ii = (ii + 1) % BaseArray::get_capacity();
       }
 

@@ -88,6 +88,7 @@ namespace Designar
     {
       assert(p != nullptr);
       assert(p->is_empty());
+      p->next = next;
       next = p;
     }
 
