@@ -52,37 +52,49 @@ namespace Designar
   }
 
   template <typename Key, typename Value>
-  auto key(const MapKey<Key, Value> & item)
+  Key & key(MapKey<Key, Value> & item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  auto key(MapKey<Key, Value> && item)
+  const Key & key(const MapKey<Key, Value> & item)
   {
     return item.first;
   }
 
   template <typename Key, typename Value>
-  auto key(const MapKey<Key, Value> * item_ptr)
+  Key key(MapKey<Key, Value> && item)
+  {
+    return item.first;
+  }
+
+  template <typename Key, typename Value>
+  Key & key(MapKey<Key, Value> * item_ptr)
   {
     return key(*item_ptr);
   }
 
   template <typename Key, typename Value>
-  auto value(const MapKey<Key, Value> & item)
+  Value & value(MapKey<Key, Value> & item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  auto value(MapKey<Key, Value> && item)
+  const Value & value(const MapKey<Key, Value> & item)
   {
     return item.second;
   }
 
   template <typename Key, typename Value>
-  auto value(const MapKey<Key, Value> * item_ptr)
+  Value value(MapKey<Key, Value> && item)
+  {
+    return item.second;
+  }
+
+  template <typename Key, typename Value>
+  Value & value(MapKey<Key, Value> * item_ptr)
   {
     return value(*item_ptr);
   }
