@@ -616,7 +616,7 @@ namespace Designar
   }
 
   template <typename T>
-  class DLList : public DLNode<T>,
+  class DLList : public DL,
 		 public ContainerAlgorithms<DLList<T>, T>
   {
     using Node = DLNode<T>;
@@ -635,7 +635,7 @@ namespace Designar
     using SizeType  = nat_t;
     
     DLList()
-      : Node(), num_items(0)
+      : DL(), num_items(0)
     {
       // empty
     }
@@ -712,7 +712,7 @@ namespace Designar
       if (Node::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return Node::get_next()->get_item();
+      return static_cast<Node *>(DL::get_next())->get_item();
     }
     
     const T & get_first() const
@@ -720,7 +720,7 @@ namespace Designar
       if (Node::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return Node::get_next()->get_item();
+      return static_cast<Node *>(DL::get_next())->get_item();
     }
 
     T & get_last()
@@ -728,7 +728,7 @@ namespace Designar
       if (Node::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return Node::get_prev()->get_item();
+      return static_cast<Node *>(DL::get_prev())->get_item();
     }
     
     const T & get_last() const
@@ -736,15 +736,15 @@ namespace Designar
       if (Node::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return Node::get_prev()->get_item();
+      return static_cast<Node *>(DL::get_prev())->get_item();
     }
 
     T remove_first()
     {
-      if (Node::is_empty())
+      if (DL::is_empty())
 	throw std::underflow_error("List is empty");
       
-      Node * node = Node::remove_next();
+      Node * node = static_cast<Node *>(DL::remove_next());
       T ret_val = std::move(node->get_item());
       delete node;
       --num_items;
@@ -756,7 +756,7 @@ namespace Designar
       if (Node::is_empty())
 	throw std::underflow_error("List is empty");
       
-      Node * node = Node::remove_prev();
+      Node * node = static_cast<Node *>(DL::remove_prev());;
       T ret_val = std::move(node->get_item());
       delete node;
       --num_items;
@@ -977,9 +977,9 @@ namespace Designar
   template <typename T>
   void DLList<T>::copy_list(const DLList & l)
   {
-    Node * node = const_cast<DLList &>(l).get_next();
+    Node * node = static_cast<Node *>(const_cast<DLList &>(l).get_next());
     
-    while (node != &l)
+    while ((DL *)node != &l)
       {
 	append(node->get_item());
 	node = node->get_next();
@@ -1147,6 +1147,19 @@ namespace Designar
 
   template <typename T, class Cmp = std::less<T>>
   inline void quicksort(DLNode<T> & l, Cmp && cmp = Cmp())
+  {
+    quicksort<T, Cmp>(l, cmp);
+  }
+
+  template <typename T, class Cmp>
+  inline void quicksort(DLList<T> & l, Cmp & cmp)
+  {
+    KeyCmp<T, Cmp> key_cmp(cmp);
+    quicksort<KeyCmp<T, Cmp>>(l, key_cmp);
+  }
+
+  template <typename T, class Cmp = std::less<T>>
+  inline void quicksort(DLList<T> & l, Cmp && cmp = Cmp())
   {
     quicksort<T, Cmp>(l, cmp);
   }
