@@ -47,31 +47,6 @@ namespace Designar
     }
 
   public:
-    SetAlgorithms()
-    {
-      // empty
-    }
-
-    SetAlgorithms(const SetAlgorithms &)
-    {
-      // empty
-    }
-    
-    SetAlgorithms(SetAlgorithms &&)
-    {
-      // empty
-    }
-
-    SetAlgorithms & operator = (const SetAlgorithms &)
-    {
-      return *this;
-    }
-
-    SetAlgorithms & operator = (SetAlgorithms &&)
-    {
-      return *this;
-    }
-
     bool contains(const Key & k) const
     {
       return const_me().search(k) != nullptr;

@@ -43,31 +43,6 @@ namespace Designar
     }
 
   public:
-    ContainerAlgorithms()
-    {
-      // empty
-    }
-
-    ContainerAlgorithms(const ContainerAlgorithms &)
-    {
-      // empty
-    }
-    
-    ContainerAlgorithms(ContainerAlgorithms &&)
-    {
-      // empty
-    }
-
-    ContainerAlgorithms & operator = (const ContainerAlgorithms &)
-    {
-      return *this;
-    }
-
-    ContainerAlgorithms & operator = (ContainerAlgorithms &&)
-    {
-      return *this;
-    }
-    
     T * nth_ptr(nat_t i)
     {
       return nth_ptr_it<T>(me().begin(), me().end(), i);
