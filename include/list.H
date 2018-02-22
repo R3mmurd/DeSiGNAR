@@ -788,9 +788,9 @@ namespace Designar
       return *this;
     }
 
-    class Iterator : public Node::Iterator
+    class Iterator : public DL::Iterator
     {
-      using Base = typename Node::Iterator;
+      using Base = DL::Iterator;
       
       DLList * list_ptr;
       lint_t   pos;
@@ -861,12 +861,12 @@ namespace Designar
 
       T & get_current()
       {
-	return Base::get_current()->get_item();
+	return static_cast<Node *>(Base::get_current())->get_item();
       }
 
       const T & get_current() const
       {
-	return Base::get_current()->get_item();
+	return static_cast<Node *>(Base::get_current())->get_item();
       }
 
       void reset_last()
@@ -877,7 +877,7 @@ namespace Designar
 
       T del()
       {
-	Node * p = Base::del();
+	Node * p = static_cast<Node *>(Base::del());
 	T ret_val = std::move(p->get_item());
 	delete p;
 	--list_ptr->num_items;
