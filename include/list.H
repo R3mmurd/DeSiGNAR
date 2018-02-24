@@ -119,7 +119,7 @@ namespace Designar
       return head;
     }
 
-    const Node *& get_first() const
+    const Node * get_first() const
     {
       return head;
     }
@@ -129,7 +129,7 @@ namespace Designar
       return tail;
     }
 
-    const Node *& get_last() const
+    const Node * get_last() const
     {
       return tail;
     }
