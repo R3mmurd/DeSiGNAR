@@ -253,12 +253,12 @@ namespace Designar
     {
       return insert(std::forward<Key>(k), std::forward<Value>(v));
     }
-    
+
     Value * search(const Key & k)
     {
       MapKey p = map_key(k, Value());
       
-      MapKey * result = BaseSet::search(std::move(p));
+      MapKey * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -270,7 +270,7 @@ namespace Designar
     {
       MapKey p = map_key(std::forward<Key>(k), Value());
       
-      MapKey * result = BaseSet::search(std::move(p));
+      MapKey * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -278,16 +278,62 @@ namespace Designar
       return &result->second;
     }
     
-    Value * search_or_insert(const Key & k)
+    const Value * search(const Key & k) const
     {
       MapKey p = map_key(k, Value());
+      
+      const MapKey * result = BaseSet::search(p);
+      
+      if (result == nullptr)
+	return nullptr;
+      
+      return &result->second;
+    }
+    
+    const Value * search(Key && k) const
+    {
+      MapKey p = map_key(std::forward<Key>(k), Value());
+      
+      const MapKey * result = BaseSet::search(p);
+      
+      if (result == nullptr)
+	return nullptr;
+      
+      return &result->second;
+    }
+
+    Value * search_or_insert(const Key & k, const Value & v)
+    {
+      MapKey p = map_key(k, v);
       return &BaseSet::search_or_insert(std::move(p))->second;
+    }
+    
+    Value * search_or_insert(Key && k, const Value & v)
+    {
+      MapKey p = map_key(std::forward<Key>(k), v);
+      return &BaseSet::search_or_insert(std::move(p))->second;
+    }
+
+    Value * search_or_insert(const Key & k, Value && v)
+    {
+      MapKey p = map_key(k, std::forward<Value>(v));
+      return &BaseSet::search_or_insert(std::move(p))->second;
+    }
+    
+    Value * search_or_insert(Key && k, Value && v)
+    {
+      MapKey p = map_key(std::forward<Key>(k), std::forward<Value>(v));
+      return &BaseSet::search_or_insert(std::move(p))->second;
+    }
+    
+    Value * search_or_insert(const Key & k)
+    {
+      return search_or_insert(k, Value());
     }
     
     Value * search_or_insert(Key && k)
     {
-      MapKey p = map_key(std::forward<Key>(k), Value());
-      return &BaseSet::search_or_insert(std::move(p))->second;
+      return search_or_insert(std::forward<Key>(k), Value());;
     }
     
     Value & find(const Key & k)
@@ -386,6 +432,21 @@ namespace Designar
     {
       BaseMap::swap(map);
     }
+
+    ArrayMap & operator = (const ArrayMap & m)
+    {
+      if (this == &m)
+	return *this;
+
+      (BaseMap &) *this = m;
+      return *this;
+    }
+
+    ArrayMap & operator = (ArrayMap && m)
+    {
+      BaseMap::swap(m);
+      return *this;
+    }
   };
 
   template <typename Key, typename Value, class Cmp = std::less<Key>>
@@ -438,6 +499,21 @@ namespace Designar
       : TreeMap()
     {
       BaseMap::swap(map);
+    }
+
+    TreeMap & operator = (const TreeMap & m)
+    {
+      if (this == &m)
+	return *this;
+
+      (BaseMap &) *this = m;
+      return *this;
+    }
+
+    TreeMap & operator = (TreeMap && m)
+    {
+      BaseMap::swap(m);
+      return *this;
     }
   };
 
@@ -502,6 +578,22 @@ namespace Designar
       : HashMap()
     {
       swap(map);
+    }
+
+    HashMap & operator = (const HashMap & m)
+    {
+      if (this == &m)
+	return *this;
+
+      (BaseMap &) *this = m;
+      fct = m.fct;
+      return *this;
+    }
+
+    HashMap & operator = (HashMap && m)
+    {
+      swap(m);
+      return *this;
     }
 
     void swap(HashMap & map)
