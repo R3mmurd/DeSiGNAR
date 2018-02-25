@@ -240,7 +240,7 @@ namespace Designar
 	return *this;
 
       clear();
-      copy(t);
+      root = copy(t.root);
       cmp = t.cmp;
       return *this;
     }
