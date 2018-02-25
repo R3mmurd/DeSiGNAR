@@ -29,8 +29,35 @@
 
 namespace Designar
 {
+  template <typename T> class DynArray;
+  
+  template <typename ContainerType = DynArray<std::string>>
+  ContainerType split_string(const std::string &, const std::string &);
+  
   template <typename T>
   std::string to_str(const T &);
+
+  template <typename ContainerType>
+  ContainerType split_string(const std::string & str, const std::string & sep)
+  {
+    ContainerType ss;
+
+    size_t sep_sz = sep.size();
+
+    size_t beg = 0;
+    size_t end = str.find(sep);
+
+    while (end != std::string::npos)
+      {
+	ss.append(str.substr(beg, end - beg));
+	beg = end + sep_sz;
+	end = str.find(sep, beg);
+      }
+
+    ss.append(str.substr(beg, str.size() - beg));
+
+    return ss;
+  }
 
   template <typename T>
   std::string to_str(const T & value)
@@ -39,6 +66,7 @@ namespace Designar
     sstr << value;
     return sstr.str();
   }
-}
+  
+} // end namespace Designar
 
 # endif // DSGSTRINGUTILITIES_H
