@@ -387,7 +387,7 @@ namespace Designar
     out << bit_array.size() << ' ' << num_bits << ' ';
 
     for (nat_t i = 0; i < bit_array.size(); ++i)
-      out << (unsigned int)bit_array[i].to_num() << ' ';
+      out << bit_array[i].to_num() << ' ';
     out << '\n';
   }
   
