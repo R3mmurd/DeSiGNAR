@@ -119,9 +119,9 @@ namespace Designar
       return head;
     }
 
-    const Node * get_first() const
+    const Node *& get_first() const
     {
-      return head;
+      return (const Node *&) head;
     }
 
     Node *& get_last()
@@ -129,9 +129,9 @@ namespace Designar
       return tail;
     }
 
-    const Node * get_last() const
+    const Node *& get_last() const
     {
-      return tail;
+      return (const Node *&) tail;
     }
 
     Node * remove_first()

@@ -36,7 +36,7 @@ namespace Designar
   {
     using Vertex = DLNode<PointT>;
 
-    static Vertex * dl_to_vertex(DL *& v)
+    static Vertex * dl_to_vertex(DL * v)
     {
       return static_cast<Vertex *>(v);
     }
