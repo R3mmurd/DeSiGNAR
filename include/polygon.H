@@ -185,12 +185,12 @@ namespace Designar
 
       PointT & get_current()
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return dl_to_vertex(Base::get_current())->get_item();
       }
 
       const PointT & get_current() const
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return dl_to_vertex(Base::get_current())->get_item();
       }
 
       void del()
@@ -198,7 +198,7 @@ namespace Designar
 	if (not Base::has_current())
 	  throw std::overflow_error("There is not current element");
 
-	Vertex * v = dl_to_node(Base::get_current());
+	Vertex * v = dl_to_vertex(Base::get_current());
 	Base::next();
 	--p_ptr->num_vertices;
 	v->del();
