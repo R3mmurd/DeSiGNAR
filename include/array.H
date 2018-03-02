@@ -1513,7 +1513,7 @@ namespace Designar
 
     nat_t size(nat_t i) const
     {
-      slice.extents()[i];
+      return slice.extents()[i];
     }
 
     template <typename... Dims>
