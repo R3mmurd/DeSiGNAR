@@ -84,6 +84,11 @@ namespace Designar
       return next;
     }
 
+    const SLNode *& get_next() const
+    {
+      return next;
+    }
+
     void insert_next(SLNode * p)
     {
       assert(p != nullptr);
@@ -164,9 +169,19 @@ namespace Designar
       return next;
     }
 
+    const DL *& get_next() const
+    {
+      return (const DL *&) next;
+    }
+
     DL *& get_prev()
     {
       return prev;
+    }
+
+    const DL *& get_prev() const
+    {
+      return (const DL *&) prev;
     }
 
     void insert_next(DL * node)
@@ -474,9 +489,19 @@ namespace Designar
       return (DLNode *&) DL::get_next();
     }
 
+    const DLNode *& get_next() const
+    {
+      return (const DLNode *&) DL::get_next();
+    }
+
     DLNode *& get_prev()
     {
       return (DLNode *&) DL::get_prev();
+    }
+
+    const DLNode *& get_prev() const
+    {
+      return (const DLNode *) DL::get_prev();
     }
 
     DLNode * remove_next()
