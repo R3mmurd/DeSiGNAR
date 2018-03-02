@@ -166,7 +166,7 @@ namespace Designar
   class GenMap : public Set<MapKey<Key, Value>, CmpWrapper<Key, Value, Cmp>>
   {
     using BaseSet        = Set<MapKey<Key, Value>, CmpWrapper<Key, Value, Cmp>>;
-    using MapKey         = MapKey<Key, Value>;
+    using Item           = MapKey<Key, Value>;
 
     using BaseSet::BaseSet;
 
@@ -188,9 +188,9 @@ namespace Designar
     
     Value * insert(const Key & k, const Value & v)
     {
-      MapKey p = map_key(k, v);
+      Item p = map_key(k, v);
       
-      MapKey * result = BaseSet::insert(std::move(p));
+      Item * result = BaseSet::insert(std::move(p));
       
       if (result == nullptr)
 	return nullptr;
@@ -200,9 +200,9 @@ namespace Designar
     
     Value * insert(Key && k, const Value & v)
     {
-      MapKey p = map_key(std::forward<Key>(k), v);
+      Item p = map_key(std::forward<Key>(k), v);
       
-      MapKey * result = BaseSet::insert(std::move(p));
+      Item * result = BaseSet::insert(std::move(p));
       
       if (result == nullptr)
 	return nullptr;
@@ -212,9 +212,9 @@ namespace Designar
     
     Value * insert(const Key & k, Value && v)
     {
-      MapKey p = map_key(k, std::forward<Value>(v));
+      Item p = map_key(k, std::forward<Value>(v));
       
-      MapKey * result = BaseSet::insert(std::move(p));
+      Item * result = BaseSet::insert(std::move(p));
       
       if (result == nullptr)
 	return nullptr;
@@ -224,9 +224,9 @@ namespace Designar
     
     Value * insert(Key && k, Value && v)
     {
-      MapKey p = map_key(std::forward<Key>(k), std::forward<Value>(v));
+      Item p = map_key(std::forward<Key>(k), std::forward<Value>(v));
       
-      MapKey * result = BaseSet::insert(std::move(p));
+      Item * result = BaseSet::insert(std::move(p));
       
       if (result == nullptr)
 	return nullptr;
@@ -256,9 +256,9 @@ namespace Designar
 
     Value * search(const Key & k)
     {
-      MapKey p = map_key(k, Value());
+      Item p = map_key(k, Value());
       
-      MapKey * result = BaseSet::search(p);
+      Item * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -268,9 +268,9 @@ namespace Designar
     
     Value * search(Key && k)
     {
-      MapKey p = map_key(std::forward<Key>(k), Value());
+      Item p = map_key(std::forward<Key>(k), Value());
       
-      MapKey * result = BaseSet::search(p);
+      Item * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -280,9 +280,9 @@ namespace Designar
     
     const Value * search(const Key & k) const
     {
-      MapKey p = map_key(k, Value());
+      Item p = map_key(k, Value());
       
-      const MapKey * result = BaseSet::search(p);
+      const Item * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -292,9 +292,9 @@ namespace Designar
     
     const Value * search(Key && k) const
     {
-      MapKey p = map_key(std::forward<Key>(k), Value());
+      Item p = map_key(std::forward<Key>(k), Value());
       
-      const MapKey * result = BaseSet::search(p);
+      const Item * result = BaseSet::search(p);
       
       if (result == nullptr)
 	return nullptr;
@@ -304,25 +304,25 @@ namespace Designar
 
     Value * search_or_insert(const Key & k, const Value & v)
     {
-      MapKey p = map_key(k, v);
+      Item p = map_key(k, v);
       return &BaseSet::search_or_insert(std::move(p))->second;
     }
     
     Value * search_or_insert(Key && k, const Value & v)
     {
-      MapKey p = map_key(std::forward<Key>(k), v);
+      Item p = map_key(std::forward<Key>(k), v);
       return &BaseSet::search_or_insert(std::move(p))->second;
     }
 
     Value * search_or_insert(const Key & k, Value && v)
     {
-      MapKey p = map_key(k, std::forward<Value>(v));
+      Item p = map_key(k, std::forward<Value>(v));
       return &BaseSet::search_or_insert(std::move(p))->second;
     }
     
     Value * search_or_insert(Key && k, Value && v)
     {
-      MapKey p = map_key(std::forward<Key>(k), std::forward<Value>(v));
+      Item p = map_key(std::forward<Key>(k), std::forward<Value>(v));
       return &BaseSet::search_or_insert(std::move(p))->second;
     }
     
@@ -338,31 +338,31 @@ namespace Designar
     
     Value & find(const Key & k)
     {
-      MapKey p = map_key(k, Value());
+      Item p = map_key(k, Value());
       return BaseSet::find(std::move(p)).second;
     }
     
     const Value & find(const Key & k) const
     {
-      MapKey p = map_key(k, Value());
+      Item p = map_key(k, Value());
       return BaseSet::find(std::move(p)).second;
     }
     
     Value & find(Key && k)
     {
-      MapKey p = map_key(std::forward<Key>(k), Value());
+      Item p = map_key(std::forward<Key>(k), Value());
       return BaseSet::find(std::move(p)).second;
     }
     
     const Value & find(Key && k) const
     {
-      MapKey p = map_key(std::forward<Key>(k), Value());
+      Item p = map_key(std::forward<Key>(k), Value());
       return BaseSet::find(std::move(p)).second;
     }
     
     bool remove(const Key & k)
     {
-      MapKey p = map_key(k, Value());
+      Item p = map_key(k, Value());
       return BaseSet::remove(p);
     }
     
@@ -394,7 +394,7 @@ namespace Designar
 				   CmpWrapper<Key, Value, Cmp>>;
     using BaseMap        = GenMap<ArraySet, Key, Value, Cmp>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
-    using MapKey         = MapKey<Key, Value>;
+    using Item           = MapKey<Key, Value>;
 
   public:
     ArrayMap(nat_t cap, Cmp & _cmp)
@@ -415,7 +415,7 @@ namespace Designar
       // empty
     }
     
-    ArrayMap(const std::initializer_list<MapKey> & l)
+    ArrayMap(const std::initializer_list<Item> & l)
       : BaseMap(l)
     {
       // empty
@@ -456,7 +456,7 @@ namespace Designar
 				   CmpWrapper<Key, Value, Cmp>>;
     using BaseMap        = GenMap<TreeSet, Key, Value, Cmp>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
-    using MapKey         = MapKey<Key, Value>;
+    using Item           = MapKey<Key, Value>;
 
   public:
     TreeMap(rng_seed_t seed, Cmp & _cmp)
@@ -483,7 +483,7 @@ namespace Designar
       // empty
     }
 
-    TreeMap(const std::initializer_list<MapKey> & l)
+    TreeMap(const std::initializer_list<Item> & l)
       : BaseMap(l)
     {
       // empty
@@ -532,8 +532,8 @@ namespace Designar
     using HashFctPtr     = nat_t (*) (const Key &);
     using HashFctType    = std::function<nat_t(const Key &)>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
-    using MapKey         = MapKey<Key, Value>;
-    using BaseHash       = HashSet<MapKey, CmpWrapperType>;
+    using Item           = MapKey<Key, Value>;
+    using BaseHash       = HashSet<Item, CmpWrapperType>;
     
     HashFctType fct;
 
@@ -566,7 +566,7 @@ namespace Designar
 	// empty
     }
 
-    HashMap(const std::initializer_list<MapKey> &);
+    HashMap(const std::initializer_list<Item> &);
 
     HashMap(const HashMap & map)
       : BaseMap(map), fct(map.fct)
@@ -614,7 +614,7 @@ namespace Designar
   };
   
   template <typename Key, typename Value, class Cmp>
-  HashMap<Key, Value, Cmp>::HashMap(const std::initializer_list<MapKey> & l)
+  HashMap<Key, Value, Cmp>::HashMap(const std::initializer_list<Item> & l)
     : HashMap(l.size())
   {
     for (const auto & item : l)
