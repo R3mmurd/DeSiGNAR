@@ -123,16 +123,16 @@ namespace Designar
   class Path
   {
   public:
-    using Node = Node<GT>;
-    using Arc  = Arc<GT>;
+    using NodeType = Node<GT>;
+    using ArcType  = Arc<GT>;
 
   private:
     struct PathDesc
     {
-      Node * node;
-      Arc  * arc;
+      NodeType * node;
+      ArcType  * arc;
 
-      PathDesc(Node * _node = nullptr, Arc * _arc = nullptr)
+      PathDesc(NodeType * _node = nullptr, ArcType * _arc = nullptr)
         : node(_node), arc(_arc)
       {
         // Empty
@@ -182,14 +182,14 @@ namespace Designar
       return *ptr_owner_graph;
     }
 
-    void init(Node & start)
+    void init(NodeType & start)
     {
       test_for_graph();
       list.clear();
       list.append(PathDesc(&start));
     }
 
-    void set(GT & graph, Node * ptr_start = nullptr)
+    void set(GT & graph, NodeType * ptr_start = nullptr)
     {
       clear();
 
@@ -204,7 +204,7 @@ namespace Designar
       list.clear();
     }
 
-    void insert(Arc & arc)
+    void insert(ArcType & arc)
     {
       test_for_graph();
       
@@ -213,12 +213,12 @@ namespace Designar
 
       PathDesc & first = list.get_first();
 
-      Node & prev_node = arc.get_connected_node(*first.node);
+      NodeType & prev_node = arc.get_connected_node(*first.node);
 
       list.insert(PathDesc(&prev_node, &arc));
     }
 
-    void insert(Node & s)
+    void insert(NodeType & s)
     {
       test_for_graph();
       
@@ -230,7 +230,7 @@ namespace Designar
 
       PathDesc & first = list.get_first();
 
-      Arc * ptr_arc = ptr_owner_graph->search_arc(s, *first.node);
+      ArcType * ptr_arc = ptr_owner_graph->search_arc(s, *first.node);
 
       if (ptr_arc == nullptr)
 	throw std::logic_error("There is not arc between last and current node");
@@ -238,7 +238,7 @@ namespace Designar
       list.insert(PathDesc(&s, ptr_arc));
     }
 
-    void append(Arc & arc)
+    void append(ArcType & arc)
     {
       test_for_graph();
       
@@ -249,12 +249,12 @@ namespace Designar
 
       last.arc = &arc;
 
-      Node & next_node = arc.get_connected_node(*last.node);
+      NodeType & next_node = arc.get_connected_node(*last.node);
 
       list.append(PathDesc(&next_node));
     }
 
-    void append(Node & t)
+    void append(NodeType & t)
     {
       test_for_graph();
       
@@ -266,7 +266,7 @@ namespace Designar
 
       PathDesc & last = list.get_last();
 
-      Arc * ptr_arc = ptr_owner_graph->search_arc(*last.node, t);
+      ArcType * ptr_arc = ptr_owner_graph->search_arc(*last.node, t);
 
       if (ptr_arc == nullptr)
         throw std::logic_error("There is not arc between last and current node");
@@ -289,7 +289,7 @@ namespace Designar
 	list.get_last().arc = nullptr;
     }
 
-    Node & get_last_node()
+    NodeType & get_last_node()
     {
       test_for_graph();
       
@@ -299,7 +299,7 @@ namespace Designar
       return *list.get_last().node;
     }
 
-    const Node & get_last_node() const
+    const NodeType & get_last_node() const
     {
       test_for_graph();
       
@@ -309,7 +309,7 @@ namespace Designar
       return *list.get_last().node;
     }
 
-    Node & get_first_node()
+    NodeType & get_first_node()
     {
       if (list.is_empty())
         throw std::underflow_error("Path is empty");
@@ -317,7 +317,7 @@ namespace Designar
       return *list.get_first().node;
     }
     
-    const Node & get_first_node() const
+    const NodeType & get_first_node() const
     {
       if (list.is_empty())
         throw std::underflow_error("Path is empty");
@@ -325,7 +325,7 @@ namespace Designar
       return *list.get_first().node;
     }
 
-    Arc & get_last_arc()
+    ArcType & get_last_arc()
     {
       if (list.is_empty())
         throw std::overflow_error("Path is empty");
@@ -340,7 +340,7 @@ namespace Designar
       return *it.get_current().arc;
     }
 
-    const Arc & get_last_arc() const
+    const ArcType & get_last_arc() const
     {
       if (list.is_empty())
         throw std::overflow_error("Path is empty");
@@ -355,7 +355,7 @@ namespace Designar
       return *it.get_current().arc;
     }
 
-    Arc & get_first_arc()
+    ArcType & get_first_arc()
     {
       if (list.is_empty())
         throw std::underflow_error("Path is empty");
