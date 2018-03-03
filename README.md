@@ -24,5 +24,4 @@ In order to compile the samples you must execute "make samples".
 TODO:
 - Tarjan Algorithm for computing strong connected components to Digraph.
 - Making all the documentation.
-- Completing test-map.C.
 - Making test for Graph and Digraph.
