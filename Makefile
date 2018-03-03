@@ -3,7 +3,7 @@ CXX = clang++ -std=c++14
 AR = ar
 
 WARN = -Wall -Wextra -Wcast-align -Wno-sign-compare -Wno-write-strings \
-       -Wno-parentheses -Wfloat-equal
+       -Wno-parentheses -Wfloat-equal -pedantic
 
 DEBUG = -g -O0 -DDEBUG $(WARN)
 
