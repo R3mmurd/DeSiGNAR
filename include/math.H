@@ -58,23 +58,14 @@ namespace Designar
   bool num_equal(T, T);
 
   template <>
-  bool num_equal<float>(float a, float b)
-  {
-    return real_equal(a, b);
-  }
+  bool num_equal<float>(float, float);
+  template <>
+  
+  bool num_equal<double>(double, double);
 
   template <>
-  bool num_equal<double>(double a, double b)
-  {
-    return real_equal(a, b);
-  }
-
-  template <>
-  bool num_equal<long double>(long double a, long double b)
-  {
-    return real_equal(a, b);
-  }
-
+  bool num_equal<long double>(long double, long double);
+  
   template <class NumberType> class GenPoint2D;
 
   template <typename NumberType>
