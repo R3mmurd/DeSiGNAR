@@ -45,7 +45,7 @@ namespace Designar
 {
   using lint_t       = long long;
   using nat_t        = unsigned long int;
-  using real_t       = long double;
+  using real_t       = double;
   using rng_t        = std::mt19937_64;
   using rng_seed_t   = rng_t::result_type;
   using clock_t      = std::chrono::high_resolution_clock;
