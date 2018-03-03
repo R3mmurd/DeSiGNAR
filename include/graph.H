@@ -496,11 +496,11 @@ namespace Designar
 				   GraphNode<NodeInfo, ArcInfo, GraphInfo>,
 				   NodeInfo, ArcInfo, GraphInfo>>
   {
-    using BaseGraph = BaseGraph<Graph<NodeInfo, ArcInfo, GraphInfo>,
-				GraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				GraphArc<
-				  GraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				  NodeInfo, ArcInfo, GraphInfo>>;
+    using Base = BaseGraph<Graph<NodeInfo, ArcInfo, GraphInfo>,
+			   GraphNode<NodeInfo, ArcInfo, GraphInfo>,
+			   GraphArc<
+			     GraphNode<NodeInfo, ArcInfo, GraphInfo>,
+			     NodeInfo, ArcInfo, GraphInfo>>;
     
   public:
     using NodeInfoType  = NodeInfo;
@@ -632,7 +632,7 @@ namespace Designar
     Graph(const Graph & g)
       : info(g.info), num_nodes(0), num_arcs(0)
     {
-      BaseGraph::copy_graph(g, *this);
+      Base::copy_graph(g, *this);
     }
 
     Graph(Graph && g)
@@ -652,7 +652,7 @@ namespace Designar
 	return *this;
 
       clear();
-      BaseGraph::copy_graph(g, *this);
+      Base::copy_graph(g, *this);
       info = g.info;
   
       return *this;
@@ -1229,11 +1229,11 @@ namespace Designar
 				     DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
 				     NodeInfo, ArcInfo, GraphInfo>>
   {
-    using BaseGraph = BaseGraph<Digraph<NodeInfo, ArcInfo, GraphInfo>,
-				DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				DigraphArc<
-				  DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				  NodeInfo, ArcInfo, GraphInfo>>;
+    using Base = BaseGraph<Digraph<NodeInfo, ArcInfo, GraphInfo>,
+			   DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
+			   DigraphArc<
+			     DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
+			     NodeInfo, ArcInfo, GraphInfo>>;
     
   public:
     using NodeInfoType  = NodeInfo;
@@ -1366,7 +1366,7 @@ namespace Designar
 	return *this;
 
       clear();
-      BaseGraph::copy_graph(g, *this);
+      Base::copy_graph(g, *this);
       info = g.info;
   
       return *this;
