@@ -33,8 +33,8 @@ int main()
 {
   Vector2D v(-3.,4.);
 
-  assert(v.get_x() == -3.);
-  assert(v.get_y() == 4.);
+  assert(num_equal(v.get_x(), -3.));
+  assert(num_equal(v.get_y(), 4.));
 
   assert(not v.is_null());
   assert(Vector2D::ZERO.is_null());

@@ -26,6 +26,7 @@
 # define DSGRANGE_H
 
 # include <types.H>
+# include <math.H>
 
 namespace Designar
 {
@@ -47,7 +48,7 @@ namespace Designar
       if (__first > __last)
 	throw std::range_error("First value cannot be greater than last value");
 
-      if (__step == T(0))
+      if (num_equal(__step, T(0)))
 	throw std::logic_error("Step cannot be zero");
     }
 
@@ -74,7 +75,8 @@ namespace Designar
 
     bool operator == (const Range & r) const
     {
-      return __first == r.__first and __last == r.__last and __step == r.__step;
+      return num_equal(__first, r.__first) and num_equal(__last, r.__last)
+	and num_equal(__step, r.__step);
     }
 
     bool operator != (const Range & r) const
@@ -96,7 +98,7 @@ namespace Designar
 
       bool has_current() const
       {
-	return c != r.last();
+	return not num_equal(c, r.last());
       }
 
       T get_current() const
@@ -132,7 +134,7 @@ namespace Designar
 
       bool operator == (const Iterator & it) const
       {
-	return c == it.c and r == it.r;
+	return num_equal(c, it.c) and r == it.r;
       }
 
       bool operator != (const Iterator & it) const

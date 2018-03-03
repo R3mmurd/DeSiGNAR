@@ -47,10 +47,33 @@ namespace Designar
 
   template <typename T>
   bool is_negative(T);
-  
-  real_t abs(real_t);
 
-  bool real_equal(real_t, real_t);
+  template <typename T>
+  T abs(T);
+
+  template <typename T>
+  bool real_equal(T, T);
+
+  template <typename T>
+  bool num_equal(T, T);
+
+  template <>
+  bool num_equal<float>(float a, float b)
+  {
+    return real_equal(a, b);
+  }
+
+  template <>
+  bool num_equal<double>(double a, double b)
+  {
+    return real_equal(a, b);
+  }
+
+  template <>
+  bool num_equal<long double>(long double a, long double b)
+  {
+    return real_equal(a, b);
+  }
 
   template <class NumberType> class GenPoint2D;
 
@@ -64,6 +87,30 @@ namespace Designar
 
   template <typename BT, typename ET>
   BT pow(BT, ET);
+
+  template <typename T>
+  T abs(T x)
+  {
+    static_assert(std::is_floating_point<T>::value,
+		  "Template argument must be a floating point type");
+    return (x < T(0) ? -x : x);
+  }
+
+  template <typename T>
+  bool real_equal(T a, T b)
+  {
+    static_assert(std::is_floating_point<T>::value,
+		  "Template argument must be a floating point type");
+    return abs(a-b) <= EPSILON;
+  }
+
+  template <typename T>
+  bool num_equal(T a, T b)
+  {
+    static_assert(std::is_integral<T>::value,
+		  "Template argument must be an integral type");
+    return a == b;
+  }
 
   template <typename T>
   Sign sign(T n)

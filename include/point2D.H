@@ -142,7 +142,7 @@ namespace Designar
 
     bool is_null() const
     {
-      return x == NumT(0) and y == NumT(0);
+      return num_equal(x, NumT(0)) and num_equal(y, NumT(0));
     }
 
     bool is_zero() const
@@ -194,7 +194,7 @@ namespace Designar
 
     bool is_collinear_with(const GenPoint2D & p, const GenPoint2D & q) const
     {
-      return area_of_parallelogram(p, q, *this) == NumT(0);
+      return num_equal(area_of_parallelogram(p, q, *this), NumT(0));
     }
 
     bool is_between(const GenPoint2D & p, const GenPoint2D & q)
@@ -217,7 +217,7 @@ namespace Designar
 
     bool operator == (const GenPoint2D & p) const
     {
-      return x == p.x and y == p.y;
+      return num_equal(x, p.x) and num_equal(y, p.y);
     }
 
     bool operator != (const GenPoint2D & p) const
