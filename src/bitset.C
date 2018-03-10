@@ -257,10 +257,10 @@ namespace Designar
     return value;
   }
 
-  void DynBitSet::init(nat_t nb)
+  void DynBitSet::init(nat_t nb, bool val)
   {
     for (nat_t i = 0; i < nb; ++i)
-      push(Byte());
+      append(val);
   }
 
   DynBitSet::DynBitSet()
@@ -269,10 +269,10 @@ namespace Designar
     // empty
   }
 
-  DynBitSet::DynBitSet(nat_t nb)
+  DynBitSet::DynBitSet(nat_t nb, bool val)
     : DynBitSet()
   {
-    init(nb);
+    init(nb, val);
   }
 
   DynBitSet::DynBitSet(const DynBitSet & dbs) 
@@ -335,7 +335,7 @@ namespace Designar
     return num_bits;
   }
 
-  void DynBitSet::push(bool value)
+  void DynBitSet::append(bool value)
   {
     nat_t byte_num = which_byte(num_bits);
       
@@ -345,7 +345,7 @@ namespace Designar
     ++num_bits;
   }
 
-  bool DynBitSet::pop()
+  bool DynBitSet::remove_last()
   {
     nat_t byte_num = which_byte(num_bits - 1);
     Byte & byte = bit_array[byte_num];
@@ -414,4 +414,34 @@ namespace Designar
     return RWProxy(*this, i);
   }
 
+  DynBitSet::RWProxy DynBitSet::Iterator::get_current()
+  {
+    return (*array_ptr)[curr];
+  }
+
+  DynBitSet::RWProxy DynBitSet::Iterator::get_current() const
+  {
+    return (*array_ptr)[curr];
+  }
+
+  DynBitSet::Iterator DynBitSet::begin()
+  {
+    return Iterator(*this);
+  }
+
+  DynBitSet::Iterator DynBitSet::begin() const
+  {
+    return Iterator(*this);
+  }
+  
+  DynBitSet::Iterator DynBitSet::end() 
+  {
+    return Iterator(*this, num_bits);
+  }
+  
+  DynBitSet::Iterator DynBitSet::end() const 
+  {
+    return Iterator(*this, num_bits);
+  }
+  
 } // end namespace Designar

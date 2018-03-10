@@ -102,6 +102,8 @@ namespace Designar
   class DynBitSet
   {
   public:
+    using ItemType = bool;
+    
     class RWProxy
     {
       DynBitSet & dbs;
@@ -136,12 +138,12 @@ namespace Designar
       return which_byte(num_bits - 1) + 1;
     }
 
-    void init(nat_t);
+    void init(nat_t, bool);
 
   public:
     DynBitSet();
 
-    DynBitSet(nat_t);
+    DynBitSet(nat_t, bool val = false);
 
     DynBitSet(const DynBitSet &);
 
@@ -163,9 +165,9 @@ namespace Designar
 
     nat_t size() const;
 
-    void push(bool);
+    void append(bool);
 
-    bool pop();
+    bool remove_last();
 
     void set_bit(nat_t, bool);
 
@@ -180,6 +182,25 @@ namespace Designar
     const RWProxy operator [] (nat_t) const;
 
     RWProxy operator [] (nat_t);
+
+    class Iterator : public ArrayIterator<Iterator, DynBitSet, bool, true>
+    {
+      using Base = ArrayIterator<Iterator, DynBitSet, bool, true>;
+      using Base::Base;
+      
+    public:
+      RWProxy get_current();
+
+      RWProxy get_current() const;
+    };
+
+    Iterator begin();
+
+    Iterator begin() const;
+
+    Iterator end();
+
+    Iterator end() const;
   };
   
 } // end namespace Designar
