@@ -27,6 +27,7 @@
 
 # include <setalgorithms.H>
 # include <containeralgorithms.H>
+# include <iterator.H>
 
 namespace Designar
 {
@@ -38,6 +39,142 @@ namespace Designar
   
   template <typename ArrayType, class Cmp>
   void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
+
+  template <class Derived, class ArrayType, typename T, bool RET_CPY>
+  class ArrayIterator : public RandomAccessIterator<Derived, T, RET_CPY>
+  {
+    friend class BasicIterator<Derived, T, RET_CPY>;
+    friend class RandomAccessIterator<Derived, T, RET_CPY>;
+
+  protected:
+    ArrayType * array_ptr;
+    nat_t       curr;
+
+    nat_t get_location() const
+    {
+      return curr;
+    }
+    
+  public:
+    ArrayIterator()
+      : array_ptr(nullptr), curr(0)
+    {
+      // empty
+    }
+    
+    ArrayIterator(const ArrayType & a)
+      : array_ptr(&const_cast<ArrayType &>(a)), curr(0)
+    {
+      // empty
+    }
+    
+    ArrayIterator(const ArrayType & a, nat_t c)
+      : array_ptr(&const_cast<ArrayType &>(a)), curr(c)
+    {
+      // empty
+    }
+    
+    ArrayIterator(const ArrayIterator & it)
+      : array_ptr(it.array_ptr), curr(it.curr)
+    {
+      // empty
+    }
+    
+    ArrayIterator(ArrayIterator && it)
+      : ArrayIterator()
+    {
+      swap(it);
+    }
+    
+    ArrayIterator & operator = (const ArrayIterator & it)
+    {
+      if (this == &it)
+	return *this;
+      
+      array_ptr = it.array_ptr;
+      curr = it.curr;
+      return *this;
+    }
+      
+    ArrayIterator & operator = (ArrayIterator && it)
+    {
+      swap(it);
+      return *this;
+    }
+    
+    void swap(ArrayIterator & it)
+    {
+      std::swap(array_ptr, it.array_ptr);
+      std::swap(curr, it.curr);
+    }
+
+    bool has_current() const
+    {
+      return curr < array_ptr->size();
+    }
+
+    void next()
+    {
+      if (not has_current())
+	throw std::out_of_range("There is not next element");
+      
+      ++curr;
+    }
+
+    void next_n(nat_t p)
+    {
+      if (curr + p > array_ptr->size())
+	throw std::out_of_range("Too much steps");
+
+      curr += p;
+    }
+    
+    void prev()
+    {
+      if (curr == 0)
+	throw std::out_of_range("There is not previous element");
+      
+      --curr;
+    }
+
+    void prev_n(nat_t p)
+    {
+      if (p > curr)
+	throw std::out_of_range("Too much steps");
+
+      curr -= p;
+    }
+    
+    void reset()
+    {
+      curr = 0;
+    }
+    
+    nat_t get_position() const
+    {
+      return curr;
+    }
+  };
+
+  template <class ArrayType, typename T>
+  class TArrayIterator : public ArrayIterator<TArrayIterator<ArrayType, T>,
+					      ArrayType, T, false>
+  {
+    using Base = ArrayIterator<TArrayIterator<ArrayType, T>,
+			       ArrayType, T, false>;
+    using Base::Base;
+    
+  public:
+    T & get_current()
+    {
+      return (*Base::array_ptr)[Base::curr];
+    }
+
+    const T & get_current() const
+    {
+      return (*Base::array_ptr)[Base::curr];
+    }
+  };
 
   template <typename T>
   class FixedArray
@@ -160,121 +297,10 @@ namespace Designar
       return at(i);
     }
 
-    class Iterator
+    class Iterator : public TArrayIterator<FixedArray, T>
     {
-      FixedArray * array_ptr;
-      nat_t        curr;
-      
-    public:
-      Iterator()
-	: array_ptr(nullptr), curr(0)
-      {
-	// empty
-      }
-      
-      Iterator(const FixedArray & a)
-	: array_ptr(&const_cast<FixedArray &>(a)), curr(0)
-      {
-	// empty
-      }
-      
-      Iterator(const FixedArray & a, nat_t c)
-	: array_ptr(&const_cast<FixedArray &>(a)), curr(c)
-      {
-	// empty
-      }
-      
-      Iterator(const Iterator & it)
-	: array_ptr(it.array_ptr), curr(it.curr)
-      {
-	// empty
-      }
-      
-      Iterator(Iterator && it)
-	: Iterator()
-      {
-	swap(it);
-      }
-      
-      Iterator & operator = (const Iterator & it)
-      {
-	if (this == &it)
-	  return *this;
-	
-	array_ptr = it.array_ptr;
-	curr = it.curr;
-	return *this;
-      }
-      
-      Iterator & operator = (Iterator && it)
-      {
-	swap(it);
-	return *this;
-      }
-      
-      void swap(Iterator & it)
-      {
-	std::swap(array_ptr, it.array_ptr);
-	std::swap(curr, it.curr);
-      }
-      
-      bool has_current() const
-      {
-	return curr < array_ptr->size();
-      }
-      
-      T & get_current()
-      {
-	return (*array_ptr)[curr];
-      }
-      
-      const T & get_current() const
-      {
-	return (*array_ptr)[curr];
-      }
-      
-      void next()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not next element");
-	
-	++curr;
-      }
-            
-      void reset_first()
-      {
-	curr = 0;
-      }
-      
-      nat_t get_position() const
-      {
-	return curr;
-      }
-      
-      void operator ++ ()
-      {
-	next();
-      }
-      
-      T & operator * ()
-      {
-	return get_current();
-      }
-      
-      const T & operator * () const
-      {
-	return get_current();
-      }
-      
-      bool operator == (const Iterator & it) const
-      {
-	return array_ptr == it.array_ptr and curr == it.curr;
-      }
-      
-      bool operator != (const Iterator & it) const
-      {
-	return not (*this == it);
-      }
+      using Base = TArrayIterator<FixedArray, T>;
+      using Base::Base;
     };
     
     Iterator begin()
@@ -648,129 +674,19 @@ namespace Designar
       return at(i);
     }
     
-    class Iterator
+    class Iterator : public TArrayIterator<DynArray, T>
     {
-      DynArray * array_ptr;
-      nat_t      curr;
+      using Base = TArrayIterator<DynArray, T>;
+      using Base::Base;
       
     public:
-      Iterator()
-	: array_ptr(nullptr), curr(0)
-      {
-	// empty
-      }
-      
-      Iterator(const DynArray & a)
-	: array_ptr(&const_cast<DynArray &>(a)), curr(0)
-      {
-	// empty
-      }
-      
-      Iterator(const DynArray & a, nat_t c)
-	: array_ptr(&const_cast<DynArray &>(a)), curr(c)
-      {
-	// empty
-      }
-      
-      Iterator(const Iterator & it)
-	: array_ptr(it.array_ptr), curr(it.curr)
-      {
-	// empty
-      }
-      
-      Iterator(Iterator && it)
-	: Iterator()
-      {
-	swap(it);
-      }
-      
-      Iterator & operator = (const Iterator & it)
-      {
-	if (this == &it)
-	  return *this;
-	
-	array_ptr = it.array_ptr;
-	curr = it.curr;
-	return *this;
-      }
-      
-      Iterator & operator = (Iterator && it)
-      {
-	swap(it);
-	return *this;
-      }
-      
-      void swap(Iterator & it)
-      {
-	std::swap(array_ptr, it.array_ptr);
-	std::swap(curr, it.curr);
-      }
-      
-      bool has_current() const
-      {
-	return curr < array_ptr->size();
-      }
-      
-      T & get_current()
-      {
-	return (*array_ptr)[curr];
-      }
-      
-      const T & get_current() const
-      {
-	return (*array_ptr)[curr];
-      }
-      
-      void next()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not next element");
-	
-	++curr;
-      }
-      
-      void reset_first()
-      {
-	curr = 0;
-      }
-      
-      nat_t get_position() const
-      {
-	return curr;
-      }
-      
       T del()
       {
-	if (not has_current())
+	if (not Base::has_current())
 	  throw std::logic_error("There is not current element");
 	
-	return array_ptr->remove_pos(curr);
-      }
-      
-      void operator ++ ()
-      {
-	next();
-      }
-      
-      T & operator * ()
-      {
-	return get_current();
-      }
-      
-      const T & operator * () const
-      {
-	return get_current();
-      }
-      
-      bool operator == (const Iterator & it) const
-      {
-	return array_ptr == it.array_ptr and curr == it.curr;
-      }
-      
-      bool operator != (const Iterator & it) const
-      {
-	return not (*this == it);
-      }
+	return Base::array_ptr->remove_pos_closing_breach(Base::curr);
+      }      
     };
     
     Iterator begin()
@@ -1272,7 +1188,7 @@ namespace Designar
       
       void swap(Iterator & itor)
       {
-	std::swap(it, itor.it);
+	it.swap(itor.it);
       }
       
       bool has_current() const
@@ -1294,6 +1210,11 @@ namespace Designar
       {
 	it.next();
       }
+
+      void prev()
+      {
+	it.prev();
+      }
       
       void reset_first()
       {
@@ -1312,7 +1233,22 @@ namespace Designar
       
       void operator ++ ()
       {
-	next();
+	++it;
+      }
+
+      void operator += (nat_t p)
+      {
+	it += p;
+      }
+
+      void operator -- ()
+      {
+	--it;
+      }
+
+      void operator -= (nat_t p)
+      {
+	it -= p;
       }
       
       Key & operator * ()
@@ -1325,6 +1261,11 @@ namespace Designar
 	return get_current();
       }
       
+      Key * operator -> ()
+      {
+	return &get_current();
+      }
+      
       bool operator == (const Iterator & itor) const
       {
 	return it == itor.it;
@@ -1332,7 +1273,27 @@ namespace Designar
       
       bool operator != (const Iterator & itor) const
       {
-	return not (*this == itor);
+	return it != itor.it;
+      }
+
+      bool operator < (const Iterator & itor) const
+      {
+	return it < itor.it;
+      }
+
+      bool operator <= (const Iterator & itor) const
+      {
+	return it < itor.it;
+      }
+
+      bool operator > (const Iterator & itor) const
+      {
+	return it < itor.it;
+      }
+
+      bool operator >= (const Iterator & itor) const
+      {
+	return it < itor.it;
       }
     };
     
