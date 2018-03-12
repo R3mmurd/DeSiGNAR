@@ -29,6 +29,7 @@
 # include <list.H>
 # include <containeralgorithms.H>
 # include <setalgorithms.H>
+# include <iterator.H>
 
 #undef get16bits
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__)	\
@@ -69,11 +70,11 @@ namespace Designar
 
   template <typename Key,
 	    class Cmp = std::equal_to<Key>>
-  class HashSet: private FixedArray<SLList<Key>>,
+  class HashSet: private FixedArray<DLList<Key>>,
 		 public ContainerAlgorithms<HashSet<Key, Cmp>, Key>,
 		 public SetAlgorithms<HashSet<Key, Cmp>, Key>
   {
-    using List      = SLList<Key>;
+    using List      = DLList<Key>;
     using BaseArray = FixedArray<List>;
 
   public:
@@ -478,15 +479,35 @@ namespace Designar
       return true;
     }
 
-    class Iterator
+    class Iterator : public BidirectionalIterator<Iterator, Key>
     {
+      friend class HashSet;
+      friend class BasicIterator<Iterator, Key>;
+      
       HashSet               * set_ptr;
       lint_t                  set_pos;
       typename List::Iterator list_it;
       lint_t                  pos;
 
+      void locate_end();
+
+      void locate_prev(nat_t);
+
       void locate_next(nat_t);
 
+    protected:
+      lint_t get_location() const
+      {
+	return pos;
+      }
+
+      Iterator(const HashSet & h, int)
+	: set_ptr(&const_cast<HashSet &>(h)), set_pos(h.M()),
+	  list_it(), pos(h.N())
+      {
+	locate_end();
+      }
+      
     public:
       Iterator()
 	: set_ptr(nullptr), set_pos(-1), list_it(), pos(-1)
@@ -496,13 +517,6 @@ namespace Designar
 
       Iterator(const HashSet & h)
 	: set_ptr(&const_cast<HashSet &>(h)), set_pos(0), list_it(), pos(0)
-      {
-	locate_next(set_pos);
-      }
-
-      Iterator(const HashSet & h, lint_t _set_pos)
-	: set_ptr(&const_cast<HashSet &>(h)), set_pos(_set_pos), list_it(),
-	  pos(0)
       {
 	locate_next(set_pos);
       }
@@ -547,7 +561,7 @@ namespace Designar
 	std::swap(pos, it.pos);
       }
 
-      void reset_first()
+      void reset()
       {
 	pos = 0;
 	locate_next(0);
@@ -582,7 +596,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	  throw std::out_of_range("There is not next element");
 
 	++pos;
 
@@ -592,30 +606,17 @@ namespace Designar
 	  locate_next(set_pos + 1);
       }
 
-      Key & operator * ()
+      void prev()
       {
-	return get_current();
-      }
+	if (pos == 0)
+	  throw std::out_of_range("There is not previous element");
 
-      const Key & operator * () const
-      {
-	return get_current();
-      }
+	--pos;
 
-      void operator ++ ()
-      {
-	next();
-      }
+	if (set_pos == set_ptr->M() or list_it == set_ptr->at(set_pos).begin())
+	  locate_prev(set_pos);
 
-      bool operator == (const Iterator & it) const
-      {
-	return set_ptr == it.set_ptr and set_pos == it.set_pos
-	  and list_it == it.list_it;
-      }
-
-      bool operator != (const Iterator & it) const
-      {
-	return not (*this == it);
+	list_it.prev();
       }
     };
 
@@ -631,12 +632,12 @@ namespace Designar
 
     Iterator end()
     {
-      return Iterator(*this, BaseArray::get_capacity());
+      return Iterator(*this, 0);
     }
     
     Iterator end() const
     {
-      return Iterator(*this, BaseArray::get_capacity());
+      return Iterator(*this, 0);
     }
   };
 
@@ -667,23 +668,22 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
+  void HashSet<Key, Cmp>::Iterator::locate_end()
+  {
+    while (set_pos > 0 and set_ptr->at(set_pos - 1).is_empty())
+      --set_pos;
+    
+    if (set_pos > 0)
+      list_it = set_ptr->at(set_pos - 1).end();
+    
+    return;
+  }
+
+  template <typename Key, class Cmp>
   void HashSet<Key, Cmp>::Iterator::locate_next(nat_t i)
   {
     if (set_ptr->is_empty())
       return;
-    
-    if (i == set_ptr->get_capacity())
-      {
-	set_pos = i;
-
-	while (i > 0 and set_ptr->at(i - 1).is_empty())
-	  --i;
-
-	if (i > 0)
-	  list_it = set_ptr->at(i - 1).end();
-	
-	return;
-      }
     
     while (i < set_ptr->get_capacity() and
 	   set_ptr->at(i).is_empty())
@@ -696,6 +696,24 @@ namespace Designar
       }
 
     set_pos = i;
+  }
+
+  template <typename Key, class Cmp>
+  void HashSet<Key, Cmp>::Iterator::locate_prev(nat_t i)
+  {
+    if (set_ptr->is_empty())
+      return;
+    
+    while (i > 0 and set_ptr->at(i - 1).is_empty())
+      --i;
+	   
+    if (i > 0)
+      {
+	assert(not set_ptr->at(i - 1).is_empty());
+	list_it = set_ptr->at(i - 1).end();
+      }
+
+    set_pos = i - 1;
   }
   
 } // end namespace Designar

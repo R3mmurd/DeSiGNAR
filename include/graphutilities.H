@@ -382,7 +382,7 @@ namespace Designar
     template <class Op>
     void for_each(Op & op)
     {
-      for (const PathDesc & path_desc : list)
+      for (PathDesc & path_desc : list)
         op(path_desc.node, path_desc.arc);
     }
 

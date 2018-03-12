@@ -416,11 +416,17 @@ namespace Designar
 
   DynBitSet::RWProxy DynBitSet::Iterator::get_current()
   {
+    if (not Base::has_current())
+      throw std::overflow_error("There is not current element");
+    
     return (*array_ptr)[curr];
   }
 
   DynBitSet::RWProxy DynBitSet::Iterator::get_current() const
   {
+    if (not Base::has_current())
+	throw std::overflow_error("There is not current element");
+    
     return (*array_ptr)[curr];
   }
 

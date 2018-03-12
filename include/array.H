@@ -144,6 +144,14 @@ namespace Designar
 
       curr -= p;
     }
+
+    void move_to(nat_t p)
+    {
+      if (p >= array_ptr->size())
+	throw std::out_of_range("Position is out of range");
+
+      curr = p;
+    }
     
     void reset()
     {
@@ -167,11 +175,17 @@ namespace Designar
   public:
     T & get_current()
     {
+      if (not Base::has_current())
+	throw std::overflow_error("There is not current element");
+      
       return (*Base::array_ptr)[Base::curr];
     }
 
     const T & get_current() const
     {
+      if (not Base::has_current())
+	throw std::overflow_error("There is not current element");
+      
       return (*Base::array_ptr)[Base::curr];
     }
   };
@@ -1136,31 +1150,31 @@ namespace Designar
       return array[i];
     }
     
-    class Iterator
+    class Iterator : public DynArray<Key>::Iterator
     {
-      typename DynArray<Key>::Iterator it;
+      using Base = typename DynArray<Key>::Iterator;
       
     public:
       Iterator()
-	: it()
+	: Base()
       {
 	// empty
       }
       
       Iterator(const GenArraySet & a)
-	: it(a.array)
+	: Base(a.array)
       {
 	// empty
       }
       
       Iterator(const GenArraySet & a, nat_t c)
-	: it(a.array, c)
+	: Base(a.array, c)
       {
 	// empty
       }
       
       Iterator(const Iterator & itor)
-	: it(itor.it)
+	: Base(itor)
       {
 	// empty
       }
@@ -1168,132 +1182,7 @@ namespace Designar
       Iterator(Iterator && itor)
 	: Iterator()
       {
-	swap(itor);
-      }
-      
-      Iterator & operator = (const Iterator & itor)
-      {
-	if (this == &it)
-	  return *this;
-	
-	it = itor.it;
-	return *this;
-      }
-      
-      Iterator & operator = (Iterator && itor)
-      {
-	swap(itor);
-	return *this;
-      }
-      
-      void swap(Iterator & itor)
-      {
-	it.swap(itor.it);
-      }
-      
-      bool has_current() const
-      {
-	return it.has_current();
-      }
-      
-      Key & get_current()
-      {
-	return it.get_current();
-      }
-      
-      const Key & get_current() const
-      {
-	return it.get_current();
-      }
-      
-      void next()
-      {
-	it.next();
-      }
-
-      void prev()
-      {
-	it.prev();
-      }
-      
-      void reset_first()
-      {
-	it.reset_first();
-      }
-      
-      nat_t get_position() const
-      {
-	return it.get_position();
-      }
-      
-      Key del()
-      {
-	return it.del();
-      }
-      
-      void operator ++ ()
-      {
-	++it;
-      }
-
-      void operator += (nat_t p)
-      {
-	it += p;
-      }
-
-      void operator -- ()
-      {
-	--it;
-      }
-
-      void operator -= (nat_t p)
-      {
-	it -= p;
-      }
-      
-      Key & operator * ()
-      {
-	return get_current();
-      }
-      
-      const Key & operator * () const
-      {
-	return get_current();
-      }
-      
-      Key * operator -> ()
-      {
-	return &get_current();
-      }
-      
-      bool operator == (const Iterator & itor) const
-      {
-	return it == itor.it;
-      }
-      
-      bool operator != (const Iterator & itor) const
-      {
-	return it != itor.it;
-      }
-
-      bool operator < (const Iterator & itor) const
-      {
-	return it < itor.it;
-      }
-
-      bool operator <= (const Iterator & itor) const
-      {
-	return it < itor.it;
-      }
-
-      bool operator > (const Iterator & itor) const
-      {
-	return it < itor.it;
-      }
-
-      bool operator >= (const Iterator & itor) const
-      {
-	return it < itor.it;
+	Base::swap(itor);
       }
     };
     
@@ -1471,7 +1360,7 @@ namespace Designar
     {
       swap(mda);
     }
-
+    
     nat_t size(nat_t i) const
     {
       return slice.extents()[i];
@@ -1534,6 +1423,62 @@ namespace Designar
     {
       swap(mda);
       return *this;
+    }
+
+    class Iterator : public FixedArray<T>::Iterator
+    {
+      using Base = typename FixedArray<T>::Iterator;
+      
+    public:
+      Iterator()
+	: Base()
+      {
+	// empty
+      }
+      
+      Iterator(const MultiDimArray & a)
+	: Base(a.array)
+      {
+	// empty
+      }
+      
+      Iterator(const MultiDimArray & a, nat_t c)
+	: Base(a.array, c)
+      {
+	// empty
+      }
+      
+      Iterator(const Iterator & itor)
+	: Base(itor)
+      {
+	// empty
+      }
+      
+      Iterator(Iterator && itor)
+	: Iterator()
+      {
+	Base::swap(itor);
+      }
+    };
+    
+    Iterator begin()
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator begin() const
+    {
+      return Iterator(*this);
+    }
+    
+    Iterator end()
+    {
+      return Iterator(*this, slice.size());
+    }
+    
+    Iterator end() const
+    {
+      return Iterator(*this, slice.size());
     }
   };
 

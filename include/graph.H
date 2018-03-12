@@ -779,8 +779,11 @@ namespace Designar
       remove_node(node);
     }
     
-    class NodeIterator : public DL::Iterator
+    class NodeIterator : public DL::Iterator,
+                         public BidirectionalIterator<NodeIterator, Node>
     {
+      friend class BasicIterator<NodeIterator, Node>;
+      
       using Base = DL::Iterator;
       
       Graph * graph_ptr;
@@ -794,6 +797,13 @@ namespace Designar
 
       NodeIterator(const Graph & g)
 	: Base(const_cast<DL *>(&g.node_list)),
+	  graph_ptr(const_cast<Graph *>(&g))
+      {
+	// empty
+      }
+
+      NodeIterator(const Graph & g, DL * curr)
+	: Base(const_cast<DL *>(&g.node_list), curr),
 	  graph_ptr(const_cast<Graph *>(&g))
       {
 	// empty
@@ -852,20 +862,13 @@ namespace Designar
 	Base::next();
 	graph_ptr->remove_node(p);
       }
-
-      Node & operator * ()
-      {
-	return get_current();
-      }
-
-      const Node & operator * () const
-      {
-	return get_current();
-      }
     };
     
-    class ArcIterator : public DL::Iterator
+    class ArcIterator : public DL::Iterator,
+			public BidirectionalIterator<ArcIterator, Arc>
     {
+      friend class BasicIterator<ArcIterator, Arc>;
+      
       using Base = DL::Iterator;
       
       Graph * graph_ptr;
@@ -879,6 +882,13 @@ namespace Designar
 
       ArcIterator(const Graph & g)
 	: Base(const_cast<DL *>(&g.arc_list)),
+	  graph_ptr(const_cast<Graph *>(&g))
+      {
+	// empty
+      }
+
+      ArcIterator(const Graph & g, DL * curr)
+	: Base(const_cast<DL *>(&g.arc_list), curr),
 	  graph_ptr(const_cast<Graph *>(&g))
       {
 	// empty
@@ -937,20 +947,14 @@ namespace Designar
 	Base::next();
 	graph_ptr->remove_arc(a);
       }
-
-      Arc & operator * ()
-      {
-	return get_current();
-      }
-
-      const Arc & operator * () const
-      {
-	return get_current();
-      }
     };
     
-    class AdjacentArcIterator : public DL::Iterator
+    class AdjacentArcIterator : public DL::Iterator,
+				public BidirectionalIterator<AdjacentArcIterator,
+							     Arc>
     {
+      friend class BasicIterator<AdjacentArcIterator, Arc>;
+      
       using Base = DL::Iterator;
       
       Graph * graph_ptr;
@@ -965,6 +969,13 @@ namespace Designar
       
       AdjacentArcIterator(const Graph & g, const Node & n)
 	: Base(const_cast<DL *>(&n.adjacent_arc_list)),
+	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      {
+	// empty
+      }
+
+      AdjacentArcIterator(const Graph & g, const Node & n, DL * curr)
+	: Base(const_cast<DL *>(&n.adjacent_arc_list), curr),
 	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(const_cast<Node *>(&n))
       {
 	// empty
@@ -1016,16 +1027,6 @@ namespace Designar
 	return dl_to_adjacent_arc(Base::get_current())->get_item()->get_item();
       }
 
-      Arc & operator * ()
-      {
-	return get_current();
-      }
-
-      const Arc & operator * () const
-      {
-	return get_current();
-      }
-
       Node & get_src_node()
       {
 	return *node_ptr;
@@ -1059,26 +1060,12 @@ namespace Designar
 
     NodeIterator nodes_end()
     {
-      NodeIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return NodeIterator(*this, &node_list);
     }
 
     const NodeIterator nodes_end() const
     {
-      NodeIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return NodeIterator(*this, const_cast<DL *>(&node_list));
     }
 
     ArcIterator arcs_begin()
@@ -1093,26 +1080,12 @@ namespace Designar
 
     ArcIterator arcs_end()
     {
-      ArcIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return ArcIterator(*this, &arc_list);
     }
 
     const ArcIterator arcs_end() const
     {
-      ArcIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return ArcIterator(*this, const_cast<DL *>(&arc_list));
     }
 
     AdjacentArcIterator arcs_begin(Node & p)
@@ -1127,26 +1100,13 @@ namespace Designar
 
     AdjacentArcIterator arcs_end(Node & p)
     {
-      AdjacentArcIterator it(*this, p);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return AdjacentArcIterator(*this, p, &p.adjacent_arc_list);
     }
 
     const AdjacentArcIterator arcs_end(Node & p) const
     {
-      AdjacentArcIterator it(*this, p);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return AdjacentArcIterator(*this, p,
+				 const_cast<DL *>(&p.adjacent_arc_list));
     }
 
     Arc * search_arc(Node &, Node &);
@@ -1493,8 +1453,11 @@ namespace Designar
       remove_node(node);
     }
     
-    class NodeIterator : public DL::Iterator
+    class NodeIterator : public DL::Iterator,
+                         public BidirectionalIterator<NodeIterator, Node>
     {
+      friend class BasicIterator<NodeIterator, Node>;
+      
       using Base = DL::Iterator;
       
       Digraph * graph_ptr;
@@ -1508,6 +1471,13 @@ namespace Designar
 
       NodeIterator(const Digraph & g)
 	: Base(const_cast<DL *>(&g.node_list)),
+	  graph_ptr(const_cast<Digraph *>(&g))
+      {
+	// empty
+      }
+
+      NodeIterator(const Digraph & g, DL * curr)
+	: Base(const_cast<DL *>(&g.node_list), curr),
 	  graph_ptr(const_cast<Digraph *>(&g))
       {
 	// empty
@@ -1566,20 +1536,13 @@ namespace Designar
 	Base::next();
 	graph_ptr->remove_node(p);
       }
-
-      Node & operator * ()
-      {
-	return get_current();
-      }
-
-      const Node & operator * () const
-      {
-	return get_current();
-      }
     };
     
-    class ArcIterator : public DL::Iterator
+    class ArcIterator : public DL::Iterator,      
+                        public BidirectionalIterator<ArcIterator, Arc>
     {
+      friend class BasicIterator<ArcIterator, Arc>;
+      
       using Base = DL::Iterator;
       
       Digraph * graph_ptr;
@@ -1593,6 +1556,13 @@ namespace Designar
 
       ArcIterator(const Digraph & g)
 	: Base(const_cast<DL *>(&g.arc_list)),
+	  graph_ptr(const_cast<Digraph *>(&g))
+      {
+	// empty
+      }
+
+      ArcIterator(const Digraph & g, DL * curr)
+	: Base(const_cast<DL *>(&g.arc_list), curr),
 	  graph_ptr(const_cast<Digraph *>(&g))
       {
 	// empty
@@ -1651,20 +1621,14 @@ namespace Designar
 	Base::next();
 	graph_ptr->remove_arc(a->get_item());
       }
-
-      Arc & operator * ()
-      {
-	return get_current();
-      }
-
-      const Arc & operator * () const
-      {
-	return get_current();
-      }
     };
     
-    class AdjacentArcIterator : public DL::Iterator
+    class AdjacentArcIterator
+      : public DL::Iterator,
+	public BidirectionalIterator<AdjacentArcIterator, Arc>
     {
+      friend class BasicIterator<AdjacentArcIterator, Arc>;
+      
       using Base = DL::Iterator;
       
       Digraph * graph_ptr;
@@ -1679,6 +1643,13 @@ namespace Designar
       
       AdjacentArcIterator(const Digraph & g, const Node & n)
 	: Base(const_cast<DL *>(&n.adjacent_arc_list)),
+	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      {
+	// empty
+      }
+
+      AdjacentArcIterator(const Digraph & g, const Node & n, DL * curr)
+	: Base(const_cast<DL *>(&n.adjacent_arc_list), curr),
 	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(const_cast<Node *>(&n))
       {
 	// empty
@@ -1773,26 +1744,12 @@ namespace Designar
 
     NodeIterator nodes_end()
     {
-      NodeIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return NodeIterator(*this, &node_list);
     }
 
     const NodeIterator nodes_end() const
     {
-      NodeIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return NodeIterator(*this, const_cast<DL *>(&node_list));
     }
 
     ArcIterator arcs_begin()
@@ -1807,26 +1764,12 @@ namespace Designar
 
     ArcIterator arcs_end()
     {
-      ArcIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return ArcIterator(*this, &arc_list);
     }
 
     const ArcIterator arcs_end() const
     {
-      ArcIterator it(*this);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return ArcIterator(*this, const_cast<DL *>(&arc_list));
     }
 
     AdjacentArcIterator arcs_begin(Node & p)
@@ -1841,26 +1784,13 @@ namespace Designar
 
     AdjacentArcIterator arcs_end(Node & p)
     {
-      AdjacentArcIterator it(*this, p);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return AdjacentArcIterator(*this, p, &p.adjacent_arc_list);
     }
 
     const AdjacentArcIterator arcs_end(Node & p) const
     {
-      AdjacentArcIterator it(*this, p);
-
-      if (not it.has_current())
-	return it;
-
-      it.reset_last();
-      it.next();
-      return it;
+      return AdjacentArcIterator(*this, p,
+				 const_cast<DL *>(&p.adjacent_arc_list));
     }
 
     Arc * search_arc(Node &, Node &);

@@ -351,14 +351,23 @@ namespace Designar
       return *this;
     }
 
-    class Iterator
+    class Iterator : public ForwardIterator<Iterator, T>
     {
+      friend class BasicIterator<Iterator, T>;
+      
       SLList * list_ptr;
       Node   * curr;
       Node   * pred;
       lint_t   pos;
 
       void locate_position();
+
+
+    protected:
+      Node * get_location() const
+      {
+	return curr;
+      }
       
     public:
       Iterator()
@@ -455,7 +464,7 @@ namespace Designar
 	curr = curr->get_next();
       }
 
-      void reset_first()
+      void reset()
       {
 	curr = ((BaseList *) list_ptr)->get_first();
 	pos = 0;
@@ -483,31 +492,6 @@ namespace Designar
 	delete p;
 	--list_ptr->num_items;
 	return ret_val;
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      bool operator == (const Iterator & it) const
-      {
-	return list_ptr == it.list_ptr and curr == it.curr and pos == it.pos;
-      }
-
-      bool operator != (const Iterator & it) const
-      {
-	return not (it == *this);
-      }
-
-      T & operator * ()
-      {
-	return get_current();
-      }
-
-      const T & operator * () const
-      {
-	return get_current();
       }
     };
 
@@ -780,6 +764,7 @@ namespace Designar
 
       clear();
       copy_list(l);
+      return *this;
     }
 
     DLList & operator = (DLList && l)
@@ -788,8 +773,11 @@ namespace Designar
       return *this;
     }
 
-    class Iterator : public DL::Iterator
+    class Iterator : public DL::Iterator,
+		     public BidirectionalIterator<Iterator, T>
     {
+      friend class BasicIterator<Iterator, T>;
+      
       using Base = DL::Iterator;
       
       DLList * list_ptr;
@@ -811,7 +799,7 @@ namespace Designar
 	// empty
       }
       
-      Iterator(const DLList & l, Node * c)
+      Iterator(const DLList & l, DL * c)
 	: Base(&const_cast<DLList &>(l), c), list_ptr(&const_cast<DLList &>(l)),
 	  pos(0)
       {
@@ -869,12 +857,6 @@ namespace Designar
 	return static_cast<Node *>(Base::get_current())->get_item();
       }
 
-      void reset_last()
-      {
-	Base::reset_last();
-	locate_position();
-      }
-
       T del()
       {
 	Node * p = static_cast<Node *>(Base::del());
@@ -895,26 +877,6 @@ namespace Designar
 	Base::prev();
 	--pos;
       }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      void operator -- ()
-      {
-	prev();
-      }
-
-      T & operator * ()
-      {
-	return get_current();
-      }
-
-      const T & operator * () const
-      {
-	return get_current();
-      }
     };
 
     Iterator begin()
@@ -929,26 +891,12 @@ namespace Designar
 
     Iterator end()
     {
-      Iterator it(*this);
-
-      if (not it.has_current())
-	return it;
-      
-      it.reset_last();
-      it.next();
-      return it;
+      return Iterator(*this, this);
     }
 
     Iterator end() const
     {
-      Iterator it(*this);
-
-      if (not it.has_current())
-	return it;
-      
-      it.reset_last();
-      it.next();
-      return it;
+      return Iterator(*this, const_cast<DLList *>(this));
     }
 
     T & select(nat_t);
@@ -1017,10 +965,10 @@ namespace Designar
 
   template <typename T>
   void DLList<T>::Iterator::locate_position()
-  {
-    DL * ptr = list_ptr;
+  {    
+    DL * ptr = list_ptr->get_next();
     
-    while (ptr != Base::get_current())
+    while (ptr != Base::get_location())
       {
 	ptr = ptr->get_next();
 	++pos;

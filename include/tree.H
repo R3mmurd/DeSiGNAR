@@ -29,6 +29,7 @@
 # include <containeralgorithms.H>
 # include <setalgorithms.H>
 # include <stack.H>
+# include <iterator.H>
 
 namespace Designar
 {
@@ -504,12 +505,26 @@ namespace Designar
 
     class PreorderIterator
     {
+      friend class TreeSet;
+      
       DynStack<Node *> stack;
       Node * root = Node::null;
       Node * curr = Node::null;
       lint_t pos = 0;
 
       Node * last(Node *);
+
+    protected:
+      PreorderIterator(const TreeSet & t, int)
+	: root(t.root), curr(Node::null), pos(t.size())
+      {
+	// empty
+      }
+      
+      Node * get_location() const
+      {
+	return curr;
+      }
 
     public:
       PreorderIterator(const TreeSet & t)
@@ -556,18 +571,11 @@ namespace Designar
 	std::swap(pos, it.pos);
       }
 
-      void reset_first()
+      void reset()
       {
 	stack.clear();
 	pos = 0;
 	curr = root;
-      }
-
-      void reset_last()
-      {
-	stack.clear();
-	pos = -1;
-	curr = last(root);
       }
 
       nat_t get_position() const
@@ -599,7 +607,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	  throw std::out_of_range("There is not next element");
 
 	stack.push(curr);
 
@@ -618,35 +626,12 @@ namespace Designar
       {
 	return Key();
       }
-
-      Key & operator * ()
-      {
-	return get_current();
-      }
-      
-      const Key & operator * () const
-      {
-	return get_current();
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      bool operator == (const PreorderIterator & it) const
-      {
-	return root == it.root and curr == it.curr;
-      }
-
-      bool operator != (const PreorderIterator & it) const
-      {
-	return not (*this == it);
-      }
     };
 
     class InorderIterator
     {
+      friend class TreeSet;
+      
       DynStack<Node *> stack;
       Node * root = Node::null;
       Node * curr = Node::null;
@@ -663,6 +648,18 @@ namespace Designar
 
 	pos = 0;
 	curr = search_min(root);
+      }
+
+    protected:
+      InorderIterator(const TreeSet & t, int)
+	: root(t.root), curr(Node::null), pos(t.size())
+      {
+	// empty
+      }
+      
+      Node * get_location() const
+      {
+	return curr;
       }
 
     public:
@@ -710,7 +707,7 @@ namespace Designar
 	std::swap(pos, it.pos);
       }
 
-      void reset_first()
+      void reset()
       {
 	stack.clear();
 	init();
@@ -768,35 +765,12 @@ namespace Designar
       {
 	return Key();
       }
-
-      Key & operator * ()
-      {
-	return get_current();
-      }
-      
-      const Key & operator * () const
-      {
-	return get_current();
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      bool operator == (const InorderIterator & it) const
-      {
-	return root == it.root and curr == it.curr;
-      }
-
-      bool operator != (const InorderIterator & it) const
-      {
-	return not (*this == it);
-      }
     };
 
     class PostorderIterator
     {
+      friend class TreeSet;
+      
       DynStack<Node *> stack;
       Node * root = Node::null;
       Node * curr = Node::null;
@@ -811,6 +785,18 @@ namespace Designar
 
 	pos = 0;
 	curr = first(root);
+      }
+
+    protected:
+      PostorderIterator(const TreeSet & t, int)
+	: root(t.root), curr(Node::null), pos(t.size())
+      {
+	// empty
+      }
+
+      Node * get_location() const
+      {
+	return curr;
       }
 
     public:
@@ -858,7 +844,7 @@ namespace Designar
 	std::swap(pos, it.pos);
       }
 
-      void reset_first()
+      void reset()
       {
 	stack.clear();
 	init();
@@ -925,35 +911,13 @@ namespace Designar
       {
 	return Key();
       }
-
-      Key & operator * ()
-      {
-	return get_current();
-      }
-      
-      const Key & operator * () const
-      {
-	return get_current();
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      bool operator == (const PostorderIterator & it) const
-      {
-	return root == it.root and curr == it.curr;
-      }
-
-      bool operator != (const PostorderIterator & it) const
-      {
-	return not (*this == it);
-      }
     };
 
-    class Iterator : public InorderIterator
+    class Iterator : public InorderIterator,
+		     public ForwardIterator<Iterator, Key>
     {
+      friend class TreeSet;
+      friend class BasicIterator<Iterator, Key>;
       using Base = InorderIterator;
       using Base::Base;
     };
@@ -970,26 +934,12 @@ namespace Designar
 
     Iterator end()
     {
-      Iterator ret_val(*this);
-
-      if (this->is_empty())
-	return ret_val;
-      
-      ret_val.reset_last();
-      ret_val.next();
-      return ret_val;
+      return Iterator(*this, 0);
     }
 
     Iterator end() const
     {
-      Iterator ret_val(*this);
-
-      if (this->is_empty())
-	return ret_val;
-      
-      ret_val.reset_last();
-      ret_val.next();
-      return ret_val;
+      return Iterator(*this, 0);
     }
   };
 

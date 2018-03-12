@@ -119,6 +119,12 @@ namespace Designar
     using Base = BidirectionalIterator<Iterator, T, RET_CPY>;
 
   public:
+    RetType<RET_CPY, T, T &> operator [] (nat_t i)
+    {
+      Base::me().move_to(i);
+      return Base::mes().get_current();
+    }
+    
     Iterator & operator += (nat_t p)
     {
       Base::me().next_n(p);

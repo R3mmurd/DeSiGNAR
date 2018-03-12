@@ -130,12 +130,19 @@ namespace Designar
       return num_vertices;
     }
 
-    class VertexIterator : public DL::Iterator
+    class VertexIterator : public DL::Iterator,
+			   public BidirectionalIterator<VertexIterator, PointT>
     {
+      friend class BasicIterator<VertexIterator, PointT>;
+      
       using Base = DL::Iterator;
 
       GenPolygon * p_ptr;
+      nat_t        pos;
 
+      void locate_position();
+      
+    public:
       VertexIterator()
 	: Base(), p_ptr(nullptr)
       {
@@ -144,9 +151,16 @@ namespace Designar
 
       VertexIterator(const GenPolygon & p)
 	: Base(const_cast<DL *>(&p.vertex_list)),
-	  p_ptr(const_cast<GenPolygon *>(&p))
+	  p_ptr(const_cast<GenPolygon *>(&p)), pos(0)
       {
 	// empty
+      }
+
+      VertexIterator(const GenPolygon & p, DL * curr)
+	: Base(const_cast<DL *>(&p.vertex_list), curr),
+	  p_ptr(const_cast<GenPolygon *>(&p)), pos(0)
+      {
+	locate_position();
       }
 
       VertexIterator(const VertexIterator & it)
@@ -205,23 +219,42 @@ namespace Designar
 	delete v;
       }
 
-      PointT & operator * ()
+      void next()
       {
-	return get_current();
+	Base::next();
+	++pos;
       }
 
-      const PointT & operator * () const
+      void prev()
       {
-	return get_current();
+	Base::prev();
+	--pos;
+      }
+
+      nat_t get_position() const
+      {
+	return pos;
       }
     };
 
     class SegmentIterator
+      : public BidirectionalIterator<SegmentIterator, SegmentType, true>
     {
+      friend class BasicIterator<SegmentIterator, SegmentType, true>;
+      
       GenPolygon * p_ptr;
       Vertex     * head;
       Vertex     * curr;
+      nat_t        pos;
 
+      void locate_position();
+
+    protected:
+      Vertex * get_location() const
+      {
+	return curr;
+      }
+      
     public:
       SegmentIterator()
 	: head(nullptr), curr(nullptr)
@@ -231,10 +264,20 @@ namespace Designar
 
       SegmentIterator(const GenPolygon & p)
 	: head(dl_to_vertex(const_cast<DL *>(&p.vertex_list))),
-	  curr(head->get_next())
+	  curr(head->get_next()), pos(0)
       {
 	if (p.size() < 2)
 	  throw std::length_error("There are no segments in polygon");
+      }
+
+      SegmentIterator(const GenPolygon & p, DL * c)
+	: head(dl_to_vertex(const_cast<DL *>(&p.vertex_list))),
+	  curr(dl_to_vertex(c)), pos(0)
+      {
+	if (p.size() < 2)
+	  throw std::length_error("There are no segments in polygon");
+
+	locate_position();
       }
 
       SegmentIterator(const SegmentIterator & it)
@@ -260,6 +303,17 @@ namespace Designar
 	return head != curr;
       }
 
+      SegmentType get_current()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+
+	Vertex * next = curr->get_next() == head ?
+	  head->get_next() : curr->get_next();
+
+	return SegmentType(curr->get_item(), next->get_item());
+      }
+
       SegmentType get_current() const
       {
 	if (not has_current())
@@ -274,9 +328,19 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not next element");
+	  throw std::out_of_range("There is not next element");
 
+	++pos;
 	curr = curr->get_next();
+      }
+
+      void prev()
+      {
+	if (curr == head->get_next())
+	  throw std::out_of_range("There is not previous element");
+
+	--pos;
+	curr = curr->get_prev();
       }
 
       void del()
@@ -308,66 +372,56 @@ namespace Designar
 	delete n;
       }
 
-      void reset_first()
+      void reset()
       {
 	curr = head->get_next();
+	pos = 0;
       }
 
-      void reset_last()
+      nat_t get_position() const
       {
-	curr = head->get_prev();
-      }
-
-      SegmentType operator * () const
-      {
-	return get_current();
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      bool operator == (const SegmentIterator & it)
-      {
-	return head == it.head and curr == it.curr;
-      }
-
-      bool operator != (const SegmentIterator & it)
-      {
-	return not (*this == it);
+	return pos;
       }
     };
 
-    VertexIterator begin_vertices()
+    VertexIterator vertices_begin()
     {
-      return VertexIterator(*this);      
+      return VertexIterator(*this);
     }
 
-    VertexIterator end_vertices()
+    VertexIterator vertices_begin() const
     {
-      VertexIterator it(*this);
-
-      if (num_vertices == 0)
-	return it;
-      
-      it.reset_last();
-      it.next();
-      return it;
+      return VertexIterator(*this);
     }
 
-    SegmentIterator begin_segments()
+    VertexIterator vertices_end()
+    {
+      return VertexIterator(*this, &vertex_list);
+    }
+
+    VertexIterator vertices_end() const
+    {
+      return VertexIterator(*this, const_cast<DL *>(&vertex_list));
+   } 
+
+    SegmentIterator segments_begin()
     {
       return SegmentIterator(*this);
     }
 
-    SegmentIterator end_segments()
+    SegmentIterator segments_begin() const
     {
-      VertexIterator it(*this);
+      return SegmentIterator(*this);
+    }
 
-      it.reset_last();
-      it.next();
-      return it;
+    SegmentIterator segments_end()
+    {
+      return SegmentIterator(*this, &vertex_list);
+    }
+
+    SegmentIterator segments_end() const
+    {
+      return SegmentIterator(*this, const_cast<DL *>(&vertex_list));
     }
   };
 
@@ -399,6 +453,30 @@ namespace Designar
       delete vertex_list.remove_next();
 
     num_vertices = 0;
+  }
+
+  template <class PointT>
+  void GenPolygon<PointT>::VertexIterator::locate_position()
+  {
+    DL * ptr = Base::get_head()->get_next();
+    
+    while (ptr != Base::get_location())
+      {
+	ptr = ptr->get_next();
+	++pos;
+      }
+  }
+
+  template <class PointT>
+  void GenPolygon<PointT>::SegmentIterator::locate_position()
+  {
+    DL * ptr = head->get_next();
+    
+    while (ptr != curr)
+      {
+	ptr = ptr->get_next();
+	++pos;
+      }
   }
 
   class PolygonInt : public GenPolygon<PointInt2D>
