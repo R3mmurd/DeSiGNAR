@@ -26,6 +26,7 @@
 # define DSGNODESDEF_H
 
 # include <types.H>
+# include <iterator.H>
 
 namespace Designar
 {
@@ -293,6 +294,17 @@ namespace Designar
     {
       DL * head;
       DL * curr;
+
+    protected:
+      DL * get_head() const
+      {
+	return head;
+      }
+      
+      DL * get_location() const
+      {
+	return curr;
+      }
       
     public:
       Iterator()
@@ -371,27 +383,22 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	  throw std::out_of_range("There is not next element");
 
 	curr = curr->get_next();
       }
 
       void prev()
       {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	if (curr == head->get_next())
+	  throw std::out_of_range("There is not previous element");
 
 	curr = curr->get_prev();
       }
 
-      void reset_first()
+      void reset()
       {
 	curr = head->get_next(); 
-      }
-
-      void reset_last()
-      {
-	curr = head->get_prev();
       }
 
       DL * del()
@@ -400,36 +407,6 @@ namespace Designar
 	curr = curr->get_next();
 	ret_val->del();
 	return ret_val;
-      }
-
-      void operator ++ ()
-      {
-	next();
-      }
-
-      void operator -- ()
-      {
-	prev();
-      }
-
-      bool operator == (const Iterator & it) const
-      {
-	return head == it.head and curr == it.curr;
-      }
-
-      bool operator != (const Iterator & it) const
-      {
-	return not (it == *this);
-      }
-
-      DL * operator * ()
-      {
-	return get_current();
-      }
-
-      DL * operator * () const
-      {
-	return get_current();
       }
     };
   };
@@ -545,6 +522,201 @@ namespace Designar
 	return get_current();
       }
     };
+  };
+
+  template <typename Key>
+  class MTreeNode : private DLNode<Key>
+  {
+    struct SiblingInfo
+    {
+      unsigned int is_leftmost  : 4;
+      unsigned int is_rightmost : 4;
+
+      SiblingInfo()
+	: is_leftmost(true), is_rightmost(true)
+      {
+	// empty
+      }
+    };
+
+    MTreeNode * parent      = nullptr;
+    MTreeNode * first_child = nullptr;
+    SiblingInfo sibling_info;
+
+    using Base = DLNode<Key>;
+
+    MTreeNode * to_treenode(Base * p)
+    {
+      return static_cast<MTreeNode *>(p);
+    }
+
+    void insert_first_child(MTreeNode * c)
+    {
+      assert(first_child == nullptr);
+      c->parent = this;
+      first_child = c;
+    }
+    
+  public:
+    using KeyType   = Key;
+    using ValueType = Key;
+    using ItemType  = Key;
+    
+    MTreeNode() = default;
+    
+    MTreeNode(const Key & k)
+      : Base(k)
+    {
+      // empty
+    }
+
+    MTreeNode(Key && k)
+      : Base(std::forward<Key>(k))
+    {
+      // empty
+    }
+
+    Key & get_key()
+    {
+      return Base::get_item();
+    }
+
+    const Key & get_key() const
+    {
+      return Base::get_item();
+    }
+
+    MTreeNode * get_first_child()
+    {
+      return first_child;
+    }
+
+    MTreeNode * get_last_child()
+    {
+      if (first_child == nullptr)
+	return nullptr;
+
+      return to_treenode(first_child->get_prev());
+    }
+
+    MTreeNode * get_right_sibling()
+    {
+      if (sibling_info.is_rightmost)
+	return nullptr;
+
+      return to_treenode(Base::get_next());
+    }
+
+    MTreeNode * get_left_sibling()
+    {
+      if (sibling_info.is_leftmost)
+	return nullptr;
+
+      return to_treenode(Base::get_prev());
+    }
+
+    bool is_leaf() const
+    {
+      return first_child == nullptr;
+    }
+
+    bool is_empty() const
+    {
+      return parent == nullptr and first_child == nullptr and is_leaf() and
+	Base::is_empty();
+    }
+
+    void reset()
+    {
+      Base::reset();
+      parent = first_child = nullptr;
+      sibling_info.is_leftmost = sibling_info.is_rightmost = true;
+    }
+
+    void add_right_sibling(MTreeNode * s)
+    {
+      assert(s->is_empty());
+      insert_next(s);
+      s->sibling_info.is_rightmost = sibling_info.is_rightmost;
+      sibling_info.is_rightmost = false;
+      s->parent = parent;
+    }
+
+    void add_left_sibling(MTreeNode * s)
+    {
+      assert(s->is_empty());
+      insert_prev(s);
+      s->sibling_info.is_leftmost = sibling_info.is_leftmost;
+      s->parent = parent;
+
+      if (sibling_info.is_leftmost)
+	{
+	  parent->first_child = s;
+	  sibling_info.is_leftmost = false;
+	}
+    }
+
+    void insert_child(MTreeNode * c)
+    {
+      assert(c->is_empty());
+      
+      if (first_child == nullptr)
+	insert_first_child(c);
+      else
+	first_child->add_left_sibling();
+    }
+
+    void append_child(MTreeNode * c)
+    {
+      assert(c->is_empty());
+	    
+      if (first_child == nullptr)
+	insert_first_child(c);
+      else
+	to_treenode(first_child->get_prev())->add_right_sibling();
+    }
+
+    MTreeNode * remove_first_child()
+    {
+      if (first_child == nullptr)
+	return nullptr;
+
+      MTreeNode * ret_val = first_child;
+
+      assert(ret_val->is_leaf());
+
+      if (ret_val->sibling_info.is_rightmost)
+	first_child = nullptr;
+      else
+	{
+	  first_child = to_treenode(ret_val->get_next());
+	  first_child->sibling_info.is_leftmost = true;
+	  ret_val->del();
+	}
+
+      ret_val->reset();
+      return ret_val;
+    }
+
+    MTreeNode * remove_last_child()
+    {
+      if (first_child == nullptr)
+	return nullptr;
+
+      MTreeNode * ret_val = to_treenode(first_child->get_prev());
+      assert(ret_val->is_leaf());
+
+      if (ret_val->sibling_info.is_leftmost)
+	first_child = nullptr;
+      else
+	{
+	  ret_val->get_left_sibling()->sibling_info.is_rightmost = true;
+	  ret_val->del();
+	}
+
+      ret_val->reset();
+      return ret_val;
+    }
   };
 
   enum class BinTreeNodeCtor { SENTINEL_CTOR };
