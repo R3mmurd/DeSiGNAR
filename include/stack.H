@@ -146,6 +146,22 @@ namespace Designar
       return array[num_items - 1];
     }
 
+    T & base()
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return array[0];
+    }
+    
+    const T & base() const
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return array[0];
+    }
+
     T pop()
     {
       if (is_empty())
@@ -184,6 +200,12 @@ namespace Designar
     
     DynStack()
       : BaseArray()
+    {
+      // empty
+    }
+
+    DynStack(nat_t cap)
+      : BaseArray(cap)
     {
       // empty
     }
@@ -256,6 +278,22 @@ namespace Designar
 	throw std::underflow_error("Stack is empty");
       
       return BaseArray::get_last();
+    }
+
+    T & base()
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return BaseArray::get_first();
+    }
+
+    const T & base() const
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return BaseArray::get_first();
     }
     
     T pop()
@@ -363,6 +401,22 @@ namespace Designar
 	throw std::underflow_error("Stack is empty");
       
       return BaseList::get_first();
+    }
+
+    T & base()
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return BaseList::get_last();
+    }
+
+    const T & base() const
+    {
+      if (is_empty())
+	throw std::underflow_error("Stack is empty");
+      
+      return BaseList::get_last();
     }
     
     T pop()
