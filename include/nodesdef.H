@@ -478,7 +478,7 @@ namespace Designar
 
     const DLNode *& get_prev() const
     {
-      return (const DLNode *) DL::get_prev();
+      return (const DLNode *&) DL::get_prev();
     }
 
     DLNode * remove_next()
@@ -545,7 +545,7 @@ namespace Designar
 
     using Base = DLNode<Key>;
 
-    MTreeNode * to_treenode(Base * p)
+    static MTreeNode * to_treenode(Base * p)
     {
       return static_cast<MTreeNode *>(p);
     }
@@ -586,12 +586,12 @@ namespace Designar
       return Base::get_item();
     }
 
-    MTreeNode * get_first_child()
+    MTreeNode * get_first_child() const
     {
       return first_child;
     }
 
-    MTreeNode * get_last_child()
+    MTreeNode * get_last_child() const
     {
       if (first_child == nullptr)
 	return nullptr;
@@ -599,20 +599,20 @@ namespace Designar
       return to_treenode(first_child->get_prev());
     }
 
-    MTreeNode * get_right_sibling()
+    MTreeNode * get_right_sibling() const
     {
       if (sibling_info.is_rightmost)
 	return nullptr;
 
-      return to_treenode(Base::get_next());
+      return to_treenode(const_cast<Base *>(Base::get_next()));
     }
 
-    MTreeNode * get_left_sibling()
+    MTreeNode * get_left_sibling() const
     {
       if (sibling_info.is_leftmost)
 	return nullptr;
 
-      return to_treenode(Base::get_prev());
+      return to_treenode(const_cast<Base *>(Base::get_prev()));
     }
 
     bool is_leaf() const
@@ -636,8 +636,9 @@ namespace Designar
     void add_right_sibling(MTreeNode * s)
     {
       assert(s->is_empty());
-      insert_next(s);
+      Base::insert_next(s);
       s->sibling_info.is_rightmost = sibling_info.is_rightmost;
+      s->sibling_info.is_leftmost = false;
       sibling_info.is_rightmost = false;
       s->parent = parent;
     }
@@ -645,15 +646,14 @@ namespace Designar
     void add_left_sibling(MTreeNode * s)
     {
       assert(s->is_empty());
-      insert_prev(s);
+      Base::insert_prev(s);
       s->sibling_info.is_leftmost = sibling_info.is_leftmost;
+      s->sibling_info.is_rightmost = false;
+      sibling_info.is_leftmost = false;
       s->parent = parent;
 
-      if (sibling_info.is_leftmost)
-	{
-	  parent->first_child = s;
-	  sibling_info.is_leftmost = false;
-	}
+      if (s->sibling_info.is_leftmost and parent)
+	parent->first_child = s;
     }
 
     void insert_child(MTreeNode * c)
@@ -663,7 +663,7 @@ namespace Designar
       if (first_child == nullptr)
 	insert_first_child(c);
       else
-	first_child->add_left_sibling();
+	first_child->add_left_sibling(c);
     }
 
     void append_child(MTreeNode * c)
@@ -673,7 +673,7 @@ namespace Designar
       if (first_child == nullptr)
 	insert_first_child(c);
       else
-	to_treenode(first_child->get_prev())->add_right_sibling();
+	to_treenode(first_child->get_prev())->add_right_sibling(c);
     }
 
     MTreeNode * remove_first_child()
@@ -682,8 +682,6 @@ namespace Designar
 	return nullptr;
 
       MTreeNode * ret_val = first_child;
-
-      assert(ret_val->is_leaf());
 
       if (ret_val->sibling_info.is_rightmost)
 	first_child = nullptr;
@@ -694,7 +692,6 @@ namespace Designar
 	  ret_val->del();
 	}
 
-      ret_val->reset();
       return ret_val;
     }
 
@@ -704,7 +701,6 @@ namespace Designar
 	return nullptr;
 
       MTreeNode * ret_val = to_treenode(first_child->get_prev());
-      assert(ret_val->is_leaf());
 
       if (ret_val->sibling_info.is_leftmost)
 	first_child = nullptr;
@@ -714,10 +710,163 @@ namespace Designar
 	  ret_val->del();
 	}
 
-      ret_val->reset();
       return ret_val;
     }
+
+    class ChildrenIterator :
+      public BidirectionalIterator<ChildrenIterator, MTreeNode *, true>
+    {
+      friend class BasicIterator<ChildrenIterator, MTreeNode *, true>;
+
+      MTreeNode * first;
+      MTreeNode * curr;
+      nat_t       pos;
+
+    protected:
+      MTreeNode * get_location() const
+      {
+	return curr;
+      }
+
+    public:
+      ChildrenIterator()
+	: first(nullptr), curr(nullptr)
+      {
+	// empty
+      }
+
+      ChildrenIterator(const MTreeNode & node)
+	: first(const_cast<MTreeNode *>(&node)->get_first_child()),
+	  curr(first), pos(0)
+      {
+	// empty
+      }
+
+      ChildrenIterator(const ChildrenIterator & it)
+	: first(it.first), curr(it.curr), pos(it.pos)
+      {
+	// empty
+      }
+
+      ChildrenIterator(ChildrenIterator && it)
+	: ChildrenIterator()
+      {
+	swap(it);
+      }
+
+      ChildrenIterator & operator = (const ChildrenIterator & it)
+      {
+	if (this == &it)
+	  return *this;
+
+	first = it.first;
+	curr  = it.curr;
+	pos   = it.pos;
+
+	return *this;
+      }
+
+      ChildrenIterator & operator = (ChildrenIterator && it)
+      {
+	swap(it);
+	return *this;
+      }
+
+      void swap(ChildrenIterator & it)
+      {
+	std::swap(first, it.first);
+	std::swap(curr, it.curr);
+	std::swap(pos, it.pos);
+      }
+
+      nat_t get_position() const
+      {
+	return pos;
+      }
+
+      bool has_current() const
+      {
+	return curr != nullptr;
+      }
+
+      MTreeNode * get_current()
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr;
+      }
+
+      MTreeNode * get_current() const
+      {
+	if (not has_current())
+	  throw std::overflow_error("There is not current element");
+	
+	return curr;
+      }
+
+      void next()
+      {
+	if (not has_current())
+	  throw std::out_of_range("There is not next element");
+
+	++pos;
+	curr = curr->get_right_sibling();
+      }
+
+      void prev()
+      {
+	if (curr == first)
+	  throw std::out_of_range("There is not previous element");
+
+	--pos;
+
+	if (curr == nullptr)
+	  curr = to_treenode(first->get_prev());
+	else
+	  curr = curr->get_left_sibling();
+      }
+    };
+
+    template <class Op>
+    void for_each_child(Op &) const;
+
+    template <class Op>
+    void for_each_child(Op && op = Op()) const
+    {
+      for_each_child<Op>(op);
+    }
+
+    static void destroy_tree(MTreeNode *&);
   };
+
+  template <typename Key>
+  template <class Op>
+  void MTreeNode<Key>::for_each_child(Op & op) const
+  {
+    MTreeNode * ptr = first_child;
+
+    while (ptr != nullptr)
+      {
+	op(ptr);
+	ptr = ptr->get_right_sibling();
+      }
+  }
+
+  template <typename Key>
+  void MTreeNode<Key>::destroy_tree(MTreeNode *& r)
+  {
+    if (r == nullptr)
+      return;
+
+    MTreeNode * fc = nullptr;
+    
+    while (fc = r->remove_first_child())
+      destroy_tree(fc);
+
+    delete r;
+    r = nullptr;
+  }
 
   enum class BinTreeNodeCtor { SENTINEL_CTOR };
 
