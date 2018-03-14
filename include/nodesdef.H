@@ -88,7 +88,7 @@ namespace Designar
     const SLNode *& get_next() const
     {
       return next;
-    }
+   }
 
     void insert_next(SLNode * p)
     {
@@ -620,22 +620,38 @@ namespace Designar
       return first_child == nullptr;
     }
 
-    bool is_empty() const
+    bool has_siblings() const
     {
-      return parent == nullptr and first_child == nullptr and is_leaf() and
-	Base::is_empty();
+      return not Base::is_empty();
+    }
+
+    bool has_parent() const
+    {
+      return parent != nullptr;
+    }
+
+    bool has_children() const
+    {
+      return first_child != nullptr;
+    }
+
+    void reset_sibling_info()
+    {
+      sibling_info.is_leftmost = sibling_info.is_rightmost = true;
     }
 
     void reset()
     {
       Base::reset();
       parent = first_child = nullptr;
-      sibling_info.is_leftmost = sibling_info.is_rightmost = true;
+      reset_sibling_info();
     }
 
     void add_right_sibling(MTreeNode * s)
     {
-      assert(s->is_empty());
+      assert(s != nullptr);
+      assert(not s->has_siblings());
+      assert(not s->has_parent());
       Base::insert_next(s);
       s->sibling_info.is_rightmost = sibling_info.is_rightmost;
       s->sibling_info.is_leftmost = false;
@@ -645,7 +661,9 @@ namespace Designar
 
     void add_left_sibling(MTreeNode * s)
     {
-      assert(s->is_empty());
+      assert(s != nullptr);
+      assert(not s->has_siblings());
+      assert(not s->has_parent());
       Base::insert_prev(s);
       s->sibling_info.is_leftmost = sibling_info.is_leftmost;
       s->sibling_info.is_rightmost = false;
@@ -658,7 +676,9 @@ namespace Designar
 
     void insert_child(MTreeNode * c)
     {
-      assert(c->is_empty());
+      assert(c != nullptr);
+      assert(not c->has_siblings());
+      assert(not c->has_parent());
       
       if (first_child == nullptr)
 	insert_first_child(c);
@@ -668,7 +688,9 @@ namespace Designar
 
     void append_child(MTreeNode * c)
     {
-      assert(c->is_empty());
+      assert(c != nullptr);
+      assert(not c->has_siblings());
+      assert(not c->has_parent());
 	    
       if (first_child == nullptr)
 	insert_first_child(c);
@@ -692,6 +714,8 @@ namespace Designar
 	  ret_val->del();
 	}
 
+      ret_val->parent = nullptr;
+      ret_val->reset_sibling_info();
       return ret_val;
     }
 
@@ -710,6 +734,8 @@ namespace Designar
 	  ret_val->del();
 	}
 
+      ret_val->parent = nullptr;
+      ret_val->reset_sibling_info();
       return ret_val;
     }
 
