@@ -603,6 +603,7 @@ namespace Designar
   class DLList : public DL,
 		 public ContainerAlgorithms<DLList<T>, T>
   {
+    using Base = DL;
     using Node = DLNode<T>;
     
     nat_t num_items;
@@ -619,7 +620,7 @@ namespace Designar
     using SizeType  = nat_t;
     
     DLList()
-      : DL(), num_items(0)
+      : Base(), num_items(0)
     {
       // empty
     }
@@ -656,13 +657,13 @@ namespace Designar
     void swap(DLList & l)
     {
       std::swap(num_items, l.num_items);
-      Node::swap(&l);
+      Base::swap(&l);
     }
 
     T & insert(const T & item)
     {
       Node * node = new Node(item);
-      Node::insert_next(node);
+      Base::insert_next(node);
       ++num_items;
       return node->get_item();
     }
@@ -670,7 +671,7 @@ namespace Designar
     T & insert(T && item)
     {
       Node * node = new Node(std::forward<T>(item));
-      Node::insert_next(node);
+      Base::insert_next(node);
       ++num_items;
       return node->get_item();
     }
@@ -678,7 +679,7 @@ namespace Designar
     T & append(const T & item)
     {
       Node * node = new Node(item);
-      Node::insert_prev(node);
+      Base::insert_prev(node);
       ++num_items;
       return node->get_item();
     }
@@ -686,14 +687,14 @@ namespace Designar
     T & append(T && item)
     {
       Node * node = new Node(std::forward<T>(item));
-      Node::insert_prev(node);
+      Base::insert_prev(node);
       ++num_items;
       return node->get_item();
     }
 
     T & get_first()
     {
-      if (Node::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
       return static_cast<Node *>(DL::get_next())->get_item();
@@ -701,7 +702,7 @@ namespace Designar
     
     const T & get_first() const
     {
-      if (Node::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
       return static_cast<Node *>(DL::get_next())->get_item();
@@ -709,7 +710,7 @@ namespace Designar
 
     T & get_last()
     {
-      if (Node::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
       return static_cast<Node *>(DL::get_prev())->get_item();
@@ -717,7 +718,7 @@ namespace Designar
     
     const T & get_last() const
     {
-      if (Node::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
       return static_cast<Node *>(DL::get_prev())->get_item();
@@ -725,7 +726,7 @@ namespace Designar
 
     T remove_first()
     {
-      if (DL::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
       
       Node * node = static_cast<Node *>(DL::remove_next());
@@ -737,7 +738,7 @@ namespace Designar
 
     T remove_last()
     {
-      if (Node::is_empty())
+      if (Base::is_empty())
 	throw std::underflow_error("List is empty");
       
       Node * node = static_cast<Node *>(DL::remove_prev());;
