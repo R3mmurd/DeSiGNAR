@@ -558,13 +558,13 @@ namespace Designar
 
     nat_t size() const
     {
-      std::lock_guard<std::mutex> lck(const_cast<mutex &>(mtx));
+      std::lock_guard<std::mutex> lck(const_cast<std::mutex &>(mtx));
       return queue.size();
     }
 
     bool is_empty() const
     {
-      std::lock_guard<std::mutex> lck(const_cast<mutex &>(mtx));
+      std::lock_guard<std::mutex> lck(const_cast<std::mutex &>(mtx));
       return queue.is_empty();
     }
   };
