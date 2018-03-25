@@ -28,7 +28,7 @@ BIN         = $(SAMPLES:$(SAMPLESDIR)/%.C=$(BINDIR)/%.out)
 LIBNAME     = Designar
 LOCALLIB    = lib$(LIBNAME).a
 INCLUDEPATH = -I$(INCLUDEDIR)
-LIBLINK     = -L$(LIBDIR) -l$(LIBNAME)
+LIBLINK     = -L$(LIBDIR) -l$(LIBNAME) -lpthread
 
 library : $(OBJECTS) 
 	$(RM) $(LIBDIR)/$(LOCALLIB)
