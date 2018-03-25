@@ -524,6 +524,50 @@ namespace Designar
       return BaseList::remove_first();
     }
   };
+
+  template <typename T, class Queue = ListQueue<T>>
+  class ConcurrentQueue
+  {
+    std::mutex              mtx;
+    std::condition_variable cond_var;
+    Queue                   queue;
+    
+  public:
+    T & put(const T & item)
+    {
+      std::lock_guard<std::mutex> lck(mtx);
+      T & ret = queue.put(item);
+      cond_var.notify_one();
+      return ret;
+    }
+
+    T & put(T && item)
+    {
+      std::lock_guard<std::mutex> lck(mtx);
+      T & ret = queue.put(std::move(item));
+      cond_var.notify_one();
+      return ret;
+    }
+
+    T get()
+    {
+      std::unique_lock<std::mutex> lck(mtx);
+      cond_var.wait(lck, [this] { return not queue.is_empty(); });
+      return queue.get();
+    }
+
+    nat_t size() const
+    {
+      std::lock_guard<std::mutex> lck(mtx);
+      return queue.size();
+    }
+
+    bool is_empty() const
+    {
+      std::lock_guard<std::mutex> lck(mtx);
+      return queue.is_empty();
+    }
+  };
   
 } // end namespace Designar
 
