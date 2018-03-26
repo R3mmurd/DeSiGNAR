@@ -131,10 +131,24 @@ namespace Designar
       return Base::me();
     }
 
+    Iterator operator + (nat_t p)
+    {
+      Iterator it = Base::me();
+      it += p;
+      return it;
+    }
+
     Iterator & operator -= (nat_t p)
     {
       Base::me().prev_n(p);
       return Base::me();
+    }
+
+    Iterator operator - (nat_t p)
+    {
+      Iterator it = Base::me();
+      it -= p;
+      return it;
     }
 
     bool operator < (const Iterator & it) const

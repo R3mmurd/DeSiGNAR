@@ -132,8 +132,13 @@ void demo_random_access_iterator(const initializer_list<T> & xs)
   it2 -= 5;
   cout << to_str(it2) << endl;
 
+  cout << to_str(it2) << " + 3 => " << to_str(it2 + 3) << endl;
+
+  cout << to_str(it2) << " - 2 => " << to_str(it2 - 2) << endl;
+
   cout << "(" << to_str(it2) << ")[10] => "
        << to_str(it2) << endl;
+
 }
 
 void demo_polygon_iterators(const Polygon & p)
