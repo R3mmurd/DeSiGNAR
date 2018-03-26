@@ -142,6 +142,7 @@ int main()
 
   assert(tree.all([] (auto item) { return item % 2 == 0; }));
   assert(not tree.exists([] (auto item) { return item % 2 != 0; }));
+  assert(tree.none([] (const auto & item) { return item % 2 != 0; }));
 
   TreeSet<lint_t>  ts1 = {1,2,3,4};
   TreeSet<lint_t>  ts2 = {3,4,5,6};

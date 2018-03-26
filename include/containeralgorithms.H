@@ -171,6 +171,18 @@ namespace Designar
     {
       return exists<Pred>(pred);
     }
+
+    template <class Pred>
+    bool none(Pred & pred) const
+    {
+      return none_it(const_me().begin(), const_me().end(), pred);
+    }
+
+    template <class Pred>
+    bool none(Pred && pred = Pred()) const
+    {
+      return none<Pred>(pred);
+    }
     
     template <class Pred>
     T * search_ptr(Pred & pred) const

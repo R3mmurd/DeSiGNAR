@@ -124,6 +124,14 @@ int main()
   assert(farray.exists([] (const auto & item) { return item % 2 == 0; }));
   assert(marray.exists([] (const auto & item) { return item % 2 == 0; }));
 
+  assert(not array.none([] (const auto & item) { return item % 2 == 0; }));
+  assert(not farray.none([] (const auto & item) { return item % 2 == 0; }));
+  assert(not marray.none([] (const auto & item) { return item % 2 == 0; }));
+
+  assert(not array.none([] (const auto & item) { return item % 2 != 0; }));
+  assert(farray.none([] (const auto & item) { return item % 2 != 0; }));
+  assert(marray.none([] (const auto & item) { return item % 2 != 0; }));
+
   for (nat_t i = 0; i < array.size(); ++i)
     assert(array.nth(i) == i + 1);
 

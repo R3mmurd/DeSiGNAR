@@ -87,6 +87,12 @@ namespace Designar
   template <class It, class Pred>
   bool exists_it(const It &, const It &, Pred && pred = Pred());
 
+  template <class It, class Pred>
+  bool none_it(const It &, const It &, Pred &);
+
+  template <class It, class Pred>
+  bool none_it(const It &, const It &, Pred && pred = Pred());
+
   template <typename RetT, class It, class Op>
   RetT fold_it(const It &, const It &, const RetT &, Op &);
 
@@ -313,6 +319,21 @@ namespace Designar
   bool exists_it(const It & a, const It & b, Pred && pred)
   {
     return exists_it<It, Pred>(a, b, pred);
+  }
+
+  template <class It, class Pred>
+  bool none_it(const It & a, const It & b, Pred & pred)
+  {
+    for (It i = a; i != b; ++i)
+      if (pred(*i))
+	return false;
+    return true;
+  }
+
+  template <class It, class Pred>
+  bool none_it(const It & a, const It & b, Pred && pred)
+  {
+    return none_it<It, Pred>(a, b, pred);
   }
 
   template <typename RetT, class It, class Pred>

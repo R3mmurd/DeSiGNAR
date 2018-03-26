@@ -109,6 +109,14 @@ int main()
   assert(list.exists([] (const auto & item) { return item % 2 == 0; }));
   assert(flist.exists([] (const auto & item) { return item % 2 == 0; }));
   assert(mlist.exists([] (const auto & item) { return item % 2 == 0; }));
+
+  assert(not list.none([] (const auto & item) { return item % 2 == 0; }));
+  assert(not flist.none([] (const auto & item) { return item % 2 == 0; }));
+  assert(not mlist.none([] (const auto & item) { return item % 2 == 0; }));
+
+  assert(not list.none([] (const auto & item) { return item % 2 != 0; }));
+  assert(flist.none([] (const auto & item) { return item % 2 != 0; }));
+  assert(mlist.none([] (const auto & item) { return item % 2 != 0; }));
 	 
   for (nat_t i = 0; i < list.size(); ++i)
     assert(list.nth(i) == i + 1);

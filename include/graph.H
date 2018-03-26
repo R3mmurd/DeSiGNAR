@@ -141,6 +141,18 @@ namespace Designar
     {
       return exists_node<Pred>(pred);
     }
+
+    template <class Pred>
+    bool none_node(Pred & pred) const
+    {
+      return none_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
+    }
+
+    template <class Pred>
+    bool none_node(Pred && pred = Pred()) const
+    {
+      return none_node<Pred>(pred);
+    }
     
     template <class Pred>
     Node * search_node_ptr(Pred & pred)
@@ -229,6 +241,18 @@ namespace Designar
     {
       return exists_arc<Pred>(pred);
     }
+
+    template <class Pred>
+    bool none_arc(Pred & pred) const
+    {
+      return none_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
+    }
+  
+    template <class Pred>
+    bool none_arc(Pred && pred) const
+    {
+      return none_arc<Pred>(pred);
+    }
   
     template <class Pred>
     Arc * search_arc_ptr(Pred & pred)
@@ -315,6 +339,18 @@ namespace Designar
     bool exists_adjacent_arc(Node & p, Pred && pred) const
     {
       return exists_adjacent_arc<Pred>(p, pred);
+    }
+
+    template <class Pred>
+    bool none_adjacent_arc(Node & p, Pred & pred) const
+    {
+      return none_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
+    }
+  
+    template <class Pred>
+    bool none_adjacent_arc(Node & p, Pred && pred) const
+    {
+      return none_adjacent_arc<Pred>(p, pred);
     }
   
     template <class Pred>
