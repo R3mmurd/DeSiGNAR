@@ -220,17 +220,17 @@ namespace Designar
       remove_if<Pred>(pred);
     }
     
-    template <class Eq>
-    bool equal(const ContainerType & c, Eq & eq) const
+    template <class ContainerType2 = ContainerType, class Eq>
+    bool equal(const ContainerType2 & c, Eq & eq) const
     {
       return equal_it(const_me().begin(), const_me().end(),
 		      c.begin(), c.end(), eq);
     }
     
-    template <class Eq = std::equal_to<T>>
-    bool equal(const ContainerType & c, Eq && eq = Eq()) const
+    template <class ContainerType2 = ContainerType, class Eq = std::equal_to<T>>
+    bool equal(const ContainerType2 & c, Eq && eq = Eq()) const
     {
-      return equal<Eq>(c, eq);
+      return equal<ContainerType2, Eq>(c, eq);
     }
     
     template <class Cmp>
