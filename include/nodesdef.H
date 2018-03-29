@@ -887,7 +887,7 @@ namespace Designar
 
     MTreeNode * fc = nullptr;
     
-    while (fc = r->remove_first_child())
+    while ((fc = r->remove_first_child()))
       destroy_tree(fc);
 
     delete r;
