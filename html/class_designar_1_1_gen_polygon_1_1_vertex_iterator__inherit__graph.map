@@ -1,0 +1,6 @@
+<map id="Designar::GenPolygon&lt; PointT &gt;::VertexIterator" name="Designar::GenPolygon&lt; PointT &gt;::VertexIterator">
+<area shape="rect" id="node2" href="$class_designar_1_1_d_l_1_1_iterator.html" title="Designar::DL::Iterator" alt="" coords="5,221,153,247"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; VertexIterator, PointT \&gt;" alt="" coords="178,213,373,255"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; VertexIterator, PointT,\l false \&gt;" alt="" coords="190,109,361,165"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; VertexIterator, PointT,\l RET_CPY \&gt;" alt="" coords="194,5,357,61"/>
+</map>

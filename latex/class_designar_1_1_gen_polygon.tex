@@ -1,0 +1,342 @@
+\hypertarget{class_designar_1_1_gen_polygon}{}\section{Designar\+:\+:Gen\+Polygon$<$ PointT $>$ Class Template Reference}
+\label{class_designar_1_1_gen_polygon}\index{Designar\+::\+Gen\+Polygon$<$ Point\+T $>$@{Designar\+::\+Gen\+Polygon$<$ Point\+T $>$}}
+
+
+{\ttfamily \#include $<$polygon.\+H$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator}
+\item 
+class \hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_gen_polygon_a257735320e85cb672973f88f01625632}{Point\+Type} = PointT
+\item 
+using \hyperlink{class_designar_1_1_gen_polygon_a06fe54118b31269c3fc76cc9b5e55654}{Segment\+Type} = \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_a309794dce5861b9f5c158ea48a01be3e}{Gen\+Polygon} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_ac5ac34d76225f9c1d8895753f9e22ae8}{Gen\+Polygon} (const std\+::initializer\+\_\+list$<$ PointT $>$ \&)
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_a8dd52177ce8635fb198a12cc62bdb44f}{Gen\+Polygon} (const \hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \&p)
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_af8cd6e919aacfbefd4d719f3c4d66623}{Gen\+Polygon} (\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \&\&p)
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_ad23629fffafdf4f9c01a2db01e5cec9a}{$\sim$\+Gen\+Polygon} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \& \hyperlink{class_designar_1_1_gen_polygon_a83919ff0fa706a813d2d3bdebc4d644b}{operator=} (const \hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \&p)
+\item 
+\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \& \hyperlink{class_designar_1_1_gen_polygon_ab38a83d2d3f9e9ab74d150a3def73ba3}{operator=} (\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \&\&p)
+\item 
+void \hyperlink{class_designar_1_1_gen_polygon_ac3c88479623a86d9f49c24676f837c0d}{swap} (\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} \&p)
+\item 
+void \hyperlink{class_designar_1_1_gen_polygon_a1f16b49e951787ee8afff43ae1957a8b}{clear} ()
+\item 
+void \hyperlink{class_designar_1_1_gen_polygon_a3e059181e8c356f814bdf298da82f305}{add\+\_\+vertex} (const PointT \&p)
+\item 
+void \hyperlink{class_designar_1_1_gen_polygon_a0236ff66d05f2340c9412d5a6f5dc813}{add\+\_\+vertex} (PointT \&\&p)
+\item 
+bool \hyperlink{class_designar_1_1_gen_polygon_a71494c73881d1281048a24d4d75b67f1}{is\+\_\+empty} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_gen_polygon_a7e39723b98f9fd7dabe41de58cf29575}{size} () const
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_a46604941ab9b33349086f7ca4b222869}{vertices\+\_\+begin} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_a1a2dd20f7312fcba7649263f77e9f649}{vertices\+\_\+begin} () const
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_aad1c6e27b6288072e2821c65512ba2a4}{vertices\+\_\+end} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_ad409613d032d91895921d60e27250a14}{vertices\+\_\+end} () const
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_a6957491e673b75a7106de2a19dd20f2e}{segments\+\_\+begin} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_a66bce31d11cd12f7f3d6731d3d23bb77}{segments\+\_\+begin} () const
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_a1812e03e19df8a1363989b271955ea66}{segments\+\_\+end} ()
+\item 
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon_aa8e70075cae9a4a726bc8635d2cd527b}{segments\+\_\+end} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename PointT$>$\newline
+class Designar\+::\+Gen\+Polygon$<$ Point\+T $>$}
+
+
+
+Definition at line 35 of file polygon.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a257735320e85cb672973f88f01625632}\label{class_designar_1_1_gen_polygon_a257735320e85cb672973f88f01625632}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Point\+Type@{Point\+Type}}
+\index{Point\+Type@{Point\+Type}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Point\+Type}{PointType}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+using \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon_a257735320e85cb672973f88f01625632}{Point\+Type} =  PointT}
+
+
+
+Definition at line 58 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a06fe54118b31269c3fc76cc9b5e55654}\label{class_designar_1_1_gen_polygon_a06fe54118b31269c3fc76cc9b5e55654}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Segment\+Type@{Segment\+Type}}
+\index{Segment\+Type@{Segment\+Type}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Segment\+Type}{SegmentType}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+using \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon_a06fe54118b31269c3fc76cc9b5e55654}{Segment\+Type} =  \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$PointT$>$}
+
+
+
+Definition at line 59 of file polygon.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a309794dce5861b9f5c158ea48a01be3e}\label{class_designar_1_1_gen_polygon_a309794dce5861b9f5c158ea48a01be3e}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Gen\+Polygon@{Gen\+Polygon}}
+\index{Gen\+Polygon@{Gen\+Polygon}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Gen\+Polygon()}{GenPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 61 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_ac5ac34d76225f9c1d8895753f9e22ae8}\label{class_designar_1_1_gen_polygon_ac5ac34d76225f9c1d8895753f9e22ae8}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Gen\+Polygon@{Gen\+Polygon}}
+\index{Gen\+Polygon@{Gen\+Polygon}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Gen\+Polygon()}{GenPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} (\begin{DoxyParamCaption}\item[{const std\+::initializer\+\_\+list$<$ PointT $>$ \&}]{l }\end{DoxyParamCaption})}
+
+
+
+Definition at line 442 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a8dd52177ce8635fb198a12cc62bdb44f}\label{class_designar_1_1_gen_polygon_a8dd52177ce8635fb198a12cc62bdb44f}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Gen\+Polygon@{Gen\+Polygon}}
+\index{Gen\+Polygon@{Gen\+Polygon}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Gen\+Polygon()}{GenPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}$<$ PointT $>$ \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 69 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_af8cd6e919aacfbefd4d719f3c4d66623}\label{class_designar_1_1_gen_polygon_af8cd6e919aacfbefd4d719f3c4d66623}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!Gen\+Polygon@{Gen\+Polygon}}
+\index{Gen\+Polygon@{Gen\+Polygon}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{Gen\+Polygon()}{GenPolygon()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}$<$ PointT $>$ \&\&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 75 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_ad23629fffafdf4f9c01a2db01e5cec9a}\label{class_designar_1_1_gen_polygon_ad23629fffafdf4f9c01a2db01e5cec9a}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!````~Gen\+Polygon@{$\sim$\+Gen\+Polygon}}
+\index{````~Gen\+Polygon@{$\sim$\+Gen\+Polygon}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{$\sim$\+Gen\+Polygon()}{~GenPolygon()}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::$\sim$\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 81 of file polygon.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a3e059181e8c356f814bdf298da82f305}\label{class_designar_1_1_gen_polygon_a3e059181e8c356f814bdf298da82f305}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!add\+\_\+vertex@{add\+\_\+vertex}}
+\index{add\+\_\+vertex@{add\+\_\+vertex}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{add\+\_\+vertex()}{add\_vertex()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::add\+\_\+vertex (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 111 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a0236ff66d05f2340c9412d5a6f5dc813}\label{class_designar_1_1_gen_polygon_a0236ff66d05f2340c9412d5a6f5dc813}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!add\+\_\+vertex@{add\+\_\+vertex}}
+\index{add\+\_\+vertex@{add\+\_\+vertex}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{add\+\_\+vertex()}{add\_vertex()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::add\+\_\+vertex (\begin{DoxyParamCaption}\item[{PointT \&\&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 117 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a1f16b49e951787ee8afff43ae1957a8b}\label{class_designar_1_1_gen_polygon_a1f16b49e951787ee8afff43ae1957a8b}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!clear@{clear}}
+\index{clear@{clear}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$class PointT $>$ \\
+void \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 450 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a71494c73881d1281048a24d4d75b67f1}\label{class_designar_1_1_gen_polygon_a71494c73881d1281048a24d4d75b67f1}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 123 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a83919ff0fa706a813d2d3bdebc4d644b}\label{class_designar_1_1_gen_polygon_a83919ff0fa706a813d2d3bdebc4d644b}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}\& \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}$<$ PointT $>$ \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 86 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_ab38a83d2d3f9e9ab74d150a3def73ba3}\label{class_designar_1_1_gen_polygon_ab38a83d2d3f9e9ab74d150a3def73ba3}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}\& \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}$<$ PointT $>$ \&\&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 97 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a6957491e673b75a7106de2a19dd20f2e}\label{class_designar_1_1_gen_polygon_a6957491e673b75a7106de2a19dd20f2e}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!segments\+\_\+begin@{segments\+\_\+begin}}
+\index{segments\+\_\+begin@{segments\+\_\+begin}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{segments\+\_\+begin()}{segments\_begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::segments\+\_\+begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 407 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a66bce31d11cd12f7f3d6731d3d23bb77}\label{class_designar_1_1_gen_polygon_a66bce31d11cd12f7f3d6731d3d23bb77}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!segments\+\_\+begin@{segments\+\_\+begin}}
+\index{segments\+\_\+begin@{segments\+\_\+begin}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{segments\+\_\+begin()}{segments\_begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::segments\+\_\+begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 412 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a1812e03e19df8a1363989b271955ea66}\label{class_designar_1_1_gen_polygon_a1812e03e19df8a1363989b271955ea66}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!segments\+\_\+end@{segments\+\_\+end}}
+\index{segments\+\_\+end@{segments\+\_\+end}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{segments\+\_\+end()}{segments\_end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::segments\+\_\+end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 417 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_aa8e70075cae9a4a726bc8635d2cd527b}\label{class_designar_1_1_gen_polygon_aa8e70075cae9a4a726bc8635d2cd527b}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!segments\+\_\+end@{segments\+\_\+end}}
+\index{segments\+\_\+end@{segments\+\_\+end}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{segments\+\_\+end()}{segments\_end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_segment_iterator}{Segment\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::segments\+\_\+end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 422 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a7e39723b98f9fd7dabe41de58cf29575}\label{class_designar_1_1_gen_polygon_a7e39723b98f9fd7dabe41de58cf29575}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!size@{size}}
+\index{size@{size}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 128 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_ac3c88479623a86d9f49c24676f837c0d}\label{class_designar_1_1_gen_polygon_ac3c88479623a86d9f49c24676f837c0d}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_polygon}{Gen\+Polygon}$<$ PointT $>$ \&}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 103 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a46604941ab9b33349086f7ca4b222869}\label{class_designar_1_1_gen_polygon_a46604941ab9b33349086f7ca4b222869}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!vertices\+\_\+begin@{vertices\+\_\+begin}}
+\index{vertices\+\_\+begin@{vertices\+\_\+begin}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{vertices\+\_\+begin()}{vertices\_begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::vertices\+\_\+begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 387 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_a1a2dd20f7312fcba7649263f77e9f649}\label{class_designar_1_1_gen_polygon_a1a2dd20f7312fcba7649263f77e9f649}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!vertices\+\_\+begin@{vertices\+\_\+begin}}
+\index{vertices\+\_\+begin@{vertices\+\_\+begin}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{vertices\+\_\+begin()}{vertices\_begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::vertices\+\_\+begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 392 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_aad1c6e27b6288072e2821c65512ba2a4}\label{class_designar_1_1_gen_polygon_aad1c6e27b6288072e2821c65512ba2a4}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!vertices\+\_\+end@{vertices\+\_\+end}}
+\index{vertices\+\_\+end@{vertices\+\_\+end}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{vertices\+\_\+end()}{vertices\_end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::vertices\+\_\+end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 397 of file polygon.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_polygon_ad409613d032d91895921d60e27250a14}\label{class_designar_1_1_gen_polygon_ad409613d032d91895921d60e27250a14}} 
+\index{Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}!vertices\+\_\+end@{vertices\+\_\+end}}
+\index{vertices\+\_\+end@{vertices\+\_\+end}!Designar\+::\+Gen\+Polygon@{Designar\+::\+Gen\+Polygon}}
+\subsubsection{\texorpdfstring{vertices\+\_\+end()}{vertices\_end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_polygon_1_1_vertex_iterator}{Vertex\+Iterator} \hyperlink{class_designar_1_1_gen_polygon}{Designar\+::\+Gen\+Polygon}$<$ PointT $>$\+::vertices\+\_\+end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 402 of file polygon.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+De\+Si\+G\+N\+A\+R/include/\hyperlink{polygon_8_h}{polygon.\+H}\end{DoxyCompactItemize}

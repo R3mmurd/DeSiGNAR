@@ -1,0 +1,6 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Iterator, Key, RET_CPY \&gt;" alt="" coords="5,5,193,47"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, Key, false \&gt;" alt="" coords="241,5,412,47"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, Key \&gt;" alt="" coords="460,5,655,47"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_hash_set_1_1_iterator.html" title="Designar::HashSet\&lt;\l Key, Cmp \&gt;::Iterator" alt="" coords="703,5,849,47"/>
+</map>

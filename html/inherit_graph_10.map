@@ -1,0 +1,4 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_base_graph.html" title="Designar::BaseGraph\l\&lt; Graph\&lt; NodeInfo, ArcInfo,\l GraphInfo \&gt;, GraphNode\l\&lt; NodeInfo, ArcInfo, GraphInfo\l \&gt;, GraphArc\&lt; GraphNode\&lt; NodeInfo,\l ArcInfo, GraphInfo \&gt;, NodeInfo,\l ArcInfo, GraphInfo \&gt; \&gt;" alt="" coords="5,5,249,120"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_graph.html" title="Designar::Graph\&lt; NodeInfo,\l ArcInfo, GraphInfo \&gt;" alt="" coords="297,42,484,83"/>
+</map>

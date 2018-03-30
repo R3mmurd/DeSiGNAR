@@ -1,0 +1,9 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_common_node_arc.html" title="Designar::CommonNodeArc" alt="" coords="5,140,192,167"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_base_graph_arc.html" title="Designar::BaseGraphArc\l\&lt; Node, ArcInfo, CommonNodeArc \&gt;" alt="" coords="240,93,479,134"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_base_graph_node.html" title="Designar::BaseGraphNode\l\&lt; NodeInfo, CommonNodeArc \&gt;" alt="" coords="254,173,465,214"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_digraph_arc.html" title="Designar::DigraphArc\l\&lt; Node, NodeInfo, ArcInfo,\l GraphInfo \&gt;" alt="" coords="527,5,707,61"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_graph_arc.html" title="Designar::GraphArc\l\&lt; Node, NodeInfo, ArcInfo,\l GraphInfo \&gt;" alt="" coords="527,85,707,141"/>
+<area shape="rect" id="node6" href="$class_designar_1_1_digraph_node.html" title="Designar::DigraphNode\l\&lt; NodeInfo, ArcInfo,\l GraphInfo \&gt;" alt="" coords="537,165,696,221"/>
+<area shape="rect" id="node7" href="$class_designar_1_1_graph_node.html" title="Designar::GraphNode\l\&lt; NodeInfo, ArcInfo,\l GraphInfo \&gt;" alt="" coords="543,245,691,301"/>
+</map>

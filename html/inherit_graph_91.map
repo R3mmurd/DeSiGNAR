@@ -1,0 +1,7 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; TreeSet\&lt; MapKey\&lt; Key, Value\l \&gt;, CmpWrapper\&lt; Key, Value,\l Cmp \&gt; \&gt;, MapKey\&lt; Key, Value \&gt; \&gt;" alt="" coords="5,5,240,76"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_tree_set.html" title="Designar::TreeSet\&lt;\l MapKey\&lt; Key, Value\l \&gt;, CmpWrapper\&lt; Key,\l Value, Cmp \&gt; \&gt;" alt="" coords="288,57,447,128"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_gen_map.html" title="Designar::GenMap\&lt; TreeSet,\l Key, Value, Cmp \&gt;" alt="" coords="495,72,688,113"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_tree_map.html" title="Designar::TreeMap\&lt;\l Key, Value, Cmp \&gt;" alt="" coords="736,72,877,113"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; TreeSet\&lt; MapKey\&lt; Key,\l Value \&gt;, CmpWrapper\&lt; Key,\l Value, Cmp \&gt; \&gt;, MapKey\&lt;\l Key, Value \&gt; \&gt;" alt="" coords="25,101,220,186"/>
+</map>

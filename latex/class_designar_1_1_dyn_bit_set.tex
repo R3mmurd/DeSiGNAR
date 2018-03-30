@@ -1,0 +1,349 @@
+\hypertarget{class_designar_1_1_dyn_bit_set}{}\section{Designar\+:\+:Dyn\+Bit\+Set Class Reference}
+\label{class_designar_1_1_dyn_bit_set}\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+
+
+{\ttfamily \#include $<$bitset.\+H$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Iterator}
+\item 
+class \hyperlink{class_designar_1_1_dyn_bit_set_1_1_r_w_proxy}{R\+W\+Proxy}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_dyn_bit_set_ad3f66987966a4fc27fec6d6ab552a1c7}{Item\+Type} = bool
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_a41e552380bd305a4069900b1e6b655e8}{Dyn\+Bit\+Set} ()
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_a212b47cbc4cc6c3424d0906924790734}{Dyn\+Bit\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}, bool val=false)
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_a43501b702a17c0ab0aa2316861a1e536}{Dyn\+Bit\+Set} (const \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&)
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_ad974f6f490c9e97d8c149c1d8d9be6c8}{Dyn\+Bit\+Set} (\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&\&)
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_a4e1f211af29be8c968e23666b5e8641e}{Dyn\+Bit\+Set} (const std\+::initializer\+\_\+list$<$ bool $>$ \&)
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_a5215370dcc0022588d2d8c9484d65c7a}{$\sim$\+Dyn\+Bit\+Set} ()=default
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \& \hyperlink{class_designar_1_1_dyn_bit_set_a851472c8fbea77e9be47b39584df227d}{operator=} (const \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&)
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \& \hyperlink{class_designar_1_1_dyn_bit_set_a1302731fc0c006fca16137697529dc39}{operator=} (\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&\&)
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_a376fe3b34a2a0c93bde8f33ff2947e64}{swap} (\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&)
+\item 
+bool \hyperlink{class_designar_1_1_dyn_bit_set_a07337c0749b7b75ffbd6e9ff56348963}{is\+\_\+empty} () const
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_af73666f08fda747f5d2dd9c1343f884f}{clear} ()
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_dyn_bit_set_a0107a8946533f6b8dc9a225a2f5b91a9}{size} () const
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_a061298007ec0f5743f1f7f7f7e87988c}{append} (bool)
+\item 
+bool \hyperlink{class_designar_1_1_dyn_bit_set_a0ecc1cd2ec0e273ecaab4c81e769e589}{remove\+\_\+last} ()
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_a3f9dc7630c5c25c85dffc260f3feccb3}{set\+\_\+bit} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}, bool)
+\item 
+bool \hyperlink{class_designar_1_1_dyn_bit_set_ac680bec714f7d06a511bc41c3a514d3c}{get\+\_\+bit} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}) const
+\item 
+std\+::string \hyperlink{class_designar_1_1_dyn_bit_set_ad393d0c9a7f15f022b0529fbe2983780}{to\+\_\+string} () const
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_ac04df606a53e544d8e87d931be0abac0}{write} (std\+::ostream \&) const
+\item 
+void \hyperlink{class_designar_1_1_dyn_bit_set_a18b74c7e27d2af9fefd48b1eabfd377d}{read} (std\+::istream \&)
+\item 
+const \hyperlink{class_designar_1_1_dyn_bit_set_1_1_r_w_proxy}{R\+W\+Proxy} \hyperlink{class_designar_1_1_dyn_bit_set_a0fa3213cdd6a6a3470c03a961a34e909}{operator\mbox{[}$\,$\mbox{]}} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}) const
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_1_1_r_w_proxy}{R\+W\+Proxy} \hyperlink{class_designar_1_1_dyn_bit_set_afe3a09791ecbffbe9c13b4b7a214fe66}{operator\mbox{[}$\,$\mbox{]}} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t})
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_dyn_bit_set_a40cde0bc849513bbad925b4733d777f6}{begin} ()
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_dyn_bit_set_a73c8564a300f36934b2de273c1f8eb18}{begin} () const
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_dyn_bit_set_a2d7725ebf960363167ccabaacd37bec6}{end} ()
+\item 
+\hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_dyn_bit_set_a1ca3f63ddb290be233b1311d1b4439b2}{end} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 102 of file bitset.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_ad3f66987966a4fc27fec6d6ab552a1c7}\label{class_designar_1_1_dyn_bit_set_ad3f66987966a4fc27fec6d6ab552a1c7}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily using \hyperlink{class_designar_1_1_dyn_bit_set_ad3f66987966a4fc27fec6d6ab552a1c7}{Designar\+::\+Dyn\+Bit\+Set\+::\+Item\+Type} =  bool}
+
+
+
+Definition at line 105 of file bitset.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a41e552380bd305a4069900b1e6b655e8}\label{class_designar_1_1_dyn_bit_set_a41e552380bd305a4069900b1e6b655e8}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Dyn\+Bit\+Set@{Dyn\+Bit\+Set}}
+\index{Dyn\+Bit\+Set@{Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Dyn\+Bit\+Set()}{DynBitSet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 266 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a212b47cbc4cc6c3424d0906924790734}\label{class_designar_1_1_dyn_bit_set_a212b47cbc4cc6c3424d0906924790734}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Dyn\+Bit\+Set@{Dyn\+Bit\+Set}}
+\index{Dyn\+Bit\+Set@{Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Dyn\+Bit\+Set()}{DynBitSet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{nb,  }\item[{bool}]{val = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 272 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a43501b702a17c0ab0aa2316861a1e536}\label{class_designar_1_1_dyn_bit_set_a43501b702a17c0ab0aa2316861a1e536}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Dyn\+Bit\+Set@{Dyn\+Bit\+Set}}
+\index{Dyn\+Bit\+Set@{Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Dyn\+Bit\+Set()}{DynBitSet()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&}]{dbs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 278 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_ad974f6f490c9e97d8c149c1d8d9be6c8}\label{class_designar_1_1_dyn_bit_set_ad974f6f490c9e97d8c149c1d8d9be6c8}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Dyn\+Bit\+Set@{Dyn\+Bit\+Set}}
+\index{Dyn\+Bit\+Set@{Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Dyn\+Bit\+Set()}{DynBitSet()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&\&}]{dbs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 284 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a4e1f211af29be8c968e23666b5e8641e}\label{class_designar_1_1_dyn_bit_set_a4e1f211af29be8c968e23666b5e8641e}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!Dyn\+Bit\+Set@{Dyn\+Bit\+Set}}
+\index{Dyn\+Bit\+Set@{Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{Dyn\+Bit\+Set()}{DynBitSet()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}\item[{const std\+::initializer\+\_\+list$<$ bool $>$ \&}]{l }\end{DoxyParamCaption})}
+
+
+
+Definition at line 290 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a5215370dcc0022588d2d8c9484d65c7a}\label{class_designar_1_1_dyn_bit_set_a5215370dcc0022588d2d8c9484d65c7a}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!````~Dyn\+Bit\+Set@{$\sim$\+Dyn\+Bit\+Set}}
+\index{````~Dyn\+Bit\+Set@{$\sim$\+Dyn\+Bit\+Set}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{$\sim$\+Dyn\+Bit\+Set()}{~DynBitSet()}}
+{\footnotesize\ttfamily Designar\+::\+Dyn\+Bit\+Set\+::$\sim$\+Dyn\+Bit\+Set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a061298007ec0f5743f1f7f7f7e87988c}\label{class_designar_1_1_dyn_bit_set_a061298007ec0f5743f1f7f7f7e87988c}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!append@{append}}
+\index{append@{append}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{append()}{append()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::append (\begin{DoxyParamCaption}\item[{bool}]{value }\end{DoxyParamCaption})}
+
+
+
+Definition at line 338 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a40cde0bc849513bbad925b4733d777f6}\label{class_designar_1_1_dyn_bit_set_a40cde0bc849513bbad925b4733d777f6}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Dyn\+Bit\+Set\+::\+Iterator} Designar\+::\+Dyn\+Bit\+Set\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 433 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a73c8564a300f36934b2de273c1f8eb18}\label{class_designar_1_1_dyn_bit_set_a73c8564a300f36934b2de273c1f8eb18}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Dyn\+Bit\+Set\+::\+Iterator} Designar\+::\+Dyn\+Bit\+Set\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 438 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_af73666f08fda747f5d2dd9c1343f884f}\label{class_designar_1_1_dyn_bit_set_af73666f08fda747f5d2dd9c1343f884f}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!clear@{clear}}
+\index{clear@{clear}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 327 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a2d7725ebf960363167ccabaacd37bec6}\label{class_designar_1_1_dyn_bit_set_a2d7725ebf960363167ccabaacd37bec6}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!end@{end}}
+\index{end@{end}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Dyn\+Bit\+Set\+::\+Iterator} Designar\+::\+Dyn\+Bit\+Set\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 443 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a1ca3f63ddb290be233b1311d1b4439b2}\label{class_designar_1_1_dyn_bit_set_a1ca3f63ddb290be233b1311d1b4439b2}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!end@{end}}
+\index{end@{end}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set_1_1_iterator}{Dyn\+Bit\+Set\+::\+Iterator} Designar\+::\+Dyn\+Bit\+Set\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 448 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_ac680bec714f7d06a511bc41c3a514d3c}\label{class_designar_1_1_dyn_bit_set_ac680bec714f7d06a511bc41c3a514d3c}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!get\+\_\+bit@{get\+\_\+bit}}
+\index{get\+\_\+bit@{get\+\_\+bit}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+bit()}{get\_bit()}}
+{\footnotesize\ttfamily bool Designar\+::\+Dyn\+Bit\+Set\+::get\+\_\+bit (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 366 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a07337c0749b7b75ffbd6e9ff56348963}\label{class_designar_1_1_dyn_bit_set_a07337c0749b7b75ffbd6e9ff56348963}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily bool Designar\+::\+Dyn\+Bit\+Set\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 322 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a851472c8fbea77e9be47b39584df227d}\label{class_designar_1_1_dyn_bit_set_a851472c8fbea77e9be47b39584df227d}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \& Designar\+::\+Dyn\+Bit\+Set\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&}]{dbs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 299 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a1302731fc0c006fca16137697529dc39}\label{class_designar_1_1_dyn_bit_set_a1302731fc0c006fca16137697529dc39}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \& Designar\+::\+Dyn\+Bit\+Set\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&\&}]{dbs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 310 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a0fa3213cdd6a6a3470c03a961a34e909}\label{class_designar_1_1_dyn_bit_set_a0fa3213cdd6a6a3470c03a961a34e909}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \hyperlink{class_designar_1_1_dyn_bit_set_1_1_r_w_proxy}{Dyn\+Bit\+Set\+::\+R\+W\+Proxy} Designar\+::\+Dyn\+Bit\+Set\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 407 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_afe3a09791ecbffbe9c13b4b7a214fe66}\label{class_designar_1_1_dyn_bit_set_afe3a09791ecbffbe9c13b4b7a214fe66}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_dyn_bit_set_1_1_r_w_proxy}{Dyn\+Bit\+Set\+::\+R\+W\+Proxy} Designar\+::\+Dyn\+Bit\+Set\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})}
+
+
+
+Definition at line 412 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a18b74c7e27d2af9fefd48b1eabfd377d}\label{class_designar_1_1_dyn_bit_set_a18b74c7e27d2af9fefd48b1eabfd377d}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!read@{read}}
+\index{read@{read}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::read (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{in }\end{DoxyParamCaption})}
+
+
+
+Definition at line 394 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a0ecc1cd2ec0e273ecaab4c81e769e589}\label{class_designar_1_1_dyn_bit_set_a0ecc1cd2ec0e273ecaab4c81e769e589}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!remove\+\_\+last@{remove\+\_\+last}}
+\index{remove\+\_\+last@{remove\+\_\+last}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{remove\+\_\+last()}{remove\_last()}}
+{\footnotesize\ttfamily bool Designar\+::\+Dyn\+Bit\+Set\+::remove\+\_\+last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 348 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a3f9dc7630c5c25c85dffc260f3feccb3}\label{class_designar_1_1_dyn_bit_set_a3f9dc7630c5c25c85dffc260f3feccb3}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!set\+\_\+bit@{set\+\_\+bit}}
+\index{set\+\_\+bit@{set\+\_\+bit}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{set\+\_\+bit()}{set\_bit()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::set\+\_\+bit (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i,  }\item[{bool}]{value }\end{DoxyParamCaption})}
+
+
+
+Definition at line 357 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a0107a8946533f6b8dc9a225a2f5b91a9}\label{class_designar_1_1_dyn_bit_set_a0107a8946533f6b8dc9a225a2f5b91a9}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!size@{size}}
+\index{size@{size}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} Designar\+::\+Dyn\+Bit\+Set\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 333 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_a376fe3b34a2a0c93bde8f33ff2947e64}\label{class_designar_1_1_dyn_bit_set_a376fe3b34a2a0c93bde8f33ff2947e64}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_bit_set}{Dyn\+Bit\+Set} \&}]{dbs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 316 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_ad393d0c9a7f15f022b0529fbe2983780}\label{class_designar_1_1_dyn_bit_set_ad393d0c9a7f15f022b0529fbe2983780}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!to\+\_\+string@{to\+\_\+string}}
+\index{to\+\_\+string@{to\+\_\+string}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{to\+\_\+string()}{to\_string()}}
+{\footnotesize\ttfamily std\+::string Designar\+::\+Dyn\+Bit\+Set\+::to\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 375 of file bitset.\+C.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_bit_set_ac04df606a53e544d8e87d931be0abac0}\label{class_designar_1_1_dyn_bit_set_ac04df606a53e544d8e87d931be0abac0}} 
+\index{Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}!write@{write}}
+\index{write@{write}!Designar\+::\+Dyn\+Bit\+Set@{Designar\+::\+Dyn\+Bit\+Set}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void Designar\+::\+Dyn\+Bit\+Set\+::write (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{out }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 385 of file bitset.\+C.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+De\+Si\+G\+N\+A\+R/include/\hyperlink{bitset_8_h}{bitset.\+H}\item 
+De\+Si\+G\+N\+A\+R/src/\hyperlink{bitset_8_c}{bitset.\+C}\end{DoxyCompactItemize}

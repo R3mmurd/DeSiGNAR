@@ -1,0 +1,487 @@
+\hypertarget{class_designar_1_1_gen_segment}{}\section{Designar\+:\+:Gen\+Segment$<$ PointT $>$ Class Template Reference}
+\label{class_designar_1_1_gen_segment}\index{Designar\+::\+Gen\+Segment$<$ Point\+T $>$@{Designar\+::\+Gen\+Segment$<$ Point\+T $>$}}
+
+
+{\ttfamily \#include $<$segment.\+H$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_gen_segment_a411a0e6d28251be878c23ad4dbec71bb}{Point\+Type} = PointT
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_gen_segment_ab57969fe5adbc572d437709946c0999d}{Gen\+Segment} ()=default
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a3735dbb7660ebba6d82a977eaee42ed8}{Gen\+Segment} (const PointT \&sp, const PointT \&tp)
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a504a48917f78ebaae01c2a1a598d1700}{Gen\+Segment} (const PointT \&sp, PointT \&\&tp)
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a6190cba1e40d5d18dc1853368da957dc}{Gen\+Segment} (PointT \&\&sp, const PointT \&tp)
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a23414f22da354141bd2b8084ec178556}{Gen\+Segment} (PointT \&\&sp, PointT \&\&tp)
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a9e40cf0ac50d71260609e0414f55f580}{Gen\+Segment} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s)
+\item 
+\hyperlink{class_designar_1_1_gen_segment_a32578eb470796720847b126b378affed}{Gen\+Segment} (\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&\&s)
+\item 
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \& \hyperlink{class_designar_1_1_gen_segment_a05ecd015b8b917ea85971069d999b7a7}{operator=} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s)
+\item 
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \& \hyperlink{class_designar_1_1_gen_segment_a8a49c8cbca57eff43564bfe71f869485}{operator=} (\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&\&s)
+\item 
+void \hyperlink{class_designar_1_1_gen_segment_ac597d1811abeb7c572dfd81363c0d120}{swap} (\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s)
+\item 
+const PointT \& \hyperlink{class_designar_1_1_gen_segment_a6366ec701132bf900b1211576ef5f0dd}{get\+\_\+src\+\_\+point} () const
+\item 
+const PointT \& \hyperlink{class_designar_1_1_gen_segment_a90e9ef8bf940d22202814a1ba3d118f2}{get\+\_\+tgt\+\_\+point} () const
+\item 
+void \hyperlink{class_designar_1_1_gen_segment_a27c902171ad387272a72a98f2ec74dca}{set\+\_\+src\+\_\+point} (const PointT \&sp)
+\item 
+void \hyperlink{class_designar_1_1_gen_segment_ace3bf4ead3e970f88cacfa03b4853c3f}{set\+\_\+src\+\_\+point} (PointT \&\&sp)
+\item 
+void \hyperlink{class_designar_1_1_gen_segment_a3338743508cb033732a3c9ffd4ceb6ea}{set\+\_\+tgt\+\_\+point} (const PointT \&tp)
+\item 
+void \hyperlink{class_designar_1_1_gen_segment_a218a089156740da0d16ec68b62f957d6}{set\+\_\+tgt\+\_\+point} (PointT \&\&tp)
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_segment_a9878c3c77157f54bf99ba33381bf0a5e}{length} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a46c8d175ffad89deeb79c11a82b32e1f}{is\+\_\+to\+\_\+left\+\_\+from} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_aae82d258fa7819459f3d6512ca349af0}{is\+\_\+to\+\_\+left\+\_\+on\+\_\+from} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_ad9f0ddae7b869161882185d5caeea5f8}{is\+\_\+to\+\_\+right\+\_\+from} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a7d2d5e4b54fa16fd953de345394e331b}{is\+\_\+to\+\_\+right\+\_\+on\+\_\+from} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_af7bc45340416386ad14b3bcdc281faa2}{is\+\_\+collinear\+\_\+with} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a3c48e2a69f85d5825ca75c262347edc5}{contains\+\_\+to} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a77bee603f1b3fa154bb305e224573852}{contains\+\_\+to} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_ad28b958022d2c4d88f39855db2cc590c}{intersects\+\_\+properly\+\_\+with} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_ae14fc44c3b7b94850af6e13aff27eee1}{intersects\+\_\+with} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_segment_a02652b0274b3b597fb588d83d424b4bd}{slope} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_ad599fb23aec1fda6432c984d7e261e53}{is\+\_\+parallel\+\_\+with} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \hyperlink{class_designar_1_1_gen_segment_a0be16262e7398c8197b630d79cc90323}{get\+\_\+opposite} () const
+\item 
+PointT \hyperlink{class_designar_1_1_gen_segment_a50669847e6727a598ad75ea8b2339852}{intersection\+\_\+with} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a812f6f7754064269eef82abc6091b818}{is\+\_\+null} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a49f01b575b3813da44a68e4565d99994}{operator!} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a2e6b2f583c4323af75351aef09528a7a}{operator==} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_segment_a449cfcd9f6f6ac5d013e29ae572190c4}{operator!=} (const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \&s) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class PointT$>$\newline
+class Designar\+::\+Gen\+Segment$<$ Point\+T $>$}
+
+
+
+Definition at line 34 of file segment.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a411a0e6d28251be878c23ad4dbec71bb}\label{class_designar_1_1_gen_segment_a411a0e6d28251be878c23ad4dbec71bb}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Point\+Type@{Point\+Type}}
+\index{Point\+Type@{Point\+Type}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Point\+Type}{PointType}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+using \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment_a411a0e6d28251be878c23ad4dbec71bb}{Point\+Type} =  PointT}
+
+
+
+Definition at line 40 of file segment.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ab57969fe5adbc572d437709946c0999d}\label{class_designar_1_1_gen_segment_ab57969fe5adbc572d437709946c0999d}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [1/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a3735dbb7660ebba6d82a977eaee42ed8}\label{class_designar_1_1_gen_segment_a3735dbb7660ebba6d82a977eaee42ed8}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [2/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{const PointT \&}]{sp,  }\item[{const PointT \&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 44 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a504a48917f78ebaae01c2a1a598d1700}\label{class_designar_1_1_gen_segment_a504a48917f78ebaae01c2a1a598d1700}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [3/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{const PointT \&}]{sp,  }\item[{PointT \&\&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 50 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a6190cba1e40d5d18dc1853368da957dc}\label{class_designar_1_1_gen_segment_a6190cba1e40d5d18dc1853368da957dc}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [4/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{PointT \&\&}]{sp,  }\item[{const PointT \&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 56 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a23414f22da354141bd2b8084ec178556}\label{class_designar_1_1_gen_segment_a23414f22da354141bd2b8084ec178556}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [5/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{PointT \&\&}]{sp,  }\item[{PointT \&\&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 62 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a9e40cf0ac50d71260609e0414f55f580}\label{class_designar_1_1_gen_segment_a9e40cf0ac50d71260609e0414f55f580}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [6/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 68 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a32578eb470796720847b126b378affed}\label{class_designar_1_1_gen_segment_a32578eb470796720847b126b378affed}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!Gen\+Segment@{Gen\+Segment}}
+\index{Gen\+Segment@{Gen\+Segment}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{Gen\+Segment()}{GenSegment()}\hspace{0.1cm}{\footnotesize\ttfamily [7/7]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&\&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file segment.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a3c48e2a69f85d5825ca75c262347edc5}\label{class_designar_1_1_gen_segment_a3c48e2a69f85d5825ca75c262347edc5}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!contains\+\_\+to@{contains\+\_\+to}}
+\index{contains\+\_\+to@{contains\+\_\+to}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{contains\+\_\+to()}{contains\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::contains\+\_\+to (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 163 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a77bee603f1b3fa154bb305e224573852}\label{class_designar_1_1_gen_segment_a77bee603f1b3fa154bb305e224573852}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!contains\+\_\+to@{contains\+\_\+to}}
+\index{contains\+\_\+to@{contains\+\_\+to}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{contains\+\_\+to()}{contains\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::contains\+\_\+to (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 168 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a0be16262e7398c8197b630d79cc90323}\label{class_designar_1_1_gen_segment_a0be16262e7398c8197b630d79cc90323}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!get\+\_\+opposite@{get\+\_\+opposite}}
+\index{get\+\_\+opposite@{get\+\_\+opposite}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{get\+\_\+opposite()}{get\_opposite()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment} \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::get\+\_\+opposite (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 213 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a6366ec701132bf900b1211576ef5f0dd}\label{class_designar_1_1_gen_segment_a6366ec701132bf900b1211576ef5f0dd}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!get\+\_\+src\+\_\+point@{get\+\_\+src\+\_\+point}}
+\index{get\+\_\+src\+\_\+point@{get\+\_\+src\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{get\+\_\+src\+\_\+point()}{get\_src\_point()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+const PointT\& \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::get\+\_\+src\+\_\+point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 103 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a90e9ef8bf940d22202814a1ba3d118f2}\label{class_designar_1_1_gen_segment_a90e9ef8bf940d22202814a1ba3d118f2}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!get\+\_\+tgt\+\_\+point@{get\+\_\+tgt\+\_\+point}}
+\index{get\+\_\+tgt\+\_\+point@{get\+\_\+tgt\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{get\+\_\+tgt\+\_\+point()}{get\_tgt\_point()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+const PointT\& \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::get\+\_\+tgt\+\_\+point (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 108 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a50669847e6727a598ad75ea8b2339852}\label{class_designar_1_1_gen_segment_a50669847e6727a598ad75ea8b2339852}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!intersection\+\_\+with@{intersection\+\_\+with}}
+\index{intersection\+\_\+with@{intersection\+\_\+with}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{intersection\+\_\+with()}{intersection\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+PointT \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::intersection\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 218 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ad28b958022d2c4d88f39855db2cc590c}\label{class_designar_1_1_gen_segment_ad28b958022d2c4d88f39855db2cc590c}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!intersects\+\_\+properly\+\_\+with@{intersects\+\_\+properly\+\_\+with}}
+\index{intersects\+\_\+properly\+\_\+with@{intersects\+\_\+properly\+\_\+with}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{intersects\+\_\+properly\+\_\+with()}{intersects\_properly\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::intersects\+\_\+properly\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 173 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ae14fc44c3b7b94850af6e13aff27eee1}\label{class_designar_1_1_gen_segment_ae14fc44c3b7b94850af6e13aff27eee1}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!intersects\+\_\+with@{intersects\+\_\+with}}
+\index{intersects\+\_\+with@{intersects\+\_\+with}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{intersects\+\_\+with()}{intersects\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::intersects\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 185 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_af7bc45340416386ad14b3bcdc281faa2}\label{class_designar_1_1_gen_segment_af7bc45340416386ad14b3bcdc281faa2}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+collinear\+\_\+with@{is\+\_\+collinear\+\_\+with}}
+\index{is\+\_\+collinear\+\_\+with@{is\+\_\+collinear\+\_\+with}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+collinear\+\_\+with()}{is\_collinear\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+collinear\+\_\+with (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 158 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a812f6f7754064269eef82abc6091b818}\label{class_designar_1_1_gen_segment_a812f6f7754064269eef82abc6091b818}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+null@{is\+\_\+null}}
+\index{is\+\_\+null@{is\+\_\+null}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+null()}{is\_null()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 240 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ad599fb23aec1fda6432c984d7e261e53}\label{class_designar_1_1_gen_segment_ad599fb23aec1fda6432c984d7e261e53}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+parallel\+\_\+with@{is\+\_\+parallel\+\_\+with}}
+\index{is\+\_\+parallel\+\_\+with@{is\+\_\+parallel\+\_\+with}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+parallel\+\_\+with()}{is\_parallel\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+parallel\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 208 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a46c8d175ffad89deeb79c11a82b32e1f}\label{class_designar_1_1_gen_segment_a46c8d175ffad89deeb79c11a82b32e1f}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+to\+\_\+left\+\_\+from@{is\+\_\+to\+\_\+left\+\_\+from}}
+\index{is\+\_\+to\+\_\+left\+\_\+from@{is\+\_\+to\+\_\+left\+\_\+from}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+to\+\_\+left\+\_\+from()}{is\_to\_left\_from()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+to\+\_\+left\+\_\+from (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 138 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_aae82d258fa7819459f3d6512ca349af0}\label{class_designar_1_1_gen_segment_aae82d258fa7819459f3d6512ca349af0}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+to\+\_\+left\+\_\+on\+\_\+from@{is\+\_\+to\+\_\+left\+\_\+on\+\_\+from}}
+\index{is\+\_\+to\+\_\+left\+\_\+on\+\_\+from@{is\+\_\+to\+\_\+left\+\_\+on\+\_\+from}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+to\+\_\+left\+\_\+on\+\_\+from()}{is\_to\_left\_on\_from()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+to\+\_\+left\+\_\+on\+\_\+from (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 143 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ad9f0ddae7b869161882185d5caeea5f8}\label{class_designar_1_1_gen_segment_ad9f0ddae7b869161882185d5caeea5f8}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+to\+\_\+right\+\_\+from@{is\+\_\+to\+\_\+right\+\_\+from}}
+\index{is\+\_\+to\+\_\+right\+\_\+from@{is\+\_\+to\+\_\+right\+\_\+from}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+to\+\_\+right\+\_\+from()}{is\_to\_right\_from()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+to\+\_\+right\+\_\+from (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 148 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a7d2d5e4b54fa16fd953de345394e331b}\label{class_designar_1_1_gen_segment_a7d2d5e4b54fa16fd953de345394e331b}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!is\+\_\+to\+\_\+right\+\_\+on\+\_\+from@{is\+\_\+to\+\_\+right\+\_\+on\+\_\+from}}
+\index{is\+\_\+to\+\_\+right\+\_\+on\+\_\+from@{is\+\_\+to\+\_\+right\+\_\+on\+\_\+from}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{is\+\_\+to\+\_\+right\+\_\+on\+\_\+from()}{is\_to\_right\_on\_from()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::is\+\_\+to\+\_\+right\+\_\+on\+\_\+from (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 153 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a9878c3c77157f54bf99ba33381bf0a5e}\label{class_designar_1_1_gen_segment_a9878c3c77157f54bf99ba33381bf0a5e}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!length@{length}}
+\index{length@{length}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{length()}{length()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 133 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a49f01b575b3813da44a68e4565d99994}\label{class_designar_1_1_gen_segment_a49f01b575b3813da44a68e4565d99994}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!operator"!@{operator"!}}
+\index{operator"!@{operator"!}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{operator"!()}{operator!()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::operator! (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 245 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a449cfcd9f6f6ac5d013e29ae572190c4}\label{class_designar_1_1_gen_segment_a449cfcd9f6f6ac5d013e29ae572190c4}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_segment_a49f01b575b3813da44a68e4565d99994}{operator!}= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 255 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a05ecd015b8b917ea85971069d999b7a7}\label{class_designar_1_1_gen_segment_a05ecd015b8b917ea85971069d999b7a7}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}\& \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 80 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a8a49c8cbca57eff43564bfe71f869485}\label{class_designar_1_1_gen_segment_a8a49c8cbca57eff43564bfe71f869485}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}\& \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&\&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 91 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a2e6b2f583c4323af75351aef09528a7a}\label{class_designar_1_1_gen_segment_a2e6b2f583c4323af75351aef09528a7a}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!operator==@{operator==}}
+\index{operator==@{operator==}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 250 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a27c902171ad387272a72a98f2ec74dca}\label{class_designar_1_1_gen_segment_a27c902171ad387272a72a98f2ec74dca}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!set\+\_\+src\+\_\+point@{set\+\_\+src\+\_\+point}}
+\index{set\+\_\+src\+\_\+point@{set\+\_\+src\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{set\+\_\+src\+\_\+point()}{set\_src\_point()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::set\+\_\+src\+\_\+point (\begin{DoxyParamCaption}\item[{const PointT \&}]{sp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 113 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ace3bf4ead3e970f88cacfa03b4853c3f}\label{class_designar_1_1_gen_segment_ace3bf4ead3e970f88cacfa03b4853c3f}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!set\+\_\+src\+\_\+point@{set\+\_\+src\+\_\+point}}
+\index{set\+\_\+src\+\_\+point@{set\+\_\+src\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{set\+\_\+src\+\_\+point()}{set\_src\_point()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::set\+\_\+src\+\_\+point (\begin{DoxyParamCaption}\item[{PointT \&\&}]{sp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 118 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a3338743508cb033732a3c9ffd4ceb6ea}\label{class_designar_1_1_gen_segment_a3338743508cb033732a3c9ffd4ceb6ea}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!set\+\_\+tgt\+\_\+point@{set\+\_\+tgt\+\_\+point}}
+\index{set\+\_\+tgt\+\_\+point@{set\+\_\+tgt\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{set\+\_\+tgt\+\_\+point()}{set\_tgt\_point()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::set\+\_\+tgt\+\_\+point (\begin{DoxyParamCaption}\item[{const PointT \&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 123 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a218a089156740da0d16ec68b62f957d6}\label{class_designar_1_1_gen_segment_a218a089156740da0d16ec68b62f957d6}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!set\+\_\+tgt\+\_\+point@{set\+\_\+tgt\+\_\+point}}
+\index{set\+\_\+tgt\+\_\+point@{set\+\_\+tgt\+\_\+point}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{set\+\_\+tgt\+\_\+point()}{set\_tgt\_point()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::set\+\_\+tgt\+\_\+point (\begin{DoxyParamCaption}\item[{PointT \&\&}]{tp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 128 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_a02652b0274b3b597fb588d83d424b4bd}\label{class_designar_1_1_gen_segment_a02652b0274b3b597fb588d83d424b4bd}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!slope@{slope}}
+\index{slope@{slope}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{slope()}{slope()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::slope (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 194 of file segment.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_segment_ac597d1811abeb7c572dfd81363c0d120}\label{class_designar_1_1_gen_segment_ac597d1811abeb7c572dfd81363c0d120}} 
+\index{Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Gen\+Segment@{Designar\+::\+Gen\+Segment}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_segment}{Designar\+::\+Gen\+Segment}$<$ PointT $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$ \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 97 of file segment.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+De\+Si\+G\+N\+A\+R/include/\hyperlink{segment_8_h}{segment.\+H}\end{DoxyCompactItemize}

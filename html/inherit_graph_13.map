@@ -1,0 +1,6 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; ChildrenIterator, MTreeNode\l *, RET_CPY \&gt;" alt="" coords="5,5,204,61"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; ChildrenIterator, MTreeNode\l *, RET_CPY \&gt;" alt="" coords="252,5,451,61"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; ChildrenIterator, MTreeNode\l *, true \&gt;" alt="" coords="499,5,697,61"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_m_tree_node_1_1_children_iterator.html" title="Designar::MTreeNode\l\&lt; Key \&gt;::ChildrenIterator" alt="" coords="745,13,912,54"/>
+</map>

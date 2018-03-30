@@ -1,0 +1,30 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Iterator, T, RET_CPY \&gt;" alt="" coords="21,39,195,80"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, T, RET_CPY \&gt;" alt="" coords="269,5,442,47"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, T, false \&gt;" alt="" coords="270,71,441,112"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, T, RET_CPY \&gt;" alt="" coords="500,5,695,47"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_random_access_iterator.html" title="Designar::RandomAccessIterator\l\&lt; Iterator, T, RET_CPY \&gt;" alt="" coords="743,5,959,47"/>
+<area shape="rect" id="node6" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, T \&gt;" alt="" coords="500,71,695,112"/>
+<area shape="rect" id="node7" href="$class_designar_1_1_d_l_list_1_1_iterator.html" title="Designar::DLList\&lt; T\l \&gt;::Iterator" alt="" coords="781,71,921,112"/>
+<area shape="rect" id="node8" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; AdjacentArcIterator,\l Arc, RET_CPY \&gt;" alt="" coords="30,175,186,231"/>
+<area shape="rect" id="node9" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; AdjacentArcIterator,\l Arc, false \&gt;" alt="" coords="270,175,441,231"/>
+<area shape="rect" id="node10" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; AdjacentArcIterator, Arc \&gt;" alt="" coords="500,183,695,224"/>
+<area shape="rect" id="node11" href="$class_designar_1_1_digraph_1_1_adjacent_arc_iterator.html" title="Designar::Digraph\&lt;\l NodeInfo, ArcInfo,\l GraphInfo \&gt;::AdjacentArcIterator" alt="" coords="743,135,958,191"/>
+<area shape="rect" id="node12" href="$class_designar_1_1_graph_1_1_adjacent_arc_iterator.html" title="Designar::Graph\&lt; NodeInfo,\l ArcInfo, GraphInfo \&gt;::\lAdjacentArcIterator" alt="" coords="757,215,944,271"/>
+<area shape="rect" id="node13" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; ArcIterator, Arc, RET_CPY \&gt;" alt="" coords="5,436,211,477"/>
+<area shape="rect" id="node14" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; ArcIterator, Arc, false \&gt;" alt="" coords="270,436,441,477"/>
+<area shape="rect" id="node15" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; ArcIterator, Arc \&gt;" alt="" coords="500,436,695,477"/>
+<area shape="rect" id="node16" href="$class_designar_1_1_digraph_1_1_arc_iterator.html" title="Designar::Digraph\&lt;\l NodeInfo, ArcInfo,\l GraphInfo \&gt;::ArcIterator" alt="" coords="769,359,933,415"/>
+<area shape="rect" id="node17" href="$class_designar_1_1_graph_1_1_arc_iterator.html" title="Designar::Graph\&lt; NodeInfo,\l ArcInfo, GraphInfo \&gt;::\lArcIterator" alt="" coords="757,439,944,495"/>
+<area shape="rect" id="node18" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; NodeIterator, Node,\l RET_CPY \&gt;" alt="" coords="30,555,186,611"/>
+<area shape="rect" id="node19" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; NodeIterator, Node, false \&gt;" alt="" coords="259,563,452,604"/>
+<area shape="rect" id="node20" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; NodeIterator, Node \&gt;" alt="" coords="500,563,695,604"/>
+<area shape="rect" id="node21" href="$class_designar_1_1_digraph_1_1_node_iterator.html" title="Designar::Digraph\&lt;\l NodeInfo, ArcInfo,\l GraphInfo \&gt;::NodeIterator" alt="" coords="763,519,938,575"/>
+<area shape="rect" id="node22" href="$class_designar_1_1_graph_1_1_node_iterator.html" title="Designar::Graph\&lt; NodeInfo,\l ArcInfo, GraphInfo \&gt;::\lNodeIterator" alt="" coords="757,599,944,655"/>
+<area shape="rect" id="node23" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; VertexIterator, PointT,\l RET_CPY \&gt;" alt="" coords="27,671,189,727"/>
+<area shape="rect" id="node24" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; VertexIterator, PointT,\l false \&gt;" alt="" coords="270,671,441,727"/>
+<area shape="rect" id="node25" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; VertexIterator, PointT \&gt;" alt="" coords="500,679,695,720"/>
+<area shape="rect" id="node26" href="$class_designar_1_1_gen_polygon_1_1_vertex_iterator.html" title="Designar::GenPolygon\l\&lt; PointT \&gt;::VertexIterator" alt="" coords="765,679,936,720"/>
+<area shape="rect" id="node27" href="$class_designar_1_1_d_l_1_1_iterator.html" title="Designar::DL::Iterator" alt="" coords="523,374,671,401"/>
+<area shape="rect" id="node28" href="$class_designar_1_1_d_l_node_1_1_iterator.html" title="Designar::DLNode\&lt; T\l \&gt;::Iterator" alt="" coords="775,295,926,336"/>
+</map>

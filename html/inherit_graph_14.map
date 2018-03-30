@@ -1,0 +1,7 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Derived, T, RET_CPY \&gt;" alt="" coords="5,13,183,54"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Derived, T, RET_CPY \&gt;" alt="" coords="231,13,408,54"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Derived, T, RET_CPY \&gt;" alt="" coords="456,13,651,54"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_random_access_iterator.html" title="Designar::RandomAccessIterator\l\&lt; Derived, T, RET_CPY \&gt;" alt="" coords="699,13,915,54"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_array_iterator.html" title="Objeto definido que permite recorrer un Array de DeSIGNAR. " alt="" coords="963,5,1117,61"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; SegmentIterator, SegmentType,\l RET_CPY \&gt;" alt="" coords="5,5,225,61"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; SegmentIterator, SegmentType,\l RET_CPY \&gt;" alt="" coords="273,5,493,61"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; SegmentIterator, SegmentType, true \&gt;" alt="" coords="541,13,800,54"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_gen_polygon_1_1_segment_iterator.html" title="Designar::GenPolygon\l\&lt; PointT \&gt;::SegmentIterator" alt="" coords="848,13,1033,54"/>
+</map>

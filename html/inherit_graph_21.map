@@ -1,0 +1,10 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; TArrayIterator\&lt; FixedArray,\l T \&gt;, T, RET_CPY \&gt;" alt="" coords="5,5,199,61"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; TArrayIterator\&lt; FixedArray,\l T \&gt;, T, RET_CPY \&gt;" alt="" coords="247,5,440,61"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; TArrayIterator\&lt; FixedArray,\l T \&gt;, T, RET_CPY \&gt;" alt="" coords="488,5,683,61"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_random_access_iterator.html" title="Designar::RandomAccessIterator\l\&lt; TArrayIterator\&lt; FixedArray,\l T \&gt;, T, RET_CPY \&gt;" alt="" coords="731,5,947,61"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_array_iterator.html" title="Designar::ArrayIterator\l\&lt; TArrayIterator\&lt; FixedArray,\l T \&gt;, FixedArray, T, false \&gt;" alt="" coords="995,5,1188,61"/>
+<area shape="rect" id="node6" href="$class_designar_1_1_t_array_iterator.html" title="Designar::TArrayIterator\l\&lt; FixedArray, T \&gt;" alt="" coords="1236,13,1399,54"/>
+<area shape="rect" id="node7" href="$class_designar_1_1_fixed_array_1_1_iterator.html" title="Designar::FixedArray\l\&lt; T \&gt;::Iterator" alt="" coords="1447,13,1592,54"/>
+<area shape="rect" id="node8" href="$class_designar_1_1_multi_dim_array_1_1_iterator.html" title="Designar::MultiDimArray\l\&lt; T, N \&gt;::Iterator" alt="" coords="1640,13,1805,54"/>
+</map>

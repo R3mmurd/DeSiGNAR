@@ -1,0 +1,398 @@
+\hypertarget{class_designar_1_1_fixed_array}{}\section{Designar\+:\+:Fixed\+Array$<$ T $>$ Class Template Reference}
+\label{class_designar_1_1_fixed_array}\index{Designar\+::\+Fixed\+Array$<$ T $>$@{Designar\+::\+Fixed\+Array$<$ T $>$}}
+
+
+{\ttfamily \#include $<$array.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:Fixed\+Array$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.924092cm]{class_designar_1_1_fixed_array}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}{Item\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}{Key\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}{Data\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}{Value\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array_af1c7e826a704015eab8f3accac7ead7d}{item\+\_\+to\+\_\+pos} (T \&item)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_a493a48e7c23b6b882a96c5451d10248a}{Fixed\+Array} ()
+\item 
+\hyperlink{class_designar_1_1_fixed_array_ac3bed73485d717ddc1fc412d3e7fea58}{Fixed\+Array} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} c)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_a8d313d1c5d828b9a635cb7626e9a6cb2}{Fixed\+Array} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} c, const T \&init\+\_\+value)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_a0375e6a3b0eaabd87a044354866c557f}{Fixed\+Array} (const \hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \&a)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_ababc68b389c05fb8c819e5a77afeb626}{Fixed\+Array} (\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \&\&a)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_aaf63fe5101e36f6f058d71eb7bcfcfcc}{Fixed\+Array} (const std\+::initializer\+\_\+list$<$ T $>$ \&)
+\item 
+\hyperlink{class_designar_1_1_fixed_array_adfe330be4cd4afd6a097cf5abd2cec38}{$\sim$\+Fixed\+Array} ()
+\item 
+\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \& \hyperlink{class_designar_1_1_fixed_array_ac7e23eebfa59ba27db48ebd401ea0c53}{operator=} (const \hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \&a)
+\item 
+\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \& \hyperlink{class_designar_1_1_fixed_array_a5a358228f610390c3987883c09cf31f0}{operator=} (\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \&\&a)
+\item 
+void \hyperlink{class_designar_1_1_fixed_array_ab13ae0d1146e753d3e1128e1cce07d91}{swap} (\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} \&a)
+\item 
+void \hyperlink{class_designar_1_1_fixed_array_af52fca1277e52d28ce6d46ed4a7b471e}{resize} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t})
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array_ac262a6be77640c4da26cd49fe9b90db0}{get\+\_\+capacity} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array_a03ce71d0cc8f4155f117bbfe83bb95e8}{size} () const
+\item 
+T \& \hyperlink{class_designar_1_1_fixed_array_ae47f2f299aaef27f2decc88f2fd863a9}{at} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\item 
+const T \& \hyperlink{class_designar_1_1_fixed_array_a3a1dec650628273bf08b6656db0a9088}{at} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\item 
+T \& \hyperlink{class_designar_1_1_fixed_array_a0116aa8effdf9fd0c56ef1a8c1fa2883}{operator\mbox{[}$\,$\mbox{]}} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\item 
+const T \& \hyperlink{class_designar_1_1_fixed_array_aac0021d1ca6ff704f3d6967a509fff6b}{operator\mbox{[}$\,$\mbox{]}} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\item 
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array_a40c099038e41c839acca94bf352753fc}{begin} ()
+\item 
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array_afeedbafa8456c56f80716466191810d6}{begin} () const
+\item 
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array_ab0baaf67153a51cb98ac12918d2387a0}{end} ()
+\item 
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array_a02b4949630ddc32ba5971fd4b78cf8ab}{end} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Designar\+::\+Fixed\+Array$<$ T $>$}
+
+
+
+Definition at line 463 of file array.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}\label{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Data\+Type@{Data\+Type}}
+\index{Data\+Type@{Data\+Type}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Data\+Type}{DataType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}{Data\+Type} =  T}
+
+
+
+Definition at line 475 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}\label{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}{Item\+Type} =  T}
+
+
+
+Definition at line 473 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}\label{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}{Key\+Type} =  T}
+
+
+
+Definition at line 474 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}\label{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definition at line 477 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}\label{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}{Value\+Type} =  T}
+
+
+
+Definition at line 476 of file array.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a493a48e7c23b6b882a96c5451d10248a}\label{class_designar_1_1_fixed_array_a493a48e7c23b6b882a96c5451d10248a}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 484 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ac3bed73485d717ddc1fc412d3e7fea58}\label{class_designar_1_1_fixed_array_ac3bed73485d717ddc1fc412d3e7fea58}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 490 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a8d313d1c5d828b9a635cb7626e9a6cb2}\label{class_designar_1_1_fixed_array_a8d313d1c5d828b9a635cb7626e9a6cb2}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{c,  }\item[{const T \&}]{init\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 496 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a0375e6a3b0eaabd87a044354866c557f}\label{class_designar_1_1_fixed_array_a0375e6a3b0eaabd87a044354866c557f}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}$<$ T $>$ \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 502 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ababc68b389c05fb8c819e5a77afeb626}\label{class_designar_1_1_fixed_array_ababc68b389c05fb8c819e5a77afeb626}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}$<$ T $>$ \&\&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 508 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_aaf63fe5101e36f6f058d71eb7bcfcfcc}\label{class_designar_1_1_fixed_array_aaf63fe5101e36f6f058d71eb7bcfcfcc}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!Fixed\+Array@{Fixed\+Array}}
+\index{Fixed\+Array@{Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{Fixed\+Array()}{FixedArray()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}\item[{const std\+::initializer\+\_\+list$<$ T $>$ \&}]{l }\end{DoxyParamCaption})}
+
+
+
+Definition at line 646 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_adfe330be4cd4afd6a097cf5abd2cec38}\label{class_designar_1_1_fixed_array_adfe330be4cd4afd6a097cf5abd2cec38}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!````~Fixed\+Array@{$\sim$\+Fixed\+Array}}
+\index{````~Fixed\+Array@{$\sim$\+Fixed\+Array}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{$\sim$\+Fixed\+Array()}{~FixedArray()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::$\sim$\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 516 of file array.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ae47f2f299aaef27f2decc88f2fd863a9}\label{class_designar_1_1_fixed_array_ae47f2f299aaef27f2decc88f2fd863a9}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!at@{at}}
+\index{at@{at}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{at()}{at()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::at (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 557 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a3a1dec650628273bf08b6656db0a9088}\label{class_designar_1_1_fixed_array_a3a1dec650628273bf08b6656db0a9088}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!at@{at}}
+\index{at@{at}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{at()}{at()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::at (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 565 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a40c099038e41c839acca94bf352753fc}\label{class_designar_1_1_fixed_array_a40c099038e41c839acca94bf352753fc}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 589 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_afeedbafa8456c56f80716466191810d6}\label{class_designar_1_1_fixed_array_afeedbafa8456c56f80716466191810d6}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 594 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ab0baaf67153a51cb98ac12918d2387a0}\label{class_designar_1_1_fixed_array_ab0baaf67153a51cb98ac12918d2387a0}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!end@{end}}
+\index{end@{end}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 599 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a02b4949630ddc32ba5971fd4b78cf8ab}\label{class_designar_1_1_fixed_array_a02b4949630ddc32ba5971fd4b78cf8ab}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!end@{end}}
+\index{end@{end}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 604 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ac262a6be77640c4da26cd49fe9b90db0}\label{class_designar_1_1_fixed_array_ac262a6be77640c4da26cd49fe9b90db0}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!get\+\_\+capacity@{get\+\_\+capacity}}
+\index{get\+\_\+capacity@{get\+\_\+capacity}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{get\+\_\+capacity()}{get\_capacity()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::get\+\_\+capacity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 547 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_af1c7e826a704015eab8f3accac7ead7d}\label{class_designar_1_1_fixed_array_af1c7e826a704015eab8f3accac7ead7d}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!item\+\_\+to\+\_\+pos@{item\+\_\+to\+\_\+pos}}
+\index{item\+\_\+to\+\_\+pos@{item\+\_\+to\+\_\+pos}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{item\+\_\+to\+\_\+pos()}{item\_to\_pos()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::item\+\_\+to\+\_\+pos (\begin{DoxyParamCaption}\item[{T \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 479 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ac7e23eebfa59ba27db48ebd401ea0c53}\label{class_designar_1_1_fixed_array_ac7e23eebfa59ba27db48ebd401ea0c53}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}$<$ T $>$ \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 521 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a5a358228f610390c3987883c09cf31f0}\label{class_designar_1_1_fixed_array_a5a358228f610390c3987883c09cf31f0}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}$<$ T $>$ \&\&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 533 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a0116aa8effdf9fd0c56ef1a8c1fa2883}\label{class_designar_1_1_fixed_array_a0116aa8effdf9fd0c56ef1a8c1fa2883}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 573 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_aac0021d1ca6ff704f3d6967a509fff6b}\label{class_designar_1_1_fixed_array_aac0021d1ca6ff704f3d6967a509fff6b}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 578 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_af52fca1277e52d28ce6d46ed4a7b471e}\label{class_designar_1_1_fixed_array_af52fca1277e52d28ce6d46ed4a7b471e}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!resize@{resize}}
+\index{resize@{resize}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{resize()}{resize()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::resize (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{c }\end{DoxyParamCaption})}
+
+
+
+Definition at line 628 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_a03ce71d0cc8f4155f117bbfe83bb95e8}\label{class_designar_1_1_fixed_array_a03ce71d0cc8f4155f117bbfe83bb95e8}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!size@{size}}
+\index{size@{size}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 552 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_fixed_array_ab13ae0d1146e753d3e1128e1cce07d91}\label{class_designar_1_1_fixed_array_ab13ae0d1146e753d3e1128e1cce07d91}} 
+\index{Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Fixed\+Array@{Designar\+::\+Fixed\+Array}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_fixed_array}{Designar\+::\+Fixed\+Array}$<$ T $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_fixed_array}{Fixed\+Array}$<$ T $>$ \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 539 of file array.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+De\+Si\+G\+N\+A\+R/include/\hyperlink{array_8_h}{array.\+H}\end{DoxyCompactItemize}

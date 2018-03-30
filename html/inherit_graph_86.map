@@ -1,0 +1,8 @@
+<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
+<area shape="rect" id="node1" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; Key, Value\l \&gt;, CmpWrapper\&lt; Key, Value,\l Cmp \&gt; \&gt;, MapKey\&lt; Key, Value \&gt; \&gt;" alt="" coords="5,5,240,76"/>
+<area shape="rect" id="node2" href="$class_designar_1_1_hash_set.html" title="Designar::HashSet\&lt;\l MapKey\&lt; Key, Value\l \&gt;, CmpWrapper\&lt; Key,\l Value, Cmp \&gt; \&gt;" alt="" coords="288,93,447,164"/>
+<area shape="rect" id="node3" href="$class_designar_1_1_gen_map.html" title="Designar::GenMap\&lt; HashSet,\l Key, Value, Cmp \&gt;" alt="" coords="495,108,693,149"/>
+<area shape="rect" id="node4" href="$class_designar_1_1_hash_map.html" title="Designar::HashMap\&lt;\l Key, Value, Cmp \&gt;" alt="" coords="741,108,888,149"/>
+<area shape="rect" id="node5" href="$class_designar_1_1_fixed_array.html" title="Designar::FixedArray\l\&lt; DLList\&lt; MapKey\&lt; Key,\l Value \&gt; \&gt; \&gt;" alt="" coords="37,101,208,157"/>
+<area shape="rect" id="node6" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; Key,\l Value \&gt;, CmpWrapper\&lt; Key,\l Value, Cmp \&gt; \&gt;, MapKey\&lt;\l Key, Value \&gt; \&gt;" alt="" coords="25,181,220,266"/>
+</map>

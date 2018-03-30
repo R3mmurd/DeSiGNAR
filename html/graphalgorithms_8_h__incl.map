@@ -1,0 +1,21 @@
+<map id="DeSiGNAR/include/graphalgorithms.H" name="DeSiGNAR/include/graphalgorithms.H">
+<area shape="rect" id="node2" href="$relation_8_h.html" title="relation.H" alt="" coords="474,155,553,181"/>
+<area shape="rect" id="node33" href="$graph_8_h.html" title="graph.H" alt="" coords="894,80,962,107"/>
+<area shape="rect" id="node37" href="$random_8_h.html" title="random.H" alt="" coords="1017,229,1095,256"/>
+<area shape="rect" id="node3" href="$map_8_h.html" title="map.H" alt="" coords="388,229,449,256"/>
+<area shape="rect" id="node4" href="$array_8_h.html" title="Estructuras de datos basadas en arreglos y sus algoritmos asociados. " alt="" coords="454,453,519,480"/>
+<area shape="rect" id="node28" href="$tree_8_h.html" title="tree.H" alt="" coords="331,304,389,331"/>
+<area shape="rect" id="node32" href="$hash_8_h.html" title="hash.H" alt="" coords="233,379,297,405"/>
+<area shape="rect" id="node5" href="$setalgorithms_8_h.html" title="setalgorithms.H" alt="" coords="44,528,159,555"/>
+<area shape="rect" id="node25" href="$containeralgorithms_8_h.html" title="containeralgorithms.H" alt="" coords="440,528,589,555"/>
+<area shape="rect" id="node27" href="$iterator_8_h.html" title="iterator.H" alt="" coords="365,603,441,629"/>
+<area shape="rect" id="node6" href="$types_8_h.html" title="types.H" alt="" coords="681,677,749,704"/>
+<area shape="rect" id="node23" href="$typetraits_8_h.html" title="typetraits.H" alt="" coords="5,752,96,779"/>
+<area shape="rect" id="node26" href="$italgorithms_8_h.html" title="italgorithms.H" alt="" coords="574,603,677,629"/>
+<area shape="rect" id="node29" href="$nodesdef_8_h.html" title="nodesdef.H" alt="" coords="659,528,749,555"/>
+<area shape="rect" id="node30" href="$stack_8_h.html" title="stack.H" alt="" coords="525,379,593,405"/>
+<area shape="rect" id="node31" href="$list_8_h.html" title="list.H" alt="" coords="588,453,641,480"/>
+<area shape="rect" id="node34" href="$graphutilities_8_h.html" title="graphutilities.H" alt="" coords="671,155,780,181"/>
+<area shape="rect" id="node35" href="$queue_8_h.html" title="queue.H" alt="" coords="617,379,687,405"/>
+<area shape="rect" id="node36" href="$heap_8_h.html" title="heap.H" alt="" coords="693,304,757,331"/>
+</map>
