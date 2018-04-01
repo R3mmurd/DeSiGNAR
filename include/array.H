@@ -1123,7 +1123,7 @@ namespace Designar
     
     const Key & find(const Key & item) const
     {
-      Key * result = search(item);
+      const Key * result = search(item);
       if (result == nullptr)
 	throw std::domain_error("Item does not exist");
       return *result;

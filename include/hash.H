@@ -441,7 +441,7 @@ namespace Designar
 
     const Key & find(const Key & k) const
     {
-      Key * ptr = search(k);
+      const Key * ptr = search(k);
 
       if (ptr == nullptr)
 	throw std::domain_error("Key does not exists");

@@ -354,27 +354,7 @@ namespace Designar
 
     const Key & find(const Key & k) const
     {
-      Key * result = search(k);
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    Key & find(Key && k)
-    {
-      Key * result = search(std::forward<Key>(k));
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    const Key & find(Key && k) const
-    {
-      Key * result = search(std::forward<Key>(k));
+      const Key * result = search(k);
 
       if (result == nullptr)
 	throw std::domain_error("Key not found");
@@ -383,6 +363,7 @@ namespace Designar
     }
 
     bool remove(const Key & k)
+
     {
       Node * result = remove(root, k, cmp);
 
