@@ -83,16 +83,16 @@ namespace Designar
       return filter<ContainerRet, Pred>(pred);
     }
     
-    template <typename RetT, class ContainerRet, class Op>
+    template <class ContainerRet, class Op>
     ContainerRet map(Op & op) const
     {
       return map_it<ContainerRet>(const_me().begin(), const_me().end(), op);
     }
 
-    template <typename RetT = T, class ContainerRet = SLList<RetT>, class Op>
+    template <class ContainerRet = SLList<T>, class Op>
     ContainerRet map(Op && op = Op()) const
     {
-      return map<RetT, ContainerRet, Op>(op);
+      return map<ContainerRet, Op>(op);
     }
 
     template <typename RetT, class ContainerRet, class Op, class Pred>
