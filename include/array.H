@@ -116,23 +116,20 @@ namespace Designar
     void next()
     {
       if (not has_current())
-	throw std::out_of_range("There is not next element");
+	return;
       
       ++curr;
     }
 
     void next_n(nat_t p)
     {
-      if (curr + p > array_ptr->size())
-	throw std::out_of_range("Too much steps");
-
-      curr += p;
+      curr = std::min(curr + p, array_ptr->size());
     }
     
     void prev()
     {
       if (curr == 0)
-	throw std::out_of_range("There is not previous element");
+	return;
       
       --curr;
     }
@@ -140,17 +137,17 @@ namespace Designar
     void prev_n(nat_t p)
     {
       if (p > curr)
-	throw std::out_of_range("Too much steps");
-
+	{
+	  curr = 0;
+	  return;
+	}
+      
       curr -= p;
     }
 
     void move_to(nat_t p)
     {
-      if (p >= array_ptr->size())
-	throw std::out_of_range("Position is out of range");
-
-      curr = p;
+      curr = std::min(p, array_ptr->size());
     }
     
     void reset()

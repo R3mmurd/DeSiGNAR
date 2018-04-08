@@ -457,7 +457,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	  return;
 
 	pred = curr;
 	++pos;

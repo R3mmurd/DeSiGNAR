@@ -596,7 +596,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::out_of_range("There is not next element");
+	  return;
 
 	++pos;
 
@@ -609,7 +609,7 @@ namespace Designar
       void prev()
       {
 	if (pos == 0)
-	  throw std::out_of_range("There is not previous element");
+	  return;
 
 	--pos;
 
