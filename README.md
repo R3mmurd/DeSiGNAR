@@ -22,6 +22,9 @@ In order to compile the library you must execute "make library".
 In order to compile the samples you must execute "make samples".
 
 TODO:
+- Implementing del method to Iterators in TreeSet
+- Allow Iterators in TreeSet to be bidirectional.
+- Implementing del method to Iterator in HashSet.
 - Tarjan Algorithm for computing strong connected components to Digraph.
 - Making all the documentation.
 - Making test for Graph and Digraph.
