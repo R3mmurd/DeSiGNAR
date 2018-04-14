@@ -44,7 +44,7 @@ int main()
   assert(r1.fold(0, [](auto item, auto acc){ return item + acc; }) == 10);
   assert(r1.fold(1, [](auto item, auto acc){ return item * acc; }) == 0);
   assert(r1.all([] (auto item) { return item < 10; }));
-  assert(r1.exists([] (auto item) { return item % 2 == 0; }));
+  assert(r1.exists([] (auto item) { return not (item & 1); }));
   assert(r1.none([] (auto item) { return item >= 10; }));
   assert(r1.to_list().equal({0,1,2,3,4}));
   
@@ -59,6 +59,14 @@ int main()
   assert(r3.max() == 10);
   assert(r3.step_size() == 2);
   assert(r3.size() == 5);
+  assert(r3.filter([](auto item){ return item % 2 == 0; }).equal({0,2,4,6,8}));
+  assert(r3.map([](auto item){ return item * 2; }).equal({0,4,8,12,16}));
+  assert(r3.fold(0, [](auto item, auto acc){ return item + acc; }) == 20);
+  assert(r3.fold(1, [](auto item, auto acc){ return item * acc; }) == 0);
+  assert(r3.all([] (auto item) { return not (item & 1); }));
+  assert(r3.exists([] (auto item) { return not (item & 1); }));
+  assert(r3.none([] (auto item) { return item & 1; }));
+  assert(r3.to_list().equal({0,2,4,6,8}));
 
   Range<int> r4(-5, 5, 3);
   assert(r4.min() == -5);
