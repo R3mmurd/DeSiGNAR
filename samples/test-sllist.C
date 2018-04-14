@@ -24,6 +24,7 @@
 
 # include <array.H>
 # include <list.H>
+# include <sort.H>
 # include <random.H>
 
 using namespace std;
@@ -178,9 +179,14 @@ assert(another_list.zip_right({1,2,3,4,5,6,7,8,9,10,11,12}).equal({{1,1},{2,2},{
   for (lint_t i = 0; i < 20; ++i)
     ll.append(random_uniform(rng, 100));
 
-  quicksort(ll);
+  auto sl = sort(ll);
+  assert(sl.is_sorted());
+  assert(not ll.is_sorted());
   
+  inline_sort(ll);
   assert(ll.is_sorted());
+
+  assert(reverse(ll).is_sorted([](auto x, auto y) { return x > y; }));
   
   cout << "Everything ok!\n";
   

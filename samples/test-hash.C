@@ -23,6 +23,7 @@
 */
 
 # include <hash.H>
+# include <sort.H>
 
 using namespace std;
 using namespace Designar;
@@ -59,8 +60,7 @@ int main()
 					 return item % 2 == 0;
 				       });
 
-  quicksort(fhash);
-  assert(fhash.equal({2,4}));
+  assert(sort(fhash).equal({2,4}));
   
 
   auto mhash = another_hash_set.map([] (auto item)
@@ -69,8 +69,7 @@ int main()
 				    });
 
   assert(mhash.size() == 5);
-  quicksort(mhash);
-  assert(mhash.equal({2,4,6,8,10}));
+  assert(sort(mhash).equal({2,4,6,8,10}));
 
   lint_t sum = another_hash_set.fold(0, [] (auto item, auto acc)
 					{
@@ -111,31 +110,26 @@ int main()
 
   auto js1s2 = s1.join(s2).to_array();
 
-  quicksort(js1s2);
-  js1s2.equal({1,2,3,4,5,6});
+  assert(sort(js1s2).equal({1,2,3,4,5,6}));
 
   auto is1s2 = s1.intersect(s2).to_array();
-  quicksort(is1s2);
-  is1s2.equal({3,4});
+  assert(sort(is1s2).equal({3,4}));
 
   auto ds1s2 = s1.difference(s2).to_array();
-  quicksort(ds1s2);
-  ds1s2.equal({1,2});
+  assert(sort(ds1s2).equal({1,2}));
   
   auto cs1s2 = s1.cartesian_product(s2);
 
-  quicksort(cs1s2, [] (auto p, auto q)
-	    {
-	      if (p.first < q.first)
-		return true;
-	      
-	      if (p.first > q.first)
-		return false;
-
-	      return p.second < q.second;
-	    });
-
-  assert(cs1s2.equal({{1,3},{1,4},{1,5},{1,6},{2,3},{2,4},{2,5},{2,6},{3,3},{3,4},{3,5},{3,6},{4,3},{4,4},{4,5},{4,6}}));
+  assert(sort(cs1s2, [] (auto p, auto q)
+	      {
+		if (p.first < q.first)
+		  return true;
+		
+		if (p.first > q.first)
+		  return false;
+		
+		return p.second < q.second;
+	      }).equal({{1,3},{1,4},{1,5},{1,6},{2,3},{2,4},{2,5},{2,6},{3,3},{3,4},{3,5},{3,6},{4,3},{4,4},{4,5},{4,6}}));
   
   cout << "Everything ok!\n";
   

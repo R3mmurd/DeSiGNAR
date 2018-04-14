@@ -28,6 +28,7 @@
 # include <nodesdef.H>
 # include <graphutilities.H>
 # include <italgorithms.H>
+# include <sort.H>
 
 namespace Designar
 {

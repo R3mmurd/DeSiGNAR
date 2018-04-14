@@ -24,6 +24,7 @@
 
 # include <array.H>
 # include <list.H>
+# include <sort.H>
 # include <random.H>
 
 using namespace std;
@@ -174,8 +175,14 @@ int main()
     ll.append(random_uniform(rng, 100));
 
 
-  quicksort(ll);
+  auto sl = sort(ll);
+  assert(sl.is_sorted());
+  assert(not ll.is_sorted());
+
+  inline_sort(ll);
   assert(ll.is_sorted());
+
+  assert(reverse(ll).is_sorted([](auto x, auto y) { return x > y; }));
   
   cout << "Everything ok!\n";
   
