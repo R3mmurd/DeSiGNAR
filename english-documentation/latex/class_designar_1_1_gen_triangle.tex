@@ -1,0 +1,387 @@
+\hypertarget{class_designar_1_1_gen_triangle}{}\section{Designar\+:\+:Gen\+Triangle$<$ PointT $>$ Class Template Reference}
+\label{class_designar_1_1_gen_triangle}\index{Designar\+::\+Gen\+Triangle$<$ Point\+T $>$@{Designar\+::\+Gen\+Triangle$<$ Point\+T $>$}}
+
+
+{\ttfamily \#include $<$triangle.\+H$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_gen_triangle_ac6e39b72d793f44a6e12b4f0ede6d472}{Point\+Type} = PointT
+\item 
+using \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} = \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$ PointT $>$
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_gen_triangle_abcdb0045637f2ee8b34cf674fc619e04}{Gen\+Triangle} (const PointT \&\+\_\+p1, const PointT \&\+\_\+p2, const PointT \&\+\_\+p3)
+\item 
+\hyperlink{class_designar_1_1_gen_triangle_a7308aa4e23c9efb2c76d852a96720e46}{Gen\+Triangle} (const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&t)
+\item 
+\hyperlink{class_designar_1_1_gen_triangle_a0088e354dd40c4391e291ae02d7ff873}{Gen\+Triangle} (\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&\&t)
+\item 
+\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \& \hyperlink{class_designar_1_1_gen_triangle_ad478eec7295a0823d1061e471e6c5527}{operator=} (const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&t)
+\item 
+\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \& \hyperlink{class_designar_1_1_gen_triangle_a5c59bfbd92a3114bb243d187d33e46d1}{operator=} (\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&\&t)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_a56928ea4b8436fb98654c791121d5abe}{swap} (\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&t)
+\item 
+const PointT \& \hyperlink{class_designar_1_1_gen_triangle_ab697f342f213f563049c9f74fcee06a1}{get\+\_\+p1} () const
+\item 
+const PointT \& \hyperlink{class_designar_1_1_gen_triangle_a77a549a6f5c67ab61298395606f920fa}{get\+\_\+p2} () const
+\item 
+const PointT \& \hyperlink{class_designar_1_1_gen_triangle_a56dbe16bc096232f2bcc6f95c2e464df}{get\+\_\+p3} () const
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_ac00304297a565c88d5f1ab663f00259f}{set\+\_\+p1} (const PointT \&\+\_\+p1)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_af6834f2d91ca020c2cebedc990e9db5d}{set\+\_\+p1} (PointT \&\&\+\_\+p1)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_a866c788d9a7f7cb8c4bde20ceb149408}{set\+\_\+p2} (const PointT \&\+\_\+p2)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_afe141eabfa887a63fcdff0b084a1962e}{set\+\_\+p2} (PointT \&\&\+\_\+p2)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_a2bb761ccf1029ca9118b9ae2fe924eab}{set\+\_\+p3} (const PointT \&\+\_\+p3)
+\item 
+void \hyperlink{class_designar_1_1_gen_triangle_ae5223087afc26fef8eea9f494fb2d770}{set\+\_\+p3} (PointT \&\&\+\_\+p3)
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_triangle_a620a2b19d9de408d4a7b303814dd7079}{area} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a9a06ac565cc768c42fabd83048aa7d64}{is\+\_\+clockwise} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a5539f60a36fb6b63e27b9fac8a9bd12f}{is\+\_\+counterclockwise} () const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a5711c18dba2cb86351cd5cc4d6fb84de}{contains\+\_\+to} (const PointT \&p) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a5b9c54901803f0ed5ec895262e9434e0}{contains\+\_\+to} (const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_ad5814f89889d33de29202c2527d78cd8}{intersects\+\_\+properly\+\_\+with} (const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&s) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a844330e0fb25541cf5fc07715013acb4}{intersects\+\_\+with} (const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&s) const
+\item 
+\hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \hyperlink{class_designar_1_1_gen_triangle_af29ec91f9c69c5930e44e9bf2d9700f7}{intersection\+\_\+with} (const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&s)
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a37dfb2a595b866da16d8f8701af4859e}{operator==} (const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&t) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_triangle_a7eb1324bfebed82ed90c793dac09d3a0}{operator!=} (const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} \&t) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class PointT$>$\newline
+class Designar\+::\+Gen\+Triangle$<$ Point\+T $>$}
+
+
+
+Definition at line 34 of file triangle.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ac6e39b72d793f44a6e12b4f0ede6d472}\label{class_designar_1_1_gen_triangle_ac6e39b72d793f44a6e12b4f0ede6d472}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!Point\+Type@{Point\+Type}}
+\index{Point\+Type@{Point\+Type}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{Point\+Type}{PointType}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+using \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_triangle_ac6e39b72d793f44a6e12b4f0ede6d472}{Point\+Type} =  PointT}
+
+
+
+Definition at line 41 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}\label{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!Segment\+Type@{Segment\+Type}}
+\index{Segment\+Type@{Segment\+Type}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{Segment\+Type}{SegmentType}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+using \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} =  \hyperlink{class_designar_1_1_gen_segment}{Gen\+Segment}$<$PointT$>$}
+
+
+
+Definition at line 42 of file triangle.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_abcdb0045637f2ee8b34cf674fc619e04}\label{class_designar_1_1_gen_triangle_abcdb0045637f2ee8b34cf674fc619e04}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!Gen\+Triangle@{Gen\+Triangle}}
+\index{Gen\+Triangle@{Gen\+Triangle}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{Gen\+Triangle()}{GenTriangle()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} (\begin{DoxyParamCaption}\item[{const PointT \&}]{\+\_\+p1,  }\item[{const PointT \&}]{\+\_\+p2,  }\item[{const PointT \&}]{\+\_\+p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 44 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a7308aa4e23c9efb2c76d852a96720e46}\label{class_designar_1_1_gen_triangle_a7308aa4e23c9efb2c76d852a96720e46}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!Gen\+Triangle@{Gen\+Triangle}}
+\index{Gen\+Triangle@{Gen\+Triangle}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{Gen\+Triangle()}{GenTriangle()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 51 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a0088e354dd40c4391e291ae02d7ff873}\label{class_designar_1_1_gen_triangle_a0088e354dd40c4391e291ae02d7ff873}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!Gen\+Triangle@{Gen\+Triangle}}
+\index{Gen\+Triangle@{Gen\+Triangle}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{Gen\+Triangle()}{GenTriangle()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&\&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 57 of file triangle.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a620a2b19d9de408d4a7b303814dd7079}\label{class_designar_1_1_gen_triangle_a620a2b19d9de408d4a7b303814dd7079}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!area@{area}}
+\index{area@{area}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 150 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a5711c18dba2cb86351cd5cc4d6fb84de}\label{class_designar_1_1_gen_triangle_a5711c18dba2cb86351cd5cc4d6fb84de}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!contains\+\_\+to@{contains\+\_\+to}}
+\index{contains\+\_\+to@{contains\+\_\+to}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{contains\+\_\+to()}{contains\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::contains\+\_\+to (\begin{DoxyParamCaption}\item[{const PointT \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 165 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a5b9c54901803f0ed5ec895262e9434e0}\label{class_designar_1_1_gen_triangle_a5b9c54901803f0ed5ec895262e9434e0}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!contains\+\_\+to@{contains\+\_\+to}}
+\index{contains\+\_\+to@{contains\+\_\+to}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{contains\+\_\+to()}{contains\_to()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::contains\+\_\+to (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 181 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ab697f342f213f563049c9f74fcee06a1}\label{class_designar_1_1_gen_triangle_ab697f342f213f563049c9f74fcee06a1}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!get\+\_\+p1@{get\+\_\+p1}}
+\index{get\+\_\+p1@{get\+\_\+p1}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+p1()}{get\_p1()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+const PointT\& \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::get\+\_\+p1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 87 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a77a549a6f5c67ab61298395606f920fa}\label{class_designar_1_1_gen_triangle_a77a549a6f5c67ab61298395606f920fa}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!get\+\_\+p2@{get\+\_\+p2}}
+\index{get\+\_\+p2@{get\+\_\+p2}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+p2()}{get\_p2()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+const PointT\& \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::get\+\_\+p2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 92 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a56dbe16bc096232f2bcc6f95c2e464df}\label{class_designar_1_1_gen_triangle_a56dbe16bc096232f2bcc6f95c2e464df}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!get\+\_\+p3@{get\+\_\+p3}}
+\index{get\+\_\+p3@{get\+\_\+p3}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{get\+\_\+p3()}{get\_p3()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+const PointT\& \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::get\+\_\+p3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 97 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_af29ec91f9c69c5930e44e9bf2d9700f7}\label{class_designar_1_1_gen_triangle_af29ec91f9c69c5930e44e9bf2d9700f7}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!intersection\+\_\+with@{intersection\+\_\+with}}
+\index{intersection\+\_\+with@{intersection\+\_\+with}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{intersection\+\_\+with()}{intersection\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::intersection\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 200 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ad5814f89889d33de29202c2527d78cd8}\label{class_designar_1_1_gen_triangle_ad5814f89889d33de29202c2527d78cd8}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!intersects\+\_\+properly\+\_\+with@{intersects\+\_\+properly\+\_\+with}}
+\index{intersects\+\_\+properly\+\_\+with@{intersects\+\_\+properly\+\_\+with}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{intersects\+\_\+properly\+\_\+with()}{intersects\_properly\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::intersects\+\_\+properly\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 186 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a844330e0fb25541cf5fc07715013acb4}\label{class_designar_1_1_gen_triangle_a844330e0fb25541cf5fc07715013acb4}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!intersects\+\_\+with@{intersects\+\_\+with}}
+\index{intersects\+\_\+with@{intersects\+\_\+with}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{intersects\+\_\+with()}{intersects\_with()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::intersects\+\_\+with (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle_a97d5ba127bcf8f120b1d408215956cee}{Segment\+Type} \&}]{s }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 193 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a9a06ac565cc768c42fabd83048aa7d64}\label{class_designar_1_1_gen_triangle_a9a06ac565cc768c42fabd83048aa7d64}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!is\+\_\+clockwise@{is\+\_\+clockwise}}
+\index{is\+\_\+clockwise@{is\+\_\+clockwise}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{is\+\_\+clockwise()}{is\_clockwise()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::is\+\_\+clockwise (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 155 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a5539f60a36fb6b63e27b9fac8a9bd12f}\label{class_designar_1_1_gen_triangle_a5539f60a36fb6b63e27b9fac8a9bd12f}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!is\+\_\+counterclockwise@{is\+\_\+counterclockwise}}
+\index{is\+\_\+counterclockwise@{is\+\_\+counterclockwise}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{is\+\_\+counterclockwise()}{is\_counterclockwise()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::is\+\_\+counterclockwise (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 160 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a7eb1324bfebed82ed90c793dac09d3a0}\label{class_designar_1_1_gen_triangle_a7eb1324bfebed82ed90c793dac09d3a0}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 256 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ad478eec7295a0823d1061e471e6c5527}\label{class_designar_1_1_gen_triangle_ad478eec7295a0823d1061e471e6c5527}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}\& \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 62 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a5c59bfbd92a3114bb243d187d33e46d1}\label{class_designar_1_1_gen_triangle_a5c59bfbd92a3114bb243d187d33e46d1}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}\& \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&\&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a37dfb2a595b866da16d8f8701af4859e}\label{class_designar_1_1_gen_triangle_a37dfb2a595b866da16d8f8701af4859e}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!operator==@{operator==}}
+\index{operator==@{operator==}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+bool \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&}]{t }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 251 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ac00304297a565c88d5f1ab663f00259f}\label{class_designar_1_1_gen_triangle_ac00304297a565c88d5f1ab663f00259f}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p1@{set\+\_\+p1}}
+\index{set\+\_\+p1@{set\+\_\+p1}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p1()}{set\_p1()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p1 (\begin{DoxyParamCaption}\item[{const PointT \&}]{\+\_\+p1 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 102 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_af6834f2d91ca020c2cebedc990e9db5d}\label{class_designar_1_1_gen_triangle_af6834f2d91ca020c2cebedc990e9db5d}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p1@{set\+\_\+p1}}
+\index{set\+\_\+p1@{set\+\_\+p1}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p1()}{set\_p1()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p1 (\begin{DoxyParamCaption}\item[{PointT \&\&}]{\+\_\+p1 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 110 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a866c788d9a7f7cb8c4bde20ceb149408}\label{class_designar_1_1_gen_triangle_a866c788d9a7f7cb8c4bde20ceb149408}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p2@{set\+\_\+p2}}
+\index{set\+\_\+p2@{set\+\_\+p2}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p2()}{set\_p2()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p2 (\begin{DoxyParamCaption}\item[{const PointT \&}]{\+\_\+p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 118 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_afe141eabfa887a63fcdff0b084a1962e}\label{class_designar_1_1_gen_triangle_afe141eabfa887a63fcdff0b084a1962e}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p2@{set\+\_\+p2}}
+\index{set\+\_\+p2@{set\+\_\+p2}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p2()}{set\_p2()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p2 (\begin{DoxyParamCaption}\item[{PointT \&\&}]{\+\_\+p2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 126 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a2bb761ccf1029ca9118b9ae2fe924eab}\label{class_designar_1_1_gen_triangle_a2bb761ccf1029ca9118b9ae2fe924eab}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p3@{set\+\_\+p3}}
+\index{set\+\_\+p3@{set\+\_\+p3}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p3()}{set\_p3()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p3 (\begin{DoxyParamCaption}\item[{const PointT \&}]{\+\_\+p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 134 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_ae5223087afc26fef8eea9f494fb2d770}\label{class_designar_1_1_gen_triangle_ae5223087afc26fef8eea9f494fb2d770}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!set\+\_\+p3@{set\+\_\+p3}}
+\index{set\+\_\+p3@{set\+\_\+p3}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{set\+\_\+p3()}{set\_p3()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::set\+\_\+p3 (\begin{DoxyParamCaption}\item[{PointT \&\&}]{\+\_\+p3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 142 of file triangle.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_triangle_a56928ea4b8436fb98654c791121d5abe}\label{class_designar_1_1_gen_triangle_a56928ea4b8436fb98654c791121d5abe}} 
+\index{Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Gen\+Triangle@{Designar\+::\+Gen\+Triangle}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$class PointT$>$ \\
+void \hyperlink{class_designar_1_1_gen_triangle}{Designar\+::\+Gen\+Triangle}$<$ PointT $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_gen_triangle}{Gen\+Triangle}$<$ PointT $>$ \&}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 80 of file triangle.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{triangle_8_h}{triangle.\+H}\end{DoxyCompactItemize}

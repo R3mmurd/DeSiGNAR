@@ -1,0 +1,124 @@
+\hypertarget{graphalgorithms_8_h}{}\section{Referencia del Archivo include/graphalgorithms.H}
+\label{graphalgorithms_8_h}\index{include/graphalgorithms.\+H@{include/graphalgorithms.\+H}}
+{\ttfamily \#include $<$relation.\+H$>$}\newline
+{\ttfamily \#include $<$graph.\+H$>$}\newline
+{\ttfamily \#include $<$random.\+H$>$}\newline
+\subsection*{Clases}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_default_distance}{Designar\+::\+Default\+Distance$<$ G\+T $>$}
+\item 
+class \hyperlink{class_designar_1_1_distance_cmp}{Designar\+::\+Distance\+Cmp$<$ G\+T, Distance, Cmp $>$}
+\item 
+class \hyperlink{class_designar_1_1_kruskal}{Designar\+::\+Kruskal$<$ G\+T, Distance, Cmp $>$}
+\item 
+class \hyperlink{class_designar_1_1_arc_heap_cmp}{Designar\+::\+Arc\+Heap\+Cmp$<$ G\+T, Distance, Cmp $>$}
+\item 
+class \hyperlink{class_designar_1_1_arc_heap}{Designar\+::\+Arc\+Heap$<$ G\+T, Distance, Cmp $>$}
+\item 
+class \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim$<$ G\+T, Distance, Cmp $>$}
+\item 
+class \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra$<$ G\+T, Distance, Cmp, Plus $>$}
+\item 
+class \hyperlink{class_designar_1_1_default_heuristic}{Designar\+::\+Default\+Heuristic$<$ G\+T, Distance $>$}
+\item 
+class \hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar$<$ G\+T, Distance, Heuristic, Cmp, Plus $>$}
+\item 
+class \hyperlink{class_designar_1_1_bellman_ford}{Designar\+::\+Bellman\+Ford$<$ G\+T, Distance, Cmp, Plus $>$}
+\item 
+class \hyperlink{class_designar_1_1_karger_min_cut}{Designar\+::\+Karger\+Min\+Cut$<$ G\+T $>$}
+\item 
+class \hyperlink{class_designar_1_1_dot_graph}{Designar\+::\+Dot\+Graph$<$ G\+T, Node\+Attr, Arc\+Attr, Graph\+Attr $>$}
+\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespace_designar}{Designar}
+\end{DoxyCompactItemize}
+\subsection*{Funciones}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a0b89964c32afcc315905100d3ae49ad6}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+prefix\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, Op \&)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a2c0d9c0ea5841058afe514c4451ab869}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+prefix} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, Op \&op)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_afaa79311647a603f5c95d575f67ea767}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+prefix} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&\&op=Op())
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_ab028f52b5df8eed5dadeda85d45fa0f2}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+sufix\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, Op \&)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a91a3b6c7321dec6f2d9579721af465a1}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+sufix} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, Op \&op)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_ae742525c8bae623299150bcbcc317d6c}{Designar\+::depth\+\_\+first\+\_\+traverse\+\_\+sufix} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&\&op=Op())
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a259944a482130c7a304058ed801872a9}{Designar\+::depth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&op)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a40329a328d24d8ac25f540902fb69159}{Designar\+::depth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&\&op=Op())
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a0a2a9a44cfea24efc22cab8b8a9d2acd}{Designar\+::depth\+\_\+first\+\_\+search\+\_\+path\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, Path$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\Path$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{namespace_designar_ab5b060dde0b717e9818c796da60b39b1}{Designar\+::depth\+\_\+first\+\_\+search\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a1d3028c78c40ec397096fb112f34eb78}{Designar\+::test\+\_\+cycle\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, bool)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a279a11030cf78659ddbdec00473f0365}{Designar\+::has\+\_\+cycle} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a4b250ae7cdab37b1a1489179266ef5d6}{Designar\+::has\+\_\+cycle} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a745761588a29956929fda0d246ebbef5}{Designar\+::is\+\_\+graph\+\_\+acyclique} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a2cf5f0717993e7d2a4dbc26ff8380a72}{Designar\+::is\+\_\+graph\+\_\+acyclique} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{namespace_designar_a35a0d2875876e94cc6f9036f85491091}{Designar\+::invert\+\_\+digraph} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, bool)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_a035e48f6f48994ed7b1fd8c6d7f3ec32}{Designar\+::build\+\_\+subgraph\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{namespace_designar_a1f5287eee752172e2db8bd4cd148f93b}{Designar\+::compute\+\_\+connected\+\_\+components} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_acdd8c35a3d5633b9b97524010dcee4eb}{Designar\+::add\+\_\+nodes\+\_\+to\+\_\+component\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$$>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ $>$ \hyperlink{namespace_designar_a8b65b45b1581bbf5b74899490a8b8c61}{Designar\+::connected\+\_\+components\+\_\+node\+\_\+list} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_ac547a8b8e0e7a9a8ead8899c02b42128}{Designar\+::compute\+\_\+cut\+\_\+nodes\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, Arc$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$$>$ \&, lint\+\_\+t \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ \hyperlink{namespace_designar_a8e4bd28af32addb6683407d7e898de7b}{Designar\+::compute\+\_\+cut\+\_\+nodes} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_aba19bd6f648fd502d1dcbcc37d1edfda}{Designar\+::paint\+\_\+cut\+\_\+nodes\+\_\+connected\+\_\+components\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, lint\+\_\+t)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_a0b57b399593e711bef1c99a4c41c238a}{Designar\+::paint\+\_\+from\+\_\+cut\+\_\+node} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, lint\+\_\+t \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\lint\+\_\+t \hyperlink{namespace_designar_a4a53202e6320a9435f829867671c26c1}{Designar\+::paint\+\_\+cut\+\_\+nodes\+\_\+subgraphs} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, const S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$$>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_aecd027238b87a5b24792ea3ccd0c44b1}{Designar\+::build\+\_\+cut\+\_\+nodes\+\_\+subgraph\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, lint\+\_\+t)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{namespace_designar_a8e15ec16859d46fd3c50bb9a295a1ea6}{Designar\+::build\+\_\+cut\+\_\+nodes\+\_\+subgraphs} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\std\+::tuple$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, S\+L\+List$<$ Arc$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ $>$ \hyperlink{namespace_designar_a552f77707068bde5a4449192a1105012}{Designar\+::build\+\_\+cut\+\_\+graph} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, const S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$$>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\std\+::tuple$<$ S\+L\+List$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, S\+L\+List$<$ Arc$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ $>$ \hyperlink{namespace_designar_a52ce1bee324d17e8876db18c45deabd9}{Designar\+::compute\+\_\+cut\+\_\+nodes\+\_\+connected\+\_\+components} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, const S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$$>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\void \hyperlink{namespace_designar_a939778d2922bd8f97f08c5297c8d7f5e}{Designar\+::\+Kosaraju\+\_\+build\+\_\+subgraph\+\_\+rec} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, nat\+\_\+t)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{namespace_designar_a53b8f28f7265931cb9a0d2ef95fec0d1}{Designar\+::\+Kosaraju\+\_\+compute\+\_\+strong\+\_\+connected\+\_\+components} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ \hyperlink{namespace_designar_aea55a662f6563f40a64509015ca3ab10}{Designar\+::df\+\_\+topological\+\_\+sort} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a676f3fbced360c84028f69998e74bede}{Designar\+::breadth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, Op \&)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_acbf0c7fd2a8cd448777c1d9ee9500e25}{Designar\+::breadth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&p, Op \&\&op=Op())
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_a0e5a24c14d4d7a9281cd79d82b8f4346}{Designar\+::breadth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&op)
+\item 
+{\footnotesize template$<$class GT , class Op $>$ }\\void \hyperlink{namespace_designar_ad3ef274c9191673599894089bbfb354d}{Designar\+::breadth\+\_\+first\+\_\+traverse} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, Op \&\&op=Op())
+\item 
+{\footnotesize template$<$class GT $>$ }\\Path$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{namespace_designar_ae3e6a7d2cf21c1c23ea159ac3e0cef6a}{Designar\+::breadth\+\_\+first\+\_\+search\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ \hyperlink{namespace_designar_a07df9972ab6dffccd12e4fffa2ff13c1}{Designar\+::bf\+\_\+topological\+\_\+sort} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\S\+L\+List$<$ S\+L\+List$<$ \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ $\ast$ $>$ $>$ \hyperlink{namespace_designar_a98d4bef12f5a30df5bf8a1fe56314330}{Designar\+::topological\+\_\+ranks} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a2312b1c69641afff1ae507474ddae644}{Designar\+::is\+\_\+acyclique} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{test-mtreenode_8_c_a17a24b0725f59987143c5faf63c4dc6f}{Node}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \&start)
+\item 
+{\footnotesize template$<$class GT $>$ }\\bool \hyperlink{namespace_designar_a961b99a3831c3c5d64c364f8cb2abc9f}{Designar\+::is\+\_\+acyclique} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g)
+\item 
+{\footnotesize template$<$class GT $>$ }\\\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{namespace_designar_a3f14dc1be082db37ea18784d48c92a54}{Designar\+::invert\+\_\+digraph} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g)
+\end{DoxyCompactItemize}

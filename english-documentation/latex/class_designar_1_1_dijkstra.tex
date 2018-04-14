@@ -1,0 +1,140 @@
+\hypertarget{class_designar_1_1_dijkstra}{}\section{Designar\+:\+:Dijkstra$<$ GT, Distance, Cmp, Plus $>$ Class Template Reference}
+\label{class_designar_1_1_dijkstra}\index{Designar\+::\+Dijkstra$<$ G\+T, Distance, Cmp, Plus $>$@{Designar\+::\+Dijkstra$<$ G\+T, Distance, Cmp, Plus $>$}}
+
+
+{\ttfamily \#include $<$graphalgorithms.\+H$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} = typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}
+\item 
+using \hyperlink{class_designar_1_1_dijkstra_a5f0682f4edfd1456b7d4432fa976c641}{Arc} = typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_dijkstra_ada4a9a8403304341114425e296c5ed26}{Dijkstra} (Distance \&\+\_\+distance, Cmp \&\+\_\+cmp, Plus \&\+\_\+plus)
+\item 
+\hyperlink{class_designar_1_1_dijkstra_a26f374b129c8108d6b95fc57f8dc09df}{Dijkstra} (Distance \&\&\+\_\+distance=Distance(), Cmp \&\&\+\_\+cmp=Cmp(), Plus \&\&\+\_\+plus=Plus())
+\item 
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_dijkstra_a70bbeb5dcd70c6ff3d203b7772021467}{build\+\_\+min\+\_\+path\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&)
+\item 
+void \hyperlink{class_designar_1_1_dijkstra_a607872c03f2e6de59936118e6f6c8790}{paint\+\_\+min\+\_\+path\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&start)
+\item 
+\hyperlink{class_designar_1_1_path}{Path}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{class_designar_1_1_dijkstra_ab2d75c571dff03279bea0192047461f0}{search\+\_\+min\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&start, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&end)
+\item 
+void \hyperlink{class_designar_1_1_dijkstra_a103839d3bd4e6d8733d2b47b186e137a}{paint\+\_\+min\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&start, \hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&end)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class GT, class Distance = Default\+Distance$<$\+G\+T$>$, class Cmp = std\+::less$<$typename Distance\+::\+Type$>$, class Plus = std\+::plus$<$typename Distance\+::\+Type$>$$>$\newline
+class Designar\+::\+Dijkstra$<$ G\+T, Distance, Cmp, Plus $>$}
+
+
+
+Definition at line 1408 of file graphalgorithms.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_a5f0682f4edfd1456b7d4432fa976c641}\label{class_designar_1_1_dijkstra_a5f0682f4edfd1456b7d4432fa976c641}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!Arc@{Arc}}
+\index{Arc@{Arc}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{Arc}{Arc}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_dijkstra_a5f0682f4edfd1456b7d4432fa976c641}{Arc} =  typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}}
+
+
+
+Definition at line 1412 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}\label{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!Node@{Node}}
+\index{Node@{Node}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{Node}{Node}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} =  typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}}
+
+
+
+Definition at line 1411 of file graphalgorithms.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_ada4a9a8403304341114425e296c5ed26}\label{class_designar_1_1_dijkstra_ada4a9a8403304341114425e296c5ed26}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!Dijkstra@{Dijkstra}}
+\index{Dijkstra@{Dijkstra}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{Dijkstra()}{Dijkstra()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_dijkstra}{Dijkstra} (\begin{DoxyParamCaption}\item[{Distance \&}]{\+\_\+distance,  }\item[{Cmp \&}]{\+\_\+cmp,  }\item[{Plus \&}]{\+\_\+plus }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1428 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_a26f374b129c8108d6b95fc57f8dc09df}\label{class_designar_1_1_dijkstra_a26f374b129c8108d6b95fc57f8dc09df}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!Dijkstra@{Dijkstra}}
+\index{Dijkstra@{Dijkstra}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{Dijkstra()}{Dijkstra()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_dijkstra}{Dijkstra} (\begin{DoxyParamCaption}\item[{Distance \&\&}]{\+\_\+distance = {\ttfamily Distance()},  }\item[{Cmp \&\&}]{\+\_\+cmp = {\ttfamily Cmp()},  }\item[{Plus \&\&}]{\+\_\+plus = {\ttfamily Plus()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1434 of file graphalgorithms.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_a70bbeb5dcd70c6ff3d203b7772021467}\label{class_designar_1_1_dijkstra_a70bbeb5dcd70c6ff3d203b7772021467}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!build\+\_\+min\+\_\+path\+\_\+tree@{build\+\_\+min\+\_\+path\+\_\+tree}}
+\index{build\+\_\+min\+\_\+path\+\_\+tree@{build\+\_\+min\+\_\+path\+\_\+tree}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{build\+\_\+min\+\_\+path\+\_\+tree()}{build\_min\_path\_tree()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance , class Cmp , class Plus $>$ \\
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::build\+\_\+min\+\_\+path\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{start }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1594 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_a103839d3bd4e6d8733d2b47b186e137a}\label{class_designar_1_1_dijkstra_a103839d3bd4e6d8733d2b47b186e137a}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!paint\+\_\+min\+\_\+path@{paint\+\_\+min\+\_\+path}}
+\index{paint\+\_\+min\+\_\+path@{paint\+\_\+min\+\_\+path}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{paint\+\_\+min\+\_\+path()}{paint\_min\_path()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+void \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::paint\+\_\+min\+\_\+path (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{start,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1491 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_a607872c03f2e6de59936118e6f6c8790}\label{class_designar_1_1_dijkstra_a607872c03f2e6de59936118e6f6c8790}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!paint\+\_\+min\+\_\+path\+\_\+tree@{paint\+\_\+min\+\_\+path\+\_\+tree}}
+\index{paint\+\_\+min\+\_\+path\+\_\+tree@{paint\+\_\+min\+\_\+path\+\_\+tree}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{paint\+\_\+min\+\_\+path\+\_\+tree()}{paint\_min\_path\_tree()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+void \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::paint\+\_\+min\+\_\+path\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{start }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1443 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dijkstra_ab2d75c571dff03279bea0192047461f0}\label{class_designar_1_1_dijkstra_ab2d75c571dff03279bea0192047461f0}} 
+\index{Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}!search\+\_\+min\+\_\+path@{search\+\_\+min\+\_\+path}}
+\index{search\+\_\+min\+\_\+path@{search\+\_\+min\+\_\+path}!Designar\+::\+Dijkstra@{Designar\+::\+Dijkstra}}
+\subsubsection{\texorpdfstring{search\+\_\+min\+\_\+path()}{search\_min\_path()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_path}{Path}$<$\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}$>$ \hyperlink{class_designar_1_1_dijkstra}{Designar\+::\+Dijkstra}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp, Plus $>$\+::search\+\_\+min\+\_\+path (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{start,  }\item[{\hyperlink{class_designar_1_1_dijkstra_afeb644fc5395569ec366f0d220ab477d}{Node} \&}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1464 of file graphalgorithms.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{graphalgorithms_8_h}{graphalgorithms.\+H}\end{DoxyCompactItemize}

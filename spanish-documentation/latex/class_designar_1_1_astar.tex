@@ -1,0 +1,114 @@
+\hypertarget{class_designar_1_1_astar}{}\section{Referencia de la plantilla de la Clase Designar\+:\+:Astar$<$ GT, Distance, Heuristic, Cmp, Plus $>$}
+\label{class_designar_1_1_astar}\index{Designar\+::\+Astar$<$ G\+T, Distance, Heuristic, Cmp, Plus $>$@{Designar\+::\+Astar$<$ G\+T, Distance, Heuristic, Cmp, Plus $>$}}
+
+
+{\ttfamily \#include $<$graphalgorithms.\+H$>$}
+
+\subsection*{Tipos públicos}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} = typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}
+\item 
+using \hyperlink{class_designar_1_1_astar_a4d0b1c7cb0a71b5cfe3d21ea37c12108}{Arc} = typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}
+\end{DoxyCompactItemize}
+\subsection*{Métodos públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_astar_a9a684bbaa799da107f42ed8e048cac57}{Astar} (Distance \&\+\_\+distance, Heuristic \&\+\_\+heuristic, Cmp \&\+\_\+cmp, Plus \&\+\_\+plus)
+\item 
+\hyperlink{class_designar_1_1_astar_a5db848d589e8e4ce7582acc061cb8b17}{Astar} (Distance \&\&\+\_\+distance=Distance(), Heuristic \&\&\+\_\+heuristic=Heuristic(), Cmp \&\&\+\_\+cmp=Cmp(), Plus \&\&\+\_\+plus=Plus())
+\item 
+\hyperlink{class_designar_1_1_path}{Path}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} $>$ \hyperlink{class_designar_1_1_astar_a23f41f4dd26aaef8ded7138de8866b54}{search\+\_\+min\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&start, \hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&end)
+\item 
+void \hyperlink{class_designar_1_1_astar_ab6cf1a92f64a96290880a1483eac396f}{paint\+\_\+min\+\_\+path} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&start, \hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&end)
+\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+\subsubsection*{template$<$class GT, class Distance = Default\+Distance$<$\+G\+T$>$, class Heuristic = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp = std\+::less$<$typename Distance\+::\+Type$>$, class Plus = std\+::plus$<$typename Distance\+::\+Type$>$$>$\newline
+class Designar\+::\+Astar$<$ G\+T, Distance, Heuristic, Cmp, Plus $>$}
+
+
+
+Definición en la línea 1691 del archivo graphalgorithms.\+H.
+
+
+
+\subsection{Documentación de los \textquotesingle{}Typedef\textquotesingle{} miembros de la clase}
+\mbox{\Hypertarget{class_designar_1_1_astar_a4d0b1c7cb0a71b5cfe3d21ea37c12108}\label{class_designar_1_1_astar_a4d0b1c7cb0a71b5cfe3d21ea37c12108}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!Arc@{Arc}}
+\index{Arc@{Arc}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{Arc}{Arc}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_astar_a4d0b1c7cb0a71b5cfe3d21ea37c12108}{Arc} =  typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}}
+
+
+
+Definición en la línea 1695 del archivo graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}\label{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!Node@{Node}}
+\index{Node@{Node}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{Node}{Node}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} =  typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}}
+
+
+
+Definición en la línea 1694 del archivo graphalgorithms.\+H.
+
+
+
+\subsection{Documentación del constructor y destructor}
+\mbox{\Hypertarget{class_designar_1_1_astar_a9a684bbaa799da107f42ed8e048cac57}\label{class_designar_1_1_astar_a9a684bbaa799da107f42ed8e048cac57}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!Astar@{Astar}}
+\index{Astar@{Astar}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{Astar()}{Astar()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_astar}{Astar} (\begin{DoxyParamCaption}\item[{Distance \&}]{\+\_\+distance,  }\item[{Heuristic \&}]{\+\_\+heuristic,  }\item[{Cmp \&}]{\+\_\+cmp,  }\item[{Plus \&}]{\+\_\+plus }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1712 del archivo graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_astar_a5db848d589e8e4ce7582acc061cb8b17}\label{class_designar_1_1_astar_a5db848d589e8e4ce7582acc061cb8b17}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!Astar@{Astar}}
+\index{Astar@{Astar}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{Astar()}{Astar()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::\hyperlink{class_designar_1_1_astar}{Astar} (\begin{DoxyParamCaption}\item[{Distance \&\&}]{\+\_\+distance = {\ttfamily Distance()},  }\item[{Heuristic \&\&}]{\+\_\+heuristic = {\ttfamily Heuristic()},  }\item[{Cmp \&\&}]{\+\_\+cmp = {\ttfamily Cmp()},  }\item[{Plus \&\&}]{\+\_\+plus = {\ttfamily Plus()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1720 del archivo graphalgorithms.\+H.
+
+
+
+\subsection{Documentación de las funciones miembro}
+\mbox{\Hypertarget{class_designar_1_1_astar_ab6cf1a92f64a96290880a1483eac396f}\label{class_designar_1_1_astar_ab6cf1a92f64a96290880a1483eac396f}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!paint\+\_\+min\+\_\+path@{paint\+\_\+min\+\_\+path}}
+\index{paint\+\_\+min\+\_\+path@{paint\+\_\+min\+\_\+path}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{paint\+\_\+min\+\_\+path()}{paint\_min\_path()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+void \hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::paint\+\_\+min\+\_\+path (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&}]{start,  }\item[{\hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1756 del archivo graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_astar_a23f41f4dd26aaef8ded7138de8866b54}\label{class_designar_1_1_astar_a23f41f4dd26aaef8ded7138de8866b54}} 
+\index{Designar\+::\+Astar@{Designar\+::\+Astar}!search\+\_\+min\+\_\+path@{search\+\_\+min\+\_\+path}}
+\index{search\+\_\+min\+\_\+path@{search\+\_\+min\+\_\+path}!Designar\+::\+Astar@{Designar\+::\+Astar}}
+\subsubsection{\texorpdfstring{search\+\_\+min\+\_\+path()}{search\_min\_path()}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Heuristic  = Default\+Heuristic$<$\+G\+T, Distance$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$, class Plus  = std\+::plus$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_path}{Path}$<$\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}$>$ \hyperlink{class_designar_1_1_astar}{Designar\+::\+Astar}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Heuristic, Cmp, Plus $>$\+::search\+\_\+min\+\_\+path (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&}]{start,  }\item[{\hyperlink{class_designar_1_1_astar_a0d4cdf6b94255824c6c93e5ae18e9eb7}{Node} \&}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1729 del archivo graphalgorithms.\+H.
+
+
+
+La documentación para esta clase fue generada a partir del siguiente fichero\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{graphalgorithms_8_h}{graphalgorithms.\+H}\end{DoxyCompactItemize}

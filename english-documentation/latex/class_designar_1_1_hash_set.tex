@@ -1,0 +1,769 @@
+\hypertarget{class_designar_1_1_hash_set}{}\section{Designar\+:\+:Hash\+Set$<$ Key, Cmp $>$ Class Template Reference}
+\label{class_designar_1_1_hash_set}\index{Designar\+::\+Hash\+Set$<$ Key, Cmp $>$@{Designar\+::\+Hash\+Set$<$ Key, Cmp $>$}}
+
+
+{\ttfamily \#include $<$hash.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:Hash\+Set$<$ Key, Cmp $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.000894cm]{class_designar_1_1_hash_set}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_hash_set_af1cb023a84bf6c6f17867f99bbc523c5}{Item\+Type} = Key
+\item 
+using \hyperlink{class_designar_1_1_hash_set_a4e23320d0b13915ce84186132ad4197a}{Key\+Type} = Key
+\item 
+using \hyperlink{class_designar_1_1_hash_set_af75f5917c5f53891a4129bd77d5d2906}{Data\+Type} = Key
+\item 
+using \hyperlink{class_designar_1_1_hash_set_a4edc6d161470bffb03dad2bbc916b6a0}{Value\+Type} = Key
+\item 
+using \hyperlink{class_designar_1_1_hash_set_a1bfcb16c2a94c0ab22e15f38b05ba8cc}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\item 
+using \hyperlink{class_designar_1_1_hash_set_ad0ab040392888a3320d2d72d1ead9968}{Cmp\+Type} = Cmp
+\item 
+using \hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}($\ast$)(const Key \&)
+\item 
+using \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} = std\+::function$<$ \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}(const Key \&)$>$
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_hash_set_afb5e932ee4dcc9b1dec4d6eefd810c32}{Hash\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size}, Cmp \&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} fct, \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \+\_\+lower\+\_\+alpha, \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \+\_\+upper\+\_\+alpha)
+\item 
+\hyperlink{class_designar_1_1_hash_set_a6f60ca18ef5bcf8560b9827ca9678e58}{Hash\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size}, Cmp \&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} fct)
+\item 
+\hyperlink{class_designar_1_1_hash_set_aa57bbddb93c59eda7551cf9cf6b9220e}{Hash\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size}, Cmp \&\&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} fct)
+\item 
+\hyperlink{class_designar_1_1_hash_set_ac9204afce59af28d1360c50f11b5694e}{Hash\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size}, Cmp \&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} fct=\&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash})
+\item 
+\hyperlink{class_designar_1_1_hash_set_a007cbe70f94c249ccebaf68006bbf0f4}{Hash\+Set} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size}, Cmp \&\&\+\_\+cmp=Cmp(), \hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} fct=\&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash})
+\item 
+\hyperlink{class_designar_1_1_hash_set_a12dce6e775ae60019e189297040e2cbf}{Hash\+Set} (Cmp \&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} fct)
+\item 
+\hyperlink{class_designar_1_1_hash_set_aea364027e144f9a079ba56f1c0608c37}{Hash\+Set} (Cmp \&\&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} fct)
+\item 
+\hyperlink{class_designar_1_1_hash_set_a936fde31abdaab2deac50bfbe4d361a0}{Hash\+Set} (Cmp \&\+\_\+cmp, \hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} fct=\&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash})
+\item 
+\hyperlink{class_designar_1_1_hash_set_a200e719b4d0ff01123b3d72bfb510819}{Hash\+Set} (Cmp \&\&\+\_\+cmp=Cmp(), \hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} fct=\&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash})
+\item 
+\hyperlink{class_designar_1_1_hash_set_a32f0efeb864585422599f7b3e15f7664}{Hash\+Set} (const \hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \&h)
+\item 
+\hyperlink{class_designar_1_1_hash_set_a3d0ba0a6da1f06d6637b525ff41fabfa}{Hash\+Set} (\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \&\&h)
+\item 
+\hyperlink{class_designar_1_1_hash_set_ad61f40cd2eee2b00ae3285cab3a91087}{Hash\+Set} (const std\+::initializer\+\_\+list$<$ Key $>$ \&)
+\item 
+\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \& \hyperlink{class_designar_1_1_hash_set_aed1240e62fdb7745bc9d7a123aa6da6a}{operator=} (const \hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \&h)
+\item 
+\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \& \hyperlink{class_designar_1_1_hash_set_af6cb975d4932a49ffde5bdc8dd303f8b}{operator=} (\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \&\&h)
+\item 
+void \hyperlink{class_designar_1_1_hash_set_a450af50eb87072d4017822fa952639c6}{swap} (\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} \&h)
+\item 
+Cmp \& \hyperlink{class_designar_1_1_hash_set_ad799ffaf641176e823513b63be44cfe2}{get\+\_\+cmp} ()
+\item 
+const Cmp \& \hyperlink{class_designar_1_1_hash_set_a7be703ea6ba171fc58ea5b5ffd8ffa6d}{get\+\_\+cmp} () const
+\item 
+const \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} \& \hyperlink{class_designar_1_1_hash_set_a4cc71f53416e8cde16b1f4a76d81c9ca}{get\+\_\+hash\+\_\+fct} () const
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a5bb190c4e06ee28394adb03d51cc9607}{get\+\_\+lower\+\_\+alpha} () const
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a6719373d3cf21f31d53de969bd81799f}{get\+\_\+upper\+\_\+alpha} () const
+\item 
+void \hyperlink{class_designar_1_1_hash_set_a263b1c2f045910e13f49fb4a295fbd27}{set\+\_\+lower\+\_\+alpha} (\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{namespace_designar_a7dd2a7b6d96f664ce612b506c8eb2fb8}{value})
+\item 
+void \hyperlink{class_designar_1_1_hash_set_a7d15d7b087df1da351a6820396ca3456}{set\+\_\+upper\+\_\+alpha} (\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{namespace_designar_a7dd2a7b6d96f664ce612b506c8eb2fb8}{value})
+\item 
+void \hyperlink{class_designar_1_1_hash_set_a40fccab92f794f86e2d2fe602f8ffb1f}{reset\+\_\+alpha\+\_\+values} ()
+\item 
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a83376ba0b923d00ffbe1d12c093bc2ae}{alpha} () const
+\item 
+bool \hyperlink{class_designar_1_1_hash_set_a2da1b699af1bf81e0965a35c4c4b3e35}{is\+\_\+empty} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}{size} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a37cc23bf083078151f6f55b479c213ae}{N} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_ab77d2d3a6ce83395b35b9cdbbcf18c2b}{M} () const
+\item 
+void \hyperlink{class_designar_1_1_hash_set_a9f2acc5d38a16b2bfe8586ecea9d2df7}{clear} ()
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_af4014286f5665c9e1c149bd2f4225535}{insert} (const Key \&item)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_ac18e38933ad6611da769ad878062cfb4}{insert} (Key \&\&item)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_a6ce31d6797f5f864b9a6906b6a1b9eb6}{append} (const Key \&k)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_a12748f202f35b968b2aace2ebe202f17}{append} (Key \&\&k)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_a4c374f62530fe151b47e42ed05ddc7fb}{search} (const Key \&k)
+\item 
+const Key $\ast$ \hyperlink{class_designar_1_1_hash_set_a6cd71f72b1676aa364e4aab6687b115b}{search} (const Key \&k) const
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_abb9cb610eed9832735c6f0bcafbb1dea}{search\+\_\+or\+\_\+insert} (const Key \&item)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_hash_set_a9ecd2f2a1e299cc35e90c66c8357beff}{search\+\_\+or\+\_\+insert} (Key \&\&item)
+\item 
+Key \& \hyperlink{class_designar_1_1_hash_set_a96df362356788b6f3f1261a526a1fd82}{find} (const Key \&k)
+\item 
+const Key \& \hyperlink{class_designar_1_1_hash_set_a10f079f500c953b61d77263f3b6c68ca}{find} (const Key \&k) const
+\item 
+bool \hyperlink{class_designar_1_1_hash_set_a860a955a91a4844cf691b0a47f84a565}{remove} (const Key \&k)
+\item 
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set_a4fd373db1c3035e5833b59fb6cb1656b}{begin} ()
+\item 
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set_a5b52ed8084a3a6e9c97dd90f690cf520}{begin} () const
+\item 
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set_ab3be22892d61b954068510bbdd6f6df8}{end} ()
+\item 
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set_ae136c18f4602ec2053a4c73b8c5c5946}{end} () const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a23c3da93ad9449838ab2c78526cd9dbd}{D\+F\+T\+\_\+\+S\+I\+ZE} = 32
+\item 
+static constexpr \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set_a71c4eb3bdbf207310cb61832e0c44fdf}{D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA} = 0.\+25
+\item 
+static constexpr \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set_ab7e07181f29465aa1457e6abb9397be1}{D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA} = 0.\+75
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$\newline
+class Designar\+::\+Hash\+Set$<$ Key, Cmp $>$}
+
+
+
+Definition at line 73 of file hash.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ad0ab040392888a3320d2d72d1ead9968}\label{class_designar_1_1_hash_set_ad0ab040392888a3320d2d72d1ead9968}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Cmp\+Type@{Cmp\+Type}}
+\index{Cmp\+Type@{Cmp\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Cmp\+Type}{CmpType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_ad0ab040392888a3320d2d72d1ead9968}{Cmp\+Type} =  Cmp}
+
+
+
+Definition at line 86 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_af75f5917c5f53891a4129bd77d5d2906}\label{class_designar_1_1_hash_set_af75f5917c5f53891a4129bd77d5d2906}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Data\+Type@{Data\+Type}}
+\index{Data\+Type@{Data\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Data\+Type}{DataType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_af75f5917c5f53891a4129bd77d5d2906}{Data\+Type} =  Key}
+
+
+
+Definition at line 83 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}\label{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Fct\+Ptr@{Hash\+Fct\+Ptr}}
+\index{Hash\+Fct\+Ptr@{Hash\+Fct\+Ptr}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Fct\+Ptr}{HashFctPtr}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} ($\ast$) (const Key \&)}
+
+
+
+Definition at line 87 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}\label{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Fct\+Type@{Hash\+Fct\+Type}}
+\index{Hash\+Fct\+Type@{Hash\+Fct\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Fct\+Type}{HashFctType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type} =  std\+::function$<$\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}(const Key \&)$>$}
+
+
+
+Definition at line 88 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_af1cb023a84bf6c6f17867f99bbc523c5}\label{class_designar_1_1_hash_set_af1cb023a84bf6c6f17867f99bbc523c5}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_af1cb023a84bf6c6f17867f99bbc523c5}{Item\+Type} =  Key}
+
+
+
+Definition at line 81 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a4e23320d0b13915ce84186132ad4197a}\label{class_designar_1_1_hash_set_a4e23320d0b13915ce84186132ad4197a}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_a4e23320d0b13915ce84186132ad4197a}{Key\+Type} =  Key}
+
+
+
+Definition at line 82 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a1bfcb16c2a94c0ab22e15f38b05ba8cc}\label{class_designar_1_1_hash_set_a1bfcb16c2a94c0ab22e15f38b05ba8cc}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_a1bfcb16c2a94c0ab22e15f38b05ba8cc}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definition at line 85 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a4edc6d161470bffb03dad2bbc916b6a0}\label{class_designar_1_1_hash_set_a4edc6d161470bffb03dad2bbc916b6a0}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+using \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set_a4edc6d161470bffb03dad2bbc916b6a0}{Value\+Type} =  Key}
+
+
+
+Definition at line 84 of file hash.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_hash_set_afb5e932ee4dcc9b1dec4d6eefd810c32}\label{class_designar_1_1_hash_set_afb5e932ee4dcc9b1dec4d6eefd810c32}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{size,  }\item[{Cmp \&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}}]{fct,  }\item[{\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t}}]{\+\_\+lower\+\_\+alpha,  }\item[{\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t}}]{\+\_\+upper\+\_\+alpha }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 128 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a6f60ca18ef5bcf8560b9827ca9678e58}\label{class_designar_1_1_hash_set_a6f60ca18ef5bcf8560b9827ca9678e58}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{size,  }\item[{Cmp \&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}}]{fct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 136 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_aa57bbddb93c59eda7551cf9cf6b9220e}\label{class_designar_1_1_hash_set_aa57bbddb93c59eda7551cf9cf6b9220e}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{size,  }\item[{Cmp \&\&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}}]{fct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 142 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ac9204afce59af28d1360c50f11b5694e}\label{class_designar_1_1_hash_set_ac9204afce59af28d1360c50f11b5694e}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{size,  }\item[{Cmp \&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr}}]{fct = {\ttfamily \&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 148 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a007cbe70f94c249ccebaf68006bbf0f4}\label{class_designar_1_1_hash_set_a007cbe70f94c249ccebaf68006bbf0f4}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{size,  }\item[{Cmp \&\&}]{\+\_\+cmp = {\ttfamily Cmp()},  }\item[{\hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr}}]{fct = {\ttfamily \&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 154 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a12dce6e775ae60019e189297040e2cbf}\label{class_designar_1_1_hash_set_a12dce6e775ae60019e189297040e2cbf}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{Cmp \&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}}]{fct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 160 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_aea364027e144f9a079ba56f1c0608c37}\label{class_designar_1_1_hash_set_aea364027e144f9a079ba56f1c0608c37}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{Cmp \&\&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}}]{fct }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 166 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a936fde31abdaab2deac50bfbe4d361a0}\label{class_designar_1_1_hash_set_a936fde31abdaab2deac50bfbe4d361a0}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{Cmp \&}]{\+\_\+cmp,  }\item[{\hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr}}]{fct = {\ttfamily \&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 172 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a200e719b4d0ff01123b3d72bfb510819}\label{class_designar_1_1_hash_set_a200e719b4d0ff01123b3d72bfb510819}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{Cmp \&\&}]{\+\_\+cmp = {\ttfamily Cmp()},  }\item[{\hyperlink{class_designar_1_1_hash_set_a7a8b0a4970519ebc9ccc1ad247d0639f}{Hash\+Fct\+Ptr}}]{fct = {\ttfamily \&\hyperlink{namespace_designar_afd5712d16b3ae1c1c7d59f1004cd96fd}{super\+\_\+fast\+\_\+hash}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 178 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a32f0efeb864585422599f7b3e15f7664}\label{class_designar_1_1_hash_set_a32f0efeb864585422599f7b3e15f7664}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_hash_set}{Hash\+Set}$<$ Key, Cmp $>$ \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 184 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a3d0ba0a6da1f06d6637b525ff41fabfa}\label{class_designar_1_1_hash_set_a3d0ba0a6da1f06d6637b525ff41fabfa}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_hash_set}{Hash\+Set}$<$ Key, Cmp $>$ \&\&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 191 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ad61f40cd2eee2b00ae3285cab3a91087}\label{class_designar_1_1_hash_set_ad61f40cd2eee2b00ae3285cab3a91087}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!Hash\+Set@{Hash\+Set}}
+\index{Hash\+Set@{Hash\+Set}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{Hash\+Set()}{HashSet()}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_hash_set}{Hash\+Set} (\begin{DoxyParamCaption}\item[{const std\+::initializer\+\_\+list$<$ Key $>$ \&}]{l }\end{DoxyParamCaption})}
+
+
+
+Definition at line 663 of file hash.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a83376ba0b923d00ffbe1d12c093bc2ae}\label{class_designar_1_1_hash_set_a83376ba0b923d00ffbe1d12c093bc2ae}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!alpha@{alpha}}
+\index{alpha@{alpha}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{alpha()}{alpha()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::alpha (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 271 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a6ce31d6797f5f864b9a6906b6a1b9eb6}\label{class_designar_1_1_hash_set_a6ce31d6797f5f864b9a6906b6a1b9eb6}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!append@{append}}
+\index{append@{append}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 345 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a12748f202f35b968b2aace2ebe202f17}\label{class_designar_1_1_hash_set_a12748f202f35b968b2aace2ebe202f17}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!append@{append}}
+\index{append@{append}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 351 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a4fd373db1c3035e5833b59fb6cb1656b}\label{class_designar_1_1_hash_set_a4fd373db1c3035e5833b59fb6cb1656b}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 623 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a5b52ed8084a3a6e9c97dd90f690cf520}\label{class_designar_1_1_hash_set_a5b52ed8084a3a6e9c97dd90f690cf520}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 628 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a9f2acc5d38a16b2bfe8586ecea9d2df7}\label{class_designar_1_1_hash_set_a9f2acc5d38a16b2bfe8586ecea9d2df7}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!clear@{clear}}
+\index{clear@{clear}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+void \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 296 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ab3be22892d61b954068510bbdd6f6df8}\label{class_designar_1_1_hash_set_ab3be22892d61b954068510bbdd6f6df8}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!end@{end}}
+\index{end@{end}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 633 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ae136c18f4602ec2053a4c73b8c5c5946}\label{class_designar_1_1_hash_set_ae136c18f4602ec2053a4c73b8c5c5946}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!end@{end}}
+\index{end@{end}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 638 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a96df362356788b6f3f1261a526a1fd82}\label{class_designar_1_1_hash_set_a96df362356788b6f3f1261a526a1fd82}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!find@{find}}
+\index{find@{find}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 432 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a10f079f500c953b61d77263f3b6c68ca}\label{class_designar_1_1_hash_set_a10f079f500c953b61d77263f3b6c68ca}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!find@{find}}
+\index{find@{find}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+const Key\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 442 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ad799ffaf641176e823513b63be44cfe2}\label{class_designar_1_1_hash_set_ad799ffaf641176e823513b63be44cfe2}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!get\+\_\+cmp@{get\+\_\+cmp}}
+\index{get\+\_\+cmp@{get\+\_\+cmp}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+cmp()}{get\_cmp()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Cmp\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::get\+\_\+cmp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 230 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a7be703ea6ba171fc58ea5b5ffd8ffa6d}\label{class_designar_1_1_hash_set_a7be703ea6ba171fc58ea5b5ffd8ffa6d}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!get\+\_\+cmp@{get\+\_\+cmp}}
+\index{get\+\_\+cmp@{get\+\_\+cmp}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+cmp()}{get\_cmp()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+const Cmp\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::get\+\_\+cmp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 235 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a4cc71f53416e8cde16b1f4a76d81c9ca}\label{class_designar_1_1_hash_set_a4cc71f53416e8cde16b1f4a76d81c9ca}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!get\+\_\+hash\+\_\+fct@{get\+\_\+hash\+\_\+fct}}
+\index{get\+\_\+hash\+\_\+fct@{get\+\_\+hash\+\_\+fct}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+hash\+\_\+fct()}{get\_hash\_fct()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+const \hyperlink{class_designar_1_1_hash_set_a05d8d111665c25bc17290c01fa299398}{Hash\+Fct\+Type}\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::get\+\_\+hash\+\_\+fct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 240 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a5bb190c4e06ee28394adb03d51cc9607}\label{class_designar_1_1_hash_set_a5bb190c4e06ee28394adb03d51cc9607}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!get\+\_\+lower\+\_\+alpha@{get\+\_\+lower\+\_\+alpha}}
+\index{get\+\_\+lower\+\_\+alpha@{get\+\_\+lower\+\_\+alpha}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+lower\+\_\+alpha()}{get\_lower\_alpha()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::get\+\_\+lower\+\_\+alpha (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 245 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a6719373d3cf21f31d53de969bd81799f}\label{class_designar_1_1_hash_set_a6719373d3cf21f31d53de969bd81799f}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!get\+\_\+upper\+\_\+alpha@{get\+\_\+upper\+\_\+alpha}}
+\index{get\+\_\+upper\+\_\+alpha@{get\+\_\+upper\+\_\+alpha}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{get\+\_\+upper\+\_\+alpha()}{get\_upper\_alpha()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::get\+\_\+upper\+\_\+alpha (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 250 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_af4014286f5665c9e1c149bd2f4225535}\label{class_designar_1_1_hash_set_af4014286f5665c9e1c149bd2f4225535}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{const Key \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 303 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ac18e38933ad6611da769ad878062cfb4}\label{class_designar_1_1_hash_set_ac18e38933ad6611da769ad878062cfb4}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 324 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a2da1b699af1bf81e0965a35c4c4b3e35}\label{class_designar_1_1_hash_set_a2da1b699af1bf81e0965a35c4c4b3e35}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+bool \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 276 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ab77d2d3a6ce83395b35b9cdbbcf18c2b}\label{class_designar_1_1_hash_set_ab77d2d3a6ce83395b35b9cdbbcf18c2b}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!M@{M}}
+\index{M@{M}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{M()}{M()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::M (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 291 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a37cc23bf083078151f6f55b479c213ae}\label{class_designar_1_1_hash_set_a37cc23bf083078151f6f55b479c213ae}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!N@{N}}
+\index{N@{N}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{N()}{N()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::N (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 286 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_aed1240e62fdb7745bc9d7a123aa6da6a}\label{class_designar_1_1_hash_set_aed1240e62fdb7745bc9d7a123aa6da6a}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Hash\+Set}\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_hash_set}{Hash\+Set}$<$ Key, Cmp $>$ \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 199 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_af6cb975d4932a49ffde5bdc8dd303f8b}\label{class_designar_1_1_hash_set_af6cb975d4932a49ffde5bdc8dd303f8b}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{class_designar_1_1_hash_set}{Hash\+Set}\& \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_hash_set}{Hash\+Set}$<$ Key, Cmp $>$ \&\&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 214 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a860a955a91a4844cf691b0a47f84a565}\label{class_designar_1_1_hash_set_a860a955a91a4844cf691b0a47f84a565}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!remove@{remove}}
+\index{remove@{remove}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+bool \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::remove (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 452 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a40fccab92f794f86e2d2fe602f8ffb1f}\label{class_designar_1_1_hash_set_a40fccab92f794f86e2d2fe602f8ffb1f}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!reset\+\_\+alpha\+\_\+values@{reset\+\_\+alpha\+\_\+values}}
+\index{reset\+\_\+alpha\+\_\+values@{reset\+\_\+alpha\+\_\+values}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{reset\+\_\+alpha\+\_\+values()}{reset\_alpha\_values()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+void \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::reset\+\_\+alpha\+\_\+values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 265 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a4c374f62530fe151b47e42ed05ddc7fb}\label{class_designar_1_1_hash_set_a4c374f62530fe151b47e42ed05ddc7fb}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!search@{search}}
+\index{search@{search}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 356 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a6cd71f72b1676aa364e4aab6687b115b}\label{class_designar_1_1_hash_set_a6cd71f72b1676aa364e4aab6687b115b}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!search@{search}}
+\index{search@{search}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+const Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 368 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_abb9cb610eed9832735c6f0bcafbb1dea}\label{class_designar_1_1_hash_set_abb9cb610eed9832735c6f0bcafbb1dea}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{const Key \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 380 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a9ecd2f2a1e299cc35e90c66c8357beff}\label{class_designar_1_1_hash_set_a9ecd2f2a1e299cc35e90c66c8357beff}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 406 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a263b1c2f045910e13f49fb4a295fbd27}\label{class_designar_1_1_hash_set_a263b1c2f045910e13f49fb4a295fbd27}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!set\+\_\+lower\+\_\+alpha@{set\+\_\+lower\+\_\+alpha}}
+\index{set\+\_\+lower\+\_\+alpha@{set\+\_\+lower\+\_\+alpha}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{set\+\_\+lower\+\_\+alpha()}{set\_lower\_alpha()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+void \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::set\+\_\+lower\+\_\+alpha (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 255 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a7d15d7b087df1da351a6820396ca3456}\label{class_designar_1_1_hash_set_a7d15d7b087df1da351a6820396ca3456}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!set\+\_\+upper\+\_\+alpha@{set\+\_\+upper\+\_\+alpha}}
+\index{set\+\_\+upper\+\_\+alpha@{set\+\_\+upper\+\_\+alpha}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{set\+\_\+upper\+\_\+alpha()}{set\_upper\_alpha()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+void \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::set\+\_\+upper\+\_\+alpha (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 260 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}\label{class_designar_1_1_hash_set_a0026e1b2caf94d25b554cd6a399f691f}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!size@{size}}
+\index{size@{size}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 281 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a450af50eb87072d4017822fa952639c6}\label{class_designar_1_1_hash_set_a450af50eb87072d4017822fa952639c6}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+void \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_hash_set}{Hash\+Set}$<$ Key, Cmp $>$ \&}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 220 of file hash.\+H.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a71c4eb3bdbf207310cb61832e0c44fdf}\label{class_designar_1_1_hash_set_a71c4eb3bdbf207310cb61832e0c44fdf}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA@{D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA}}
+\index{D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA@{D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA}{DFT\_LOWER\_ALPHA}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+constexpr \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::D\+F\+T\+\_\+\+L\+O\+W\+E\+R\+\_\+\+A\+L\+P\+HA = 0.\+25\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 91 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_a23c3da93ad9449838ab2c78526cd9dbd}\label{class_designar_1_1_hash_set_a23c3da93ad9449838ab2c78526cd9dbd}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!D\+F\+T\+\_\+\+S\+I\+ZE@{D\+F\+T\+\_\+\+S\+I\+ZE}}
+\index{D\+F\+T\+\_\+\+S\+I\+ZE@{D\+F\+T\+\_\+\+S\+I\+ZE}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{D\+F\+T\+\_\+\+S\+I\+ZE}{DFT\_SIZE}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+constexpr \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::D\+F\+T\+\_\+\+S\+I\+ZE = 32\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 90 of file hash.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_hash_set_ab7e07181f29465aa1457e6abb9397be1}\label{class_designar_1_1_hash_set_ab7e07181f29465aa1457e6abb9397be1}} 
+\index{Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}!D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA@{D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA}}
+\index{D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA@{D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA}!Designar\+::\+Hash\+Set@{Designar\+::\+Hash\+Set}}
+\subsubsection{\texorpdfstring{D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA}{DFT\_UPPER\_ALPHA}}
+{\footnotesize\ttfamily template$<$typename Key, class Cmp = std\+::equal\+\_\+to$<$\+Key$>$$>$ \\
+constexpr \hyperlink{namespace_designar_aca2c32af26808dbec1f3a3071fad25ce}{real\+\_\+t} \hyperlink{class_designar_1_1_hash_set}{Designar\+::\+Hash\+Set}$<$ Key, Cmp $>$\+::D\+F\+T\+\_\+\+U\+P\+P\+E\+R\+\_\+\+A\+L\+P\+HA = 0.\+75\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 92 of file hash.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{hash_8_h}{hash.\+H}\end{DoxyCompactItemize}

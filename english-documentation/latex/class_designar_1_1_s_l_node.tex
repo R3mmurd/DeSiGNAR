@@ -1,0 +1,191 @@
+\hypertarget{class_designar_1_1_s_l_node}{}\section{Designar\+:\+:S\+L\+Node$<$ T $>$ Class Template Reference}
+\label{class_designar_1_1_s_l_node}\index{Designar\+::\+S\+L\+Node$<$ T $>$@{Designar\+::\+S\+L\+Node$<$ T $>$}}
+
+
+{\ttfamily \#include $<$nodesdef.\+H$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_s_l_node_ae069c6940aaa2a34a513852f1c3bf3d3}{S\+L\+Node} ()
+\item 
+\hyperlink{class_designar_1_1_s_l_node_af9decf3a4e3809e98d0e9652295c9c1a}{S\+L\+Node} (const T \&i)
+\item 
+\hyperlink{class_designar_1_1_s_l_node_ab854d173d39d41bacee31e9c8f0862bf}{S\+L\+Node} (T \&\&i)
+\item 
+\hyperlink{class_designar_1_1_s_l_node_a29b970c1369f20fe8c783b66fb8490c1}{S\+L\+Node} (const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} \&)=delete
+\item 
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} \& \hyperlink{class_designar_1_1_s_l_node_a0f721b1dd909cf847079ad14ca010bd0}{operator=} (const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} \&)=delete
+\item 
+bool \hyperlink{class_designar_1_1_s_l_node_a80728e8c780ed3854fa1b9fb84c201cc}{is\+\_\+empty} () const
+\item 
+void \hyperlink{class_designar_1_1_s_l_node_ad837fcbb2d5d1fb1c7aa51392f6fdaae}{reset} ()
+\item 
+T \& \hyperlink{class_designar_1_1_s_l_node_a8b1b374efe3c861930b24515fb15d243}{get\+\_\+item} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_s_l_node_a3bda4e61a77ff2df2096850759605257}{get\+\_\+item} () const
+\item 
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} $\ast$\& \hyperlink{class_designar_1_1_s_l_node_ab1b0be79e766dddc4a09d9ef9f2c5763}{get\+\_\+next} ()
+\item 
+const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} $\ast$\& \hyperlink{class_designar_1_1_s_l_node_af5e1695860968505290e42d16381508f}{get\+\_\+next} () const
+\item 
+void \hyperlink{class_designar_1_1_s_l_node_aa1c82417ecc20fca0808c955bca384f7}{insert\+\_\+next} (\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} $\ast$p)
+\item 
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} $\ast$ \hyperlink{class_designar_1_1_s_l_node_aa12ebd41228f87e9df06d5e74b7111e6}{remove\+\_\+next} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Designar\+::\+S\+L\+Node$<$ T $>$}
+
+
+
+Definition at line 35 of file nodesdef.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_ae069c6940aaa2a34a513852f1c3bf3d3}\label{class_designar_1_1_s_l_node_ae069c6940aaa2a34a513852f1c3bf3d3}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!S\+L\+Node@{S\+L\+Node}}
+\index{S\+L\+Node@{S\+L\+Node}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{S\+L\+Node()}{SLNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 41 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_af9decf3a4e3809e98d0e9652295c9c1a}\label{class_designar_1_1_s_l_node_af9decf3a4e3809e98d0e9652295c9c1a}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!S\+L\+Node@{S\+L\+Node}}
+\index{S\+L\+Node@{S\+L\+Node}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{S\+L\+Node()}{SLNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} (\begin{DoxyParamCaption}\item[{const T \&}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 47 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_ab854d173d39d41bacee31e9c8f0862bf}\label{class_designar_1_1_s_l_node_ab854d173d39d41bacee31e9c8f0862bf}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!S\+L\+Node@{S\+L\+Node}}
+\index{S\+L\+Node@{S\+L\+Node}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{S\+L\+Node()}{SLNode()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} (\begin{DoxyParamCaption}\item[{T \&\&}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 53 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_a29b970c1369f20fe8c783b66fb8490c1}\label{class_designar_1_1_s_l_node_a29b970c1369f20fe8c783b66fb8490c1}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!S\+L\+Node@{S\+L\+Node}}
+\index{S\+L\+Node@{S\+L\+Node}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{S\+L\+Node()}{SLNode()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$<$ T $>$ \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_a8b1b374efe3c861930b24515fb15d243}\label{class_designar_1_1_s_l_node_a8b1b374efe3c861930b24515fb15d243}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!get\+\_\+item@{get\+\_\+item}}
+\index{get\+\_\+item@{get\+\_\+item}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{get\+\_\+item()}{get\_item()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T\& \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::get\+\_\+item (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 73 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_a3bda4e61a77ff2df2096850759605257}\label{class_designar_1_1_s_l_node_a3bda4e61a77ff2df2096850759605257}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!get\+\_\+item@{get\+\_\+item}}
+\index{get\+\_\+item@{get\+\_\+item}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{get\+\_\+item()}{get\_item()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T\& \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::get\+\_\+item (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 78 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_ab1b0be79e766dddc4a09d9ef9f2c5763}\label{class_designar_1_1_s_l_node_ab1b0be79e766dddc4a09d9ef9f2c5763}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!get\+\_\+next@{get\+\_\+next}}
+\index{get\+\_\+next@{get\+\_\+next}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{get\+\_\+next()}{get\_next()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$\ast$\& \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::get\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 83 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_af5e1695860968505290e42d16381508f}\label{class_designar_1_1_s_l_node_af5e1695860968505290e42d16381508f}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!get\+\_\+next@{get\+\_\+next}}
+\index{get\+\_\+next@{get\+\_\+next}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{get\+\_\+next()}{get\_next()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$\ast$\& \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::get\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 88 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_aa1c82417ecc20fca0808c955bca384f7}\label{class_designar_1_1_s_l_node_aa1c82417ecc20fca0808c955bca384f7}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!insert\+\_\+next@{insert\+\_\+next}}
+\index{insert\+\_\+next@{insert\+\_\+next}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{insert\+\_\+next()}{insert\_next()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::insert\+\_\+next (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$<$ T $>$ $\ast$}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 93 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_a80728e8c780ed3854fa1b9fb84c201cc}\label{class_designar_1_1_s_l_node_a80728e8c780ed3854fa1b9fb84c201cc}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 63 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_a0f721b1dd909cf847079ad14ca010bd0}\label{class_designar_1_1_s_l_node_a0f721b1dd909cf847079ad14ca010bd0}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}\& \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$<$ T $>$ \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_aa12ebd41228f87e9df06d5e74b7111e6}\label{class_designar_1_1_s_l_node_aa12ebd41228f87e9df06d5e74b7111e6}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!remove\+\_\+next@{remove\+\_\+next}}
+\index{remove\+\_\+next@{remove\+\_\+next}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{remove\+\_\+next()}{remove\_next()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\hyperlink{class_designar_1_1_s_l_node}{S\+L\+Node}$\ast$ \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::remove\+\_\+next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 101 of file nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_node_ad837fcbb2d5d1fb1c7aa51392f6fdaae}\label{class_designar_1_1_s_l_node_ad837fcbb2d5d1fb1c7aa51392f6fdaae}} 
+\index{Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}!reset@{reset}}
+\index{reset@{reset}!Designar\+::\+S\+L\+Node@{Designar\+::\+S\+L\+Node}}
+\subsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{class_designar_1_1_s_l_node}{Designar\+::\+S\+L\+Node}$<$ T $>$\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 68 of file nodesdef.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{nodesdef_8_h}{nodesdef.\+H}\end{DoxyCompactItemize}

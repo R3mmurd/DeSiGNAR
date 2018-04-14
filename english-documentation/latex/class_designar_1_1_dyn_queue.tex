@@ -1,0 +1,302 @@
+\hypertarget{class_designar_1_1_dyn_queue}{}\section{Designar\+:\+:Dyn\+Queue$<$ T $>$ Class Template Reference}
+\label{class_designar_1_1_dyn_queue}\index{Designar\+::\+Dyn\+Queue$<$ T $>$@{Designar\+::\+Dyn\+Queue$<$ T $>$}}
+
+
+{\ttfamily \#include $<$queue.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:Dyn\+Queue$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_designar_1_1_dyn_queue}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_dyn_queue_a45a4b5b9dd6a921dbc6919802d34dd9e}{Item\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_queue_a0591681d66d914b3fb11f71d36759984}{Key\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_queue_a79504f1ab8156a3eaee8c9c0aaaf1b8a}{Data\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_queue_a6528f67f5ad9ecbe0f8a21b88f3cb832}{Value\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_queue_a376b5cd2f4a47d734fc1e73955197358}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_dyn_queue_a947ebdf2503509cdacd5e34a6de29197}{Dyn\+Queue} ()
+\item 
+\hyperlink{class_designar_1_1_dyn_queue_a612ed3480c13f60be2f9706601f846b1}{Dyn\+Queue} (const \hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \&q)
+\item 
+\hyperlink{class_designar_1_1_dyn_queue_ad5d501cf675b1d5b2c0e0b6799cf77ec}{Dyn\+Queue} (\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \&\&q)
+\item 
+\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \& \hyperlink{class_designar_1_1_dyn_queue_a8936e37e8c235dea1201934067440eb7}{operator=} (const \hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \&q)
+\item 
+\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \& \hyperlink{class_designar_1_1_dyn_queue_ad5d4745d5e0c3640a413897f8d72ed25}{operator=} (\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} \&\&q)
+\item 
+bool \hyperlink{class_designar_1_1_dyn_queue_ae0c3b0a4a0c5028a12d8a564182d2b3e}{is\+\_\+empty} () const
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_dyn_queue_a3fa0e8fd7d197de1a60caae23b5c305e}{size} () const
+\item 
+void \hyperlink{class_designar_1_1_dyn_queue_adc396896fa4b333de8ae60ed8b8da2ea}{clear} ()
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_queue_a910f0dc9d3bf1c1b2363730db842980d}{front} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_dyn_queue_ae8e017797ad0ccd8a0568f69f8adedbf}{front} () const
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_queue_a735f5a7d869689994d81d593b1924c68}{rear} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_dyn_queue_a378a92d95bb351f2cc1b8fb80f6c9525}{rear} () const
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_queue_a4564ed0e64b06d4a96ff020ba3456706}{put} (const T \&item)
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_queue_a53c4e234aacf16fdb7e99625edadad61}{put} (T \&\&item)
+\item 
+T \hyperlink{class_designar_1_1_dyn_queue_a70b3f577ec11287fe63766de53a2cb56}{get} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Designar\+::\+Dyn\+Queue$<$ T $>$}
+
+
+
+Definition at line 205 of file queue.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a79504f1ab8156a3eaee8c9c0aaaf1b8a}\label{class_designar_1_1_dyn_queue_a79504f1ab8156a3eaee8c9c0aaaf1b8a}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Data\+Type@{Data\+Type}}
+\index{Data\+Type@{Data\+Type}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Data\+Type}{DataType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}{Data\+Type} =  T}
+
+
+
+Definition at line 252 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a45a4b5b9dd6a921dbc6919802d34dd9e}\label{class_designar_1_1_dyn_queue_a45a4b5b9dd6a921dbc6919802d34dd9e}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}{Item\+Type} =  T}
+
+
+
+Definition at line 250 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a0591681d66d914b3fb11f71d36759984}\label{class_designar_1_1_dyn_queue_a0591681d66d914b3fb11f71d36759984}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}{Key\+Type} =  T}
+
+
+
+Definition at line 251 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a376b5cd2f4a47d734fc1e73955197358}\label{class_designar_1_1_dyn_queue_a376b5cd2f4a47d734fc1e73955197358}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definition at line 254 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a6528f67f5ad9ecbe0f8a21b88f3cb832}\label{class_designar_1_1_dyn_queue_a6528f67f5ad9ecbe0f8a21b88f3cb832}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}{Value\+Type} =  T}
+
+
+
+Definition at line 253 of file queue.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a947ebdf2503509cdacd5e34a6de29197}\label{class_designar_1_1_dyn_queue_a947ebdf2503509cdacd5e34a6de29197}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Dyn\+Queue@{Dyn\+Queue}}
+\index{Dyn\+Queue@{Dyn\+Queue}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Dyn\+Queue()}{DynQueue()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 256 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a612ed3480c13f60be2f9706601f846b1}\label{class_designar_1_1_dyn_queue_a612ed3480c13f60be2f9706601f846b1}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Dyn\+Queue@{Dyn\+Queue}}
+\index{Dyn\+Queue@{Dyn\+Queue}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Dyn\+Queue()}{DynQueue()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}$<$ T $>$ \&}]{q }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 262 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_ad5d501cf675b1d5b2c0e0b6799cf77ec}\label{class_designar_1_1_dyn_queue_ad5d501cf675b1d5b2c0e0b6799cf77ec}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!Dyn\+Queue@{Dyn\+Queue}}
+\index{Dyn\+Queue@{Dyn\+Queue}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{Dyn\+Queue()}{DynQueue()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}$<$ T $>$ \&\&}]{q }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 268 of file queue.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_adc396896fa4b333de8ae60ed8b8da2ea}\label{class_designar_1_1_dyn_queue_adc396896fa4b333de8ae60ed8b8da2ea}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!clear@{clear}}
+\index{clear@{clear}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 303 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a910f0dc9d3bf1c1b2363730db842980d}\label{class_designar_1_1_dyn_queue_a910f0dc9d3bf1c1b2363730db842980d}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!front@{front}}
+\index{front@{front}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{front()}{front()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::front (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 317 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_ae8e017797ad0ccd8a0568f69f8adedbf}\label{class_designar_1_1_dyn_queue_ae8e017797ad0ccd8a0568f69f8adedbf}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!front@{front}}
+\index{front@{front}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{front()}{front()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::front (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 325 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a70b3f577ec11287fe63766de53a2cb56}\label{class_designar_1_1_dyn_queue_a70b3f577ec11287fe63766de53a2cb56}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!get@{get}}
+\index{get@{get}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 367 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_ae0c3b0a4a0c5028a12d8a564182d2b3e}\label{class_designar_1_1_dyn_queue_ae0c3b0a4a0c5028a12d8a564182d2b3e}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 293 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a8936e37e8c235dea1201934067440eb7}\label{class_designar_1_1_dyn_queue_a8936e37e8c235dea1201934067440eb7}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}$<$ T $>$ \&}]{q }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 274 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_ad5d4745d5e0c3640a413897f8d72ed25}\label{class_designar_1_1_dyn_queue_ad5d4745d5e0c3640a413897f8d72ed25}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_queue}{Dyn\+Queue}$<$ T $>$ \&\&}]{q }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 287 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a4564ed0e64b06d4a96ff020ba3456706}\label{class_designar_1_1_dyn_queue_a4564ed0e64b06d4a96ff020ba3456706}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!put@{put}}
+\index{put@{put}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{put()}{put()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::put (\begin{DoxyParamCaption}\item[{const T \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 349 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a53c4e234aacf16fdb7e99625edadad61}\label{class_designar_1_1_dyn_queue_a53c4e234aacf16fdb7e99625edadad61}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!put@{put}}
+\index{put@{put}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{put()}{put()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::put (\begin{DoxyParamCaption}\item[{T \&\&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 358 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a735f5a7d869689994d81d593b1924c68}\label{class_designar_1_1_dyn_queue_a735f5a7d869689994d81d593b1924c68}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!rear@{rear}}
+\index{rear@{rear}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{rear()}{rear()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::rear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 333 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a378a92d95bb351f2cc1b8fb80f6c9525}\label{class_designar_1_1_dyn_queue_a378a92d95bb351f2cc1b8fb80f6c9525}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!rear@{rear}}
+\index{rear@{rear}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{rear()}{rear()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::rear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 341 of file queue.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_queue_a3fa0e8fd7d197de1a60caae23b5c305e}\label{class_designar_1_1_dyn_queue_a3fa0e8fd7d197de1a60caae23b5c305e}} 
+\index{Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}!size@{size}}
+\index{size@{size}!Designar\+::\+Dyn\+Queue@{Designar\+::\+Dyn\+Queue}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_dyn_queue}{Designar\+::\+Dyn\+Queue}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 298 of file queue.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{queue_8_h}{queue.\+H}\end{DoxyCompactItemize}

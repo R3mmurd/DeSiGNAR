@@ -1,0 +1,468 @@
+\hypertarget{class_designar_1_1_gen_map}{}\section{Designar\+:\+:Gen\+Map$<$ Set, Key, Value, Cmp $>$ Class Template Reference}
+\label{class_designar_1_1_gen_map}\index{Designar\+::\+Gen\+Map$<$ Set, Key, Value, Cmp $>$@{Designar\+::\+Gen\+Map$<$ Set, Key, Value, Cmp $>$}}
+
+
+{\ttfamily \#include $<$map.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:Gen\+Map$<$ Set, Key, Value, Cmp $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_designar_1_1_gen_map}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_gen_map_aeb697a86f4ad13eadc36bf5cc967f26f}{Key\+Type} = Key
+\item 
+using \hyperlink{class_designar_1_1_gen_map_a525bf32010df09e293fa7a0db5a2a8ef}{Value\+Type} = Value
+\item 
+using \hyperlink{class_designar_1_1_gen_map_ad7fadcebeec688bb447f63c4bfabc61c}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\item 
+using \hyperlink{class_designar_1_1_gen_map_ac80521be38e4e808bcbeb7041da7d813}{Cmp\+Type} = Cmp
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Cmp \& \hyperlink{class_designar_1_1_gen_map_a33a00f9275b3ff7788bbd93c39c25c9f}{get\+\_\+cmp} ()
+\item 
+const Cmp \& \hyperlink{class_designar_1_1_gen_map_a81de02316324ed11c8a668fe2d35d2d3}{get\+\_\+cmp} () const
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_aaecc59b3f9c206d0d962bd1cd6bfc4d6}{insert} (const Key \&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_aabd1f531f63985a2eabbeea49d90156e}{insert} (Key \&\&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a8fc2565be30a92687eea7f752b289751}{insert} (const Key \&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a514311c4192292ff816931e0c42f929f}{insert} (Key \&\&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_ad5e2c8b57f6264ab98eec3a93e85b1a1}{append} (const Key \&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_aeee7a9267c7c54044e7dca399658d9a7}{append} (Key \&\&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a2c148d9d32bc86315444f1026d9ef482}{append} (const Key \&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a3bb1fd57e4ff94c0e585b41a359d0c52}{append} (Key \&\&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a6a0eb4fe87d7bcc739f6394d5fd8952e}{search} (const Key \&k)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a1c3b2c788cc8c1a7b59e5afb66fffca4}{search} (Key \&\&k)
+\item 
+const Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a39037bc9d24b92fdcc7a6289db00e59b}{search} (const Key \&k) const
+\item 
+const Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a00517c31638c479dca955b9204a2275e}{search} (Key \&\&k) const
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a204d7e2d2d8d97cec886e60f4d4d22ec}{search\+\_\+or\+\_\+insert} (const Key \&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a12c2b26187291c9553ff36e8c00bce4b}{search\+\_\+or\+\_\+insert} (Key \&\&k, const Value \&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a17eac83eb57f8181aaaeeda18d155f31}{search\+\_\+or\+\_\+insert} (const Key \&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a3244d12da4c9186ea2c1eef6ad0cbdc9}{search\+\_\+or\+\_\+insert} (Key \&\&k, Value \&\&v)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_a4ccec29a17c547692c25f3185187d7bd}{search\+\_\+or\+\_\+insert} (const Key \&k)
+\item 
+Value $\ast$ \hyperlink{class_designar_1_1_gen_map_ae2ab69b26f782abcd99f99944253d8de}{search\+\_\+or\+\_\+insert} (Key \&\&k)
+\item 
+Value \& \hyperlink{class_designar_1_1_gen_map_ad768d9e00839f4d328a1394ffc806d83}{find} (const Key \&k)
+\item 
+const Value \& \hyperlink{class_designar_1_1_gen_map_a0df2bf3aab592ee2343bc2855839bc96}{find} (const Key \&k) const
+\item 
+Value \& \hyperlink{class_designar_1_1_gen_map_ae02aaa8835abada7b361da281c6125bf}{find} (Key \&\&k)
+\item 
+const Value \& \hyperlink{class_designar_1_1_gen_map_a746797ad728a5e2aeefee11a8732a48f}{find} (Key \&\&k) const
+\item 
+bool \hyperlink{class_designar_1_1_gen_map_a9d4608ebd3b589a6989d838979a7b2e7}{remove} (const Key \&k)
+\item 
+Value \& \hyperlink{class_designar_1_1_gen_map_a994a7afc52e7421661f2eed7c03e6ae7}{operator\mbox{[}$\,$\mbox{]}} (const Key \&k)
+\item 
+const Value \& \hyperlink{class_designar_1_1_gen_map_abff00b60a0488eb655696942069eacbc}{operator\mbox{[}$\,$\mbox{]}} (const Key \&k) const
+\item 
+Value \& \hyperlink{class_designar_1_1_gen_map_a5e5732a2812ff86e6c5e68f26012cc9c}{operator\mbox{[}$\,$\mbox{]}} (Key \&\&k)
+\item 
+const Value \& \hyperlink{class_designar_1_1_gen_map_ac28a9a47f9d373466fe64c6a16105e74}{operator\mbox{[}$\,$\mbox{]}} (Key \&\&k) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$\newline
+class Designar\+::\+Gen\+Map$<$ Set, Key, Value, Cmp $>$}
+
+
+
+Definition at line 166 of file map.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ac80521be38e4e808bcbeb7041da7d813}\label{class_designar_1_1_gen_map_ac80521be38e4e808bcbeb7041da7d813}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!Cmp\+Type@{Cmp\+Type}}
+\index{Cmp\+Type@{Cmp\+Type}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{Cmp\+Type}{CmpType}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+using \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::\hyperlink{class_designar_1_1_gen_map_ac80521be38e4e808bcbeb7041da7d813}{Cmp\+Type} =  Cmp}
+
+
+
+Definition at line 177 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_aeb697a86f4ad13eadc36bf5cc967f26f}\label{class_designar_1_1_gen_map_aeb697a86f4ad13eadc36bf5cc967f26f}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+using \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::\hyperlink{class_designar_1_1_gen_map_aeb697a86f4ad13eadc36bf5cc967f26f}{Key\+Type} =  Key}
+
+
+
+Definition at line 174 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ad7fadcebeec688bb447f63c4bfabc61c}\label{class_designar_1_1_gen_map_ad7fadcebeec688bb447f63c4bfabc61c}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+using \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::\hyperlink{class_designar_1_1_gen_map_ad7fadcebeec688bb447f63c4bfabc61c}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definition at line 176 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a525bf32010df09e293fa7a0db5a2a8ef}\label{class_designar_1_1_gen_map_a525bf32010df09e293fa7a0db5a2a8ef}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+using \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::\hyperlink{class_designar_1_1_gen_map_a525bf32010df09e293fa7a0db5a2a8ef}{Value\+Type} =  Value}
+
+
+
+Definition at line 175 of file map.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ad5e2c8b57f6264ab98eec3a93e85b1a1}\label{class_designar_1_1_gen_map_ad5e2c8b57f6264ab98eec3a93e85b1a1}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!append@{append}}
+\index{append@{append}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 237 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_aeee7a9267c7c54044e7dca399658d9a7}\label{class_designar_1_1_gen_map_aeee7a9267c7c54044e7dca399658d9a7}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!append@{append}}
+\index{append@{append}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 242 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a2c148d9d32bc86315444f1026d9ef482}\label{class_designar_1_1_gen_map_a2c148d9d32bc86315444f1026d9ef482}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!append@{append}}
+\index{append@{append}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 247 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a3bb1fd57e4ff94c0e585b41a359d0c52}\label{class_designar_1_1_gen_map_a3bb1fd57e4ff94c0e585b41a359d0c52}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!append@{append}}
+\index{append@{append}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{append()}{append()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::append (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 252 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ad768d9e00839f4d328a1394ffc806d83}\label{class_designar_1_1_gen_map_ad768d9e00839f4d328a1394ffc806d83}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!find@{find}}
+\index{find@{find}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 339 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a0df2bf3aab592ee2343bc2855839bc96}\label{class_designar_1_1_gen_map_a0df2bf3aab592ee2343bc2855839bc96}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!find@{find}}
+\index{find@{find}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 345 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ae02aaa8835abada7b361da281c6125bf}\label{class_designar_1_1_gen_map_ae02aaa8835abada7b361da281c6125bf}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!find@{find}}
+\index{find@{find}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 351 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a746797ad728a5e2aeefee11a8732a48f}\label{class_designar_1_1_gen_map_a746797ad728a5e2aeefee11a8732a48f}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!find@{find}}
+\index{find@{find}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::find (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 357 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a33a00f9275b3ff7788bbd93c39c25c9f}\label{class_designar_1_1_gen_map_a33a00f9275b3ff7788bbd93c39c25c9f}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!get\+\_\+cmp@{get\+\_\+cmp}}
+\index{get\+\_\+cmp@{get\+\_\+cmp}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{get\+\_\+cmp()}{get\_cmp()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Cmp\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::get\+\_\+cmp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 179 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a81de02316324ed11c8a668fe2d35d2d3}\label{class_designar_1_1_gen_map_a81de02316324ed11c8a668fe2d35d2d3}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!get\+\_\+cmp@{get\+\_\+cmp}}
+\index{get\+\_\+cmp@{get\+\_\+cmp}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{get\+\_\+cmp()}{get\_cmp()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Cmp\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::get\+\_\+cmp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 184 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_aaecc59b3f9c206d0d962bd1cd6bfc4d6}\label{class_designar_1_1_gen_map_aaecc59b3f9c206d0d962bd1cd6bfc4d6}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 189 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_aabd1f531f63985a2eabbeea49d90156e}\label{class_designar_1_1_gen_map_aabd1f531f63985a2eabbeea49d90156e}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 201 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a8fc2565be30a92687eea7f752b289751}\label{class_designar_1_1_gen_map_a8fc2565be30a92687eea7f752b289751}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 213 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a514311c4192292ff816931e0c42f929f}\label{class_designar_1_1_gen_map_a514311c4192292ff816931e0c42f929f}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 225 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a994a7afc52e7421661f2eed7c03e6ae7}\label{class_designar_1_1_gen_map_a994a7afc52e7421661f2eed7c03e6ae7}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 369 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_abff00b60a0488eb655696942069eacbc}\label{class_designar_1_1_gen_map_abff00b60a0488eb655696942069eacbc}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 374 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a5e5732a2812ff86e6c5e68f26012cc9c}\label{class_designar_1_1_gen_map_a5e5732a2812ff86e6c5e68f26012cc9c}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 379 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ac28a9a47f9d373466fe64c6a16105e74}\label{class_designar_1_1_gen_map_ac28a9a47f9d373466fe64c6a16105e74}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value\& \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 384 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a9d4608ebd3b589a6989d838979a7b2e7}\label{class_designar_1_1_gen_map_a9d4608ebd3b589a6989d838979a7b2e7}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!remove@{remove}}
+\index{remove@{remove}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+bool \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::remove (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 363 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a6a0eb4fe87d7bcc739f6394d5fd8952e}\label{class_designar_1_1_gen_map_a6a0eb4fe87d7bcc739f6394d5fd8952e}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search@{search}}
+\index{search@{search}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 257 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a1c3b2c788cc8c1a7b59e5afb66fffca4}\label{class_designar_1_1_gen_map_a1c3b2c788cc8c1a7b59e5afb66fffca4}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search@{search}}
+\index{search@{search}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 269 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a39037bc9d24b92fdcc7a6289db00e59b}\label{class_designar_1_1_gen_map_a39037bc9d24b92fdcc7a6289db00e59b}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search@{search}}
+\index{search@{search}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 281 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a00517c31638c479dca955b9204a2275e}\label{class_designar_1_1_gen_map_a00517c31638c479dca955b9204a2275e}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search@{search}}
+\index{search@{search}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search()}{search()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+const Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 293 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a204d7e2d2d8d97cec886e60f4d4d22ec}\label{class_designar_1_1_gen_map_a204d7e2d2d8d97cec886e60f4d4d22ec}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 305 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a12c2b26187291c9553ff36e8c00bce4b}\label{class_designar_1_1_gen_map_a12c2b26187291c9553ff36e8c00bce4b}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{const Value \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 311 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a17eac83eb57f8181aaaeeda18d155f31}\label{class_designar_1_1_gen_map_a17eac83eb57f8181aaaeeda18d155f31}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 317 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a3244d12da4c9186ea2c1eef6ad0cbdc9}\label{class_designar_1_1_gen_map_a3244d12da4c9186ea2c1eef6ad0cbdc9}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{k,  }\item[{Value \&\&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 323 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_a4ccec29a17c547692c25f3185187d7bd}\label{class_designar_1_1_gen_map_a4ccec29a17c547692c25f3185187d7bd}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{const Key \&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 329 of file map.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_gen_map_ae2ab69b26f782abcd99f99944253d8de}\label{class_designar_1_1_gen_map_ae2ab69b26f782abcd99f99944253d8de}} 
+\index{Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Gen\+Map@{Designar\+::\+Gen\+Map}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily template$<$template$<$ typename, class $>$ class Set, typename Key, typename Value, class Cmp$>$ \\
+Value$\ast$ \hyperlink{class_designar_1_1_gen_map}{Designar\+::\+Gen\+Map}$<$ Set, Key, Value, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 334 of file map.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{map_8_h}{map.\+H}\end{DoxyCompactItemize}

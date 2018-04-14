@@ -1,0 +1,240 @@
+\hypertarget{class_designar_1_1_d_l_1_1_iterator}{}\section{Referencia de la Clase Designar\+:\+:DL\+:\+:Iterator}
+\label{class_designar_1_1_d_l_1_1_iterator}\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+
+
+{\ttfamily \#include $<$nodesdef.\+H$>$}
+
+Diagrama de herencias de Designar\+:\+:DL\+:\+:Iterator\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=6.511628cm]{class_designar_1_1_d_l_1_1_iterator}
+\end{center}
+\end{figure}
+\subsection*{Métodos públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator_ac8115296dde1a00604510beba6707b36}{Iterator} ()
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator_ab40eab4206926dca72f7981c4920c984}{Iterator} (\hyperlink{class_designar_1_1_d_l}{DL} $\ast$h)
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator_aa90c0222a2141efc64f6b70b83137531}{Iterator} (\hyperlink{class_designar_1_1_d_l}{DL} $\ast$h, \hyperlink{class_designar_1_1_d_l}{DL} $\ast$c)
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator_a6216eca5f9c0a153ac194a8b7c741636}{Iterator} (const \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&it)
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator_ae5d00988114ca7cb890fb5e887c5e3ba}{Iterator} (\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&\&it)
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \& \hyperlink{class_designar_1_1_d_l_1_1_iterator_a24c29185e86ef76e7ecb17e9abfd42a9}{operator=} (const \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&it)
+\item 
+\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \& \hyperlink{class_designar_1_1_d_l_1_1_iterator_a927bb8ad074ad3021a2d92abfff06fac}{operator=} (\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&\&it)
+\item 
+void \hyperlink{class_designar_1_1_d_l_1_1_iterator_af8bba1d661f8d6300664481d7c6fd976}{swap} (\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&it)
+\item 
+bool \hyperlink{class_designar_1_1_d_l_1_1_iterator_a02ccb7a5bbdc828ed8ac923f383661d4}{has\+\_\+current} () const
+\item 
+\hyperlink{class_designar_1_1_d_l}{DL} $\ast$ \hyperlink{class_designar_1_1_d_l_1_1_iterator_a291e44d1aee5859059aed9754a3dd35a}{get\+\_\+current} ()
+\item 
+\hyperlink{class_designar_1_1_d_l}{DL} $\ast$ \hyperlink{class_designar_1_1_d_l_1_1_iterator_aab4752b8c8f25cfbbd3560cebf23b7d1}{get\+\_\+current} () const
+\item 
+void \hyperlink{class_designar_1_1_d_l_1_1_iterator_ade01f6f8d747962c895e95fc0e26c515}{next} ()
+\item 
+void \hyperlink{class_designar_1_1_d_l_1_1_iterator_a8550a08d7c7645c8ec41ba209ee21893}{prev} ()
+\item 
+void \hyperlink{class_designar_1_1_d_l_1_1_iterator_a7708230beaa8a47d664878d37c11bbd3}{reset} ()
+\item 
+\hyperlink{class_designar_1_1_d_l}{DL} $\ast$ \hyperlink{class_designar_1_1_d_l_1_1_iterator_aa21843f313121866b1ad1571c77e65c6}{del} ()
+\end{DoxyCompactItemize}
+\subsection*{Métodos protegidos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_d_l}{DL} $\ast$ \hyperlink{class_designar_1_1_d_l_1_1_iterator_a575d5bbd0ce2e3d5df42d5d0112a1063}{get\+\_\+head} () const
+\item 
+\hyperlink{class_designar_1_1_d_l}{DL} $\ast$ \hyperlink{class_designar_1_1_d_l_1_1_iterator_af9d1225d5fa038ec4868e0910d4b9da0}{get\+\_\+location} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+
+
+Definición en la línea 293 del archivo nodesdef.\+H.
+
+
+
+\subsection{Documentación del constructor y destructor}
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_ac8115296dde1a00604510beba6707b36}\label{class_designar_1_1_d_l_1_1_iterator_ac8115296dde1a00604510beba6707b36}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily Designar\+::\+D\+L\+::\+Iterator\+::\+Iterator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 310 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_ab40eab4206926dca72f7981c4920c984}\label{class_designar_1_1_d_l_1_1_iterator_ab40eab4206926dca72f7981c4920c984}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily Designar\+::\+D\+L\+::\+Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_d_l}{DL} $\ast$}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 316 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_aa90c0222a2141efc64f6b70b83137531}\label{class_designar_1_1_d_l_1_1_iterator_aa90c0222a2141efc64f6b70b83137531}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily Designar\+::\+D\+L\+::\+Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_d_l}{DL} $\ast$}]{h,  }\item[{\hyperlink{class_designar_1_1_d_l}{DL} $\ast$}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 322 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a6216eca5f9c0a153ac194a8b7c741636}\label{class_designar_1_1_d_l_1_1_iterator_a6216eca5f9c0a153ac194a8b7c741636}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily Designar\+::\+D\+L\+::\+Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 328 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_ae5d00988114ca7cb890fb5e887c5e3ba}\label{class_designar_1_1_d_l_1_1_iterator_ae5d00988114ca7cb890fb5e887c5e3ba}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily Designar\+::\+D\+L\+::\+Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 334 del archivo nodesdef.\+H.
+
+
+
+\subsection{Documentación de las funciones miembro}
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_aa21843f313121866b1ad1571c77e65c6}\label{class_designar_1_1_d_l_1_1_iterator_aa21843f313121866b1ad1571c77e65c6}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!del@{del}}
+\index{del@{del}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{del()}{del()}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l}{DL}$\ast$ Designar\+::\+D\+L\+::\+Iterator\+::del (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 404 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a291e44d1aee5859059aed9754a3dd35a}\label{class_designar_1_1_d_l_1_1_iterator_a291e44d1aee5859059aed9754a3dd35a}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!get\+\_\+current@{get\+\_\+current}}
+\index{get\+\_\+current@{get\+\_\+current}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+current()}{get\_current()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l}{DL}$\ast$ Designar\+::\+D\+L\+::\+Iterator\+::get\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 367 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_aab4752b8c8f25cfbbd3560cebf23b7d1}\label{class_designar_1_1_d_l_1_1_iterator_aab4752b8c8f25cfbbd3560cebf23b7d1}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!get\+\_\+current@{get\+\_\+current}}
+\index{get\+\_\+current@{get\+\_\+current}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+current()}{get\_current()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l}{DL}$\ast$ Designar\+::\+D\+L\+::\+Iterator\+::get\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 375 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a575d5bbd0ce2e3d5df42d5d0112a1063}\label{class_designar_1_1_d_l_1_1_iterator_a575d5bbd0ce2e3d5df42d5d0112a1063}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!get\+\_\+head@{get\+\_\+head}}
+\index{get\+\_\+head@{get\+\_\+head}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+head()}{get\_head()}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l}{DL}$\ast$ Designar\+::\+D\+L\+::\+Iterator\+::get\+\_\+head (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definición en la línea 299 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_af9d1225d5fa038ec4868e0910d4b9da0}\label{class_designar_1_1_d_l_1_1_iterator_af9d1225d5fa038ec4868e0910d4b9da0}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!get\+\_\+location@{get\+\_\+location}}
+\index{get\+\_\+location@{get\+\_\+location}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+location()}{get\_location()}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l}{DL}$\ast$ Designar\+::\+D\+L\+::\+Iterator\+::get\+\_\+location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definición en la línea 304 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a02ccb7a5bbdc828ed8ac923f383661d4}\label{class_designar_1_1_d_l_1_1_iterator_a02ccb7a5bbdc828ed8ac923f383661d4}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!has\+\_\+current@{has\+\_\+current}}
+\index{has\+\_\+current@{has\+\_\+current}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{has\+\_\+current()}{has\_current()}}
+{\footnotesize\ttfamily bool Designar\+::\+D\+L\+::\+Iterator\+::has\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 362 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_ade01f6f8d747962c895e95fc0e26c515}\label{class_designar_1_1_d_l_1_1_iterator_ade01f6f8d747962c895e95fc0e26c515}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!next@{next}}
+\index{next@{next}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{next()}{next()}}
+{\footnotesize\ttfamily void Designar\+::\+D\+L\+::\+Iterator\+::next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 383 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a24c29185e86ef76e7ecb17e9abfd42a9}\label{class_designar_1_1_d_l_1_1_iterator_a24c29185e86ef76e7ecb17e9abfd42a9}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator}\& Designar\+::\+D\+L\+::\+Iterator\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 340 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a927bb8ad074ad3021a2d92abfff06fac}\label{class_designar_1_1_d_l_1_1_iterator_a927bb8ad074ad3021a2d92abfff06fac}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator}\& Designar\+::\+D\+L\+::\+Iterator\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 350 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a8550a08d7c7645c8ec41ba209ee21893}\label{class_designar_1_1_d_l_1_1_iterator_a8550a08d7c7645c8ec41ba209ee21893}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!prev@{prev}}
+\index{prev@{prev}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{prev()}{prev()}}
+{\footnotesize\ttfamily void Designar\+::\+D\+L\+::\+Iterator\+::prev (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 391 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_a7708230beaa8a47d664878d37c11bbd3}\label{class_designar_1_1_d_l_1_1_iterator_a7708230beaa8a47d664878d37c11bbd3}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!reset@{reset}}
+\index{reset@{reset}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void Designar\+::\+D\+L\+::\+Iterator\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 399 del archivo nodesdef.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_d_l_1_1_iterator_af8bba1d661f8d6300664481d7c6fd976}\label{class_designar_1_1_d_l_1_1_iterator_af8bba1d661f8d6300664481d7c6fd976}} 
+\index{Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+D\+L\+::\+Iterator@{Designar\+::\+D\+L\+::\+Iterator}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily void Designar\+::\+D\+L\+::\+Iterator\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_d_l_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 356 del archivo nodesdef.\+H.
+
+
+
+La documentación para esta clase fue generada a partir del siguiente fichero\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{nodesdef_8_h}{nodesdef.\+H}\end{DoxyCompactItemize}

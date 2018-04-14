@@ -1,0 +1,1092 @@
+\hypertarget{class_designar_1_1_base_graph}{}\section{Designar\+:\+:Base\+Graph$<$ GT, Node, Arc $>$ Class Template Reference}
+\label{class_designar_1_1_base_graph}\index{Designar\+::\+Base\+Graph$<$ G\+T, Node, Arc $>$@{Designar\+::\+Base\+Graph$<$ G\+T, Node, Arc $>$}}
+
+
+De\+S\+I\+G\+N\+AR \hyperlink{class_designar_1_1_graph}{Graph} Object.  
+
+
+
+
+{\ttfamily \#include $<$graph.\+H$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \& \hyperlink{class_designar_1_1_base_graph_ae4b7d560477f0b860d127a6ace6956e5}{nth\+\_\+node} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\begin{DoxyCompactList}\small\item\em Get nth node of the graph in depth first order. \end{DoxyCompactList}\item 
+const \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \& \hyperlink{class_designar_1_1_base_graph_adc03e916cb6246c9eeba181df82fd149}{nth\+\_\+node} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\begin{DoxyCompactList}\small\item\em Get nth node of the graph in depth first order. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a9497531ac221edb5c5ef19888f78ad3c}{for\+\_\+each\+\_\+node} (Op \&op) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_aab8f765719514803f426b03939f519a1}{for\+\_\+each\+\_\+node} (Op \&\&op=Op()) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_abad9513273c1096aba652e211180061c}{all\+\_\+nodes} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a32419ec17712a60c1964bc91e78d135c}{all\+\_\+nodes} (Pred \&\&pred=Pred()) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a3631470de61b819211c72fdd2ac31b34}{exists\+\_\+node} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a62df2c7ec71d2b009e96f8974968a3fc}{exists\+\_\+node} (Pred \&\&pred=Pred()) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aa87c903e7fbf82a30edc9e442a115050}{none\+\_\+node} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a394cdb81d0b0402e348dc87d2456d2d7}{none\+\_\+node} (Pred \&\&pred=Pred()) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} $\ast$ \hyperlink{class_designar_1_1_base_graph_aa15b13f58a4961b1593045d1e228adec}{search\+\_\+node\+\_\+ptr} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} $\ast$ \hyperlink{class_designar_1_1_base_graph_a1f19e5a79bfa156fd4cd80f3d8e27aa4}{search\+\_\+node\+\_\+ptr} (Pred \&\&pred=Pred())
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a1311af417ba4d373d7051b73cc2696ec}{remove\+\_\+first\+\_\+node\+\_\+if} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aec049416b5240910cb04b1d6f55fcecf}{remove\+\_\+first\+\_\+node\+\_\+if} (Pred \&\&pred=Pred())
+\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_aae56ca6b3b936835d07275f2ceb4b0d1}{remove\+\_\+node\+\_\+if} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a6e63659d272255254f6abc29c1e09724}{remove\+\_\+node\+\_\+if} (Pred \&\&pred=Pred())
+\item 
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} $\ast$ $>$ \hyperlink{class_designar_1_1_base_graph_a56b1ec4a0258d9f22542f33615bcdbea}{nodes} () const
+\begin{DoxyCompactList}\small\item\em Get a De\+S\+I\+G\+N\+AR Simple Linked List containing all nodes of the graph. \end{DoxyCompactList}\item 
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} \& \hyperlink{class_designar_1_1_base_graph_a205d350fd588082a84d7a114ffd7cf5e}{nth\+\_\+arc} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\item 
+const \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} \& \hyperlink{class_designar_1_1_base_graph_aaff3c76e0e0094d4ec1eaecd155ca951}{nth\+\_\+arc} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_ac46a1a7517a6c7029c6bae23d480cfa9}{for\+\_\+each\+\_\+arc} (Op \&op) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_ae76905d5baebd62d0fc481efc7c20f66}{for\+\_\+each\+\_\+arc} (Op \&\&op) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a3e2a55dafde6b1edf42f88f4c7d066b8}{all\+\_\+arcs} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aea71a873faf7e92195d582b21d14c347}{all\+\_\+arcs} (Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aaed186c42ed6b51f761cda959ecde601}{exists\+\_\+arc} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aebf517d972db553b03f2c4dbe4228d79}{exists\+\_\+arc} (Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a023f28dd8824ba7a0c26342effd0fddf}{none\+\_\+arc} (Pred \&pred) const
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a69c4841b8c517a510d738bc1204da7b7}{none\+\_\+arc} (Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ \hyperlink{class_designar_1_1_base_graph_afcbc602350567bc5a377fd7fc94419ae}{search\+\_\+arc\+\_\+ptr} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ \hyperlink{class_designar_1_1_base_graph_a4ffe61f2548a892d070aa46609c4532c}{search\+\_\+arc\+\_\+ptr} (Pred \&\&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_ae45255ef62c056e76c5e5c45182e9490}{remove\+\_\+first\+\_\+arc\+\_\+if} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a990426c9e87f922bbbd0c9bc4d2cedd8}{remove\+\_\+first\+\_\+arc\+\_\+if} (Pred \&\&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a9c97f2759a2847e61e17dc2806172758}{remove\+\_\+arc\+\_\+if} (Pred \&pred)
+\begin{DoxyCompactList}\small\item\em Similar to previous but with an rvalue parameter. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a0e516bee6e0247de6bdd207de57caad6}{remove\+\_\+arc\+\_\+if} (Pred \&\&pred)
+\item 
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ $>$ \hyperlink{class_designar_1_1_base_graph_af9d306a0474e8e3b38b7bd697b844d11}{arcs} () const
+\item 
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} \& \hyperlink{class_designar_1_1_base_graph_aa0047160fb8424fe88dc7c1785f66827}{nth\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\item 
+const \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} \& \hyperlink{class_designar_1_1_base_graph_a3ca561f708fec1724d5c95192f98ef96}{nth\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a5e35c97bdf055f67e744f7d961ccb6a9}{for\+\_\+each\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Op \&op) const
+\item 
+{\footnotesize template$<$class Op $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a21553c1d96334e4cf2e0e2086e0efeba}{for\+\_\+each\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Op \&\&op) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_af7a57a1088105a79466546620bf830b3}{all\+\_\+adjacent\+\_\+arcs} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_aaae4400215b8ea6b55941875981c3892}{all\+\_\+adjacent\+\_\+arcs} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a5208fcd131d919271e1d54f6e45ab3e9}{exists\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_a16d3fbb089265c1dc8da8ffbe2fb1434}{exists\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_acf4b230e0d981f36770722011c96206f}{none\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_adbacdf829cb2f21aff498bac9c9a8b8b}{none\+\_\+adjacent\+\_\+arc} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred) const
+\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ \hyperlink{class_designar_1_1_base_graph_a4c9703fdb22d4e1d3cf0428fd705b3ee}{search\+\_\+adjacent\+\_\+arc\+\_\+ptr} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ \hyperlink{class_designar_1_1_base_graph_aac7ed362d5f21fcc6e583d4b9e03babb}{search\+\_\+adjacent\+\_\+arc\+\_\+ptr} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_ab7c2c2129abb3200b854e23f34e513e8}{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\bool \hyperlink{class_designar_1_1_base_graph_abe36f7676c51362b9a0f560d3c062772}{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_af1653bc8e50c53d27997951798a8a716}{remove\+\_\+adjacent\+\_\+arc\+\_\+if} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&pred)
+\item 
+{\footnotesize template$<$class Pred $>$ }\\void \hyperlink{class_designar_1_1_base_graph_a10423075ea81c629e88974fa882ec903}{remove\+\_\+adjacent\+\_\+arc\+\_\+if} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p, Pred \&\&pred)
+\item 
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$ $>$ \hyperlink{class_designar_1_1_base_graph_a2c91912381c8220c0b2530e5ad187231}{adjacent\+\_\+arcs} (\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&p) const
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a07ca1909d77210157b8b9571a4d35d6c}{reset\+\_\+all\+\_\+node\+\_\+tag} (\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag} tag)
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a7bffa4f055b15f76d12bd7c40730a3dd}{reset\+\_\+all\+\_\+node\+\_\+tag} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_ab73705a167e91d0982a9f149b1d7e71b}{reset\+\_\+all\+\_\+arc\+\_\+tag} (\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag} tag)
+\item 
+void \hyperlink{class_designar_1_1_base_graph_af9ae2a4dfd676090de4b4fa04414989c}{reset\+\_\+all\+\_\+arc\+\_\+tag} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_ae8845b2eb9d33f62684c8e5acc7c91b7}{reset\+\_\+tag} (\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag} tag)
+\item 
+void \hyperlink{class_designar_1_1_base_graph_ae62e72668468a2aaa3ddc91246e1ee1c}{reset\+\_\+all\+\_\+tags} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_ab797f80e7efa5a6d0b33f925d6079c18}{reset\+\_\+node\+\_\+cookies} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a44b6cefb8966ed69a0d80bfe7e4546cb}{reset\+\_\+arc\+\_\+cookies} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a53603f64b51b470cc6b8c8d6d2b643a4}{reset\+\_\+node\+\_\+counter} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a8b22e29aa37006fab9c219de86660bdd}{reset\+\_\+arc\+\_\+counter} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a881c342d8f25d43f995ccfdf876622e1}{reset\+\_\+counters} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a96a630fd589c34e7e6242f4349606e1c}{reset\+\_\+cookies} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a1b21c48fed41f36ad4158d718f837c89}{reset\+\_\+nodes} ()
+\item 
+void \hyperlink{class_designar_1_1_base_graph_a6dc66191c2d752bf7f67a4522a7830e3}{reset\+\_\+arcs} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{class_designar_1_1_base_graph_ac34a3b513973c2ed43067934f71ace28}{copy\+\_\+graph} (const \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class GT, class Node, class Arc$>$\newline
+class Designar\+::\+Base\+Graph$<$ G\+T, Node, Arc $>$}
+
+De\+S\+I\+G\+N\+AR \hyperlink{class_designar_1_1_graph}{Graph} Object. 
+
+Definition at line 95 of file graph.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a2c91912381c8220c0b2530e5ad187231}\label{class_designar_1_1_base_graph_a2c91912381c8220c0b2530e5ad187231}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!adjacent\+\_\+arcs@{adjacent\+\_\+arcs}}
+\index{adjacent\+\_\+arcs@{adjacent\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{adjacent\+\_\+arcs()}{adjacent\_arcs()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$$>$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::adjacent\+\_\+arcs (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 575 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_af7a57a1088105a79466546620bf830b3}\label{class_designar_1_1_base_graph_af7a57a1088105a79466546620bf830b3}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+adjacent\+\_\+arcs@{all\+\_\+adjacent\+\_\+arcs}}
+\index{all\+\_\+adjacent\+\_\+arcs@{all\+\_\+adjacent\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+adjacent\+\_\+arcs()}{all\_adjacent\_arcs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+adjacent\+\_\+arcs (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 504 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aaae4400215b8ea6b55941875981c3892}\label{class_designar_1_1_base_graph_aaae4400215b8ea6b55941875981c3892}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+adjacent\+\_\+arcs@{all\+\_\+adjacent\+\_\+arcs}}
+\index{all\+\_\+adjacent\+\_\+arcs@{all\+\_\+adjacent\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+adjacent\+\_\+arcs()}{all\_adjacent\_arcs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+adjacent\+\_\+arcs (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 510 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a3e2a55dafde6b1edf42f88f4c7d066b8}\label{class_designar_1_1_base_graph_a3e2a55dafde6b1edf42f88f4c7d066b8}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+arcs@{all\+\_\+arcs}}
+\index{all\+\_\+arcs@{all\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+arcs()}{all\_arcs()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+arcs (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 393 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aea71a873faf7e92195d582b21d14c347}\label{class_designar_1_1_base_graph_aea71a873faf7e92195d582b21d14c347}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+arcs@{all\+\_\+arcs}}
+\index{all\+\_\+arcs@{all\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+arcs()}{all\_arcs()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+arcs (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 401 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_abad9513273c1096aba652e211180061c}\label{class_designar_1_1_base_graph_abad9513273c1096aba652e211180061c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+nodes@{all\+\_\+nodes}}
+\index{all\+\_\+nodes@{all\+\_\+nodes}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+nodes()}{all\_nodes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+nodes (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Ask if all nodes of the graph satisfy a predicate.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if for each node the predicate is true, {\ttfamily false} otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 192 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a32419ec17712a60c1964bc91e78d135c}\label{class_designar_1_1_base_graph_a32419ec17712a60c1964bc91e78d135c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!all\+\_\+nodes@{all\+\_\+nodes}}
+\index{all\+\_\+nodes@{all\+\_\+nodes}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{all\+\_\+nodes()}{all\_nodes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::all\+\_\+nodes (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 200 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_af9d306a0474e8e3b38b7bd697b844d11}\label{class_designar_1_1_base_graph_af9d306a0474e8e3b38b7bd697b844d11}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!arcs@{arcs}}
+\index{arcs@{arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{arcs()}{arcs()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $\ast$$>$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::arcs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 476 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ac34a3b513973c2ed43067934f71ace28}\label{class_designar_1_1_base_graph_ac34a3b513973c2ed43067934f71ace28}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!copy\+\_\+graph@{copy\+\_\+graph}}
+\index{copy\+\_\+graph@{copy\+\_\+graph}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{copy\+\_\+graph()}{copy\_graph()}}
+{\footnotesize\ttfamily template$<$typename GT , class Node , class Arc $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::copy\+\_\+graph (\begin{DoxyParamCaption}\item[{const \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{src,  }\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{tgt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 687 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a5208fcd131d919271e1d54f6e45ab3e9}\label{class_designar_1_1_base_graph_a5208fcd131d919271e1d54f6e45ab3e9}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+adjacent\+\_\+arc@{exists\+\_\+adjacent\+\_\+arc}}
+\index{exists\+\_\+adjacent\+\_\+arc@{exists\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+adjacent\+\_\+arc()}{exists\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 516 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a16d3fbb089265c1dc8da8ffbe2fb1434}\label{class_designar_1_1_base_graph_a16d3fbb089265c1dc8da8ffbe2fb1434}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+adjacent\+\_\+arc@{exists\+\_\+adjacent\+\_\+arc}}
+\index{exists\+\_\+adjacent\+\_\+arc@{exists\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+adjacent\+\_\+arc()}{exists\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 522 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aaed186c42ed6b51f761cda959ecde601}\label{class_designar_1_1_base_graph_aaed186c42ed6b51f761cda959ecde601}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+arc@{exists\+\_\+arc}}
+\index{exists\+\_\+arc@{exists\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+arc()}{exists\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+arc (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 407 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aebf517d972db553b03f2c4dbe4228d79}\label{class_designar_1_1_base_graph_aebf517d972db553b03f2c4dbe4228d79}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+arc@{exists\+\_\+arc}}
+\index{exists\+\_\+arc@{exists\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+arc()}{exists\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+arc (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 415 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a3631470de61b819211c72fdd2ac31b34}\label{class_designar_1_1_base_graph_a3631470de61b819211c72fdd2ac31b34}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+node@{exists\+\_\+node}}
+\index{exists\+\_\+node@{exists\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+node()}{exists\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+node (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Ask if there is at least one node which satifies a predicate.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if exist a node for the predicate is true, {\ttfamily false} otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 221 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a62df2c7ec71d2b009e96f8974968a3fc}\label{class_designar_1_1_base_graph_a62df2c7ec71d2b009e96f8974968a3fc}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!exists\+\_\+node@{exists\+\_\+node}}
+\index{exists\+\_\+node@{exists\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{exists\+\_\+node()}{exists\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::exists\+\_\+node (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 229 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a5e35c97bdf055f67e744f7d961ccb6a9}\label{class_designar_1_1_base_graph_a5e35c97bdf055f67e744f7d961ccb6a9}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+adjacent\+\_\+arc@{for\+\_\+each\+\_\+adjacent\+\_\+arc}}
+\index{for\+\_\+each\+\_\+adjacent\+\_\+arc@{for\+\_\+each\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+adjacent\+\_\+arc()}{for\_each\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Op \&}]{op }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 492 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a21553c1d96334e4cf2e0e2086e0efeba}\label{class_designar_1_1_base_graph_a21553c1d96334e4cf2e0e2086e0efeba}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+adjacent\+\_\+arc@{for\+\_\+each\+\_\+adjacent\+\_\+arc}}
+\index{for\+\_\+each\+\_\+adjacent\+\_\+arc@{for\+\_\+each\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+adjacent\+\_\+arc()}{for\_each\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Op \&\&}]{op }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 498 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ac46a1a7517a6c7029c6bae23d480cfa9}\label{class_designar_1_1_base_graph_ac46a1a7517a6c7029c6bae23d480cfa9}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+arc@{for\+\_\+each\+\_\+arc}}
+\index{for\+\_\+each\+\_\+arc@{for\+\_\+each\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+arc()}{for\_each\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+arc (\begin{DoxyParamCaption}\item[{Op \&}]{op }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 379 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ae76905d5baebd62d0fc481efc7c20f66}\label{class_designar_1_1_base_graph_ae76905d5baebd62d0fc481efc7c20f66}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+arc@{for\+\_\+each\+\_\+arc}}
+\index{for\+\_\+each\+\_\+arc@{for\+\_\+each\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+arc()}{for\_each\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+arc (\begin{DoxyParamCaption}\item[{Op \&\&}]{op }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 387 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a9497531ac221edb5c5ef19888f78ad3c}\label{class_designar_1_1_base_graph_a9497531ac221edb5c5ef19888f78ad3c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+node@{for\+\_\+each\+\_\+node}}
+\index{for\+\_\+each\+\_\+node@{for\+\_\+each\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+node()}{for\_each\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+node (\begin{DoxyParamCaption}\item[{Op \&}]{op }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Apply an operation over all nodes of the graph.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em op} & An operation to be executed for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 165 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aab8f765719514803f426b03939f519a1}\label{class_designar_1_1_base_graph_aab8f765719514803f426b03939f519a1}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!for\+\_\+each\+\_\+node@{for\+\_\+each\+\_\+node}}
+\index{for\+\_\+each\+\_\+node@{for\+\_\+each\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{for\+\_\+each\+\_\+node()}{for\_each\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Op $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::for\+\_\+each\+\_\+node (\begin{DoxyParamCaption}\item[{Op \&\&}]{op = {\ttfamily Op()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 173 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a56b1ec4a0258d9f22542f33615bcdbea}\label{class_designar_1_1_base_graph_a56b1ec4a0258d9f22542f33615bcdbea}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nodes@{nodes}}
+\index{nodes@{nodes}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nodes()}{nodes()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} $\ast$ $>$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nodes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get a De\+S\+I\+G\+N\+AR Simple Linked List containing all nodes of the graph. 
+
+\begin{DoxyReturn}{Returns}
+A list containing all nodes of the graph 
+\end{DoxyReturn}
+
+
+Definition at line 362 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_acf4b230e0d981f36770722011c96206f}\label{class_designar_1_1_base_graph_acf4b230e0d981f36770722011c96206f}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+adjacent\+\_\+arc@{none\+\_\+adjacent\+\_\+arc}}
+\index{none\+\_\+adjacent\+\_\+arc@{none\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+adjacent\+\_\+arc()}{none\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 528 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_adbacdf829cb2f21aff498bac9c9a8b8b}\label{class_designar_1_1_base_graph_adbacdf829cb2f21aff498bac9c9a8b8b}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+adjacent\+\_\+arc@{none\+\_\+adjacent\+\_\+arc}}
+\index{none\+\_\+adjacent\+\_\+arc@{none\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+adjacent\+\_\+arc()}{none\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 534 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a023f28dd8824ba7a0c26342effd0fddf}\label{class_designar_1_1_base_graph_a023f28dd8824ba7a0c26342effd0fddf}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+arc@{none\+\_\+arc}}
+\index{none\+\_\+arc@{none\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+arc()}{none\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+arc (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 421 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a69c4841b8c517a510d738bc1204da7b7}\label{class_designar_1_1_base_graph_a69c4841b8c517a510d738bc1204da7b7}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+arc@{none\+\_\+arc}}
+\index{none\+\_\+arc@{none\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+arc()}{none\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+arc (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 429 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aa87c903e7fbf82a30edc9e442a115050}\label{class_designar_1_1_base_graph_aa87c903e7fbf82a30edc9e442a115050}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+node@{none\+\_\+node}}
+\index{none\+\_\+node@{none\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+node()}{none\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+node (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Ask if there is not a single node which satifies a predicate.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if not exist a node for the predicate is true, {\ttfamily false} otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 251 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a394cdb81d0b0402e348dc87d2456d2d7}\label{class_designar_1_1_base_graph_a394cdb81d0b0402e348dc87d2456d2d7}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!none\+\_\+node@{none\+\_\+node}}
+\index{none\+\_\+node@{none\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{none\+\_\+node()}{none\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::none\+\_\+node (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 259 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aa0047160fb8424fe88dc7c1785f66827}\label{class_designar_1_1_base_graph_aa0047160fb8424fe88dc7c1785f66827}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+adjacent\+\_\+arc@{nth\+\_\+adjacent\+\_\+arc}}
+\index{nth\+\_\+adjacent\+\_\+arc@{nth\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+adjacent\+\_\+arc()}{nth\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}\& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 481 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a3ca561f708fec1724d5c95192f98ef96}\label{class_designar_1_1_base_graph_a3ca561f708fec1724d5c95192f98ef96}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+adjacent\+\_\+arc@{nth\+\_\+adjacent\+\_\+arc}}
+\index{nth\+\_\+adjacent\+\_\+arc@{nth\+\_\+adjacent\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+adjacent\+\_\+arc()}{nth\_adjacent\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+const \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}\& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+adjacent\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 486 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a205d350fd588082a84d7a114ffd7cf5e}\label{class_designar_1_1_base_graph_a205d350fd588082a84d7a114ffd7cf5e}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+arc@{nth\+\_\+arc}}
+\index{nth\+\_\+arc@{nth\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+arc()}{nth\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}\& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 368 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aaff3c76e0e0094d4ec1eaecd155ca951}\label{class_designar_1_1_base_graph_aaff3c76e0e0094d4ec1eaecd155ca951}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+arc@{nth\+\_\+arc}}
+\index{nth\+\_\+arc@{nth\+\_\+arc}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+arc()}{nth\_arc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+const \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}\& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+arc (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 373 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ae4b7d560477f0b860d127a6ace6956e5}\label{class_designar_1_1_base_graph_ae4b7d560477f0b860d127a6ace6956e5}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+node@{nth\+\_\+node}}
+\index{nth\+\_\+node@{nth\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+node()}{nth\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+node (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get nth node of the graph in depth first order. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em i} & Position of the desired node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A modifiable reference of the desired node 
+\end{DoxyReturn}
+
+
+Definition at line 126 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_adc03e916cb6246c9eeba181df82fd149}\label{class_designar_1_1_base_graph_adc03e916cb6246c9eeba181df82fd149}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!nth\+\_\+node@{nth\+\_\+node}}
+\index{nth\+\_\+node@{nth\+\_\+node}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{nth\+\_\+node()}{nth\_node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+const \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \& \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::nth\+\_\+node (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get nth node of the graph in depth first order. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em i} & Position of the desired node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A constant reference of the desired node 
+\end{DoxyReturn}
+
+
+Definition at line 145 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_af1653bc8e50c53d27997951798a8a716}\label{class_designar_1_1_base_graph_af1653bc8e50c53d27997951798a8a716}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+adjacent\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+adjacent\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+adjacent\+\_\+arc\+\_\+if()}{remove\_adjacent\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+adjacent\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 564 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a10423075ea81c629e88974fa882ec903}\label{class_designar_1_1_base_graph_a10423075ea81c629e88974fa882ec903}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+adjacent\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+adjacent\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+adjacent\+\_\+arc\+\_\+if()}{remove\_adjacent\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+adjacent\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 570 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a9c97f2759a2847e61e17dc2806172758}\label{class_designar_1_1_base_graph_a9c97f2759a2847e61e17dc2806172758}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+arc\+\_\+if@{remove\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+arc\+\_\+if@{remove\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+arc\+\_\+if()}{remove\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 463 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a0e516bee6e0247de6bdd207de57caad6}\label{class_designar_1_1_base_graph_a0e516bee6e0247de6bdd207de57caad6}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+arc\+\_\+if@{remove\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+arc\+\_\+if@{remove\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+arc\+\_\+if()}{remove\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 471 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ab7c2c2129abb3200b854e23f34e513e8}\label{class_designar_1_1_base_graph_ab7c2c2129abb3200b854e23f34e513e8}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if()}{remove\_first\_adjacent\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 552 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_abe36f7676c51362b9a0f560d3c062772}\label{class_designar_1_1_base_graph_abe36f7676c51362b9a0f560d3c062772}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if()}{remove\_first\_adjacent\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+adjacent\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 558 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ae45255ef62c056e76c5e5c45182e9490}\label{class_designar_1_1_base_graph_ae45255ef62c056e76c5e5c45182e9490}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+first\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+arc\+\_\+if()}{remove\_first\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 449 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a990426c9e87f922bbbd0c9bc4d2cedd8}\label{class_designar_1_1_base_graph_a990426c9e87f922bbbd0c9bc4d2cedd8}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+arc\+\_\+if}}
+\index{remove\+\_\+first\+\_\+arc\+\_\+if@{remove\+\_\+first\+\_\+arc\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+arc\+\_\+if()}{remove\_first\_arc\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+arc\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 457 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a1311af417ba4d373d7051b73cc2696ec}\label{class_designar_1_1_base_graph_a1311af417ba4d373d7051b73cc2696ec}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+node\+\_\+if@{remove\+\_\+first\+\_\+node\+\_\+if}}
+\index{remove\+\_\+first\+\_\+node\+\_\+if@{remove\+\_\+first\+\_\+node\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+node\+\_\+if()}{remove\_first\_node\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+node\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Remove first node inserted in the graph if a predicate is true.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\ttfamily true} if predicate is true for each node, {\ttfamily false} otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 307 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aec049416b5240910cb04b1d6f55fcecf}\label{class_designar_1_1_base_graph_aec049416b5240910cb04b1d6f55fcecf}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+first\+\_\+node\+\_\+if@{remove\+\_\+first\+\_\+node\+\_\+if}}
+\index{remove\+\_\+first\+\_\+node\+\_\+if@{remove\+\_\+first\+\_\+node\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+first\+\_\+node\+\_\+if()}{remove\_first\_node\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+bool \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+first\+\_\+node\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 315 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aae56ca6b3b936835d07275f2ceb4b0d1}\label{class_designar_1_1_base_graph_aae56ca6b3b936835d07275f2ceb4b0d1}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+node\+\_\+if@{remove\+\_\+node\+\_\+if}}
+\index{remove\+\_\+node\+\_\+if@{remove\+\_\+node\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+node\+\_\+if()}{remove\_node\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+node\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Remove every node for which a predicate is true.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line 336 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a6e63659d272255254f6abc29c1e09724}\label{class_designar_1_1_base_graph_a6e63659d272255254f6abc29c1e09724}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!remove\+\_\+node\+\_\+if@{remove\+\_\+node\+\_\+if}}
+\index{remove\+\_\+node\+\_\+if@{remove\+\_\+node\+\_\+if}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{remove\+\_\+node\+\_\+if()}{remove\_node\_if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::remove\+\_\+node\+\_\+if (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 344 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ab73705a167e91d0982a9f149b1d7e71b}\label{class_designar_1_1_base_graph_ab73705a167e91d0982a9f149b1d7e71b}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+all\+\_\+arc\+\_\+tag@{reset\+\_\+all\+\_\+arc\+\_\+tag}}
+\index{reset\+\_\+all\+\_\+arc\+\_\+tag@{reset\+\_\+all\+\_\+arc\+\_\+tag}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+all\+\_\+arc\+\_\+tag()}{reset\_all\_arc\_tag()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+all\+\_\+arc\+\_\+tag (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag}}]{tag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 597 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_af9ae2a4dfd676090de4b4fa04414989c}\label{class_designar_1_1_base_graph_af9ae2a4dfd676090de4b4fa04414989c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+all\+\_\+arc\+\_\+tag@{reset\+\_\+all\+\_\+arc\+\_\+tag}}
+\index{reset\+\_\+all\+\_\+arc\+\_\+tag@{reset\+\_\+all\+\_\+arc\+\_\+tag}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+all\+\_\+arc\+\_\+tag()}{reset\_all\_arc\_tag()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+all\+\_\+arc\+\_\+tag (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 605 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a07ca1909d77210157b8b9571a4d35d6c}\label{class_designar_1_1_base_graph_a07ca1909d77210157b8b9571a4d35d6c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+all\+\_\+node\+\_\+tag@{reset\+\_\+all\+\_\+node\+\_\+tag}}
+\index{reset\+\_\+all\+\_\+node\+\_\+tag@{reset\+\_\+all\+\_\+node\+\_\+tag}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+all\+\_\+node\+\_\+tag()}{reset\_all\_node\_tag()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+all\+\_\+node\+\_\+tag (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag}}]{tag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 581 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a7bffa4f055b15f76d12bd7c40730a3dd}\label{class_designar_1_1_base_graph_a7bffa4f055b15f76d12bd7c40730a3dd}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+all\+\_\+node\+\_\+tag@{reset\+\_\+all\+\_\+node\+\_\+tag}}
+\index{reset\+\_\+all\+\_\+node\+\_\+tag@{reset\+\_\+all\+\_\+node\+\_\+tag}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+all\+\_\+node\+\_\+tag()}{reset\_all\_node\_tag()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+all\+\_\+node\+\_\+tag (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 589 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ae62e72668468a2aaa3ddc91246e1ee1c}\label{class_designar_1_1_base_graph_ae62e72668468a2aaa3ddc91246e1ee1c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+all\+\_\+tags@{reset\+\_\+all\+\_\+tags}}
+\index{reset\+\_\+all\+\_\+tags@{reset\+\_\+all\+\_\+tags}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+all\+\_\+tags()}{reset\_all\_tags()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+all\+\_\+tags (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 619 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a44b6cefb8966ed69a0d80bfe7e4546cb}\label{class_designar_1_1_base_graph_a44b6cefb8966ed69a0d80bfe7e4546cb}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+arc\+\_\+cookies@{reset\+\_\+arc\+\_\+cookies}}
+\index{reset\+\_\+arc\+\_\+cookies@{reset\+\_\+arc\+\_\+cookies}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+arc\+\_\+cookies()}{reset\_arc\_cookies()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+arc\+\_\+cookies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 633 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a8b22e29aa37006fab9c219de86660bdd}\label{class_designar_1_1_base_graph_a8b22e29aa37006fab9c219de86660bdd}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+arc\+\_\+counter@{reset\+\_\+arc\+\_\+counter}}
+\index{reset\+\_\+arc\+\_\+counter@{reset\+\_\+arc\+\_\+counter}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+arc\+\_\+counter()}{reset\_arc\_counter()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+arc\+\_\+counter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 649 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a6dc66191c2d752bf7f67a4522a7830e3}\label{class_designar_1_1_base_graph_a6dc66191c2d752bf7f67a4522a7830e3}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+arcs@{reset\+\_\+arcs}}
+\index{reset\+\_\+arcs@{reset\+\_\+arcs}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+arcs()}{reset\_arcs()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+arcs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 677 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a96a630fd589c34e7e6242f4349606e1c}\label{class_designar_1_1_base_graph_a96a630fd589c34e7e6242f4349606e1c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+cookies@{reset\+\_\+cookies}}
+\index{reset\+\_\+cookies@{reset\+\_\+cookies}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+cookies()}{reset\_cookies()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+cookies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 663 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a881c342d8f25d43f995ccfdf876622e1}\label{class_designar_1_1_base_graph_a881c342d8f25d43f995ccfdf876622e1}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+counters@{reset\+\_\+counters}}
+\index{reset\+\_\+counters@{reset\+\_\+counters}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+counters()}{reset\_counters()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+counters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 657 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ab797f80e7efa5a6d0b33f925d6079c18}\label{class_designar_1_1_base_graph_ab797f80e7efa5a6d0b33f925d6079c18}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+node\+\_\+cookies@{reset\+\_\+node\+\_\+cookies}}
+\index{reset\+\_\+node\+\_\+cookies@{reset\+\_\+node\+\_\+cookies}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+node\+\_\+cookies()}{reset\_node\_cookies()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+node\+\_\+cookies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 625 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a53603f64b51b470cc6b8c8d6d2b643a4}\label{class_designar_1_1_base_graph_a53603f64b51b470cc6b8c8d6d2b643a4}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+node\+\_\+counter@{reset\+\_\+node\+\_\+counter}}
+\index{reset\+\_\+node\+\_\+counter@{reset\+\_\+node\+\_\+counter}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+node\+\_\+counter()}{reset\_node\_counter()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+node\+\_\+counter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 641 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a1b21c48fed41f36ad4158d718f837c89}\label{class_designar_1_1_base_graph_a1b21c48fed41f36ad4158d718f837c89}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+nodes@{reset\+\_\+nodes}}
+\index{reset\+\_\+nodes@{reset\+\_\+nodes}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+nodes()}{reset\_nodes()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+nodes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 669 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_ae8845b2eb9d33f62684c8e5acc7c91b7}\label{class_designar_1_1_base_graph_ae8845b2eb9d33f62684c8e5acc7c91b7}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!reset\+\_\+tag@{reset\+\_\+tag}}
+\index{reset\+\_\+tag@{reset\+\_\+tag}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{reset\+\_\+tag()}{reset\_tag()}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+void \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::reset\+\_\+tag (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_ac91366256ea6ea6ac5fd483d55a7499e}{Graph\+Tag}}]{tag }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 613 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a4c9703fdb22d4e1d3cf0428fd705b3ee}\label{class_designar_1_1_base_graph_a4c9703fdb22d4e1d3cf0428fd705b3ee}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+adjacent\+\_\+arc\+\_\+ptr@{search\+\_\+adjacent\+\_\+arc\+\_\+ptr}}
+\index{search\+\_\+adjacent\+\_\+arc\+\_\+ptr@{search\+\_\+adjacent\+\_\+arc\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+adjacent\+\_\+arc\+\_\+ptr()}{search\_adjacent\_arc\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}$\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+adjacent\+\_\+arc\+\_\+ptr (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 540 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aac7ed362d5f21fcc6e583d4b9e03babb}\label{class_designar_1_1_base_graph_aac7ed362d5f21fcc6e583d4b9e03babb}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+adjacent\+\_\+arc\+\_\+ptr@{search\+\_\+adjacent\+\_\+arc\+\_\+ptr}}
+\index{search\+\_\+adjacent\+\_\+arc\+\_\+ptr@{search\+\_\+adjacent\+\_\+arc\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+adjacent\+\_\+arc\+\_\+ptr()}{search\_adjacent\_arc\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}$\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+adjacent\+\_\+arc\+\_\+ptr (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} \&}]{p,  }\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 546 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_afcbc602350567bc5a377fd7fc94419ae}\label{class_designar_1_1_base_graph_afcbc602350567bc5a377fd7fc94419ae}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+arc\+\_\+ptr@{search\+\_\+arc\+\_\+ptr}}
+\index{search\+\_\+arc\+\_\+ptr@{search\+\_\+arc\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+arc\+\_\+ptr()}{search\_arc\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}$\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+arc\+\_\+ptr (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+
+
+Definition at line 435 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a4ffe61f2548a892d070aa46609c4532c}\label{class_designar_1_1_base_graph_a4ffe61f2548a892d070aa46609c4532c}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+arc\+\_\+ptr@{search\+\_\+arc\+\_\+ptr}}
+\index{search\+\_\+arc\+\_\+ptr@{search\+\_\+arc\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+arc\+\_\+ptr()}{search\_arc\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc}$\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+arc\+\_\+ptr (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 443 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_aa15b13f58a4961b1593045d1e228adec}\label{class_designar_1_1_base_graph_aa15b13f58a4961b1593045d1e228adec}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+node\+\_\+ptr@{search\+\_\+node\+\_\+ptr}}
+\index{search\+\_\+node\+\_\+ptr@{search\+\_\+node\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+node\+\_\+ptr()}{search\_node\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node} $\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+node\+\_\+ptr (\begin{DoxyParamCaption}\item[{Pred \&}]{pred }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Similar to previous but with an rvalue parameter. 
+
+Search a node which satifies a predicate.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em pred} & A predicate to be evaluated for each node \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A pointer to the node which the predicate is true, {\ttfamily nullptr} otherwise 
+\end{DoxyReturn}
+
+
+Definition at line 279 of file graph.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_base_graph_a1f19e5a79bfa156fd4cd80f3d8e27aa4}\label{class_designar_1_1_base_graph_a1f19e5a79bfa156fd4cd80f3d8e27aa4}} 
+\index{Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}!search\+\_\+node\+\_\+ptr@{search\+\_\+node\+\_\+ptr}}
+\index{search\+\_\+node\+\_\+ptr@{search\+\_\+node\+\_\+ptr}!Designar\+::\+Base\+Graph@{Designar\+::\+Base\+Graph}}
+\subsubsection{\texorpdfstring{search\+\_\+node\+\_\+ptr()}{search\_node\_ptr()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT, class Node, class Arc$>$ \\
+template$<$class Pred $>$ \\
+\hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}$\ast$ \hyperlink{class_designar_1_1_base_graph}{Designar\+::\+Base\+Graph}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, \hyperlink{namespace_designar_a5af326c65aa2bd26b26c410f2030d09e}{Node}, \hyperlink{namespace_designar_a3f55fb5513d62ff47cbc8f72b8e95d6f}{Arc} $>$\+::search\+\_\+node\+\_\+ptr (\begin{DoxyParamCaption}\item[{Pred \&\&}]{pred = {\ttfamily Pred()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 287 of file graph.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{graph_8_h}{graph.\+H}\end{DoxyCompactItemize}

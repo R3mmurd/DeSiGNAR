@@ -1,0 +1,510 @@
+\hypertarget{class_designar_1_1_array_iterator}{}\section{Referencia de la plantilla de la Clase Designar\+:\+:Array\+Iterator$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$}
+\label{class_designar_1_1_array_iterator}\index{Designar\+::\+Array\+Iterator$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+P\+Y $>$@{Designar\+::\+Array\+Iterator$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}}
+
+
+Objeto definido que permite recorrer un Array de De\+S\+I\+G\+N\+AR.  
+
+
+
+
+{\ttfamily \#include $<$array.\+H$>$}
+
+Diagrama de herencias de Designar\+:\+:Array\+Iterator$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{class_designar_1_1_array_iterator}
+\end{center}
+\end{figure}
+\subsection*{Métodos públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_array_iterator_a0fd19f5e2f3f3c13470d62b118575582}{Array\+Iterator} ()
+\begin{DoxyCompactList}\small\item\em $<$ Constructor por defecto de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries nullptr} y {\itshape curr} en {\bfseries 0}.. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator_a7d5565949d8cd3100686c1ff73eb1618}{Array\+Iterator} (const Array\+Type \&a)
+\begin{DoxyCompactList}\small\item\em Constructor paramétrico de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries a} y {\itshape curr} en {\bfseries 0}. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator_a1c9df0412f7bb1dabbd15f6772d8b9a3}{Array\+Iterator} (const Array\+Type \&a, \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} c)
+\begin{DoxyCompactList}\small\item\em Constructor paramétrico de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries a} y {\itshape curr} en {\bfseries c}. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator_a7d3069da40d921310097dbde17fb0204}{Array\+Iterator} (const \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \&it)
+\begin{DoxyCompactList}\small\item\em Constructor por copia de un iterador sobre Array, el cual inicializa el iterador con una instancia previa. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator_ad27f115766207137bd74ef47d477f4f5}{Array\+Iterator} (\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \&\&it)
+\begin{DoxyCompactList}\small\item\em Constructor por copia de un iterador sobre Array, el cual inicializa el iterador con una instancia previa usando Move Semantics. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \& \hyperlink{class_designar_1_1_array_iterator_a26d812ac595156aed963e60d41d91fa7}{operator=} (const \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \&it)
+\begin{DoxyCompactList}\small\item\em Sobrecarga del operador de asignación. \end{DoxyCompactList}\item 
+\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \& \hyperlink{class_designar_1_1_array_iterator_a219eb8e4d831f490cf9cdcb1f60dcacc}{operator=} (\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \&\&it)
+\begin{DoxyCompactList}\small\item\em Sobrecarga del operador de asignación usando Move Semantics. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_a6c3a5bf56a2b7da838ca773368e4699a}{swap} (\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \&it)
+\begin{DoxyCompactList}\small\item\em Operación de intercambio. Permite intercambiar el objeto {\bfseries this} con un \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} pasado como parámetro. \end{DoxyCompactList}\item 
+bool \hyperlink{class_designar_1_1_array_iterator_aafec192c97299c4f21c28c65e58b19fc}{has\+\_\+current} () const
+\begin{DoxyCompactList}\small\item\em Pregunta si aún hay elementos en el Array sobre los cuales se puede iterar. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_ac4e929d3247b68c3c9cffb43ec0891ec}{next} ()
+\begin{DoxyCompactList}\small\item\em Desplaza el iterador al {\itshape siguiente} elemento en el Array. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_a8709128b09b8b177fa1b042cb330c3e5}{next\+\_\+n} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} p)
+\begin{DoxyCompactList}\small\item\em Desplaza el iterador {\bfseries n} elementos hacia adelante en el Array. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_a5a0fd9640ab487a6034fec8f4f3d34cb}{prev} ()
+\begin{DoxyCompactList}\small\item\em Desplaza el iterador al elemento anterior en el Array. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_a5a417cab0b0b039c69d5a52a513a019f}{prev\+\_\+n} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} p)
+\begin{DoxyCompactList}\small\item\em Desplaza el iterador al elemento anterior en el Array. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_a68f6d13686360c93d95b3a875b14312e}{move\+\_\+to} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} p)
+\begin{DoxyCompactList}\small\item\em Desplaza el iterador a una posición exacta dada. \end{DoxyCompactList}\item 
+void \hyperlink{class_designar_1_1_array_iterator_af8781369a1cb13f92c8c2dbab9975118}{reset} ()
+\begin{DoxyCompactList}\small\item\em Reestablece {\bfseries \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}} a la posición inicial del Array. \end{DoxyCompactList}\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator_a209ca14a9628f0a67a258469d98089b8}{get\+\_\+position} () const
+\begin{DoxyCompactList}\small\item\em Observador para obtener la posición actual del iterador. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Métodos protegidos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator_a55fa01dfdb66a82b162ea2c9f631e2fd}{get\+\_\+location} () const
+\begin{DoxyCompactList}\small\item\em Observador para obtener la posición actual del iterador. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Atributos protegidos}
+\begin{DoxyCompactItemize}
+\item 
+Array\+Type $\ast$ \hyperlink{class_designar_1_1_array_iterator_a6518c265f47bf58f4e2c04b55416ded6}{array\+\_\+ptr}
+\begin{DoxyCompactList}\small\item\em Apuntador a un Array\+Type. \end{DoxyCompactList}\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator_aef9cd548a0423017eb452081f260a840}{curr}
+\begin{DoxyCompactList}\small\item\em Posición actual del iterador. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Amigas}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_array_iterator_a780ba1bdf8ce9c4f60e364ab9ce0cd47}{Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}
+\item 
+class \hyperlink{class_designar_1_1_array_iterator_af1665f0fe477bd4c26558c3f5cc620c3}{Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}
+\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+\subsubsection*{template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$\newline
+class Designar\+::\+Array\+Iterator$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}
+
+Objeto definido que permite recorrer un Array de De\+S\+I\+G\+N\+AR. 
+
+Definición en la línea 72 del archivo array.\+H.
+
+
+
+\subsection{Documentación del constructor y destructor}
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a0fd19f5e2f3f3c13470d62b118575582}\label{class_designar_1_1_array_iterator_a0fd19f5e2f3f3c13470d62b118575582}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Array\+Iterator@{Array\+Iterator}}
+\index{Array\+Iterator@{Array\+Iterator}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Array\+Iterator()}{ArrayIterator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+$<$ Constructor por defecto de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries nullptr} y {\itshape curr} en {\bfseries 0}.. 
+
+
+
+Definición en la línea 102 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a7d5565949d8cd3100686c1ff73eb1618}\label{class_designar_1_1_array_iterator_a7d5565949d8cd3100686c1ff73eb1618}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Array\+Iterator@{Array\+Iterator}}
+\index{Array\+Iterator@{Array\+Iterator}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Array\+Iterator()}{ArrayIterator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} (\begin{DoxyParamCaption}\item[{const Array\+Type \&}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor paramétrico de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries a} y {\itshape curr} en {\bfseries 0}. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em a} & Una referencia constante a un {\bfseries Array\+Type} \\
+\hline
+\end{DoxyParams}
+
+
+Definición en la línea 121 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a1c9df0412f7bb1dabbd15f6772d8b9a3}\label{class_designar_1_1_array_iterator_a1c9df0412f7bb1dabbd15f6772d8b9a3}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Array\+Iterator@{Array\+Iterator}}
+\index{Array\+Iterator@{Array\+Iterator}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Array\+Iterator()}{ArrayIterator()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} (\begin{DoxyParamCaption}\item[{const Array\+Type \&}]{a,  }\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor paramétrico de un iterador sobre Array, el cual inicializa array\+\_\+ptr en {\bfseries a} y {\itshape curr} en {\bfseries c}. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em a} & Una referencia constante a un {\bfseries Array\+Type} \\
+\hline
+\mbox{\tt in}  & {\em c} & Un valor {\bfseries nat\+\_\+t} que indica la posición actual del iterador \\
+\hline
+\end{DoxyParams}
+
+
+Definición en la línea 144 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a7d3069da40d921310097dbde17fb0204}\label{class_designar_1_1_array_iterator_a7d3069da40d921310097dbde17fb0204}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Array\+Iterator@{Array\+Iterator}}
+\index{Array\+Iterator@{Array\+Iterator}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Array\+Iterator()}{ArrayIterator()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$ \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor por copia de un iterador sobre Array, el cual inicializa el iterador con una instancia previa. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em it} & Una referencia constante a un {\bfseries \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}} \\
+\hline
+\end{DoxyParams}
+
+
+Definición en la línea 163 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_ad27f115766207137bd74ef47d477f4f5}\label{class_designar_1_1_array_iterator_ad27f115766207137bd74ef47d477f4f5}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Array\+Iterator@{Array\+Iterator}}
+\index{Array\+Iterator@{Array\+Iterator}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Array\+Iterator()}{ArrayIterator()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$ \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor por copia de un iterador sobre Array, el cual inicializa el iterador con una instancia previa usando Move Semantics. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em it} & Una rvalue a un {\bfseries \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}} \\
+\hline
+\end{DoxyParams}
+
+
+Definición en la línea 184 del archivo array.\+H.
+
+
+
+\subsection{Documentación de las funciones miembro}
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a55fa01dfdb66a82b162ea2c9f631e2fd}\label{class_designar_1_1_array_iterator_a55fa01dfdb66a82b162ea2c9f631e2fd}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!get\+\_\+location@{get\+\_\+location}}
+\index{get\+\_\+location@{get\+\_\+location}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+location()}{get\_location()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::get\+\_\+location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Observador para obtener la posición actual del iterador. 
+
+
+
+Definición en la línea 92 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a209ca14a9628f0a67a258469d98089b8}\label{class_designar_1_1_array_iterator_a209ca14a9628f0a67a258469d98089b8}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!get\+\_\+position@{get\+\_\+position}}
+\index{get\+\_\+position@{get\+\_\+position}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+position()}{get\_position()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Observador para obtener la posición actual del iterador. 
+
+\begin{DoxyReturn}{Devuelve}
+Posición actual del iterador 
+\end{DoxyReturn}
+
+
+Definición en la línea 421 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_aafec192c97299c4f21c28c65e58b19fc}\label{class_designar_1_1_array_iterator_aafec192c97299c4f21c28c65e58b19fc}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!has\+\_\+current@{has\+\_\+current}}
+\index{has\+\_\+current@{has\+\_\+current}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{has\+\_\+current()}{has\_current()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+bool \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::has\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Pregunta si aún hay elementos en el Array sobre los cuales se puede iterar. 
+
+\begin{DoxyReturn}{Devuelve}
+{\ttfamily true} si hay elementos sobre los cuales iterar, {\ttfamily false} si no los hay. 
+\end{DoxyReturn}
+
+
+Definición en la línea 267 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a68f6d13686360c93d95b3a875b14312e}\label{class_designar_1_1_array_iterator_a68f6d13686360c93d95b3a875b14312e}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!move\+\_\+to@{move\+\_\+to}}
+\index{move\+\_\+to@{move\+\_\+to}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{move\+\_\+to()}{move\_to()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::move\+\_\+to (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Desplaza el iterador a una posición exacta dada. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em p} & Nueva posición del iterador en el Array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+void. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Excepciones}
+{\em std\+::out\+\_\+of\+\_\+range} & si la posición dada está fuera del Array \\
+\hline
+\end{DoxyExceptions}
+
+
+Definición en la línea 377 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_ac4e929d3247b68c3c9cffb43ec0891ec}\label{class_designar_1_1_array_iterator_ac4e929d3247b68c3c9cffb43ec0891ec}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!next@{next}}
+\index{next@{next}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{next()}{next()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Desplaza el iterador al {\itshape siguiente} elemento en el Array. 
+
+\begin{DoxyReturn}{Devuelve}
+Vacío. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Excepciones}
+{\em std\+::out\+\_\+of\+\_\+range} & si no hay próximo elemento. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definición en la línea 287 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a8709128b09b8b177fa1b042cb330c3e5}\label{class_designar_1_1_array_iterator_a8709128b09b8b177fa1b042cb330c3e5}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!next\+\_\+n@{next\+\_\+n}}
+\index{next\+\_\+n@{next\+\_\+n}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{next\+\_\+n()}{next\_n()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::next\+\_\+n (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Desplaza el iterador {\bfseries n} elementos hacia adelante en el Array. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em n} & Número de elementos en el Array a desplazar desde el elemento actual. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+Vacío. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Excepciones}
+{\em std\+::out\+\_\+of\+\_\+range} & si la posición final es más grande que el tamaño del Array \\
+\hline
+\end{DoxyExceptions}
+
+
+Definición en la línea 310 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a26d812ac595156aed963e60d41d91fa7}\label{class_designar_1_1_array_iterator_a26d812ac595156aed963e60d41d91fa7}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \& \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$ \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sobrecarga del operador de asignación. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em it} & Una referencia constante a un \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+Una referencia modificable de {\bfseries this} 
+\end{DoxyReturn}
+
+
+Definición en la línea 204 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a219eb8e4d831f490cf9cdcb1f60dcacc}\label{class_designar_1_1_array_iterator_a219eb8e4d831f490cf9cdcb1f60dcacc}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \& \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$ \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sobrecarga del operador de asignación usando Move Semantics. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em it} & Una rvalue a un \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+Una referencia modificable de {\bfseries this} 
+\end{DoxyReturn}
+
+
+Definición en la línea 228 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a5a0fd9640ab487a6034fec8f4f3d34cb}\label{class_designar_1_1_array_iterator_a5a0fd9640ab487a6034fec8f4f3d34cb}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!prev@{prev}}
+\index{prev@{prev}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{prev()}{prev()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::prev (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Desplaza el iterador al elemento anterior en el Array. 
+
+\begin{DoxyReturn}{Devuelve}
+void. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Excepciones}
+{\em std\+::out\+\_\+of\+\_\+range} & si no hay elementos previos al actual \\
+\hline
+\end{DoxyExceptions}
+
+
+Definición en la línea 332 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a5a417cab0b0b039c69d5a52a513a019f}\label{class_designar_1_1_array_iterator_a5a417cab0b0b039c69d5a52a513a019f}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!prev\+\_\+n@{prev\+\_\+n}}
+\index{prev\+\_\+n@{prev\+\_\+n}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{prev\+\_\+n()}{prev\_n()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::prev\+\_\+n (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{p }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Desplaza el iterador al elemento anterior en el Array. 
+
+\begin{DoxyReturn}{Devuelve}
+void. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Excepciones}
+{\em std\+::out\+\_\+of\+\_\+range} & si no hay elementos previos al actual \\
+\hline
+\end{DoxyExceptions}
+
+
+Definición en la línea 354 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_af8781369a1cb13f92c8c2dbab9975118}\label{class_designar_1_1_array_iterator_af8781369a1cb13f92c8c2dbab9975118}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!reset@{reset}}
+\index{reset@{reset}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reestablece {\bfseries \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}} a la posición inicial del Array. 
+
+\begin{DoxyReturn}{Devuelve}
+Vacío 
+\end{DoxyReturn}
+
+
+Definición en la línea 401 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a6c3a5bf56a2b7da838ca773368e4699a}\label{class_designar_1_1_array_iterator_a6c3a5bf56a2b7da838ca773368e4699a}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+void \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$ \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Operación de intercambio. Permite intercambiar el objeto {\bfseries this} con un \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} pasado como parámetro. 
+
+
+\begin{DoxyParams}[1]{Parámetros}
+\mbox{\tt in}  & {\em it} & Una referencia constante a un \hyperlink{class_designar_1_1_array_iterator}{Array\+Iterator} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Devuelve}
+Nada 
+\end{DoxyReturn}
+
+
+Definición en la línea 249 del archivo array.\+H.
+
+
+
+\subsection{Documentación de las funciones relacionadas y clases amigas}
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a780ba1bdf8ce9c4f60e364ab9ce0cd47}\label{class_designar_1_1_array_iterator_a780ba1bdf8ce9c4f60e364ab9ce0cd47}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$@{Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}}
+\index{Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$@{Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Basic\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}{BasicIterator< Derived, T, RET\_CPY >}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+friend class \hyperlink{class_designar_1_1_basic_iterator}{Basic\+Iterator}$<$ Derived, T, R\+E\+T\+\_\+\+C\+PY $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definición en la línea 74 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_af1665f0fe477bd4c26558c3f5cc620c3}\label{class_designar_1_1_array_iterator_af1665f0fe477bd4c26558c3f5cc620c3}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$@{Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}}
+\index{Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$@{Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{Random\+Access\+Iterator$<$ Derived, T, R\+E\+T\+\_\+\+C\+P\+Y $>$}{RandomAccessIterator< Derived, T, RET\_CPY >}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+friend class \hyperlink{class_designar_1_1_random_access_iterator}{Random\+Access\+Iterator}$<$ Derived, T, R\+E\+T\+\_\+\+C\+PY $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definición en la línea 75 del archivo array.\+H.
+
+
+
+\subsection{Documentación de los datos miembro}
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_a6518c265f47bf58f4e2c04b55416ded6}\label{class_designar_1_1_array_iterator_a6518c265f47bf58f4e2c04b55416ded6}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!array\+\_\+ptr@{array\+\_\+ptr}}
+\index{array\+\_\+ptr@{array\+\_\+ptr}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{array\+\_\+ptr}{array\_ptr}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+Array\+Type$\ast$ \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::array\+\_\+ptr\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Apuntador a un Array\+Type. 
+
+
+
+Definición en la línea 78 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_array_iterator_aef9cd548a0423017eb452081f260a840}\label{class_designar_1_1_array_iterator_aef9cd548a0423017eb452081f260a840}} 
+\index{Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}!curr@{curr}}
+\index{curr@{curr}!Designar\+::\+Array\+Iterator@{Designar\+::\+Array\+Iterator}}
+\subsubsection{\texorpdfstring{curr}{curr}}
+{\footnotesize\ttfamily template$<$class Derived, class Array\+Type, typename T, bool R\+E\+T\+\_\+\+C\+PY$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_array_iterator}{Designar\+::\+Array\+Iterator}$<$ Derived, Array\+Type, T, R\+E\+T\+\_\+\+C\+PY $>$\+::curr\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Posición actual del iterador. 
+
+
+
+Definición en la línea 79 del archivo array.\+H.
+
+
+
+La documentación para esta clase fue generada a partir del siguiente fichero\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{array_8_h}{array.\+H}\end{DoxyCompactItemize}

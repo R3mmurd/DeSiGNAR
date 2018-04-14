@@ -1,0 +1,328 @@
+\hypertarget{class_designar_1_1_dyn_stack}{}\section{Referencia de la plantilla de la Clase Designar\+:\+:Dyn\+Stack$<$ T $>$}
+\label{class_designar_1_1_dyn_stack}\index{Designar\+::\+Dyn\+Stack$<$ T $>$@{Designar\+::\+Dyn\+Stack$<$ T $>$}}
+
+
+{\ttfamily \#include $<$stack.\+H$>$}
+
+Diagrama de herencias de Designar\+:\+:Dyn\+Stack$<$ T $>$\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_designar_1_1_dyn_stack}
+\end{center}
+\end{figure}
+\subsection*{Tipos públicos}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_dyn_stack_a2e50015faeef3234802046097db79f73}{Item\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_stack_a4a4fd39e08b25a05641fb888b99261c8}{Key\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_stack_afb7dc9ebd5c844450d997e38b195f3bb}{Data\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_stack_a511da1dd717eb6f9c5b143b2a8543176}{Value\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_dyn_stack_adb2c839a5bc34354be458c86dd35f5b8}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Métodos públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_dyn_stack_a974a328c42eeb04114249c321a7d2ebe}{Dyn\+Stack} ()
+\item 
+\hyperlink{class_designar_1_1_dyn_stack_afe8f19b00f9c0cb21ea2d64fedadcb5e}{Dyn\+Stack} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} cap)
+\item 
+\hyperlink{class_designar_1_1_dyn_stack_a4a28588893016f554cd8ea21b37e2c5f}{Dyn\+Stack} (const \hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \&s)
+\item 
+\hyperlink{class_designar_1_1_dyn_stack_a8a15a70c98b19554d73037118fa8eed9}{Dyn\+Stack} (\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \&\&s)
+\item 
+\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \& \hyperlink{class_designar_1_1_dyn_stack_a95c3464bba2e4c2393ada749ab4d9248}{operator=} (const \hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \&s)
+\item 
+\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \& \hyperlink{class_designar_1_1_dyn_stack_aa5b875ca2b2a6ce501a91c79d5857166}{operator=} (\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} \&\&s)
+\item 
+bool \hyperlink{class_designar_1_1_dyn_stack_ae0c03ed9771729e3773128868fb7afe5}{is\+\_\+empty} () const
+\item 
+void \hyperlink{class_designar_1_1_dyn_stack_aab024478a38633aeb3d79e2ddcbd1958}{clear} ()
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_dyn_stack_a4c15622a5283c072287a7dfdd6c4bd2d}{size} () const
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_stack_a07d7d76d087e7b9dc287a7b2acd02fc6}{push} (const T \&item)
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_stack_a1eff6c891fd3800c6aa55f35e14e4f88}{push} (T \&\&item)
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_stack_a33e8c623bae518ed88cdee01602febb0}{top} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_dyn_stack_a497eb06d2cb8280d031586a913b1317c}{top} () const
+\item 
+T \& \hyperlink{class_designar_1_1_dyn_stack_aa07528cd0ef77519ca5b5694bed9695d}{base} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_dyn_stack_affe0e56802ac0c982f598e2155bf4a46}{base} () const
+\item 
+T \hyperlink{class_designar_1_1_dyn_stack_ac3e7235449ffb9fc0ac96ba0b081d2ed}{pop} ()
+\item 
+void \hyperlink{class_designar_1_1_dyn_stack_a161b319e52448a4f824b036a9f7c6cca}{popn} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t})
+\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+\subsubsection*{template$<$typename T$>$\newline
+class Designar\+::\+Dyn\+Stack$<$ T $>$}
+
+
+
+Definición en la línea 190 del archivo stack.\+H.
+
+
+
+\subsection{Documentación de los \textquotesingle{}Typedef\textquotesingle{} miembros de la clase}
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_afb7dc9ebd5c844450d997e38b195f3bb}\label{class_designar_1_1_dyn_stack_afb7dc9ebd5c844450d997e38b195f3bb}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Data\+Type@{Data\+Type}}
+\index{Data\+Type@{Data\+Type}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Data\+Type}{DataType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3e37931b909b840cb7a40fc73f12bcf5}{Data\+Type} =  T}
+
+
+
+Definición en la línea 197 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a2e50015faeef3234802046097db79f73}\label{class_designar_1_1_dyn_stack_a2e50015faeef3234802046097db79f73}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_abfeb4e683cee75ae782ad20294c4c808}{Item\+Type} =  T}
+
+
+
+Definición en la línea 195 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a4a4fd39e08b25a05641fb888b99261c8}\label{class_designar_1_1_dyn_stack_a4a4fd39e08b25a05641fb888b99261c8}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a3a725cf21783340b8aca29dd1db0acf0}{Key\+Type} =  T}
+
+
+
+Definición en la línea 196 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_adb2c839a5bc34354be458c86dd35f5b8}\label{class_designar_1_1_dyn_stack_adb2c839a5bc34354be458c86dd35f5b8}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_a503ae414cc313d248e77c08e62ef043c}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definición en la línea 199 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a511da1dd717eb6f9c5b143b2a8543176}\label{class_designar_1_1_dyn_stack_a511da1dd717eb6f9c5b143b2a8543176}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+using \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_fixed_array_ac1cfeb4403a2dcbffd7ef494e5b873d0}{Value\+Type} =  T}
+
+
+
+Definición en la línea 198 del archivo stack.\+H.
+
+
+
+\subsection{Documentación del constructor y destructor}
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a974a328c42eeb04114249c321a7d2ebe}\label{class_designar_1_1_dyn_stack_a974a328c42eeb04114249c321a7d2ebe}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Dyn\+Stack@{Dyn\+Stack}}
+\index{Dyn\+Stack@{Dyn\+Stack}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Dyn\+Stack()}{DynStack()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 201 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_afe8f19b00f9c0cb21ea2d64fedadcb5e}\label{class_designar_1_1_dyn_stack_afe8f19b00f9c0cb21ea2d64fedadcb5e}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Dyn\+Stack@{Dyn\+Stack}}
+\index{Dyn\+Stack@{Dyn\+Stack}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Dyn\+Stack()}{DynStack()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{cap }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 207 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a4a28588893016f554cd8ea21b37e2c5f}\label{class_designar_1_1_dyn_stack_a4a28588893016f554cd8ea21b37e2c5f}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Dyn\+Stack@{Dyn\+Stack}}
+\index{Dyn\+Stack@{Dyn\+Stack}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Dyn\+Stack()}{DynStack()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}$<$ T $>$ \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 213 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a8a15a70c98b19554d73037118fa8eed9}\label{class_designar_1_1_dyn_stack_a8a15a70c98b19554d73037118fa8eed9}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!Dyn\+Stack@{Dyn\+Stack}}
+\index{Dyn\+Stack@{Dyn\+Stack}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{Dyn\+Stack()}{DynStack()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}$<$ T $>$ \&\&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 219 del archivo stack.\+H.
+
+
+
+\subsection{Documentación de las funciones miembro}
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_aa07528cd0ef77519ca5b5694bed9695d}\label{class_designar_1_1_dyn_stack_aa07528cd0ef77519ca5b5694bed9695d}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!base@{base}}
+\index{base@{base}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{base()}{base()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::base (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 283 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_affe0e56802ac0c982f598e2155bf4a46}\label{class_designar_1_1_dyn_stack_affe0e56802ac0c982f598e2155bf4a46}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!base@{base}}
+\index{base@{base}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{base()}{base()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::base (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 291 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_aab024478a38633aeb3d79e2ddcbd1958}\label{class_designar_1_1_dyn_stack_aab024478a38633aeb3d79e2ddcbd1958}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!clear@{clear}}
+\index{clear@{clear}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 245 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_ae0c03ed9771729e3773128868fb7afe5}\label{class_designar_1_1_dyn_stack_ae0c03ed9771729e3773128868fb7afe5}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!is\+\_\+empty@{is\+\_\+empty}}
+\index{is\+\_\+empty@{is\+\_\+empty}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{is\+\_\+empty()}{is\_empty()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::is\+\_\+empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 240 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a95c3464bba2e4c2393ada749ab4d9248}\label{class_designar_1_1_dyn_stack_a95c3464bba2e4c2393ada749ab4d9248}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}$<$ T $>$ \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 225 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_aa5b875ca2b2a6ce501a91c79d5857166}\label{class_designar_1_1_dyn_stack_aa5b875ca2b2a6ce501a91c79d5857166}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_stack}{Dyn\+Stack}$<$ T $>$ \&\&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 234 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_ac3e7235449ffb9fc0ac96ba0b081d2ed}\label{class_designar_1_1_dyn_stack_ac3e7235449ffb9fc0ac96ba0b081d2ed}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!pop@{pop}}
+\index{pop@{pop}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::pop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 299 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a161b319e52448a4f824b036a9f7c6cca}\label{class_designar_1_1_dyn_stack_a161b319e52448a4f824b036a9f7c6cca}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!popn@{popn}}
+\index{popn@{popn}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{popn()}{popn()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::popn (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{n }\end{DoxyParamCaption})}
+
+
+
+Definición en la línea 311 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a07d7d76d087e7b9dc287a7b2acd02fc6}\label{class_designar_1_1_dyn_stack_a07d7d76d087e7b9dc287a7b2acd02fc6}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!push@{push}}
+\index{push@{push}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::push (\begin{DoxyParamCaption}\item[{const T \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 255 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a1eff6c891fd3800c6aa55f35e14e4f88}\label{class_designar_1_1_dyn_stack_a1eff6c891fd3800c6aa55f35e14e4f88}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!push@{push}}
+\index{push@{push}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{push()}{push()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::push (\begin{DoxyParamCaption}\item[{T \&\&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 261 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a4c15622a5283c072287a7dfdd6c4bd2d}\label{class_designar_1_1_dyn_stack_a4c15622a5283c072287a7dfdd6c4bd2d}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!size@{size}}
+\index{size@{size}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 250 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a33e8c623bae518ed88cdee01602febb0}\label{class_designar_1_1_dyn_stack_a33e8c623bae518ed88cdee01602febb0}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!top@{top}}
+\index{top@{top}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{top()}{top()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::top (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 267 del archivo stack.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_dyn_stack_a497eb06d2cb8280d031586a913b1317c}\label{class_designar_1_1_dyn_stack_a497eb06d2cb8280d031586a913b1317c}} 
+\index{Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}!top@{top}}
+\index{top@{top}!Designar\+::\+Dyn\+Stack@{Designar\+::\+Dyn\+Stack}}
+\subsubsection{\texorpdfstring{top()}{top()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_dyn_stack}{Designar\+::\+Dyn\+Stack}$<$ T $>$\+::top (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 275 del archivo stack.\+H.
+
+
+
+La documentación para esta clase fue generada a partir del siguiente fichero\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{stack_8_h}{stack.\+H}\end{DoxyCompactItemize}

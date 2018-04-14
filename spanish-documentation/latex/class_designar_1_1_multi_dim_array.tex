@@ -1,0 +1,330 @@
+\hypertarget{class_designar_1_1_multi_dim_array}{}\section{Referencia de la plantilla de la Clase Designar\+:\+:Multi\+Dim\+Array$<$ T, N $>$}
+\label{class_designar_1_1_multi_dim_array}\index{Designar\+::\+Multi\+Dim\+Array$<$ T, N $>$@{Designar\+::\+Multi\+Dim\+Array$<$ T, N $>$}}
+
+
+{\ttfamily \#include $<$array.\+H$>$}
+
+\subsection*{Clases}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Tipos públicos}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_multi_dim_array_a1b4c346c7e11cbada54447843d0c7880}{Item\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_multi_dim_array_aa8c6b455e3cd5b74a57243a13553c6ff}{Key\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_multi_dim_array_a23b3bec3a6a803d8ef7becceb592d6c0}{Data\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_multi_dim_array_aecea28d754897523cdfa68bc28b829d3}{Value\+Type} = T
+\item 
+using \hyperlink{class_designar_1_1_multi_dim_array_a45c10514739f65d38ae3749569739267}{Size\+Type} = \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Métodos públicos}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_a52a96f1eeb1176cc18d6329ab75e59f8}{Multi\+Dim\+Array} ()=default
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\\hyperlink{class_designar_1_1_multi_dim_array_a87e9b411cccc10d39117d1ccdcd66261}{Multi\+Dim\+Array} (Dims... dims)
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_a4dd6166b45028efc4bab7cd42c492663}{Multi\+Dim\+Array} (const \hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \&mda)
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_aaa91d894b0e4065cba28a9066c0513b8}{Multi\+Dim\+Array} (\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \&\&mda)
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_multi_dim_array_a39d5dcd40ce04bf3113c0f6d83805d0a}{size} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i) const
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\T \& \hyperlink{class_designar_1_1_multi_dim_array_a27a85daef556fb6cdb3f0c0b0d16e4d0}{get} (Dims... dims)
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\const T \& \hyperlink{class_designar_1_1_multi_dim_array_a36ba716b359942501b9cd6d96562e774}{get} (Dims... dims) const
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\T \& \hyperlink{class_designar_1_1_multi_dim_array_a35f5b6b915a03e4ba04ccd28af40dc79}{at} (Dims... dims)
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\const T \& \hyperlink{class_designar_1_1_multi_dim_array_aa6c5641e0839fae2bc8d1dadc134cc71}{at} (Dims... dims) const
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\T \& \hyperlink{class_designar_1_1_multi_dim_array_a9547e76013b4f532de026ec425ad4f7a}{operator()} (Dims... dims)
+\item 
+{\footnotesize template$<$typename... Dims$>$ }\\const T \& \hyperlink{class_designar_1_1_multi_dim_array_a1edce0b31104f2b50bd8f8047e373b78}{operator()} (Dims... dims) const
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \& \hyperlink{class_designar_1_1_multi_dim_array_a4f191233c720bc670a181682b0452347}{operator=} (const \hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \&mda)
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \& \hyperlink{class_designar_1_1_multi_dim_array_a45e425f7a1795d97822d8fafe5c02244}{operator=} (\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} \&\&mda)
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array_adaed0d8dcdb5500e751f27418e914c4d}{begin} ()
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array_ad3760c3ce200ee63585ab7c7841b433d}{begin} () const
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array_a6fc4ca23162a6b285f2a6fd698232459}{end} ()
+\item 
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array_a83200332e5914f2485d64cedb87b9470}{end} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Descripción detallada}
+\subsubsection*{template$<$typename T, nat\+\_\+t N = 2$>$\newline
+class Designar\+::\+Multi\+Dim\+Array$<$ T, N $>$}
+
+
+
+Definición en la línea 1495 del archivo array.\+H.
+
+
+
+\subsection{Documentación de los \textquotesingle{}Typedef\textquotesingle{} miembros de la clase}
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a23b3bec3a6a803d8ef7becceb592d6c0}\label{class_designar_1_1_multi_dim_array_a23b3bec3a6a803d8ef7becceb592d6c0}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Data\+Type@{Data\+Type}}
+\index{Data\+Type@{Data\+Type}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Data\+Type}{DataType}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+using \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array_a23b3bec3a6a803d8ef7becceb592d6c0}{Data\+Type} =  T}
+
+
+
+Definición en la línea 1588 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a1b4c346c7e11cbada54447843d0c7880}\label{class_designar_1_1_multi_dim_array_a1b4c346c7e11cbada54447843d0c7880}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Item\+Type@{Item\+Type}}
+\index{Item\+Type@{Item\+Type}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Item\+Type}{ItemType}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+using \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array_a1b4c346c7e11cbada54447843d0c7880}{Item\+Type} =  T}
+
+
+
+Definición en la línea 1586 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_aa8c6b455e3cd5b74a57243a13553c6ff}\label{class_designar_1_1_multi_dim_array_aa8c6b455e3cd5b74a57243a13553c6ff}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Key\+Type@{Key\+Type}}
+\index{Key\+Type@{Key\+Type}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Key\+Type}{KeyType}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+using \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array_aa8c6b455e3cd5b74a57243a13553c6ff}{Key\+Type} =  T}
+
+
+
+Definición en la línea 1587 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a45c10514739f65d38ae3749569739267}\label{class_designar_1_1_multi_dim_array_a45c10514739f65d38ae3749569739267}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Size\+Type@{Size\+Type}}
+\index{Size\+Type@{Size\+Type}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Size\+Type}{SizeType}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+using \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array_a45c10514739f65d38ae3749569739267}{Size\+Type} =  \hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}
+
+
+
+Definición en la línea 1590 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_aecea28d754897523cdfa68bc28b829d3}\label{class_designar_1_1_multi_dim_array_aecea28d754897523cdfa68bc28b829d3}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Value\+Type}{ValueType}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+using \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array_aecea28d754897523cdfa68bc28b829d3}{Value\+Type} =  T}
+
+
+
+Definición en la línea 1589 del archivo array.\+H.
+
+
+
+\subsection{Documentación del constructor y destructor}
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a52a96f1eeb1176cc18d6329ab75e59f8}\label{class_designar_1_1_multi_dim_array_a52a96f1eeb1176cc18d6329ab75e59f8}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Multi\+Dim\+Array@{Multi\+Dim\+Array}}
+\index{Multi\+Dim\+Array@{Multi\+Dim\+Array}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Multi\+Dim\+Array()}{MultiDimArray()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a87e9b411cccc10d39117d1ccdcd66261}\label{class_designar_1_1_multi_dim_array_a87e9b411cccc10d39117d1ccdcd66261}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Multi\+Dim\+Array@{Multi\+Dim\+Array}}
+\index{Multi\+Dim\+Array@{Multi\+Dim\+Array}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Multi\+Dim\+Array()}{MultiDimArray()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1606 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a4dd6166b45028efc4bab7cd42c492663}\label{class_designar_1_1_multi_dim_array_a4dd6166b45028efc4bab7cd42c492663}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Multi\+Dim\+Array@{Multi\+Dim\+Array}}
+\index{Multi\+Dim\+Array@{Multi\+Dim\+Array}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Multi\+Dim\+Array()}{MultiDimArray()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}$<$ T, N $>$ \&}]{mda }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1612 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_aaa91d894b0e4065cba28a9066c0513b8}\label{class_designar_1_1_multi_dim_array_aaa91d894b0e4065cba28a9066c0513b8}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!Multi\+Dim\+Array@{Multi\+Dim\+Array}}
+\index{Multi\+Dim\+Array@{Multi\+Dim\+Array}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{Multi\+Dim\+Array()}{MultiDimArray()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}$<$ T, N $>$ \&\&}]{mda }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1618 del archivo array.\+H.
+
+
+
+\subsection{Documentación de las funciones miembro}
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a35f5b6b915a03e4ba04ccd28af40dc79}\label{class_designar_1_1_multi_dim_array_a35f5b6b915a03e4ba04ccd28af40dc79}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!at@{at}}
+\index{at@{at}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{at()}{at()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::at (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1648 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_aa6c5641e0839fae2bc8d1dadc134cc71}\label{class_designar_1_1_multi_dim_array_aa6c5641e0839fae2bc8d1dadc134cc71}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!at@{at}}
+\index{at@{at}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{at()}{at()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+const T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::at (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1654 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_adaed0d8dcdb5500e751f27418e914c4d}\label{class_designar_1_1_multi_dim_array_adaed0d8dcdb5500e751f27418e914c4d}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1724 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_ad3760c3ce200ee63585ab7c7841b433d}\label{class_designar_1_1_multi_dim_array_ad3760c3ce200ee63585ab7c7841b433d}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!begin@{begin}}
+\index{begin@{begin}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{begin()}{begin()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::begin (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1729 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a6fc4ca23162a6b285f2a6fd698232459}\label{class_designar_1_1_multi_dim_array_a6fc4ca23162a6b285f2a6fd698232459}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!end@{end}}
+\index{end@{end}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1734 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a83200332e5914f2485d64cedb87b9470}\label{class_designar_1_1_multi_dim_array_a83200332e5914f2485d64cedb87b9470}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!end@{end}}
+\index{end@{end}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{end()}{end()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array_1_1_iterator}{Iterator} \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1739 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a27a85daef556fb6cdb3f0c0b0d16e4d0}\label{class_designar_1_1_multi_dim_array_a27a85daef556fb6cdb3f0c0b0d16e4d0}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!get@{get}}
+\index{get@{get}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::get (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1630 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a36ba716b359942501b9cd6d96562e774}\label{class_designar_1_1_multi_dim_array_a36ba716b359942501b9cd6d96562e774}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!get@{get}}
+\index{get@{get}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{get()}{get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+const T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::get (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1639 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a9547e76013b4f532de026ec425ad4f7a}\label{class_designar_1_1_multi_dim_array_a9547e76013b4f532de026ec425ad4f7a}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!operator()@{operator()}}
+\index{operator()@{operator()}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::operator() (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1660 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a1edce0b31104f2b50bd8f8047e373b78}\label{class_designar_1_1_multi_dim_array_a1edce0b31104f2b50bd8f8047e373b78}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!operator()@{operator()}}
+\index{operator()@{operator()}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{operator()()}{operator()()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+template$<$typename... Dims$>$ \\
+const T\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::operator() (\begin{DoxyParamCaption}\item[{Dims...}]{dims }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1666 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a4f191233c720bc670a181682b0452347}\label{class_designar_1_1_multi_dim_array_a4f191233c720bc670a181682b0452347}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}$<$ T, N $>$ \&}]{mda }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1671 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a45e425f7a1795d97822d8fafe5c02244}\label{class_designar_1_1_multi_dim_array_a45e425f7a1795d97822d8fafe5c02244}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}\& \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_multi_dim_array}{Multi\+Dim\+Array}$<$ T, N $>$ \&\&}]{mda }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1682 del archivo array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_multi_dim_array_a39d5dcd40ce04bf3113c0f6d83805d0a}\label{class_designar_1_1_multi_dim_array_a39d5dcd40ce04bf3113c0f6d83805d0a}} 
+\index{Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}!size@{size}}
+\index{size@{size}!Designar\+::\+Multi\+Dim\+Array@{Designar\+::\+Multi\+Dim\+Array}}
+\subsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename T, nat\+\_\+t N = 2$>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_multi_dim_array}{Designar\+::\+Multi\+Dim\+Array}$<$ T, N $>$\+::size (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definición en la línea 1624 del archivo array.\+H.
+
+
+
+La documentación para esta clase fue generada a partir del siguiente fichero\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{array_8_h}{array.\+H}\end{DoxyCompactItemize}

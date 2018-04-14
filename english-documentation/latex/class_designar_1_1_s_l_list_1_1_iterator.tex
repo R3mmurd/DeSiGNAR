@@ -1,0 +1,266 @@
+\hypertarget{class_designar_1_1_s_l_list_1_1_iterator}{}\section{Designar\+:\+:S\+L\+List$<$ T $>$\+:\+:Iterator Class Reference}
+\label{class_designar_1_1_s_l_list_1_1_iterator}\index{Designar\+::\+S\+L\+List$<$ T $>$\+::\+Iterator@{Designar\+::\+S\+L\+List$<$ T $>$\+::\+Iterator}}
+
+
+{\ttfamily \#include $<$list.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:S\+L\+List$<$ T $>$\+:\+:Iterator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_designar_1_1_s_l_list_1_1_iterator}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a8c1c1f8110e22d81401e404c53003156}{Iterator} ()
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a280b63ef5b720adb076806270cd9e8ec}{Iterator} (const \hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ T $>$ \&l)
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a56a2a893f109ea2158b183c3efaff8a3}{Iterator} (const \hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ T $>$ \&l, \hyperlink{class_designar_1_1_node_s_l_list_a41963019ada1025099e3259207a3de96}{Node} $\ast$c)
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator_ae6726c755567d34649157c075b825a20}{Iterator} (const \hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&it)
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a2d8fece759af352a51982b4ffb25f351}{Iterator} (\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&\&it)
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \& \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_ab6a8bedc6dc57d1255464d4ea942bdf5}{operator=} (const \hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&it)
+\item 
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \& \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a9215becbdd87b11db7f6481e96df9343}{operator=} (\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&\&it)
+\item 
+void \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_afbb40762fe2a3c8ecea8fb26751492e0}{swap} (\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&it)
+\item 
+\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t} \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a2105a92f98b381c1dc9cdc138e96a22a}{get\+\_\+position} () const
+\item 
+bool \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_ab245268535b61d073d615dc969bcaf5a}{has\+\_\+current} () const
+\item 
+T \& \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a4986f4352424c32e5518ce1435474f0b}{get\+\_\+current} ()
+\item 
+const T \& \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_aa29dad95637eeaf662bcc3a8bb02d77a}{get\+\_\+current} () const
+\item 
+void \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_a37eb6d2f01ce3e41785512742cab0fbc}{next} ()
+\item 
+void \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_adb490da387d9628b7b61217247e96d97}{reset} ()
+\item 
+T \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_ae9fc8898009213695804526b4fe8c2cb}{del} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_node_s_l_list_a41963019ada1025099e3259207a3de96}{Node} $\ast$ \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_af994c3d4b1f178e55d8b68d3b7a515cf}{get\+\_\+location} () const
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_designar_1_1_s_l_list_1_1_iterator_ae3421d6be56b523bf3c41ceb29f3e5d7}{Basic\+Iterator$<$ Iterator, T $>$}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Designar\+::\+S\+L\+List$<$ T $>$\+::\+Iterator}
+
+
+
+Definition at line 354 of file list.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a8c1c1f8110e22d81401e404c53003156}\label{class_designar_1_1_s_l_list_1_1_iterator_a8c1c1f8110e22d81401e404c53003156}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::\+Iterator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 373 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a280b63ef5b720adb076806270cd9e8ec}\label{class_designar_1_1_s_l_list_1_1_iterator_a280b63ef5b720adb076806270cd9e8ec}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ T $>$ \&}]{l }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 379 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a56a2a893f109ea2158b183c3efaff8a3}\label{class_designar_1_1_s_l_list_1_1_iterator_a56a2a893f109ea2158b183c3efaff8a3}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_list}{S\+L\+List}$<$ T $>$ \&}]{l,  }\item[{\hyperlink{class_designar_1_1_node_s_l_list_a41963019ada1025099e3259207a3de96}{Node} $\ast$}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 386 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_ae6726c755567d34649157c075b825a20}\label{class_designar_1_1_s_l_list_1_1_iterator_ae6726c755567d34649157c075b825a20}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 392 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a2d8fece759af352a51982b4ffb25f351}\label{class_designar_1_1_s_l_list_1_1_iterator_a2d8fece759af352a51982b4ffb25f351}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Iterator@{Iterator}}
+\index{Iterator@{Iterator}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Iterator()}{Iterator()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::\+Iterator (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 398 of file list.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_ae9fc8898009213695804526b4fe8c2cb}\label{class_designar_1_1_s_l_list_1_1_iterator_ae9fc8898009213695804526b4fe8c2cb}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!del@{del}}
+\index{del@{del}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{del()}{del()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::del (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 473 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a4986f4352424c32e5518ce1435474f0b}\label{class_designar_1_1_s_l_list_1_1_iterator_a4986f4352424c32e5518ce1435474f0b}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!get\+\_\+current@{get\+\_\+current}}
+\index{get\+\_\+current@{get\+\_\+current}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+current()}{get\_current()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+T\& \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::get\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 441 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_aa29dad95637eeaf662bcc3a8bb02d77a}\label{class_designar_1_1_s_l_list_1_1_iterator_aa29dad95637eeaf662bcc3a8bb02d77a}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!get\+\_\+current@{get\+\_\+current}}
+\index{get\+\_\+current@{get\+\_\+current}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+current()}{get\_current()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+const T\& \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::get\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 449 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_af994c3d4b1f178e55d8b68d3b7a515cf}\label{class_designar_1_1_s_l_list_1_1_iterator_af994c3d4b1f178e55d8b68d3b7a515cf}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!get\+\_\+location@{get\+\_\+location}}
+\index{get\+\_\+location@{get\+\_\+location}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+location()}{get\_location()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_node_s_l_list_a41963019ada1025099e3259207a3de96}{Node}$\ast$ \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::get\+\_\+location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 367 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a2105a92f98b381c1dc9cdc138e96a22a}\label{class_designar_1_1_s_l_list_1_1_iterator_a2105a92f98b381c1dc9cdc138e96a22a}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!get\+\_\+position@{get\+\_\+position}}
+\index{get\+\_\+position@{get\+\_\+position}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{get\+\_\+position()}{get\_position()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t} \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::get\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 431 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_ab245268535b61d073d615dc969bcaf5a}\label{class_designar_1_1_s_l_list_1_1_iterator_ab245268535b61d073d615dc969bcaf5a}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!has\+\_\+current@{has\+\_\+current}}
+\index{has\+\_\+current@{has\+\_\+current}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{has\+\_\+current()}{has\_current()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::has\+\_\+current (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 436 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a37eb6d2f01ce3e41785512742cab0fbc}\label{class_designar_1_1_s_l_list_1_1_iterator_a37eb6d2f01ce3e41785512742cab0fbc}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!next@{next}}
+\index{next@{next}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{next()}{next()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 457 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_ab6a8bedc6dc57d1255464d4ea942bdf5}\label{class_designar_1_1_s_l_list_1_1_iterator_ab6a8bedc6dc57d1255464d4ea942bdf5}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator}\& \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 404 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_a9215becbdd87b11db7f6481e96df9343}\label{class_designar_1_1_s_l_list_1_1_iterator_a9215becbdd87b11db7f6481e96df9343}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!operator=@{operator=}}
+\index{operator=@{operator=}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator}\& \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::operator= (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&\&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 417 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_adb490da387d9628b7b61217247e96d97}\label{class_designar_1_1_s_l_list_1_1_iterator_adb490da387d9628b7b61217247e96d97}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!reset@{reset}}
+\index{reset@{reset}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 467 of file list.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_afbb40762fe2a3c8ecea8fb26751492e0}\label{class_designar_1_1_s_l_list_1_1_iterator_afbb40762fe2a3c8ecea8fb26751492e0}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!swap@{swap}}
+\index{swap@{swap}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{swap()}{swap()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+void \hyperlink{class_designar_1_1_s_l_list}{Designar\+::\+S\+L\+List}$<$ T $>$\+::Iterator\+::swap (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator} \&}]{it }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 423 of file list.\+H.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_s_l_list_1_1_iterator_ae3421d6be56b523bf3c41ceb29f3e5d7}\label{class_designar_1_1_s_l_list_1_1_iterator_ae3421d6be56b523bf3c41ceb29f3e5d7}} 
+\index{Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}!Basic\+Iterator$<$ Iterator, T $>$@{Basic\+Iterator$<$ Iterator, T $>$}}
+\index{Basic\+Iterator$<$ Iterator, T $>$@{Basic\+Iterator$<$ Iterator, T $>$}!Designar\+::\+S\+L\+List\+::\+Iterator@{Designar\+::\+S\+L\+List\+::\+Iterator}}
+\subsubsection{\texorpdfstring{Basic\+Iterator$<$ Iterator, T $>$}{BasicIterator< Iterator, T >}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+friend class \hyperlink{class_designar_1_1_basic_iterator}{Basic\+Iterator}$<$ \hyperlink{class_designar_1_1_s_l_list_1_1_iterator}{Iterator}, T $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 356 of file list.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{list_8_h}{list.\+H}\end{DoxyCompactItemize}

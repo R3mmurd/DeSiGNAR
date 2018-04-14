@@ -1,0 +1,140 @@
+\hypertarget{class_designar_1_1_prim}{}\section{Designar\+:\+:Prim$<$ GT, Distance, Cmp $>$ Class Template Reference}
+\label{class_designar_1_1_prim}\index{Designar\+::\+Prim$<$ G\+T, Distance, Cmp $>$@{Designar\+::\+Prim$<$ G\+T, Distance, Cmp $>$}}
+
+
+{\ttfamily \#include $<$graphalgorithms.\+H$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}{Node} = typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}
+\item 
+using \hyperlink{class_designar_1_1_prim_adb1cb5cb91efc05d2a06b5e0825ed609}{Arc} = typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_prim_a72499b6f863776f135b39977e8c981bf}{Prim} (Distance \&\+\_\+distance, Cmp \&\+\_\+cmp)
+\item 
+\hyperlink{class_designar_1_1_prim_abf866c064ed21f9be1ccb60ed9df84c1}{Prim} (Distance \&\&\+\_\+distance=Distance(), Cmp \&\&\+\_\+cmp=Cmp())
+\item 
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_prim_a39e561f33cf1a98dc599d81f01948a16}{build\+\_\+min\+\_\+spanning\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&, \hyperlink{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}{Node} \&)
+\item 
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_prim_a57b6f5db0d64fc287fc6beb5ffb3713d}{build\+\_\+min\+\_\+spanning\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g)
+\item 
+void \hyperlink{class_designar_1_1_prim_ad2f2b01a9c586af106f28906e23bbd30}{paint\+\_\+min\+\_\+spanning\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g, \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&start)
+\item 
+void \hyperlink{class_designar_1_1_prim_a34cd263d3ccef0be04a710bde8d6aa68}{paint\+\_\+min\+\_\+spanning\+\_\+tree} (\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&g)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class GT, class Distance = Default\+Distance$<$\+G\+T$>$, class Cmp = std\+::less$<$typename Distance\+::\+Type$>$$>$\newline
+class Designar\+::\+Prim$<$ G\+T, Distance, Cmp $>$}
+
+
+
+Definition at line 1283 of file graphalgorithms.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{class_designar_1_1_prim_adb1cb5cb91efc05d2a06b5e0825ed609}\label{class_designar_1_1_prim_adb1cb5cb91efc05d2a06b5e0825ed609}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!Arc@{Arc}}
+\index{Arc@{Arc}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{Arc}{Arc}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::\hyperlink{class_designar_1_1_prim_adb1cb5cb91efc05d2a06b5e0825ed609}{Arc} =  typename \hyperlink{class_designar_1_1_graph_a74c730ef4ce2d20f998d72bd25c2b5bf}{G\+T\+::\+Arc}}
+
+
+
+Definition at line 1287 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}\label{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!Node@{Node}}
+\index{Node@{Node}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{Node}{Node}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+using \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::\hyperlink{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}{Node} =  typename \hyperlink{class_designar_1_1_graph_a5dfc7dba9d092ac489c72e40390c37d0}{G\+T\+::\+Node}}
+
+
+
+Definition at line 1286 of file graphalgorithms.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_prim_a72499b6f863776f135b39977e8c981bf}\label{class_designar_1_1_prim_a72499b6f863776f135b39977e8c981bf}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!Prim@{Prim}}
+\index{Prim@{Prim}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{Prim()}{Prim()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::\hyperlink{class_designar_1_1_prim}{Prim} (\begin{DoxyParamCaption}\item[{Distance \&}]{\+\_\+distance,  }\item[{Cmp \&}]{\+\_\+cmp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1298 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_prim_abf866c064ed21f9be1ccb60ed9df84c1}\label{class_designar_1_1_prim_abf866c064ed21f9be1ccb60ed9df84c1}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!Prim@{Prim}}
+\index{Prim@{Prim}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{Prim()}{Prim()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::\hyperlink{class_designar_1_1_prim}{Prim} (\begin{DoxyParamCaption}\item[{Distance \&\&}]{\+\_\+distance = {\ttfamily Distance()},  }\item[{Cmp \&\&}]{\+\_\+cmp = {\ttfamily Cmp()} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1304 of file graphalgorithms.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_prim_a39e561f33cf1a98dc599d81f01948a16}\label{class_designar_1_1_prim_a39e561f33cf1a98dc599d81f01948a16}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!build\+\_\+min\+\_\+spanning\+\_\+tree@{build\+\_\+min\+\_\+spanning\+\_\+tree}}
+\index{build\+\_\+min\+\_\+spanning\+\_\+tree@{build\+\_\+min\+\_\+spanning\+\_\+tree}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{build\+\_\+min\+\_\+spanning\+\_\+tree()}{build\_min\_spanning\_tree()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance , class Cmp $>$ \\
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::build\+\_\+min\+\_\+spanning\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{class_designar_1_1_prim_a61fb55303a5350e0a6dadd5472571ba6}{Node} \&}]{start }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1345 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_prim_a57b6f5db0d64fc287fc6beb5ffb3713d}\label{class_designar_1_1_prim_a57b6f5db0d64fc287fc6beb5ffb3713d}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!build\+\_\+min\+\_\+spanning\+\_\+tree@{build\+\_\+min\+\_\+spanning\+\_\+tree}}
+\index{build\+\_\+min\+\_\+spanning\+\_\+tree@{build\+\_\+min\+\_\+spanning\+\_\+tree}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{build\+\_\+min\+\_\+spanning\+\_\+tree()}{build\_min\_spanning\_tree()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::build\+\_\+min\+\_\+spanning\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1312 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_prim_ad2f2b01a9c586af106f28906e23bbd30}\label{class_designar_1_1_prim_ad2f2b01a9c586af106f28906e23bbd30}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!paint\+\_\+min\+\_\+spanning\+\_\+tree@{paint\+\_\+min\+\_\+spanning\+\_\+tree}}
+\index{paint\+\_\+min\+\_\+spanning\+\_\+tree@{paint\+\_\+min\+\_\+spanning\+\_\+tree}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{paint\+\_\+min\+\_\+spanning\+\_\+tree()}{paint\_min\_spanning\_tree()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+void \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::paint\+\_\+min\+\_\+spanning\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g,  }\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{start }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1317 of file graphalgorithms.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_prim_a34cd263d3ccef0be04a710bde8d6aa68}\label{class_designar_1_1_prim_a34cd263d3ccef0be04a710bde8d6aa68}} 
+\index{Designar\+::\+Prim@{Designar\+::\+Prim}!paint\+\_\+min\+\_\+spanning\+\_\+tree@{paint\+\_\+min\+\_\+spanning\+\_\+tree}}
+\index{paint\+\_\+min\+\_\+spanning\+\_\+tree@{paint\+\_\+min\+\_\+spanning\+\_\+tree}!Designar\+::\+Prim@{Designar\+::\+Prim}}
+\subsubsection{\texorpdfstring{paint\+\_\+min\+\_\+spanning\+\_\+tree()}{paint\_min\_spanning\_tree()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class GT , class Distance  = Default\+Distance$<$\+G\+T$>$, class Cmp  = std\+::less$<$typename Distance\+::\+Type$>$$>$ \\
+void \hyperlink{class_designar_1_1_prim}{Designar\+::\+Prim}$<$ \hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT}, Distance, Cmp $>$\+::paint\+\_\+min\+\_\+spanning\+\_\+tree (\begin{DoxyParamCaption}\item[{\hyperlink{demo-buildgraph_8_c_a3001c40d2c31ca87ed96cd7d1334a55e}{GT} \&}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1338 of file graphalgorithms.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{graphalgorithms_8_h}{graphalgorithms.\+H}\end{DoxyCompactItemize}

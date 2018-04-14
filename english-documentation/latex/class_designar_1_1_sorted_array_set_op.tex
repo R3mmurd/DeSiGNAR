@@ -1,0 +1,195 @@
+\hypertarget{class_designar_1_1_sorted_array_set_op}{}\section{Designar\+:\+:Sorted\+Array\+Set\+Op$<$ Key, Cmp $>$ Class Template Reference}
+\label{class_designar_1_1_sorted_array_set_op}\index{Designar\+::\+Sorted\+Array\+Set\+Op$<$ Key, Cmp $>$@{Designar\+::\+Sorted\+Array\+Set\+Op$<$ Key, Cmp $>$}}
+
+
+{\ttfamily \#include $<$array.\+H$>$}
+
+Inheritance diagram for Designar\+:\+:Sorted\+Array\+Set\+Op$<$ Key, Cmp $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_designar_1_1_sorted_array_set_op}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_designar_1_1_sorted_array_set_op_a2d732318892f21ead8d988b5a76a016b}{Sorted\+Array\+Set\+Op} (\hyperlink{class_designar_1_1_dyn_array}{Dyn\+Array}$<$ Key $>$ \&a, Cmp \&c)
+\item 
+bool \hyperlink{class_designar_1_1_sorted_array_set_op_aa11c07509319e513a6f8dd0f3ab7663a}{is\+\_\+sorted} () const
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op_aa23273a531de4a184c6a0bdf30816c79}{insert} (const Key \&)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op_a78058ddfd47003fc67d8a87068c5fc78}{insert} (Key \&\&)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op_a4daae3c1bd56ec08a02ce5a5f231aade}{search\+\_\+or\+\_\+insert} (const Key \&item)
+\item 
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op_ad0299c41514cf11f5a418b9e46994580}{search\+\_\+or\+\_\+insert} (Key \&\&item)
+\item 
+Key \hyperlink{class_designar_1_1_sorted_array_set_op_aa0ea019290a9b4a4777b5beb4c4d0c7d}{remove\+\_\+pos} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} pos)
+\item 
+const Key \& \hyperlink{class_designar_1_1_sorted_array_set_op_ad08d29cf21ed0afa0e59ab86fb171108}{select} (\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} i)
+\item 
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_sorted_array_set_op_a138b326d0002cf3ddc19a980b1ca9542}{position} (const Key \&item)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_designar_1_1_sorted_array_set_op_a27beb3e6b8f6b83c6efa46c38e8d22f9}{not\+\_\+equal\+\_\+key} (const Key \&k1, const Key \&k2) const
+\item 
+bool \hyperlink{class_designar_1_1_sorted_array_set_op_adef257a4a2debcef385f570b1cd72037}{equal\+\_\+key} (const Key \&k1, const Key \&k2) const
+\item 
+\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t} \hyperlink{class_designar_1_1_sorted_array_set_op_ab0dc92fe501e3349041aaafea39a6526}{search} (const Key \&, \hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t}, \hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t}) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Key, class Cmp$>$\newline
+class Designar\+::\+Sorted\+Array\+Set\+Op$<$ Key, Cmp $>$}
+
+
+
+Definition at line 1017 of file array.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_a2d732318892f21ead8d988b5a76a016b}\label{class_designar_1_1_sorted_array_set_op_a2d732318892f21ead8d988b5a76a016b}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!Sorted\+Array\+Set\+Op@{Sorted\+Array\+Set\+Op}}
+\index{Sorted\+Array\+Set\+Op@{Sorted\+Array\+Set\+Op}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{Sorted\+Array\+Set\+Op()}{SortedArraySetOp()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+\hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::\hyperlink{class_designar_1_1_sorted_array_set_op}{Sorted\+Array\+Set\+Op} (\begin{DoxyParamCaption}\item[{\hyperlink{class_designar_1_1_dyn_array}{Dyn\+Array}$<$ Key $>$ \&}]{a,  }\item[{Cmp \&}]{c }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1036 of file array.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_adef257a4a2debcef385f570b1cd72037}\label{class_designar_1_1_sorted_array_set_op_adef257a4a2debcef385f570b1cd72037}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!equal\+\_\+key@{equal\+\_\+key}}
+\index{equal\+\_\+key@{equal\+\_\+key}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{equal\+\_\+key()}{equal\_key()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+bool \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::equal\+\_\+key (\begin{DoxyParamCaption}\item[{const Key \&}]{k1,  }\item[{const Key \&}]{k2 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 1028 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_aa23273a531de4a184c6a0bdf30816c79}\label{class_designar_1_1_sorted_array_set_op_aa23273a531de4a184c6a0bdf30816c79}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{const Key \&}]{item }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1094 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_a78058ddfd47003fc67d8a87068c5fc78}\label{class_designar_1_1_sorted_array_set_op_a78058ddfd47003fc67d8a87068c5fc78}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!insert@{insert}}
+\index{insert@{insert}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{insert()}{insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+Key $\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{item }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1108 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_aa11c07509319e513a6f8dd0f3ab7663a}\label{class_designar_1_1_sorted_array_set_op_aa11c07509319e513a6f8dd0f3ab7663a}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!is\+\_\+sorted@{is\+\_\+sorted}}
+\index{is\+\_\+sorted@{is\+\_\+sorted}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{is\+\_\+sorted()}{is\_sorted()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+bool \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::is\+\_\+sorted (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1042 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_a27beb3e6b8f6b83c6efa46c38e8d22f9}\label{class_designar_1_1_sorted_array_set_op_a27beb3e6b8f6b83c6efa46c38e8d22f9}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!not\+\_\+equal\+\_\+key@{not\+\_\+equal\+\_\+key}}
+\index{not\+\_\+equal\+\_\+key@{not\+\_\+equal\+\_\+key}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{not\+\_\+equal\+\_\+key()}{not\_equal\_key()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+bool \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::not\+\_\+equal\+\_\+key (\begin{DoxyParamCaption}\item[{const Key \&}]{k1,  }\item[{const Key \&}]{k2 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 1023 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_a138b326d0002cf3ddc19a980b1ca9542}\label{class_designar_1_1_sorted_array_set_op_a138b326d0002cf3ddc19a980b1ca9542}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!position@{position}}
+\index{position@{position}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{position()}{position()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t} \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::position (\begin{DoxyParamCaption}\item[{const Key \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1087 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_aa0ea019290a9b4a4777b5beb4c4d0c7d}\label{class_designar_1_1_sorted_array_set_op_aa0ea019290a9b4a4777b5beb4c4d0c7d}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!remove\+\_\+pos@{remove\+\_\+pos}}
+\index{remove\+\_\+pos@{remove\+\_\+pos}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{remove\+\_\+pos()}{remove\_pos()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+Key \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::remove\+\_\+pos (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1077 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_ab0dc92fe501e3349041aaafea39a6526}\label{class_designar_1_1_sorted_array_set_op_ab0dc92fe501e3349041aaafea39a6526}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!search@{search}}
+\index{search@{search}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t} \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::search (\begin{DoxyParamCaption}\item[{const Key \&}]{k,  }\item[{\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t}}]{l,  }\item[{\hyperlink{namespace_designar_a9d113d66a39e82b73727c72cd3a52f73}{lint\+\_\+t}}]{r }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 1123 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_a4daae3c1bd56ec08a02ce5a5f231aade}\label{class_designar_1_1_sorted_array_set_op_a4daae3c1bd56ec08a02ce5a5f231aade}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{const Key \&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1051 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_ad0299c41514cf11f5a418b9e46994580}\label{class_designar_1_1_sorted_array_set_op_ad0299c41514cf11f5a418b9e46994580}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}}
+\index{search\+\_\+or\+\_\+insert@{search\+\_\+or\+\_\+insert}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{search\+\_\+or\+\_\+insert()}{search\_or\_insert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+Key$\ast$ \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::search\+\_\+or\+\_\+insert (\begin{DoxyParamCaption}\item[{Key \&\&}]{item }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1064 of file array.\+H.
+
+\mbox{\Hypertarget{class_designar_1_1_sorted_array_set_op_ad08d29cf21ed0afa0e59ab86fb171108}\label{class_designar_1_1_sorted_array_set_op_ad08d29cf21ed0afa0e59ab86fb171108}} 
+\index{Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}!select@{select}}
+\index{select@{select}!Designar\+::\+Sorted\+Array\+Set\+Op@{Designar\+::\+Sorted\+Array\+Set\+Op}}
+\subsubsection{\texorpdfstring{select()}{select()}}
+{\footnotesize\ttfamily template$<$typename Key , class Cmp $>$ \\
+const Key\& \hyperlink{class_designar_1_1_sorted_array_set_op}{Designar\+::\+Sorted\+Array\+Set\+Op}$<$ Key, Cmp $>$\+::select (\begin{DoxyParamCaption}\item[{\hyperlink{namespace_designar_aa72662848b9f4815e7bf31a7cf3e33d1}{nat\+\_\+t}}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1082 of file array.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{array_8_h}{array.\+H}\end{DoxyCompactItemize}
