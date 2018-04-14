@@ -28,16 +28,25 @@
 # include <types.H>
 # include <math.H>
 # include <iterator.H>
+# include <containeralgorithms.H>
 
 namespace Designar
 {
 
   template <typename T>
-  class Range
+  class Range : public ContainerAlgorithms<Range<T>, T>
   {
     static_assert(std::is_arithmetic<T>::value,
 		  "Template argument must be an arithmetic type");
     
+  public:
+    using ItemType  = T;
+    using KeyType   = T;
+    using DataType  = T;
+    using ValueType = T;
+    using SizeType  = nat_t;
+
+  private:
     T first;
     T last;
     T step;
@@ -104,7 +113,7 @@ namespace Designar
       T             c;
       nat_t         p;
 
-      public:
+    protected:
       nat_t get_location() const
       {
 	return p;

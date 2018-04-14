@@ -28,17 +28,26 @@
 using namespace std;
 
 # include <range.H>
+# include <list.H>
 
 using namespace Designar;
 
 int main()
 {
-  Range<int> r1(10);
+  Range<int> r1(5);
   assert(r1.min() == 0);
-  assert(r1.max() == 10);
+  assert(r1.max() == 5);
   assert(r1.step_size() == 1);
-  assert(r1.size() == 10);
-
+  assert(r1.size() == 5);
+  assert(r1.filter([](auto item){ return item % 2 == 0; }).equal({0,2,4}));
+  assert(r1.map([](auto item){ return item * 2; }).equal({0,2,4,6,8}));
+  assert(r1.fold(0, [](auto item, auto acc){ return item + acc; }) == 10);
+  assert(r1.fold(1, [](auto item, auto acc){ return item * acc; }) == 0);
+  assert(r1.all([] (auto item) { return item < 10; }));
+  assert(r1.exists([] (auto item) { return item % 2 == 0; }));
+  assert(r1.none([] (auto item) { return item >= 10; }));
+  assert(r1.to_list().equal({0,1,2,3,4}));
+  
   Range<int> r2(-5, 5);
   assert(r2.min() == -5);
   assert(r2.max() == 5);
