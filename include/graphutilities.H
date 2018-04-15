@@ -144,7 +144,7 @@ namespace Designar
     GT     * ptr_owner_graph;
     ListType list;
 
-    void test_for_graph()
+    void test_for_graph() const
     {
       if (ptr_owner_graph == nullptr)
 	throw std::logic_error("Graph has not been specified");
@@ -403,6 +403,27 @@ namespace Designar
       return *this;
     }
 
+    SLList<Node<GT> *> nodes() const
+    {
+      return list.template map<Node<GT> *>([] (auto & pd)
+					   {
+					     return pd.node;
+					   });
+    }
+    
+    SLList<Arc<GT> *> arcs() const
+    {
+      return list.template map_if<Arc<GT> *>
+	([] (auto & pd)
+	 {
+	   return pd.arc;
+	 },
+	 [] (auto & pd)
+	 {
+	   return pd.arc != nullptr;
+	 });
+    }
+
     Path & operator = (Path && path)
     {
       std::swap(ptr_owner_graph, path.ptr_owner_graph);
@@ -414,6 +435,11 @@ namespace Designar
     bool is_empty() const
     {
       return list.is_empty();
+    }
+
+    nat_t size() const
+    {
+      return list.size();
     }
   };
 

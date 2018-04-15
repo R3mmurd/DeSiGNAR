@@ -156,13 +156,15 @@ namespace Designar
     }
     
     template <class Pred>
-    Node * search_node_ptr(Pred & pred)
+    Node * search_node_ptr(Pred & pred) const
     {
-      return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
+      return search_ptr_it<Node>(const_me().nodes_begin(),
+				 const_me().nodes_end(),
+				 pred);
     }
 
     template <class Pred>
-    Node * search_node_ptr(Pred && pred = Pred())
+    Node * search_node_ptr(Pred && pred = Pred()) const
     {
       return search_node_ptr<Pred>(pred);
     }
@@ -255,14 +257,16 @@ namespace Designar
       return none_arc<Pred>(pred);
     }
   
-    template <class Pred>
-    Arc * search_arc_ptr(Pred & pred)
+    template <class Pred> 
+    Arc * search_arc_ptr(Pred & pred) const
     {
-      return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
+      return search_ptr_it<Arc>(const_me().arcs_begin(),
+				const_me().arcs_end(),
+				pred);
     }
   
     template <class Pred>
-    Arc * search_arc_ptr(Pred && pred)
+    Arc * search_arc_ptr(Pred && pred) const
     {
       return search_arc_ptr<Pred>(pred);
     }
@@ -355,13 +359,15 @@ namespace Designar
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
+    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred) const
     {
-      return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
+      return search_ptr_it<Arc>(const_me().arcs_begin(p),
+				const_me().arcs_end(p),
+				pred);
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
+    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred) const
     {
       return search_adjacent_arc_ptr<Pred>(p, pred);
     }

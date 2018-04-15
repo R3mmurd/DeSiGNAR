@@ -705,7 +705,7 @@ namespace Designar
       if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return static_cast<Node *>(DL::get_next())->get_item();
+      return static_cast<const Node *>(DL::get_next())->get_item();
     }
 
     T & get_last()
@@ -721,7 +721,7 @@ namespace Designar
       if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return static_cast<Node *>(DL::get_prev())->get_item();
+      return static_cast<const Node *>(DL::get_prev())->get_item();
     }
 
     T remove_first()

@@ -83,33 +83,34 @@ namespace Designar
       return filter<ContainerRet, Pred>(pred);
     }
     
-    template <class ContainerRet, class Op>
+    template <typename RetT = T, class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map(Op & op) const
     {
       return map_it<ContainerRet>(const_me().begin(), const_me().end(), op);
     }
 
-    template <class ContainerRet = SLList<T>, class Op>
+    template <class RetT = T, class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map(Op && op = Op()) const
     {
-      return map<ContainerRet, Op>(op);
+      return map<RetT, ContainerRet, Op>(op);
     }
 
-    template <typename RetT, class ContainerRet, class Op, class Pred>
+    template <class RetT = T, class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
     ContainerRet map_if(Op & op, Pred & pred) const
     {
       return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
 				     op, pred);
     }
 
-    template <typename RetT = T, class ContainerRet = SLList<RetT>,
+    template <class RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet map_if(Op & op, Pred && pred = Pred()) const
     {
       return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
     }
     
-    template <typename RetT = T, class ContainerRet = SLList<RetT>,
+    template <class RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet map_if(Op && op, Pred & pred) const
     {
