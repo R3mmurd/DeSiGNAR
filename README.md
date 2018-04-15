@@ -1,6 +1,4 @@
-![alt text][logo]
-
-[logo]: https://github.com/R3mmurd/DeSiGNAR/DeSIGNAR-logo.png "DeSIGNAR"
+![alt text](DeSIGNAR-logo.png)
 
 # DeSiGNAR (Data Structures GeNeral librARy)
 
@@ -33,7 +31,7 @@ In order to compile the samples you must execute
 
 ```
 
-##TODO:
+## TODO:
 
 - [x] Start documentation.
 - [ ] Tarjan Algorithm for computing strong connected components to Digraph.
