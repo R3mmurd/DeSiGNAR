@@ -67,7 +67,7 @@ namespace Designar
     template <class Op>
     void for_each(Op && op = Op()) const
     {
-      for_each<Op>(op);
+      for_each_it(const_me().begin(), const_me().end(), std::forward<Op>(op));
     }
     
     template <class ContainerRet, class Pred>
@@ -80,7 +80,8 @@ namespace Designar
     template <class ContainerRet = SLList<T>, class Pred>
     ContainerRet filter(Pred && pred = Pred()) const
     {
-      return filter<ContainerRet, Pred>(pred);
+      return filter_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Pred>(pred));
     }
     
     template <typename RetT = T, class ContainerRet = SLList<RetT>, class Op>
@@ -92,7 +93,8 @@ namespace Designar
     template <class RetT = T, class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map(Op && op = Op()) const
     {
-      return map<RetT, ContainerRet, Op>(op);
+      return map_it<ContainerRet>(const_me().begin(), const_me().end(),
+				  std::forward<Op>(op));
     }
 
     template <class RetT = T, class ContainerRet = SLList<RetT>,
@@ -107,24 +109,28 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_if(Op & op, Pred && pred = Pred()) const
     {
-      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, std::forward<Pred>(pred));
     }
     
     template <class RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet map_if(Op && op, Pred & pred) const
     {
-      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op), pred);
     }
 
     template <typename RetT = T, class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet map_if(Op && op = Op(), Pred && pred = Pred()) const
     {
-      return map_if<RetT, ContainerRet, Op, Pred>(op, pred);
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op),
+				     std::forward<Pred>(pred));
     }
     
-    template <typename RetT, class Op>
+    template <typename RetT = T, class Op>
     RetT fold(const RetT & init_val, Op & op) const
     {
       return fold_it<RetT>(const_me().begin(), const_me().end(), init_val, op);
@@ -133,7 +139,8 @@ namespace Designar
     template <typename RetT = T, class Op>
     RetT fold(const RetT & init_val, Op && op = Op()) const
     {
-      return fold<RetT, Op>(init_val, op);
+      return fold_it<RetT>(const_me().begin(), const_me().end(), init_val,
+			   std::forward<Op>(op));
     }
 
     template <typename RetT = T, class Op>
@@ -146,7 +153,8 @@ namespace Designar
     template <typename RetT = T, class Op>
     RetT fold(RetT && init_val, Op && op = Op()) const
     {
-      return fold<RetT, Op>(std::forward<RetT>(init_val), op);
+      return fold_it<RetT>(const_me().begin(), const_me().end(),
+			   std::forward<RetT>(init_val), std::forward<Op>(op));
     }
 
     template <class Pred>
@@ -158,7 +166,8 @@ namespace Designar
     template <class Pred>
     bool all(Pred && pred = Pred()) const
     {
-      return all<Pred>(pred);
+      return all_it(const_me().begin(), const_me().end(),
+		    std::forward<Pred>(pred));
     }
     
     template <class Pred>
@@ -170,7 +179,8 @@ namespace Designar
     template <class Pred>
     bool exists(Pred && pred = Pred()) const
     {
-      return exists<Pred>(pred);
+      return exists_it(const_me().begin(), const_me().end(),
+		       std::forward<Pred>(pred));
     }
 
     template <class Pred>
@@ -182,7 +192,8 @@ namespace Designar
     template <class Pred>
     bool none(Pred && pred = Pred()) const
     {
-      return none<Pred>(pred);
+      return none_it(const_me().begin(), const_me().end(),
+		     std::forward<Pred>(pred));
     }
     
     template <class Pred>
@@ -194,7 +205,8 @@ namespace Designar
     template <class Pred>
     T * search_ptr(Pred && pred = Pred()) const
     {
-      return search_ptr<Pred>(pred);
+      return search_ptr_it<T>(const_me().begin(), const_me().end(),
+			      std::forward<Pred>(pred));
     }
 
     template <class Pred>
@@ -206,7 +218,8 @@ namespace Designar
     template <class Pred>
     bool remove_first_if(Pred && pred = Pred())
     {
-      return remove_first_if<Pred>(pred);
+      return remove_first_if_it(me().begin(), me().end(),
+				std::forward<Pred>(pred));
     }
     
     template <class Pred>
@@ -218,7 +231,7 @@ namespace Designar
     template <class Pred>
     void remove_if(Pred && pred = Pred())
     {
-      remove_if<Pred>(pred);
+      remove_if_it(me().begin(), me().end(), std::forward<Pred>(pred));
     }
     
     template <class ContainerType2 = ContainerType, class Eq>
@@ -231,7 +244,8 @@ namespace Designar
     template <class ContainerType2 = ContainerType, class Eq = std::equal_to<T>>
     bool equal(const ContainerType2 & c, Eq && eq = Eq()) const
     {
-      return equal<ContainerType2, Eq>(c, eq);
+      return equal_it(const_me().begin(), const_me().end(),
+		      c.begin(), c.end(), std::forward<Eq>(eq));
     }
     
     template <class Cmp>
@@ -243,7 +257,8 @@ namespace Designar
     template <class Cmp = std::less<T>>
     bool is_sorted(Cmp && cmp = Cmp()) const
     {
-      return is_sorted<Cmp>(cmp);
+      return is_sorted_it(const_me().begin(), const_me().end(),
+			  std::forward<Cmp>(cmp));
     }
 
     template <class ContainerType2 = ContainerType>
