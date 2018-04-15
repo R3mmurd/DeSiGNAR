@@ -81,13 +81,17 @@ namespace Designar
   };
 
  /*!
-    \class BaseGraph BaseGraph.H <BaseGraph.H>
+    \class BaseGraph graph.H <graph.H>
 
     \~English
-    \brief DeSIGNAR Graph Object.
+    \brief DeSIGNAR Graph Object. It contains all elemental operations
+    on graphs and general set operations.
+
   
     \~Spanish
-    \brief Grafo de DeSIGNAR.
+    \brief Grafo de DeSIGNAR. Contiene todas las operaciones elementales sobre
+    grafos y operaciones generales sobre conjuntos haciendo uso de 
+    cuantificadores.
 
   */
 
@@ -167,8 +171,8 @@ namespace Designar
       for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
     }
 
-
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+//! \fn  void for_each_node(Op && op = Op()) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief  Similar a la anterior pero con una rvalue como parámetro
     
     template <class Op>
     void for_each_node(Op && op = Op()) const
@@ -195,7 +199,8 @@ namespace Designar
       return all_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+///! \fn   bool all_nodes(Pred && pred = Pred()) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool all_nodes(Pred && pred = Pred()) const
@@ -224,7 +229,8 @@ namespace Designar
       return exists_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+/// \fn     bool exists_node(Pred && pred = Pred()) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool exists_node(Pred && pred = Pred()) const
@@ -254,7 +260,8 @@ namespace Designar
       return none_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+///\fn bool none_node(Pred && pred = Pred()) const
+//!<\~English \brief Similar to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool none_node(Pred && pred = Pred()) const
@@ -282,7 +289,8 @@ namespace Designar
       return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+/// \fn Node * search_node_ptr(Pred && pred = Pred())
+//!<\~English \brief Similar to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     Node * search_node_ptr(Pred && pred = Pred())
@@ -290,7 +298,7 @@ namespace Designar
       return search_node_ptr<Pred>(pred);
     }
 
-      /*! \fn  bool remove_first_node_if(Pred & pred)
+  /*! \fn  bool remove_first_node_if(Pred & pred)
      * \~English
      *
      *  \brief Remove first node inserted in the graph if a predicate is true
@@ -310,7 +318,8 @@ namespace Designar
       return remove_first_if_it(me().nodes_begin(), me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+/// \fn bool remove_first_node_if(Pred && pred = Pred())
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool remove_first_node_if(Pred && pred = Pred())
@@ -319,7 +328,7 @@ namespace Designar
     }
 
 
-      /*! \fn void remove_node_if(Pred & pred)
+  /*! \fn void remove_node_if(Pred & pred)
      * \~English
      *
      *  \brief Remove every node for which a predicate is true
@@ -327,9 +336,9 @@ namespace Designar
      *  \return void
      * \~Spanish
      *
-     *  \brief Elimina el primer nodo insertado en el grafo si un predicado es verdadero
+     *  \brief Elimina todos los nodos para los cuales un predicado es verdadero
      *  \param[in]  pred Un predicado a ser evaluado en cada nodo
-     *  \return Un puntero al nodo para el cual es predicado es verdadero, `nullptr` en otro caso
+     *  \return Vacío
 
      */
 
@@ -339,7 +348,8 @@ namespace Designar
       remove_if_it(me().nodes_begin(), me().nodes_end(), pred);
     }
 
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+/// \fn void remove_node_if(Pred && pred = Pred())
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     void remove_node_if(Pred && pred = Pred())
@@ -348,14 +358,14 @@ namespace Designar
     }
 
 
-      /*! \fn SLList<Node *> nodes() const
+  /*! \fn SLList<Node *> nodes() const
      * \~English
      *
-     *  \brief Get a DeSIGNAR Simple Linked List containing all nodes of the graph
+     *  \brief Get a DeSIGNAR Single Linked List containing all nodes of the graph
      *  \return A list containing all nodes of the graph
      * \~Spanish
      *
-     *  \brief Devuelve una lista simple de DeSIGNAR que contiene todos los nodos del grafo
+     *  \brief Devuelve una lista enlazada de DeSIGNAR que contiene todos los nodos del grafo
      *  \return Una lista conteniendo todos los nodos del grafo
 
      */
@@ -374,10 +384,9 @@ namespace Designar
      *  \return A modifiable reference to the n-th arc
      * \~Spanish
      *
-     *  \brief Elimina el primer nodo insertado en el grafo si un predicado es verdadero
-     *  \param[in]  pred Un predicado a ser evaluado en cada nodo
-     *  \return Un puntero al nodo para el cual es predicado es verdadero, `nullptr` en otro caso
-
+     *  \brief Obtiene el n-ésimo arco del grafo
+     *  \param[in]  i La posición del arco en el conjunto E de los arcos
+     *  \return Una referencia modificable al enésimo arco
      */
 
     Arc & nth_arc(nat_t i)
@@ -385,8 +394,9 @@ namespace Designar
       return nth_it(me().arcs_begin(), me().arcs_end(), i);
     }
   
-//!<\~English Similar  to previous one but with a constant return value. \~Spanish Similar a la anterior pero con un valor de retorno constante
 
+    /// \fn const Arc & nth_arc(nat_t i) const
+    //!<\~English \brief Similar to previous one but with a constant return value. \~Spanish \brief Similar a la anterior pero con un valor de retorno constante
 
     const Arc & nth_arc(nat_t i) const
     {
@@ -404,7 +414,6 @@ namespace Designar
      *  \brief Aplica una operación sobre todos los arcos en el grafo
      *  \param[in]  op Una operación a ser ejecutada sobre cada arco
      *  \return Vacío
-
      */
   
     template <class Op>
@@ -413,8 +422,11 @@ namespace Designar
       for_each_it(const_me().arcs_begin(), const_me().arcs_end(), op);
     }
   
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+
+/// \fn void for_each_arc(Op && op) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
+
     template <class Op>
     void for_each_arc(Op && op) const
     {
@@ -441,22 +453,40 @@ namespace Designar
     {
       return all_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
-  
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+
+/// \fn bool all_arcs(Pred && pred) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
+ 
     template <class Pred>
     bool all_arcs(Pred && pred) const
     {
       return all_arcs<Pred>(pred);
     }
   
+/
+ /*! \fn       bool exists_arc(Pred & pred) const
+     * \~English
+     *
+     *  \brief Check if exist an arc which a given predicate is true
+     *  \param[in] pred A predicate to be evaluated over all arcs
+     *  \return `true` if the predicate is true for at least one arc, `false` otherwise
+     * \~Spanish
+     *
+     *  \brief Revisa si existe un arco tal que el predicado dado sea verdadero
+     *  \param[in]  pred Un predicado a ser evaluado sobre todos los arcos
+     *  \return `true` si el predicado es verdadero en uno de los arcos, de lo contrario retorna `false`
+
+     */
+
     template <class Pred>
     bool exists_arc(Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
   
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+/// \fn     bool exists_arc(Pred && pred) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool exists_arc(Pred && pred) const
@@ -464,33 +494,73 @@ namespace Designar
       return exists_arc<Pred>(pred);
     }
 
+    /*! \fn       bool none_arc(Pred & pred) const
+     * \~English
+     *
+     *  \brief Check if there is no arc which a given predicate is true
+     *  \param[in] pred A predicate to be evaluated over all arcs
+     *  \return `true` if the predicate is false for every arc, `false` otherwise
+     * \~Spanish
+     *
+     *  \brief Revisa si no existe ningún arco tal que el predicado dado sea verdadero
+     *  \param[in]  pred Un predicado a ser evaluado sobre todos los arcos
+     *  \return `true` si el predicado es falso para todos los arcos, de lo contrario retorna `false`
+     */
+
+
     template <class Pred>
     bool none_arc(Pred & pred) const
     {
       return none_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
-  
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
+    
+/// \fn    bool none_arc(Pred && pred) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
     bool none_arc(Pred && pred) const
     {
       return none_arc<Pred>(pred);
     }
+
+     /*! \fn       Arc * search_arc_ptr(Pred & pred)
+     * \~English
+     *
+     *  \brief Search the pointer to the first arc which a given predicate is **true**
+     *  \param[in] pred A predicate to be evaluated over all arcs
+     *  \return A pointer to the first arc which **pred** is true
+     * \~Spanish
+     *
+     *  \brief Busca el apuntador al primer arco tal que el predicado dado sea verdadero
+     *  \param[in]  pred Un predicado a ser evaluado sobre todos los arcos
+     *  \return Un apuntador al arco para el que **pred** sea verdadero
+     */
   
     template <class Pred>
     Arc * search_arc_ptr(Pred & pred)
     {
       return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
     }
-  
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
-   
+    /// \fn   Arc * search_arc_ptr(Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro 
     template <class Pred>
     Arc * search_arc_ptr(Pred && pred)
     {
       return search_arc_ptr<Pred>(pred);
     }
+
+      /*! \fn      bool remove_first_arc_if(Pred & pred)
+     * \~English
+     *
+     *  \brief Remove the first arc of the graph if a given predicate is **true**
+     *  \param[in] pred A predicate to be evaluated over all arcs
+     *  \return `true` if removal was done, `false` otherwise
+     * \~Spanish
+     *
+     *  \brief Elimina el primer arco del grafo si un predicado dado es verdadero
+     *  \param[in]  pred Un predicado a ser evaluado sobre todos los arcos
+     *  \return `true` si la remoción fue realizada, `false` en otro caso 
+     */
   
     template <class Pred>
     bool remove_first_arc_if(Pred & pred)
@@ -498,72 +568,171 @@ namespace Designar
       return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
     }
   
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
    
+    /// \fn   bool remove_first_arc_if(Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
     template <class Pred>
     bool remove_first_arc_if(Pred && pred)
     {
       return remove_first_arc_if<Pred>(pred);
     }
-  
+    /*! \fn       void remove_arc_if(Pred & pred)
+     * \~English
+     *
+     *  \brief Remove all arcs which predicate is **true**
+     *  \param[in] pred A predicate to be evaluated over all arcs
+     *  \return void
+     * \~Spanish
+     *
+     *  \brief Elimina todos los arcos para los cuales un predicado dado sea verdadero
+     *  \param[in]  pred Un predicado a ser evaluado sobre todos los arcos
+     *  \return Vacío
+     */
     template <class Pred>
     void remove_arc_if(Pred & pred)
     {
       remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
     }
-  
-//!<\~English Similar  to previous one but with an rvalue parameter. \~Spanish Similar a la anterior pero con una rvalue como parámetro
-   
+
+    /// \fn   void remove_arc_if(Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
+
     template <class Pred>
     void remove_arc_if(Pred && pred)
     {
       remove_arc_if<Pred>(pred);
     }
+
+
+    /*! \fn       SLList<Arc *> arcs() const
+     * \~English
+     *
+     *  \brief Get all arc set in the graph
+     *  \return A DeSIGNAR Single Linked List where are stored all arcs
+     * \~Spanish
+     *
+     *  \brief Obtiene todos el conjunto de arcos en el grafo
+     *  \return Una lista enlazada de DeSIGNAR donde están guardados todos los arcos
+     */
   
     SLList<Arc *> arcs() const
     {
       return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
     }
-  
+
+     /*! \fn   Arc & nth_adjacent_arc(Node & p, nat_t i)
+     * \~English
+     *
+     *  \brief Get the nth adjacent arc of a given node
+     *  \param[in] p A node in the graph
+     *  \param[in] i The n-th adjacent arc of **p**
+     *  \return A modifiable reference to the n-th adjacent arc of **p**
+     * \~Spanish
+     *
+     *  \brief Obtiene el enésimo arco adyacente a un nodo dado
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] i El enésimo arco adyacente de **p**
+     *  \return Una referencia modificable al enésimo arco adyacente de **p**
+     */
+
     Arc & nth_adjacent_arc(Node & p, nat_t i)
     {
       return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
     }
   
+
+/// \fn  const Arc & nth_adjacent_arc(Node & p, nat_t i) const
+//!<\~English \brief Similar  to previous one but with an non-modifiable return value. \~Spanish \brief Similar a la anterior pero con valor de retorno no modificable  
     const Arc & nth_adjacent_arc(Node & p, nat_t i) const
     {
       return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
     }
+
+      /*! \fn    void for_each_adjacent_arc(Node & p, Op & op) const
+     * \~English
+     *
+     *  \brief Apply an specific operation over all adjacent arcs of a given node
+     *  \param[in] p A node in the graph
+     *  \param[in] op An operation to be executed on every adjacent arc of **p**
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Aplica una operación específica sobre todos los arcos adyacentes de un nodo dado
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] op Una operación a ser ejecutada sobre todos los arcos adyacentes de **p**
+     *  \return Vacío
+     */
+
   
     template <class Op>
     void for_each_adjacent_arc(Node & p, Op & op) const
     {
       for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
     }
+
   
+/// \fn   void for_each_adjacent_arc(Node & p, Op && op) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
+
     template <class Op>
     void for_each_adjacent_arc(Node & p, Op && op) const
     {
       for_each_adjacent_arc<Op>(p, op);
     }
   
+ /*! \fn     bool all_adjacent_arcs(Node & p, Pred & pred) const
+     * \~English
+     *
+     *  \brief Check if a given predicate is true for all adjacent arcs of a specific node
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return `true` if for each adjacent arc of **p** the predicate is true, `false` otherwise.     
+     * \~Spanish
+     *
+     *  \brief Revisa si un predicado dado es verdadero para todos los arcos adyacentes de un nodo específico
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return `true` si para todos los arcos adyacentes de **p** el predicado es verdadero, `false` en otro caso.
+     */
+
     template <class Pred>
     bool all_adjacent_arcs(Node & p, Pred & pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
-  
+ 
+    /// \fn   bool all_adjacent_arcs(Node & p, Pred && pred) const
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
+ 
     template <class Pred>
     bool all_adjacent_arcs(Node & p, Pred && pred) const
     {
       return all_adjacent_arcs<Pred>(p, pred);
     }
+
+    /*! \fn     bool exists_adjacent_arc(Node & p, Pred & pred) const
+     * \~English
+     *
+     *  \brief Check if a given predicate is true for at least one adjacent arc of a specific node
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return `true` if exist at least one adjacent arc of **p** for which **pred** is true, `false` otherwise.     
+     * \~Spanish
+     *
+     *  \brief Revisa si un predicado dado es verdadero para al menos un arco adyacente de un nodo específico
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return `true` si existe al menos un arco adyacente de **p** para el cual el predicado es verdadero, `false` en otro caso.
+     */
   
     template <class Pred>
     bool exists_adjacent_arc(Node & p, Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
+ 
+/// \fn   bool exists_adjacent_arc(Node & p, Pred && pred) const
+//!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
   
     template <class Pred>
     bool exists_adjacent_arc(Node & p, Pred && pred) const
@@ -571,17 +740,50 @@ namespace Designar
       return exists_adjacent_arc<Pred>(p, pred);
     }
 
+    /*! \fn     bool none_adjacent_arc(Node & p, Pred & pred) const
+     * \~English
+     *
+     *  \brief Check if a given predicate is false for all adjacent arcs of a specific node
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return `true` if for each adjacent arc of **p** the predicate is false, `false` otherwise.     
+     * \~Spanish
+     *
+     *  \brief Revisa si un predicado dado es falso para todos los arcos adyacentes de un nodo específico
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return `true` si para todos los arcos adyacentes de **p** el predicado es false, `false` en otro caso.
+     */
+
     template <class Pred>
     bool none_adjacent_arc(Node & p, Pred & pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
+    
+    /// \fn   bool none_adjacent_arc(Node & p, Pred && pred) const
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
   
     template <class Pred>
     bool none_adjacent_arc(Node & p, Pred && pred) const
     {
       return none_adjacent_arc<Pred>(p, pred);
     }
+
+    /*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
+     * \~English
+     *
+     *  \brief Search for the first adjacent arc for which a given predicate is true
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return A pointer to an adjacent arc of **p** for which **pred** is true.     
+     * \~Spanish
+     *
+     *  \brief Busca el primer arco adyacente a un nodo para el cual un predicado dado es verdadedro
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return Un apuntador a un arco adyacente de **p** para el cual **pred** es verdadero.
+     */
   
     template <class Pred>
     Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
@@ -589,11 +791,29 @@ namespace Designar
       return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
+
+    /// \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
     template <class Pred>
     Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
     {
       return search_adjacent_arc_ptr<Pred>(p, pred);
     }
+
+    /*! \fn      bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
+     * \~English
+     *
+     *  \brief Remove the first adjacent arc of a specific node which a given predicate is true
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return `true` if removal was done, `false` otherwise.     
+     * \~Spanish
+     *
+     *  \brief Elimina el primer arco adjacente de un nodo específico para el cual se cumple un predicado dado
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return `true` si la eliminación fue realizada, `false` en otro caso.
+     */
   
     template <class Pred>
     bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
@@ -601,30 +821,73 @@ namespace Designar
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
+
+    /// \fn   bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
     template <class Pred>
     bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
     {
       return remove_first_adjacent_arc_if<Pred>(p, pred);
     }
   
+  /*! \fn      void remove_adjacent_arc_if(Node & p, Pred & pred)
+     * \~English
+     *
+     *  \brief Remove all adjacent arcs of a specific node for which a predicate evaluated in those arcs is true
+     *  \param[in] p A node in the graph
+     *  \param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  \return void   
+     * \~Spanish
+     *
+     *  \brief Elimina todos los arcos adjacentes de un nodo específico para los cuales un predicado evaluado en esos arcos sea verdadero
+     *  \param[in] p Un nodo en el grafo
+     *  \param[in] pred Un predicado a ser evaluado sobre todos los arcos adyacentes de **p**
+     *  \return Vacío.
+     */
     template <class Pred>
     void remove_adjacent_arc_if(Node & p, Pred & pred)
     {
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
+    /// \fn   void remove_adjacent_arc_if(Node & p, Pred && pred)
+    //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro 
     template <class Pred>
     void remove_adjacent_arc_if(Node & p, Pred && pred)
     {
       remove_adjacent_arc_if<Pred>(p, pred);
     }
 
-    SLList<Arc *>adjacent_arcs(Node & p) const
+
+/*! \fn    SLList<Arc *> adjacent_arcs(Node & p) const
+     * \~English
+     *
+     *  \brief Get all adjacent arcs of a given node
+     *  \param[in] p A reference to node in the graph
+     *  \return  A DeSIGNAR Linked List containing all adjacent arcs of **p** 
+     * \~Spanish
+     *
+     *  \brief Obtiene todos los arcos adyacentes de un nodo dado
+     *  \param[in] p Una referencia a un nodo en el grafo
+     *  \return Una lista enlazada de DeSIGNAR conteniendo todos los nodos adyacentes de **p**.
+     */
+    SLList<Arc *> adjacent_arcs(Node & p) const
     {
       return to_list_it<Arc *>(const_me().arcs_begin(p),
 			       const_me().arcs_end(p));
     }
-    
+    /*! \fn     void reset_all_node_tag(GraphTag tag)
+     * \~English
+     *
+     *  \brief Reset all node tag info of a given graph tag
+     *  \param[out] tag A GraphTag container
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas de los nodos de un grafo de etiquetas
+     *  \param[out] tag Un contenedor GraphTag
+     *  \return Vacío
+     */
     void reset_all_node_tag(GraphTag tag)
     {
       for_each_node([&tag](Node & node)
@@ -633,6 +896,17 @@ namespace Designar
 		    });
     }
 
+/*! \fn     void reset_all_node_tag()
+     * \~English
+     *
+     *  \brief Reset all node tag info 
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas de los nodos
+     *  \return Vacío
+     */
+
     void reset_all_node_tag()
     {
       for_each_node([](Node & node)
@@ -640,7 +914,18 @@ namespace Designar
 		      node.reset_tag();
 		    });
     }
-
+/*! \fn     void reset_all_arc_tag(GraphTag tag)
+     * \~English
+     *
+     *  \brief Reset all arc tag info of a given graph tag
+     *  \param[out] tag A GraphTag container
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas de los arcos de un grafo de etiquetas
+     *  \param[out] tag Un contenedor GraphTag
+     *  \return Vacío
+     */
     void reset_all_arc_tag(GraphTag tag)
     {
       for_each_arc([&tag](Arc & arc)
@@ -648,7 +933,16 @@ namespace Designar
 		     arc.unvisit(tag);
 		   });
     }
-
+/*! \fn     void reset_all_arc_tag()
+     * \~English
+     *
+     *  \brief Reset all arc tag info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas de los arcos
+     *  \return Vacío
+     */
     void reset_all_arc_tag()
     {
       for_each_arc([](Arc & arc)
@@ -656,19 +950,48 @@ namespace Designar
 		     arc.reset_tag();
 		   });
     }
-
+/*! \fn     void reset_tag(GraphTag tag)
+     * \~English
+     *
+     *  \brief Reset all tag info from a given GraphTag
+     *  \param[out] tag A GraphTag container
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas
+     *  \param[out] tag Un contenedor GraphTag
+     *  \return Vacío
+     */
     void reset_tag(GraphTag tag)
     {
       reset_all_node_tag(tag);
       reset_all_arc_tag(tag);
     }
-
+/*! \fn     void reset_all_tags()
+     * \~English
+     *
+     *  \brief Reset all tag info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de etiquetas
+     *  \return Vacío
+     */
     void reset_all_tags()
     {
       reset_all_node_tag();
       reset_all_arc_tag();
     }
-
+/*! \fn     void reset_node_cookies()
+     * \~English
+     *
+     *  \brief Reset node cookies info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de cookies de los nodos
+     *  \return Vacío
+     */
     void reset_node_cookies()
     {
       for_each_node([](Node & node)
@@ -677,6 +1000,17 @@ namespace Designar
 		    });
     }
 
+/*! \fn     void reset_arc_cookies()
+     * \~English
+     *
+     *  \brief Reset arc cookies info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de cookies de los arcos
+     *  \return Vacío
+     */
+
     void reset_arc_cookies()
     {
       for_each_arc([](Arc & arc)
@@ -684,7 +1018,16 @@ namespace Designar
 		     arc.cookie() = nullptr;
 		   });
     }
-
+/*! \fn     void reset_node_counter()
+     * \~English
+     *
+     *  \brief Reset node counter info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información del contador de nodos
+     *  \return Vacío
+     */
    void reset_node_counter()
     {
       for_each_node([](Node & node)
@@ -692,7 +1035,16 @@ namespace Designar
 		      node.counter() = 0;
 		    });
     }
-
+/*! \fn     void reset_arc_counter()
+     * \~English
+     *
+     *  \brief Reset arc counter info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información del contador de arcos
+     *  \return Vacío
+     */
     void reset_arc_counter()
     {
       for_each_arc([](Arc & arc)
@@ -700,19 +1052,46 @@ namespace Designar
 		     arc.counter() = 0;
 		   });
     }
-
+/*! \fn     void reset_counters()
+     * \~English
+     *
+     *  \brief Reset all counters info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de contadores
+     *  \return Vacío
+     */
     void reset_counters()
     {
       reset_node_counter();
       reset_arc_counter();
     }
-
+/*! \fn     void reset_cookies()
+     * \~English
+     *
+     *  \brief Reset all cookies info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información de cookies
+     *  \return Vacío
+     */
     void reset_cookies()
     {
       reset_node_cookies();
       reset_arc_cookies();
     }
-
+/*! \fn     void reset_nodes()
+     * \~English
+     *
+     *  \brief Reset all nodes info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información en los nodos
+     *  \return Vacío
+     */
     void reset_nodes()
     {
       for_each_node([](Node & node)
@@ -720,7 +1099,16 @@ namespace Designar
 		      node.reset();
 		    });
     }
-
+/*! \fn     void reset_arcs()
+     * \~English
+     *
+     *  \brief Reset all arcs info
+     *  \return void     
+     * \~Spanish
+     *
+     *  \brief Reestablece toda la información en los arcos
+     *  \return Vacío
+     */
     void reset_arcs()
     {
       for_each_arc([](Arc & arc)
@@ -729,7 +1117,20 @@ namespace Designar
 		   });
     }
   };
-
+/*! \fn    void BaseGraph<GT, Node, Arc>::copy_graph(const GT & src, GT & tgt)
+     * \~English
+     *
+     *  \brief Copy a given graph into another one
+     *  \param[in] src The soource graph to be copied
+     *  \param[out] tgt A target graph where src copy will be stored
+     *  \return void.     
+     * \~Spanish
+     *
+     *  \brief Copia un grafo dado en otro
+     *  \param[in] src El grafo a ser copiado
+     *  \param[out] tgt Un grafo objetivo donde se almacenará la copia
+     *  \return Vacío.
+     */
   template <typename GT, class Node, class Arc>
   void BaseGraph<GT, Node, Arc>::copy_graph(const GT & src, GT & tgt)
   {

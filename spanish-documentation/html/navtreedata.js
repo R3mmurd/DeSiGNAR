@@ -2,7 +2,6 @@ var NAVTREE =
 [
   [ "DeSIGNAR", "index.html", [
     [ "DeSiGNAR (Data Structures GeNeral librARy)", "index.html", null ],
-    [ "DeSiGNAR (Data Structures GeNeral librARy)", "md__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Lista de 'namespaces'", "namespaces.html", "namespaces" ],
       [ "Miembros del Namespace ", "namespacemembers.html", [
@@ -49,7 +48,7 @@ var NAVTREEINDEX =
 "class_designar_1_1_path.html#a985717f0848469b05dfc8172eb483ad4",
 "class_designar_1_1_tree_set_1_1_inorder_iterator.html#ad5ff37d7f6ed8284dc3ce396cbdc4f86",
 "graphalgorithms_8_h.html#ad3ef274c9191673599894089bbfb354d",
-"random_8_c.html#adf6febbe5fa0abe44ea554203b767685"
+"random_8_c.html#ae380ee144e16364a26bec38110ac58cc"
 ];
 
 var SYNCONMSG = 'click en deshabilitar sincronización';

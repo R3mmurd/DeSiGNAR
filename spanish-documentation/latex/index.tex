@@ -1,17 +1,36 @@
-Este es el comienzo de un proyecto completo el cual se espera sea una biblioteca general para hacer múltiples y variados modelos y simulaciones.
+Este es el comienzo de un proyecto completo el cual se espera sea una biblioteca general para ser usada en el desarrollo de modelos y como herramienta para simulaciones.
 
 La estructura de esta librería es, por directorios\+:
 
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Directorio }&\textbf{ Descripción  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Directorio }&\textbf{ Descripción  }\\\cline{1-2}
+\endhead
+\PBS\centering {\itshape include} &Contiene todos los archivos de cabecera. \\\cline{1-2}
+\PBS\centering {\itshape src} &Contiene todos los archivos fuente (implementaciones declaradas en las cabeceras) \\\cline{1-2}
+\PBS\centering {\itshape samples} &Contiene algunos test y demos con instrucciones de uso de las distintas abstracciones implementadas. \\\cline{1-2}
+\PBS\centering {\itshape obj} &En este directorio serán creados todos los archivos objeto cuando sea compilada la biblioteca. \\\cline{1-2}
+\PBS\centering {\itshape lib} &Cuando se compila la biblioteca, en este directorio será creado el archivo {\bfseries lib\+Designar.\+a}. \\\cline{1-2}
+\PBS\centering {\itshape bin} &Cuando sea compilada la biblioteca, en este directorio serán creados los archivos binarios a ejecutar. \\\cline{1-2}
+\end{longtabu}
+Para compilar la biblioteca, se debe ejecutar el comando\+:
 
-\begin{DoxyItemize}
-\item include\+: Contiene todos los archivos de cabecera.
-\item src\+: Contiene todos los archivos fuente (implementaciones declaradas en las cabeceras)
-\item samples\+: Contiene algunos test y demos con instrucciones de uso de las distintas abstracciones implementadas.
-\item obj\+: En este directorio serán creados todos los archivos objeto cuando sea compilada la biblioteca.
-\item lib\+: Cuando se compila la biblioteca, en este directorio será creado el archivo lib\+Designar.\+a.
-\item bin\+: Cuando sea compilada la biblioteca, en este directorio serán creados los archivos binarios a ejecutar.
-\end{DoxyItemize}
 
-Para compilar la biblioteca, se debe ejecutar el comando\+: \char`\"{}make library\char`\"{}.
+\begin{DoxyCode}
+~$ make library
+\end{DoxyCode}
 
-Para compilar los samples, se debe ejecutar el comando\+: \char`\"{}make samples\char`\"{} 
+
+Para compilar los samples, se debe ejecutar el comando\+: \char`\"{}make samples\char`\"{}.
+
+
+\begin{DoxyCode}
+~$ make samples
+\end{DoxyCode}
+ 

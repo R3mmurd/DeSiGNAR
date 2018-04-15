@@ -30,7 +30,7 @@
 /*!
 *  \file array.H
 *  \author Alejandro Mujica
-*  \mail aledrums@gmail.com
+*  <a href="mailto:aledrums@gmail.com">aledrums@gmail.com</a>
 *   
 *  \~English
 *  \brief Array-based data structures and asociated algorithms
@@ -296,13 +296,13 @@ namespace Designar
  * \~English
  *
  *  \brief Displace iterator **n** items forward in the Array.
- *  \param[in] n  Number of items in the array to displace from current
+ *  \param[in] p Number of items in the array to displace from current
  *  \return void.
  *  \exception std::out_of_range if final position is higher than Array size
  * \~Spanish
  *
  *  \brief Desplaza el iterador **n** elementos hacia adelante en el Array.
- *  \param[in] n  Número de elementos en el Array a desplazar desde el elemento actual.
+ *  \param[in] p  Número de elementos en el Array a desplazar desde el elemento actual.
  *  \return Vacío.
  *  \exception std::out_of_range si la posición final es más grande que el tamaño del Array
  */

@@ -86,19 +86,27 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="title">DeSiGNAR (Data Structures GeNeral librARy) </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Este es el comienzo de un proyecto completo el cual se espera sea una biblioteca general para hacer múltiples y variados modelos y simulaciones.</p>
+<div class="textblock"><p>Este es el comienzo de un proyecto completo el cual se espera sea una biblioteca general para ser usada en el desarrollo de modelos y como herramienta para simulaciones.</p>
 <p>La estructura de esta librería es, por directorios:</p>
-<ul>
-<li>include: Contiene todos los archivos de cabecera.</li>
-<li>src: Contiene todos los archivos fuente (implementaciones declaradas en las cabeceras)</li>
-<li>samples: Contiene algunos test y demos con instrucciones de uso de las distintas abstracciones implementadas.</li>
-<li>obj: En este directorio serán creados todos los archivos objeto cuando sea compilada la biblioteca.</li>
-<li>lib: Cuando se compila la biblioteca, en este directorio será creado el archivo libDesignar.a.</li>
-<li>bin: Cuando sea compilada la biblioteca, en este directorio serán creados los archivos binarios a ejecutar.</li>
-</ul>
-<p>Para compilar la biblioteca, se debe ejecutar el comando: "make library".</p>
-<p>Para compilar los samples, se debe ejecutar el comando: "make samples" </p>
-</div></div><!-- contents -->
+<table class="doxtable">
+<tr>
+<th align="center">Directorio </th><th align="left">Descripción  </th></tr>
+<tr>
+<td align="center"><em>include</em> </td><td align="left">Contiene todos los archivos de cabecera. </td></tr>
+<tr>
+<td align="center"><em>src</em> </td><td align="left">Contiene todos los archivos fuente (implementaciones declaradas en las cabeceras) </td></tr>
+<tr>
+<td align="center"><em>samples</em> </td><td align="left">Contiene algunos test y demos con instrucciones de uso de las distintas abstracciones implementadas. </td></tr>
+<tr>
+<td align="center"><em>obj</em> </td><td align="left">En este directorio serán creados todos los archivos objeto cuando sea compilada la biblioteca. </td></tr>
+<tr>
+<td align="center"><em>lib</em> </td><td align="left">Cuando se compila la biblioteca, en este directorio será creado el archivo <b>libDesignar.a</b>. </td></tr>
+<tr>
+<td align="center"><em>bin</em> </td><td align="left">Cuando sea compilada la biblioteca, en este directorio serán creados los archivos binarios a ejecutar. </td></tr>
+</table>
+<p>Para compilar la biblioteca, se debe ejecutar el comando:</p>
+<div class="fragment"><div class="line">~$ make library</div></div><!-- fragment --><p>Para compilar los samples, se debe ejecutar el comando: "make samples".</p>
+<div class="fragment"><div class="line">~$ make samples</div></div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
