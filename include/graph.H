@@ -195,8 +195,12 @@ namespace Designar
      
     SLList<Node *> nodes() const
     {
-      return to_list_it<Node *>(const_me().nodes_begin(),
-				const_me().nodes_end());
+      return map_it<SLList<Node *>>(const_me().nodes_begin(),
+				    const_me().nodes_end(),
+				    [] (const Node & p)
+				    {
+				      return const_cast<Node *>(&p);
+				    });
     }
 
     Arc & nth_arc(nat_t i)
@@ -274,7 +278,7 @@ namespace Designar
     template <class Pred>
     bool remove_first_arc_if(Pred & pred)
     {
-      return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
+      return remove_first_if_it(me().arcs_begin(), me().arcs_end(), pred);
     }
   
     template <class Pred>
@@ -286,7 +290,7 @@ namespace Designar
     template <class Pred>
     void remove_arc_if(Pred & pred)
     {
-      remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
+      remove_if_it(me().arcs_begin(), me().arcs_end(), pred);
     }
   
     template <class Pred>
@@ -297,7 +301,12 @@ namespace Designar
   
     SLList<Arc *> arcs() const
     {
-      return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
+      return map_it<SLList<Arc *>>(const_me().arcs_begin(),
+				   const_me().arcs_end(),
+				   [] (const Arc & a)
+				   {
+				     return const_cast<Arc *>(&a);
+				   });
     }
   
     Arc & nth_adjacent_arc(Node & p, nat_t i)
@@ -398,8 +407,12 @@ namespace Designar
 
     SLList<Arc *>adjacent_arcs(Node & p) const
     {
-      return to_list_it<Arc *>(const_me().arcs_begin(p),
-			       const_me().arcs_end(p));
+      return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
+				   const_me().arcs_end(p),
+				   [] (const Arc & a)
+				   {
+				     return const_cast<Arc *>(&a);
+				   });
     }
     
     void reset_all_node_tag(GraphTag tag)
@@ -549,6 +562,7 @@ namespace Designar
     using NodeInfoType  = NodeInfo;
     using ArcInfoType   = ArcInfo;
     using GraphInfoType = GraphInfo;
+    using SetSizeType   = nat_t;
 
     using Node = GraphNode<NodeInfo, ArcInfo, GraphInfo>;
     using Arc  = GraphArc<Node, NodeInfo, ArcInfo, GraphInfo>;
@@ -1242,6 +1256,7 @@ namespace Designar
     using NodeInfoType  = NodeInfo;
     using ArcInfoType   = ArcInfo;
     using GraphInfoType = GraphInfo;
+    using SetSizeType   = nat_t;
 
     using Node = DigraphNode<NodeInfo, ArcInfo, GraphInfo>;
     using Arc  = DigraphArc<Node, NodeInfo, ArcInfo, GraphInfo>;

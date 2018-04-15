@@ -659,6 +659,101 @@ namespace Designar
     }
   };
 
+  template <class GT>
+  class DftNodeOutput
+  {
+  public:
+    void operator () (std::ostream & out, const Node<GT> & p)
+    {
+      out << p.get_info();
+    }
+
+    void operator () (std::ofstream & out, const Node<GT> & p)
+    {
+      out.write(reinterpret_cast<const char *>(&p.get_info()),
+		sizeof(typename GT::NodeInfoType));
+    }
+  };
+
+  template <class GT>
+  class DftArcOutput
+  {
+  public:
+    void operator () (std::ostream & out, const Arc<GT> & a)
+    {
+      out << a.get_info();
+    }
+
+    void operator () (std::ofstream & out, const Arc<GT> & a)
+    {
+      out.write(reinterpret_cast<const char *>(&a.get_info()),
+		sizeof(typename GT::ArcInfoType));
+    }
+  };
+
+  template <class GT>
+  class DftGraphOutput
+  {
+  public:
+    void operator () (std::ostream & out, const GT & g)
+    {
+      out << g.get_info();
+    }
+
+    void operator () (std::ofstream & out, const GT & g)
+    {
+      out.write(reinterpret_cast<const char *>(&g.get_info()),
+		sizeof(typename GT::GraphInfoType));
+    }
+  };
+
+  template <class GT>
+  class DftNodeInput
+  {
+  public:
+    void operator () (std::istream & in, Node<GT> & p)
+    {
+      in >> p.get_info();
+    }
+
+    void operator () (std::ifstream & in, Node<GT> & p)
+    {
+      in.read(reinterpret_cast<char *>(&p.get_info()),
+	      sizeof(typename GT::NodeInfoType));
+    }
+  };
+
+  template <class GT>
+  class DftArcInput
+  {
+  public:
+    void operator () (std::istream & in, Arc<GT> & a)
+    {
+      in >> a.get_info();
+    }
+
+    void operator () (std::ifstream & in, Arc<GT> & a)
+    {
+      in.read(reinterpret_cast<char *>(&a.get_info()),
+	      sizeof(typename GT::ArcInfoType));
+    }
+  };
+
+  template <class GT>
+  class DftGraphInput
+  {
+  public:
+    void operator () (std::istream & in, GT & g)
+    {
+      in >> g.get_info();
+    }
+
+    void operator () (std::ifstream & in, GT & g)
+    {
+      in.read(reinterpret_cast<char *>(&g.get_info()),
+	      sizeof(typename GT::GraphInfoType));
+    }
+  };
 
   template <class GT>
   class DftDotNodeAttr
