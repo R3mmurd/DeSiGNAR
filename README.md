@@ -36,3 +36,4 @@ In order to compile the samples you must execute
 - [x] Start documentation.
 - [ ] Tarjan Algorithm for computing strong connected components to Digraph.
 - [ ] Making test for Graph and Digraph.
+

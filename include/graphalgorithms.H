@@ -2358,44 +2358,284 @@ namespace Designar
   }
 
   template <class GT,
+	    class NodeOutput  = DftNodeOutput<GT>,
+	    class ArcOutput   = DftArcOutput<GT>,
+	    class GraphOutput = DftGraphOutput<GT>>
+  class OutputGraph
+  {
+    NodeOutput  & node_out;
+    ArcOutput   & arc_out;
+    GraphOutput & graph_out;
+
+    using Sz = typename GT::SetSizeType;
+
+   public:
+    OutputGraph(NodeOutput & _node_out, ArcOutput & _arc_out,
+		GraphOutput & _graph_out)
+      : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
+    {
+      // empty
+    }
+
+    OutputGraph(NodeOutput  && _node_out = NodeOutput(),
+		ArcOutput   && _arc_out = ArcOutput(),
+		GraphOutput && _graph_out = GraphOutput())
+      : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
+    {
+      // empty
+    }
+
+    void write_in_text_mode(const GT &, std::ostream &);
+
+    void write_in_bin_mode(const GT &, std::ofstream &);
+
+    void operator () (const GT & g, std::ostream & out)
+    {
+      write_in_text_mode(g, out);
+    }
+
+    void operator () (const GT & g, std::ofstream & out)
+    {
+      write_in_bin_mode(g, out);
+    }
+  };
+
+  template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
+  void OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::
+  write_in_text_mode(const GT & g, std::ostream & out)
+  {
+    if (g.is_digraph())
+      out << "di";
+    out << "graph\n";
+    
+    out << g.get_num_nodes() << ' ' << g.get_num_arcs() << '\n';
+    graph_out(out, g);
+    out << '\n';
+
+    TreeMap<Node<GT> *, Sz> map_nodes_pos;
+
+    Sz i = 0;
+
+    g.for_each_node([&] (const Node<GT> & p)
+		    {
+		      node_out(out, p);
+		      out << '\n';
+		      map_nodes_pos[const_cast<Node<GT> *>(&p)] = i++;
+		    });
+
+    g.for_each_arc([&] (const Arc<GT> & a)
+		   {
+		     Arc<GT> & arc_ref = const_cast<Arc<GT> &>(a);
+		     Sz s = map_nodes_pos[&arc_ref.get_src_node()];
+		     Sz t = map_nodes_pos[&arc_ref.get_tgt_node()];
+		     out << s << ' ' << t << ' ';
+		     arc_out(out, a);
+		     out << '\n';
+		   });
+  }
+  
+  template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
+  void OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::
+  write_in_bin_mode(const GT & g, std::ofstream & out)
+  {
+    bool is_d = g.is_digraph();
+    out.write(reinterpret_cast<char *>(&is_d), sizeof(bool));
+
+    Sz num_nodes = g.get_num_nodes();
+    Sz num_arcs = g.get_num_arcs();
+    
+    out.write(reinterpret_cast<char *>(&num_nodes), sizeof(Sz));
+    out.write(reinterpret_cast<char *>(&num_arcs), sizeof(Sz));
+    
+    graph_out(out, g);
+
+    TreeMap<Node<GT> *, Sz> map_nodes_pos;
+
+    Sz i = 0;
+
+    g.for_each_node([&] (const Node<GT> & p)
+		    {
+		      node_out(out, p);
+		      map_nodes_pos[const_cast<Node<GT> *>(&p)] = i++;
+		    });
+
+    g.for_each_arc([&] (const Arc<GT> & a)
+		   {
+		     Arc<GT> & arc_ref = const_cast<Arc<GT> &>(a);
+		     Sz s = map_nodes_pos[&arc_ref.get_src_node()];
+		     Sz t = map_nodes_pos[&arc_ref.get_tgt_node()];
+		     out.write(reinterpret_cast<char *>(&s), sizeof(Sz));
+		     out.write(reinterpret_cast<char *>(&t), sizeof(Sz));
+		     arc_out(out, a);
+		   });
+  }
+
+  template <class GT,
+	    class NodeInput  = DftNodeInput<GT>,
+	    class ArcInput   = DftArcInput<GT>,
+	    class GraphInput = DftGraphInput<GT>>
+  class InputGraph
+  {
+    NodeInput  & node_in;
+    ArcInput   & arc_in;
+    GraphInput & graph_in;
+
+    using Sz = typename GT::SetSizeType;
+
+   public:
+    InputGraph(NodeInput & _node_in, ArcInput & _arc_in, GraphInput & _graph_in)
+      : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
+    {
+      // empty
+    }
+
+    InputGraph(NodeInput  && _node_in = NodeInput(),
+	       ArcInput   && _arc_in = ArcInput(),
+	       GraphInput && _graph_in = GraphInput())
+      : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
+    {
+      // empty
+    }
+
+    GT read_in_text_mode(std::istream &);
+
+    GT read_in_bin_mode(std::ifstream &);
+
+    GT operator () (std::istream & in)
+    {
+      return read_in_text_mode(in);
+    }
+
+    GT operator () (std::ifstream & in)
+    {
+      return read_in_bin_mode(in);
+    }
+  };
+
+  template <class GT, class NodeInput, class ArcInput, class GraphInput>
+  GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::
+  read_in_text_mode(std::istream & in)
+  {
+    GT g;
+
+    std::string type;
+    in >> type;
+
+    if (g.is_digraph() xor (type == "digraph"))
+      throw std::logic_error("Conflict between directed and undirected graph");
+
+    Sz num_nodes;
+    Sz num_arcs;
+    
+    in >> num_nodes >> num_arcs;
+    graph_in(in, g);
+
+    DynArray<Node<GT> *> nodes(num_nodes, nullptr);
+
+    for (Sz i = 0; i < num_nodes; ++i)
+      {
+	Node<GT> & p = g.insert_node();
+	node_in(in, p);
+	nodes[i] = &p;
+      }
+
+    for (Sz i = 0; i < num_arcs; ++i)
+      {
+	Sz s;
+	in >> s;
+	Sz t;
+	in >> t;
+	Node<GT> & src = *nodes[s];
+	Node<GT> & tgt = *nodes[t];
+	Arc<GT> & a = g.insert_arc(src, tgt);
+	arc_in(in, a);
+      }
+
+    return g;
+  }
+  
+  template <class GT, class NodeInput, class ArcInput, class GraphInput>
+  GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::
+  read_in_bin_mode(std::ifstream & in)
+  {
+    GT g;
+    
+    bool is_d;
+    in.read(reinterpret_cast<char *>(&is_d), sizeof(bool));
+    
+    if (g.is_digraph() xor is_d)
+      throw std::logic_error("Conflict between directed and undirected graph");
+
+    Sz num_nodes;
+    Sz num_arcs;
+    
+    in.read(reinterpret_cast<char *>(&num_nodes), sizeof(Sz));
+    in.read(reinterpret_cast<char *>(&num_arcs), sizeof(Sz));
+    
+    graph_in(in, g);
+
+    DynArray<Node<GT> *> nodes(num_nodes, nullptr);
+
+    for (Sz i = 0; i < num_nodes; ++i)
+      {
+	Node<GT> & p = g.insert_node();
+	node_in(in, p);
+	nodes[i] = &p;
+      }
+    
+    for (Sz i = 0; i < num_arcs; ++i)
+      {
+	Sz s;
+	in.read(reinterpret_cast<char *>(&s), sizeof(Sz));
+	Sz t;
+	in.read(reinterpret_cast<char *>(&t), sizeof(Sz));
+	Node<GT> & src = *nodes[s];
+	Node<GT> & tgt = *nodes[t];
+	Arc<GT> & a = g.insert_arc(src, tgt);
+	arc_in(in, a);
+      }
+
+    return g;
+  }
+  
+  template <class GT,
 	    class NodeAttr  = DftDotNodeAttr<GT>,
 	    class ArcAttr   = DftDotArcAttr<GT>,
             class GraphAttr = DftDotGraphAttr<GT>>
-    class DotGraph
+  class DotGraph
+  {
+    NodeAttr  & node_attr;
+    ArcAttr   & arc_attr;
+    GraphAttr & graph_attr;
+
+    using Sz = typename GT::SetSizeType;
+
+  public:
+    DotGraph(NodeAttr & _node_attr, ArcAttr & _arc_attr,
+	     GraphAttr & _graph_attr)
+      : node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
     {
-      NodeAttr  & node_attr;
-      ArcAttr   & arc_attr;
-      GraphAttr & graph_attr;
+      // empty
+    }
 
-    public:
-      using Node  = typename GT::Node;
-      using Arc   = typename GT::Arc;
-    
-      DotGraph(NodeAttr & _node_attr, ArcAttr & _arc_attr,
-	       GraphAttr & _graph_attr)
-	: node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
-      {
-	// empty
-      }
+    DotGraph(NodeAttr && _node_attr = NodeAttr(),
+	     ArcAttr && _arc_attr = ArcAttr(),
+	     GraphAttr && _graph_attr = GraphAttr())
+      : node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
+    {
+      // empty
+    }
 
-      DotGraph(NodeAttr && _node_attr = NodeAttr(),
-	       ArcAttr && _arc_attr = ArcAttr(),
-	       GraphAttr && _graph_attr = GraphAttr())
-	: node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
-      {
-	// empty
-      }
-
-      void write_graph(const GT &, std::ofstream &,
-		       const std::string & rankdir = "LR");
+    void write_graph(const GT &, std::ofstream &,
+		     const std::string & rankdir = "LR");
       
-      void write_graph(const GT & g, const std::string & file_name)
-      {
-	std::ofstream file(file_name.c_str());
-	write_graph(g, file);
-	file.close();
-      }
-    };
+    void write_graph(const GT & g, const std::string & file_name)
+    {
+      std::ofstream file(file_name.c_str());
+      write_graph(g, file);
+      file.close();
+    }
+  };
 
   template <class GT, class NodeAttr, class ArcAttr, class GraphAttr>
   void DotGraph<GT, NodeAttr, ArcAttr, GraphAttr>::
@@ -2417,28 +2657,28 @@ namespace Designar
     
     output << "  // Nodes \n\n";
     
-    TreeMap<Node *, nat_t> map;
+    TreeMap<Node<GT> *, Sz> map;
 
     const std::string arc_connector = g.is_digraph() ? "->" : "--";
     
-    nat_t i = 0;
+    Sz i = 0;
     
-    g.for_each_node([&](const Node & node)
+    g.for_each_node([&](const Node<GT> & node)
 		    {
 		      output << "  " << i << "[" << node_attr(node) << "];\n";
-		      map[const_cast<Node *>(&node)] = i;
+		      map[const_cast<Node<GT> *>(&node)] = i;
 		      ++i;
 		    });
     
     output << "\n  // Arcs \n\n";
     
-    g.for_each_arc([&](const Arc & arc)
+    g.for_each_arc([&](const Arc<GT> & arc)
 		   {
-		     Arc  & arc_ref  = const_cast<Arc &>(arc);
-		     Node & src_node = arc_ref.get_src_node();
-		     Node & tgt_node = arc_ref.get_tgt_node();
-		     nat_t src_index = map[&src_node];
-		     nat_t tgt_index = map[&tgt_node];
+		     Arc<GT>  & arc_ref  = const_cast<Arc<GT> &>(arc);
+		     Node<GT> & src_node = arc_ref.get_src_node();
+		     Node<GT> & tgt_node = arc_ref.get_tgt_node();
+		     Sz src_index = map[&src_node];
+		     Sz tgt_index = map[&tgt_node];
 		     
 		     output << "  "
 			    << src_index << arc_connector << tgt_index
@@ -2449,7 +2689,7 @@ namespace Designar
     
     output << "}\n";
   }
-
+  
 } // end namespace Designar
 
 # endif // DSGGRAPHALGORITHMS_H

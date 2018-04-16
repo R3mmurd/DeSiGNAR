@@ -28,6 +28,7 @@
 # include <nodesdef.H>
 # include <graphutilities.H>
 # include <italgorithms.H>
+# include <sort.H>
 
 namespace Designar
 {
@@ -95,7 +96,8 @@ namespace Designar
 
   */
 
-  template <class GT, class Node, class Arc>
+  template <class GT, class Node, class Arc,
+	    typename NodeInfoType, typename ArcInfoType>
   class BaseGraph
   {
 
@@ -177,7 +179,114 @@ namespace Designar
     template <class Op>
     void for_each_node(Op && op = Op()) const
     {
-      for_each_node<Op>(op);
+      for_each_it(const_me().nodes_begin(), const_me().nodes_end(),
+		  std::forward<Op>(op));
+    }
+
+    template <class ContainerRet = SLList<NodeInfoType>, class Pred>
+    ContainerRet filter_nodes(Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
+				     [] (const Node & p)
+				     {
+				       return p.get_info();
+				     },
+				     pred);
+    }
+
+    template <class ContainerRet = SLList<NodeInfoType>, class Pred>
+    ContainerRet filter_nodes(Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
+				     [] (const Node & p)
+				     {
+				       return p.get_info();
+				     },
+				     std::forward<Pred>(pred));
+    }
+
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_nodes(Op & op) const
+    {
+      return map_it<ContainerRet>(const_me().nodes_begin(),
+				  const_me().nodes_end(), op);
+    }
+
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_nodes(Op && op = Op()) const
+    {
+      return map_it<ContainerRet>(const_me().nodes_begin(),
+				  const_me().nodes_end(), std::forward<Op>(op));
+    }
+
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_nodes_if(Op & op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, pred);
+    }
+
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_nodes_if(Op & op, Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, std::forward<Pred>(pred));
+    }
+    
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_nodes_if(Op && op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op), pred);
+    }
+
+    template <typename RetT = NodeInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_nodes_if(Op && op = Op(), Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op),
+				     std::forward<Pred>(pred));
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_nodes(const RetT & init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().nodes_begin(), const_me().nodes_end(),
+			   init_val, op);
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_nodes(const RetT & init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().nodes_begin(), const_me().nodes_end(),
+			   init_val, std::forward<Op>(op));
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_nodes(RetT && init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().nodes_begin(), const_me().nodes_end(),
+			   std::forward<RetT>(init_val), op);
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_nodes(RetT && init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().nodes_begin(), const_me().nodes_end(),
+			   std::forward<RetT>(init_val),
+			   std::forward<Op>(op));
     }
     
     /*! \fn bool all_nodes(Pred & pred) const
@@ -205,7 +314,8 @@ namespace Designar
     template <class Pred>
     bool all_nodes(Pred && pred = Pred()) const
     {
-      return all_nodes<Pred>(pred);
+      return all_it(const_me().nodes_begin(), const_me().nodes_end(),
+		    std::forward<Pred>(pred));
     }
 
      /*! \fn bool exists_node(Pred & pred) const
@@ -235,7 +345,8 @@ namespace Designar
     template <class Pred>
     bool exists_node(Pred && pred = Pred()) const
     {
-      return exists_node<Pred>(pred);
+      return exists_it(const_me().nodes_begin(), const_me().nodes_end(),
+		       std::forward<Pred>(pred));
     }
 
    /*! \fn  bool none_node(Pred & pred) const
@@ -266,7 +377,8 @@ namespace Designar
     template <class Pred>
     bool none_node(Pred && pred = Pred()) const
     {
-      return none_node<Pred>(pred);
+      return none_it(const_me().nodes_begin(), const_me().nodes_end(),
+		     std::forward<Pred>(pred));
     }
     
      /*! \fn  Node * search_node_ptr(Pred & pred)
@@ -284,18 +396,21 @@ namespace Designar
      */
 
     template <class Pred>
-    Node * search_node_ptr(Pred & pred)
+    Node * search_node_ptr(Pred & pred) const
     {
-      return search_ptr_it(me().nodes_begin(), me().nodes_end(), pred);
+      return search_ptr_it<Node>(const_me().nodes_begin(),
+				 const_me().nodes_end(),
+				 pred);
     }
 
 /// \fn Node * search_node_ptr(Pred && pred = Pred())
 //!<\~English \brief Similar to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro
    
     template <class Pred>
-    Node * search_node_ptr(Pred && pred = Pred())
-    {
-      return search_node_ptr<Pred>(pred);
+    Node * search_node_ptr(Pred && pred = Pred()) const
+    {  
+      return search_ptr_it(const_me().nodes_begin(), const_me().nodes_end(),
+			   std::forward<Pred>(pred));
     }
 
   /*! \fn  bool remove_first_node_if(Pred & pred)
@@ -324,7 +439,8 @@ namespace Designar
     template <class Pred>
     bool remove_first_node_if(Pred && pred = Pred())
     {
-      return remove_first_node_if<Pred>(pred);
+      return remove_first_if_it(me().nodes_begin(), me().nodes_end(),
+				std::forward<Pred>(pred));
     }
 
 
@@ -354,7 +470,8 @@ namespace Designar
     template <class Pred>
     void remove_node_if(Pred && pred = Pred())
     {
-      remove_node_if<Pred>(pred);
+      remove_if_it(me().nodes_begin(), me().nodes_end(),
+		   std::forward<Pred>(pred));
     }
 
 
@@ -372,8 +489,12 @@ namespace Designar
      
     SLList<Node *> nodes() const
     {
-      return to_list_it<Node *>(const_me().nodes_begin(),
-				const_me().nodes_end());
+      return map_it<SLList<Node *>>(const_me().nodes_begin(),
+				    const_me().nodes_end(),
+				    [] (const Node & p)
+				    {
+				      return const_cast<Node *>(&p);
+				    });
     }
 
   /*! \fn  Arc & nth_arc(nat_t i)
@@ -430,7 +551,99 @@ namespace Designar
     template <class Op>
     void for_each_arc(Op && op) const
     {
-      for_each_arc<Op>(op);
+      for_each_it(const_me().arcs_begin(), const_me().arcs_end(),
+		  std::forward<Op>(op));
+    }
+
+    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    ContainerRet filter_arcs(Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
+				     [] (const Arc & a)
+				     {
+				       return a.get_info();
+				     },
+				     pred);
+    }
+
+    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    ContainerRet filter_arcs(Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
+				     [] (const Arc & a)
+				     {
+				       return a.get_info();
+				     },
+				     std::forward<Pred>(pred));
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_arcs(Op & op) const
+    {
+      return map_it<ContainerRet>(const_me().arcs_begin(),
+				  const_me().arcs_end(), op);
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_arcs(Op && op = Op()) const
+    {
+      return map_it<ContainerRet>(const_me().arcs_begin(),
+				  const_me().arcs_end(), std::forward<Op>(op));
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_arcs_if(Op & op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, pred);
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_arcs_if(Op & op, Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     op, std::forward<Pred>(pred));
+    }
+    
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_arcs_if(Op && op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op), pred);
+    }
+  
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_arcs_if(Op && op = Op(), Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+				     std::forward<Op>(op),
+				     std::forward<Pred>(pred));
+    }
+    
+    template <typename RetT, class Op>
+    RetT fold_arcs(const RetT & init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(), const_me().arcs_end(),
+			   init_val, op);
+    }
+    
+    template <typename RetT, class Op>
+    RetT fold_arcs(const RetT & init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(), const_me().arcs_end(),
+			   init_val, std::forward<Op>(op));
     }
 
  /*! \fn   bool all_arcs(Pred & pred) const
@@ -448,6 +661,21 @@ namespace Designar
      */
   
   
+    template <typename RetT, class Op>
+    RetT fold_arcs(RetT && init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(), const_me().arcs_end(),
+			   std::forward<RetT>(init_val), op);
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_arcs(RetT && init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(), const_me().arcs_end(),
+			   std::forward<RetT>(init_val),
+			   std::forward<Op>(op));
+    }
+    
     template <class Pred>
     bool all_arcs(Pred & pred) const
     {
@@ -461,7 +689,8 @@ namespace Designar
     template <class Pred>
     bool all_arcs(Pred && pred) const
     {
-      return all_arcs<Pred>(pred);
+      return all_it(const_me().arcs_begin(), const_me().arcs_end(),
+		    std::forward<Pred>(pred));
     }
   
 /
@@ -491,7 +720,8 @@ namespace Designar
     template <class Pred>
     bool exists_arc(Pred && pred) const
     {
-      return exists_arc<Pred>(pred);
+      return exists_it(const_me().arcs_begin(), const_me().arcs_end(),
+		       std::forward<Pred>(pred));
     }
 
     /*! \fn       bool none_arc(Pred & pred) const
@@ -520,7 +750,8 @@ namespace Designar
     template <class Pred>
     bool none_arc(Pred && pred) const
     {
-      return none_arc<Pred>(pred);
+      return none_it(const_me().arcs_begin(), const_me().arcs_end(),
+		     std::forward<Pred>(pred));
     }
 
      /*! \fn       Arc * search_arc_ptr(Pred & pred)
@@ -536,17 +767,20 @@ namespace Designar
      *  \return Un apuntador al arco para el que **pred** sea verdadero
      */
   
-    template <class Pred>
-    Arc * search_arc_ptr(Pred & pred)
+    template <class Pred> 
+    Arc * search_arc_ptr(Pred & pred) const
     {
-      return search_ptr_it(me().arcs_begin(), me().arcs_end(), pred);
+      return search_ptr_it<Arc>(const_me().arcs_begin(),
+				const_me().arcs_end(),
+				pred);
     }
     /// \fn   Arc * search_arc_ptr(Pred && pred)
     //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro 
     template <class Pred>
-    Arc * search_arc_ptr(Pred && pred)
+    Arc * search_arc_ptr(Pred && pred) const
     {
-      return search_arc_ptr<Pred>(pred);
+      return search_ptr_it(const_me().arcs_begin(), const_me().arcs_end(),
+			   std::forward<Pred>(pred));
     }
 
       /*! \fn      bool remove_first_arc_if(Pred & pred)
@@ -565,7 +799,7 @@ namespace Designar
     template <class Pred>
     bool remove_first_arc_if(Pred & pred)
     {
-      return remove_first_if_it(me().begin_arcs(), me().end_arcs(), pred);
+      return remove_first_if_it(me().arcs_begin(), me().arcs_end(), pred);
     }
   
    
@@ -574,7 +808,8 @@ namespace Designar
     template <class Pred>
     bool remove_first_arc_if(Pred && pred)
     {
-      return remove_first_arc_if<Pred>(pred);
+      return remove_first_if_it(me().arcs_begin(), me().arcs_end(),
+				std::forward<Pred>(pred));
     }
     /*! \fn       void remove_arc_if(Pred & pred)
      * \~English
@@ -591,7 +826,7 @@ namespace Designar
     template <class Pred>
     void remove_arc_if(Pred & pred)
     {
-      remove_if_it(me().begin_arcs(), me().end_arcs(), pred);
+      remove_if_it(me().arcs_begin(), me().arcs_end(), pred);
     }
 
     /// \fn   void remove_arc_if(Pred && pred)
@@ -600,7 +835,7 @@ namespace Designar
     template <class Pred>
     void remove_arc_if(Pred && pred)
     {
-      remove_arc_if<Pred>(pred);
+      remove_if_it(me().arcs_begin(), me().arcs_end(), std::forward<Pred>(pred));
     }
 
 
@@ -617,7 +852,12 @@ namespace Designar
   
     SLList<Arc *> arcs() const
     {
-      return to_list_it<Arc *>(const_me().begin_arcs(), const_me().end_arcs());
+      return map_it<SLList<Arc *>>(const_me().arcs_begin(),
+				   const_me().arcs_end(),
+				   [] (const Arc & a)
+				   {
+				     return const_cast<Arc *>(&a);
+				   });
     }
 
      /*! \fn   Arc & nth_adjacent_arc(Node & p, nat_t i)
@@ -677,7 +917,117 @@ namespace Designar
     template <class Op>
     void for_each_adjacent_arc(Node & p, Op && op) const
     {
-      for_each_adjacent_arc<Op>(p, op);
+      for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		  std::forward<Op>(op));
+    }
+
+    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    ContainerRet filter_adjacent_arcs(Node & p, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
+				     [] (const Arc & a)
+				     {
+				       return a.get_info();
+				     },
+				     pred);
+    }
+
+    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    ContainerRet filter_adjacent_arcs(Node & p, Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
+				     [] (const Arc & a)
+				     {
+				       return a.get_info();
+				     },
+				     std::forward<Pred>(pred));
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_adjacent_arcs(Node & p, Op & op) const
+    {
+      return map_it<ContainerRet>(const_me().arcs_begin(p),
+				  const_me().arcs_end(p), op);
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>, class Op>
+    ContainerRet map_adjacent_arcs(Node & p, Op && op = Op()) const
+    {
+      return map_it<ContainerRet>(const_me().arcs_begin(p),
+				  const_me().arcs_end(p),
+				  std::forward<Op>(op));
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_adjacent_arcs_if(Node & p, Op & op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+				     op, pred);
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet
+    map_adjacent_arcs_if(Node & p, Op & op, Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+				     op, std::forward<Pred>(pred));
+    }
+    
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet map_adjacent_arcs_if(Node & p, Op && op, Pred & pred) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+				     std::forward<Op>(op), pred);
+    }
+
+    template <typename RetT = ArcInfoType,
+	      class ContainerRet = SLList<RetT>,
+	      class Op, class Pred>
+    ContainerRet
+    map_adjacent_arcs_if(Node & p, Op && op = Op(), Pred && pred = Pred()) const
+    {
+      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+				     std::forward<Op>(op),
+				     std::forward<Pred>(pred));
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_adjacent_arcs(Node & p, const RetT & init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
+			   init_val, op);
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_adjacent_arcs(Node & p, const RetT & init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
+			   init_val, std::forward<Op>(op));
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_adjacent_arcs(Node & p, RetT && init_val, Op & op) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
+			   std::forward<RetT>(init_val), op);
+    }
+
+    template <typename RetT, class Op>
+    RetT fold_adjacent_arcs(Node & p, RetT && init_val, Op && op = Op()) const
+    {
+      return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
+			   std::forward<RetT>(init_val),
+			   std::forward<Op>(op));
     }
   
  /*! \fn     bool all_adjacent_arcs(Node & p, Pred & pred) const
@@ -707,7 +1057,8 @@ namespace Designar
     template <class Pred>
     bool all_adjacent_arcs(Node & p, Pred && pred) const
     {
-      return all_adjacent_arcs<Pred>(p, pred);
+      return all_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		    std::forward<Pred>(pred));
     }
 
     /*! \fn     bool exists_adjacent_arc(Node & p, Pred & pred) const
@@ -737,7 +1088,8 @@ namespace Designar
     template <class Pred>
     bool exists_adjacent_arc(Node & p, Pred && pred) const
     {
-      return exists_adjacent_arc<Pred>(p, pred);
+      return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		       std::forward<Pred>(pred));
     }
 
     /*! \fn     bool none_adjacent_arc(Node & p, Pred & pred) const
@@ -767,7 +1119,8 @@ namespace Designar
     template <class Pred>
     bool none_adjacent_arc(Node & p, Pred && pred) const
     {
-      return none_adjacent_arc<Pred>(p, pred);
+      return none_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		     std::forward<Pred>(pred));
     }
 
     /*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
@@ -786,18 +1139,22 @@ namespace Designar
      */
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
+    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred) const
     {
-      return search_ptr_it(me().arcs_begin(p), me().arcs_end(p), pred);
+      return search_ptr_it<Arc>(const_me().arcs_begin(p),
+				const_me().arcs_end(p),
+				pred);
     }
   
 
     /// \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
     //!<\~English \brief Similar  to previous one but with an rvalue parameter. \~Spanish \brief Similar a la anterior pero con una rvalue como parámetro  
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
+    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred) const
     {
-      return search_adjacent_arc_ptr<Pred>(p, pred);
+      return search_ptr_it<Arc>(const_me().arcs_begin(p),
+				const_me().arcs_end(p),
+				std::forward<Pred>(pred));
     }
 
     /*! \fn      bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
@@ -827,7 +1184,8 @@ namespace Designar
     template <class Pred>
     bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
     {
-      return remove_first_adjacent_arc_if<Pred>(p, pred);
+      return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p),
+				std::forward<Pred>(pred));
     }
   
   /*! \fn      void remove_adjacent_arc_if(Node & p, Pred & pred)
@@ -855,7 +1213,7 @@ namespace Designar
     template <class Pred>
     void remove_adjacent_arc_if(Node & p, Pred && pred)
     {
-      remove_adjacent_arc_if<Pred>(p, pred);
+      remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
     }
 
 
@@ -873,8 +1231,12 @@ namespace Designar
      */
     SLList<Arc *> adjacent_arcs(Node & p) const
     {
-      return to_list_it<Arc *>(const_me().arcs_begin(p),
-			       const_me().arcs_end(p));
+      return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
+				   const_me().arcs_end(p),
+				   [] (const Arc & a)
+				   {
+				     return const_cast<Arc *>(&a);
+				   });
     }
     /*! \fn     void reset_all_node_tag(GraphTag tag)
      * \~English
@@ -1117,6 +1479,7 @@ namespace Designar
 		   });
     }
   };
+
 /*! \fn    void BaseGraph<GT, Node, Arc>::copy_graph(const GT & src, GT & tgt)
      * \~English
      *
@@ -1131,8 +1494,11 @@ namespace Designar
      *  \param[out] tgt Un grafo objetivo donde se almacenará la copia
      *  \return Vacío.
      */
-  template <typename GT, class Node, class Arc>
-  void BaseGraph<GT, Node, Arc>::copy_graph(const GT & src, GT & tgt)
+
+  template <typename GT, class Node, class Arc,
+	    typename NodeInfoType, typename ArcInfoType>
+  void BaseGraph<GT, Node, Arc, NodeInfoType, ArcInfoType>::
+  copy_graph(const GT & src, GT & tgt)
   {
     HashMap<Node *, Node *> map_nodes;
 
@@ -1161,18 +1527,21 @@ namespace Designar
 				 GraphNode<NodeInfo, ArcInfo, GraphInfo>,
 				 GraphArc<
 				   GraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				   NodeInfo, ArcInfo, GraphInfo>>
+				   NodeInfo, ArcInfo, GraphInfo>,
+				 NodeInfo, ArcInfo>
   {
     using Base = BaseGraph<Graph<NodeInfo, ArcInfo, GraphInfo>,
 			   GraphNode<NodeInfo, ArcInfo, GraphInfo>,
 			   GraphArc<
 			     GraphNode<NodeInfo, ArcInfo, GraphInfo>,
-			     NodeInfo, ArcInfo, GraphInfo>>;
+			     NodeInfo, ArcInfo, GraphInfo>,
+			   NodeInfo, ArcInfo>;
     
   public:
     using NodeInfoType  = NodeInfo;
     using ArcInfoType   = ArcInfo;
     using GraphInfoType = GraphInfo;
+    using SetSizeType   = nat_t;
 
     using Node = GraphNode<NodeInfo, ArcInfo, GraphInfo>;
     using Arc  = GraphArc<Node, NodeInfo, ArcInfo, GraphInfo>;
@@ -1854,18 +2223,21 @@ namespace Designar
 				   DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
 				   DigraphArc<
 				     DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
-				     NodeInfo, ArcInfo, GraphInfo>>
+				     NodeInfo, ArcInfo, GraphInfo>,
+				   NodeInfo, ArcInfo>
   {
     using Base = BaseGraph<Digraph<NodeInfo, ArcInfo, GraphInfo>,
 			   DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
 			   DigraphArc<
 			     DigraphNode<NodeInfo, ArcInfo, GraphInfo>,
-			     NodeInfo, ArcInfo, GraphInfo>>;
+			     NodeInfo, ArcInfo, GraphInfo>,
+			   NodeInfo, ArcInfo>;
     
   public:
     using NodeInfoType  = NodeInfo;
     using ArcInfoType   = ArcInfo;
     using GraphInfoType = GraphInfo;
+    using SetSizeType   = nat_t;
 
     using Node = DigraphNode<NodeInfo, ArcInfo, GraphInfo>;
     using Arc  = DigraphArc<Node, NodeInfo, ArcInfo, GraphInfo>;

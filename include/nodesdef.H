@@ -383,7 +383,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::out_of_range("There is not next element");
+	  return;
 
 	curr = curr->get_next();
       }
@@ -391,7 +391,7 @@ namespace Designar
       void prev()
       {
 	if (curr == head->get_next())
-	  throw std::out_of_range("There is not previous element");
+	  return;
 
 	curr = curr->get_prev();
       }
@@ -887,7 +887,7 @@ namespace Designar
 
     MTreeNode * fc = nullptr;
     
-    while (fc = r->remove_first_child())
+    while ((fc = r->remove_first_child()))
       destroy_tree(fc);
 
     delete r;

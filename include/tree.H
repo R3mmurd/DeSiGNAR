@@ -354,27 +354,7 @@ namespace Designar
 
     const Key & find(const Key & k) const
     {
-      Key * result = search(k);
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    Key & find(Key && k)
-    {
-      Key * result = search(std::forward<Key>(k));
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    const Key & find(Key && k) const
-    {
-      Key * result = search(std::forward<Key>(k));
+      const Key * result = search(k);
 
       if (result == nullptr)
 	throw std::domain_error("Key not found");
@@ -383,6 +363,7 @@ namespace Designar
     }
 
     bool remove(const Key & k)
+
     {
       Node * result = remove(root, k, cmp);
 
@@ -508,9 +489,9 @@ namespace Designar
       friend class TreeSet;
       
       DynStack<Node *> stack;
-      Node * root = Node::null;
-      Node * curr = Node::null;
-      lint_t pos = 0;
+      Node *    root = Node::null;
+      Node *    curr = Node::null;
+      lint_t    pos = 0;
 
       Node * last(Node *);
 
@@ -607,7 +588,7 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::out_of_range("There is not next element");
+	  return;
 
 	stack.push(curr);
 
@@ -620,11 +601,6 @@ namespace Designar
 
 	while (not stack.is_empty() and curr == Node::null)
 	  curr = R(stack.pop());	  
-      }
-      
-      Key del()
-      {
-	return Key();
       }
     };
 
@@ -759,11 +735,6 @@ namespace Designar
 	else
 	  if (not stack.is_empty())
 	    curr = stack.pop();
-      }
-
-      Key del()
-      {
-	return Key();
       }
     };
 
@@ -905,11 +876,6 @@ namespace Designar
 	  }
 
 	curr = first(R(parent));
-      }
-
-      Key del()
-      {
-	return Key();
       }
     };
 

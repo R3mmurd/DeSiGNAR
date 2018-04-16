@@ -27,28 +27,38 @@
 
 # include <types.H>
 # include <math.H>
+# include <iterator.H>
+# include <containeralgorithms.H>
 
 namespace Designar
 {
 
   template <typename T>
-  class Range
+  class Range : public ContainerAlgorithms<Range<T>, T>
   {
     static_assert(std::is_arithmetic<T>::value,
 		  "Template argument must be an arithmetic type");
     
-    T __first;
-    T __last;
-    T __step;
+  public:
+    using ItemType  = T;
+    using KeyType   = T;
+    using DataType  = T;
+    using ValueType = T;
+    using SizeType  = nat_t;
+
+  private:
+    T first;
+    T last;
+    T step;
 
   public:
     Range(T _first, T _last, T _step = T(1))
-      : __first(_first), __last(_last), __step(_step)
+      : first(_first), last(_last), step(_step)
     {
-      if (__first > __last)
+      if (first > last)
 	throw std::range_error("First value cannot be greater than last value");
 
-      if (num_equal(__step, T(0)))
+      if (num_equal(step, T(0)))
 	throw std::logic_error("Step cannot be zero");
     }
 
@@ -58,25 +68,36 @@ namespace Designar
       // empty
     }
 
-    T first() const
+    Range()
+      : Range(std::numeric_limits<T>::max())
     {
-      return __first;
+      // empty
+    }
+
+    T min() const
+    {
+      return first;
     }
     
-    T last() const
+    T max() const
     {
-      return __last;
+      return last;
     }
     
-    T step() const
+    T step_size() const
     {
-      return __step;
+      return step;
+    }
+
+    nat_t size() const
+    {
+      return std::ceil(double(last - first) / step);
     }
 
     bool operator == (const Range & r) const
     {
-      return num_equal(__first, r.__first) and num_equal(__last, r.__last)
-	and num_equal(__step, r.__step);
+      return num_equal(first, r.first) and num_equal(last, r.last)
+	and num_equal(step, r.step);
     }
 
     bool operator != (const Range & r) const
@@ -84,21 +105,37 @@ namespace Designar
       return not (*this == r);
     }
 
-    class Iterator
+    class Iterator : public RandomAccessIterator<Iterator, T, true>
     {
+      friend class BasicIterator<Iterator, T, true>;
+      
       const Range & r;
       T             c;
+      nat_t         p;
+
+    protected:
+      nat_t get_location() const
+      {
+	return p;
+      }      
       
     public: 
       Iterator(const Range & _r)
-	: r(_r), c(r.first())
+	: r(_r), c(r.min()), p(0)
       {
 	// empty
       }
 
+      Iterator(const Range & _r, T current_position)
+	: r(_r), c(r.min() + current_position * r.step_size()),
+	  p(current_position)
+      {
+	// empty
+      }
+      
       bool has_current() const
       {
-	return not num_equal(c, r.last());
+	return c < r.max();
       }
 
       T get_current() const
@@ -112,34 +149,43 @@ namespace Designar
       void next()
       {
 	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	  return;
 
-	c = std::min(c + r.step(), r.last());
+	++p;
+	c += r.step_size();
       }
 
-      void reset_last()
+      void next_n(nat_t n)
       {
-	c = r.last();
+	if (not has_current())
+	  return;
+
+	p = std::min(p + n, r.size());
+	c = std::min(c + r.step_size() * n, r.size() * r.step_size());
       }
 
-      T operator * () const
+      void prev()
       {
-	return get_current();
+	if (c == r.min())
+	  return;
+
+	--p;
+	c -= r.step_size();
       }
 
-      void operator ++ ()
+      void prev_n(nat_t n)
       {
-	next();
+	if (n * r.step_size() > c - r.min())
+	  return;
+
+	p -= n;
+	c -= n * r.step_size();
       }
 
-      bool operator == (const Iterator & it) const
+      void reset()
       {
-	return num_equal(c, it.c) and r == it.r;
-      }
-
-      bool operator != (const Iterator & it) const
-      {
-	return not (*this == it);
+	c = r.min();
+	p = 0;
       }
     };
 
@@ -150,9 +196,7 @@ namespace Designar
 
     Iterator end() const
     {
-      Iterator it(*this);
-      it.reset_last();
-      return it;
+      return Iterator(*this, size());
     }
   };
 
@@ -188,4 +232,4 @@ namespace Designar
   
 } // end namespace Designar
 
-# endif // DSGRANGE_H
+# endif // DSGRANGE__H

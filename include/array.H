@@ -48,6 +48,7 @@
 
 namespace Designar
 {
+<<<<<<< HEAD
   template <class ArrayType, class Cmp>
   void insertion_sort(ArrayType &, lint_t, lint_t, Cmp &);
   
@@ -68,6 +69,8 @@ namespace Designar
 
   */
 
+=======
+>>>>>>> bffed35ddc9d56620809f16bda67fff1fa9c7f9f
   template <class Derived, class ArrayType, typename T, bool RET_CPY>
   class ArrayIterator : public RandomAccessIterator<Derived, T, RET_CPY>
   {
@@ -287,7 +290,11 @@ namespace Designar
     void next()
     {
       if (not has_current())
+<<<<<<< HEAD
 	throw std::out_of_range("There is no next element");
+=======
+	return;
+>>>>>>> bffed35ddc9d56620809f16bda67fff1fa9c7f9f
       
       ++curr;
     }
@@ -309,10 +316,7 @@ namespace Designar
 
     void next_n(nat_t p)
     {
-      if (curr + p > array_ptr->size())
-	throw std::out_of_range("Too much steps");
-
-      curr += p;
+      curr = std::min(curr + p, array_ptr->size());
     }
 
 
@@ -332,7 +336,7 @@ namespace Designar
     void prev()
     {
       if (curr == 0)
-	throw std::out_of_range("There is not previous element");
+	return;
       
       --curr;
     }
@@ -354,8 +358,11 @@ namespace Designar
     void prev_n(nat_t p)
     {
       if (p > curr)
-	throw std::out_of_range("Too much steps");
-
+	{
+	  curr = 0;
+	  return;
+	}
+      
       curr -= p;
     }
 
@@ -376,10 +383,7 @@ namespace Designar
 
     void move_to(nat_t p)
     {
-      if (p >= array_ptr->size())
-	throw std::out_of_range("Position is out of range");
-
-      curr = p;
+      curr = std::min(p, array_ptr->size());
     }
     
 
@@ -1383,7 +1387,7 @@ namespace Designar
     
     const Key & find(const Key & item) const
     {
-      Key * result = search(item);
+      const Key * result = search(item);
       if (result == nullptr)
 	throw std::domain_error("Item does not exist");
       return *result;
@@ -1768,158 +1772,7 @@ namespace Designar
       ret += arr[i] * strs[i];
 
     return ret;
-  }
-  
-
-  template <class ArrayType, class Cmp>
-  void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
-  {
-    for (lint_t i = l + 1; i <= r; ++i)
-      {
-	typename ArrayType::DataType data = std::move(a[i]);
-
-	lint_t j = i;
-
-	for ( ; j > l and cmp(data, a[j - 1]); --j)
-	  a[j] = std::move(a[j - 1]);
-
-	a[j] = std::move(data);
-      }
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>> inline
-  void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp && cmp = Cmp())
-  {
-    insertion_sort<ArrayType, Cmp>(a, l, r, cmp);
-  }
-
-  template <class ArrayType, class Cmp>
-  inline void insertion_sort(ArrayType & a, lint_t size, Cmp & cmp)
-  {
-    insertion_sort(a, 0, size - 1, cmp);
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void insertion_sort(ArrayType & a, lint_t size, Cmp && cmp = Cmp())
-  {
-    insertion_sort<ArrayType, Cmp>(a, size, cmp);
-  }
-
-  template <class ArrayType, class Cmp>
-  inline void insertion_sort(ArrayType & a, Cmp & cmp)
-  {
-    insertion_sort(a, a.size(), cmp);
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void insertion_sort(ArrayType & a, Cmp && cmp = Cmp())
-  {
-    insertion_sort<ArrayType, Cmp>(a, cmp);
-  }
-  
-  template <typename ArrayType, class Cmp>
-  inline lint_t select_pivot(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
-  {
-    assert(l <= r);
-    
-    lint_t m = (l + r) / 2;
-
-    lint_t partial_min = cmp(a[l], a[m]) ? l : m;
-
-    return cmp(a[partial_min], a[r]) ? partial_min : r;    
-  }
-
-  template <typename ArrayType, class Cmp>
-  lint_t partition(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
-  {
-    int pivot = select_pivot(a, l, r, cmp);
-    
-    std::swap(a[pivot], a[r]);
-    
-    lint_t i = l - 1;
-    lint_t j = r;
-
-    while (i <= j)
-      {
-	while (cmp(a[++i], a[r]));
-
-	while (cmp(a[r], a[--j]))
-	  if (j == l)
-	    break;
-
-	if (i >= j)
-	  break;
-
-	std::swap(a[i], a[j]);
-      }
-
-    std::swap(a[i], a[r]);
-
-    return i;
-  }
-
-  template <typename ArrayType, class Cmp>
-  void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
-  {
-    if (l >= r)
-      return;
-    
-    if (r - l + 1 <= QuicksortThreshold)
-      {
-	insertion_sort(a, l, r, cmp);
-	return;
-      }
-
-    lint_t pivot = partition(a, l, r, cmp);
-
-    if (pivot - l < r - pivot)
-      {
-	quicksort(a, l, pivot - 1, cmp);
-	quicksort(a, pivot + 1, r, cmp);
-      }
-    else
-      {
-	quicksort(a, pivot + 1, r, cmp);
-	quicksort(a, l, pivot - 1, cmp);
-      }
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>> inline
-  void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp && cmp = Cmp())
-  {
-    quicksort<ArrayType, Cmp>(a, l, r, cmp);
-  }
-
-  template <class ArrayType, class Cmp>
-  inline void quicksort(ArrayType & a, lint_t size, Cmp & cmp)
-  {
-    quicksort(a, 0, size - 1, cmp);
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void quicksort(ArrayType & a, lint_t size, Cmp && cmp = Cmp())
-  {
-    quicksort<ArrayType, Cmp>(a, size, cmp);
-  }
-
-  template <class ArrayType, class Cmp>
-  inline void quicksort(ArrayType & a, Cmp & cmp)
-  {
-    quicksort(a, a.size(), cmp);
-  }
-
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void quicksort(ArrayType & a, Cmp && cmp = Cmp())
-  {
-    quicksort<ArrayType, Cmp>(a, cmp);
-  }
-    
+  }    
 } // end namespace Designar
 
 # endif // DSGARRAY_H
