@@ -2,19 +2,36 @@ This is the beginning of a complete project which is expected to be a general li
 
 The structure of this library is\+:
 
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Directory }&\textbf{ Description  }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ Directory }&\textbf{ Description  }\\\cline{1-2}
+\endhead
+\PBS\centering {\itshape include} &Contains all the header files. \\\cline{1-2}
+\PBS\centering {\itshape src} &Contains all the source files (implementations declared in headers. \\\cline{1-2}
+\PBS\centering {\itshape samples} &Contains some test and demos with the usage of the differents developed abstractions. \\\cline{1-2}
+\PBS\centering {\itshape obj} &In this directory will be created all the objects files when you compile the library. \\\cline{1-2}
+\PBS\centering {\itshape lib} &When you compile the library, in this directory will be added the file {\bfseries lib\+Designar.\+a.} \\\cline{1-2}
+\PBS\centering {\itshape bin} &When you compile the samples, in this directory will be added the binary files to execute. \\\cline{1-2}
+\end{longtabu}
+In order to compile the library you must execute
 
-\begin{DoxyItemize}
-\item include directory\+: Contains all the header files.
-\item src directory\+: Contains all the source files (implementations declared in headers.
-\item samples directory\+: Contains some test and demos with the usage of the differents developed abstractions.
-\item obj directory\+: In this directory will be created all the objects files when you compile the library.
-\item lib directory\+: When you compile the library, in this directory will be added the file lib\+Designar.\+a.
-\item bin directory\+: When you compile the samples, in this directory will be added the binary files to execute.
-\end{DoxyItemize}
 
-In order to compile the library you must execute \char`\"{}make library\char`\"{}.
+\begin{DoxyCode}
+~$ make library
+\end{DoxyCode}
+ In order to compile the samples you must execute
 
-In order to compile the samples you must execute \char`\"{}make samples\char`\"{}.
+
+\begin{DoxyCode}
+~$ make samples
+\end{DoxyCode}
+
 
 T\+O\+DO\+:
 \begin{DoxyItemize}

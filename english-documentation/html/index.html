@@ -88,17 +88,25 @@ $(document).ready(function(){initNavTree('index.html','');});
 <div class="contents">
 <div class="textblock"><p>This is the beginning of a complete project which is expected to be a general library to make different kinds of models and simulation.</p>
 <p>The structure of this library is:</p>
-<ul>
-<li>include directory: Contains all the header files.</li>
-<li>src directory: Contains all the source files (implementations declared in headers.</li>
-<li>samples directory: Contains some test and demos with the usage of the differents developed abstractions.</li>
-<li>obj directory: In this directory will be created all the objects files when you compile the library.</li>
-<li>lib directory: When you compile the library, in this directory will be added the file libDesignar.a.</li>
-<li>bin directory: When you compile the samples, in this directory will be added the binary files to execute.</li>
-</ul>
-<p>In order to compile the library you must execute "make library".</p>
-<p>In order to compile the samples you must execute "make samples".</p>
-<p>TODO:</p><ul>
+<table class="doxtable">
+<tr>
+<th align="center">Directory </th><th align="left">Description  </th></tr>
+<tr>
+<td align="center"><em>include</em> </td><td align="left">Contains all the header files. </td></tr>
+<tr>
+<td align="center"><em>src</em> </td><td align="left">Contains all the source files (implementations declared in headers. </td></tr>
+<tr>
+<td align="center"><em>samples</em> </td><td align="left">Contains some test and demos with the usage of the differents developed abstractions. </td></tr>
+<tr>
+<td align="center"><em>obj</em> </td><td align="left">In this directory will be created all the objects files when you compile the library. </td></tr>
+<tr>
+<td align="center"><em>lib</em> </td><td align="left">When you compile the library, in this directory will be added the file <b>libDesignar.a.</b> </td></tr>
+<tr>
+<td align="center"><em>bin</em> </td><td align="left">When you compile the samples, in this directory will be added the binary files to execute. </td></tr>
+</table>
+<p>In order to compile the library you must execute</p>
+<div class="fragment"><div class="line">~$ make library</div></div><!-- fragment --><p> In order to compile the samples you must execute</p>
+<div class="fragment"><div class="line">~$ make samples</div></div><!-- fragment --><p>TODO:</p><ul>
 <li>Tarjan Algorithm for computing strong connected components to Digraph.</li>
 <li>Making all the documentation.</li>
 <li>Making test for Graph and Digraph. </li>

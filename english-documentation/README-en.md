@@ -8,11 +8,11 @@ The structure of this library is:
 | Directory        | Description|
 | :-------------: |:-------------|
 | *include*     | Contains all the header files. |
-| *src*      | Contains some test and demos with the usage of the differents developed abstractions.|
-| *samples* | In this directory will be created all the objects files when you compile the library. |
-| *obj* | When you compile the library, in this directory will be added the file **libDesignar.a.**|
-| *lib* | When you compile the samples, in this directory will be added the binary files to execute.|
-| *bin* | Cuando sea compilada la biblioteca, en este directorio serán creados los archivos binarios a ejecutar.|
+| *src*      | Contains all the source files (implementations declared in headers.|
+| *samples* | Contains some test and demos with the usage of the differents developed abstractions.|
+| *obj* |In this directory will be created all the objects files when you compile the library.|
+| *lib* |When you compile the library, in this directory will be added the file **libDesignar.a.**|
+| *bin* |When you compile the samples, in this directory will be added the binary files to execute.|
 
 In order to compile the library you must execute 
 
