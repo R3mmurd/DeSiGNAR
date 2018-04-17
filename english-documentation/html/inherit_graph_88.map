@@ -1,8 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; T, nat\l_t \&gt;, CmpWrapper\&lt; T, nat_t,\l Equal \&gt; \&gt;, MapKey\&lt; T, nat_t \&gt; \&gt;" alt="" coords="5,5,225,76"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_hash_set.html" title="Designar::HashSet\&lt;\l MapKey\&lt; T, nat_t \&gt;,\l CmpWrapper\&lt; T, nat_t,\l Equal \&gt; \&gt;" alt="" coords="273,93,437,164"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_gen_map.html" title="Designar::GenMap\&lt; HashSet,\l T, nat_t, Equal \&gt;" alt="" coords="485,108,684,149"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_hash_map.html" title="Designar::HashMap\&lt;\l T, nat_t, Equal \&gt;" alt="" coords="732,108,879,149"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_fixed_array.html" title="Designar::FixedArray\l\&lt; DLList\&lt; MapKey\&lt; T,\l nat_t \&gt; \&gt; \&gt;" alt="" coords="37,101,193,157"/>
-<area shape="rect" id="node6" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; T,\l nat_t \&gt;, CmpWrapper\&lt; T,\l nat_t, Equal \&gt; \&gt;, MapKey\l\&lt; T, nat_t \&gt; \&gt;" alt="" coords="27,181,203,266"/>
-</map>

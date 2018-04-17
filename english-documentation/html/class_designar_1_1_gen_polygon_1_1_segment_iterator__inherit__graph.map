@@ -1,5 +1,0 @@
-<map id="Designar::GenPolygon&lt; PointT &gt;::SegmentIterator" name="Designar::GenPolygon&lt; PointT &gt;::SegmentIterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; SegmentIterator, SegmentType, true \&gt;" alt="" coords="5,213,264,255"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; SegmentIterator, SegmentType,\l RET_CPY \&gt;" alt="" coords="25,109,245,165"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; SegmentIterator, SegmentType,\l RET_CPY \&gt;" alt="" coords="25,5,245,61"/>
-</map>

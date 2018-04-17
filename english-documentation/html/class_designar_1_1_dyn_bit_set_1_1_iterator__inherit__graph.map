@@ -1,7 +1,0 @@
-<map id="Designar::DynBitSet::Iterator" name="Designar::DynBitSet::Iterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_array_iterator.html" title="Designar::ArrayIterator\l\&lt; Iterator, DynBitSet,\l bool, true \&gt;" alt="" coords="36,363,191,419"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_random_access_iterator.html" title="Designar::RandomAccessIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="5,273,221,315"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="16,184,211,225"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="19,95,208,136"/>
-<area shape="rect" id="node6" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="19,5,208,47"/>
-</map>

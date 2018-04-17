@@ -1,6 +1,0 @@
-<map id="Designar::Graph&lt; NodeInfo, ArcInfo, GraphInfo &gt;::AdjacentArcIterator" name="Designar::Graph&lt; NodeInfo, ArcInfo, GraphInfo &gt;::AdjacentArcIterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_d_l_1_1_iterator.html" title="Designar::DL::Iterator" alt="" coords="451,5,599,32"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; AdjacentArcIterator, Arc \&gt;" alt="" coords="428,57,623,98"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; AdjacentArcIterator,\l Arc, false \&gt;" alt="" coords="209,49,380,105"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; AdjacentArcIterator,\l Arc, RET_CPY \&gt;" alt="" coords="5,49,161,105"/>
-</map>

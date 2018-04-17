@@ -1,6 +1,0 @@
-<map id="Designar::DLList&lt; T &gt;::Iterator" name="Designar::DLList&lt; T &gt;::Iterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_d_l_1_1_iterator.html" title="Designar::DL::Iterator" alt="" coords="5,191,153,218"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, T \&gt;" alt="" coords="178,184,373,225"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, T, false \&gt;" alt="" coords="190,95,361,136"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Iterator, T, RET_CPY \&gt;" alt="" coords="189,5,362,47"/>
-</map>

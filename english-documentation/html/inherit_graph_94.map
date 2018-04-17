@@ -1,7 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; GenArraySet\&lt; Key, Cmp,\l SortedArraySetOp\&lt; Key, Cmp\l \&gt; \&gt;, Key \&gt;" alt="" coords="5,5,208,76"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_gen_array_set.html" title="Designar::GenArraySet\l\&lt; Key, Cmp, SortedArraySetOp\l\&lt; Key, Cmp \&gt; \&gt;" alt="" coords="256,107,463,163"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_sorted_array_set.html" title="Designar::SortedArraySet\l\&lt; Key, Cmp \&gt;" alt="" coords="511,115,681,156"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; GenArraySet\&lt; Key, Cmp,\l SortedArraySetOp\&lt; Key,\l Cmp \&gt; \&gt;, Key \&gt;" alt="" coords="15,100,199,171"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_sorted_array_set_op.html" title="Designar::SortedArraySet\lOp\&lt; Key, Cmp \&gt;" alt="" coords="21,195,192,236"/>
-</map>

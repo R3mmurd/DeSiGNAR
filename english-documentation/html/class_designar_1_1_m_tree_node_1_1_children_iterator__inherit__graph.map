@@ -1,5 +1,0 @@
-<map id="Designar::MTreeNode&lt; Key &gt;::ChildrenIterator" name="Designar::MTreeNode&lt; Key &gt;::ChildrenIterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; ChildrenIterator, MTreeNode\l *, true \&gt;" alt="" coords="5,213,204,269"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; ChildrenIterator, MTreeNode\l *, RET_CPY \&gt;" alt="" coords="5,109,204,165"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; ChildrenIterator, MTreeNode\l *, RET_CPY \&gt;" alt="" coords="5,5,204,61"/>
-</map>

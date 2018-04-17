@@ -1,8 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; Node *,\l Arc **\&gt;, CmpWrapper\&lt; Node\l *, Arc **, std::equal_to\&lt;\l Node *\&gt; \&gt; \&gt;, MapKey\&lt; Node *,\l Arc **\&gt; \&gt;" alt="" coords="11,5,222,105"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_hash_set.html" title="Designar::HashSet\&lt;\l MapKey\&lt; Node *, Arc\l ** \&gt;, CmpWrapper\&lt; Node\l *, Arc **, std::equal\l_to\&lt; Node * \&gt; \&gt; \&gt;" alt="" coords="276,114,452,199"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_gen_map.html" title="Designar::GenMap\&lt; HashSet,\l Node *, Arc **, std::equal\l_to\&lt; Node *\&gt; \&gt;" alt="" coords="500,129,699,185"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_hash_map.html" title="Designar::HashMap\&lt;\l Node *, Arc ** \&gt;" alt="" coords="747,136,893,177"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_fixed_array.html" title="Designar::FixedArray\l\&lt; DLList\&lt; MapKey\&lt; Node\l *, Arc **\&gt; \&gt; \&gt;" alt="" coords="29,129,204,185"/>
-<area shape="rect" id="node6" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; HashSet\&lt; MapKey\&lt; Node\l *, Arc **\&gt;, CmpWrapper\l\&lt; Node *, Arc **, std::equal\l_to\&lt; Node *\&gt; \&gt; \&gt;, MapKey\&lt; Node\l *, Arc **\&gt; \&gt;" alt="" coords="5,208,228,308"/>
-</map>

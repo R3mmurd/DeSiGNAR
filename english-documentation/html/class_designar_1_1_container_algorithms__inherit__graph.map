@@ -1,8 +1,0 @@
-<map id="Designar::ContainerAlgorithms&lt; ContainerType, T &gt;" name="Designar::ContainerAlgorithms&lt; ContainerType, T &gt;">
-<area shape="rect" id="node2" href="$class_designar_1_1_dyn_array.html" title="DynArray\&lt; Designar\l::Byte \&gt;" alt="" coords="271,5,412,47"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_dyn_array.html" title="DynArray\&lt; Designar\l::TreapRkNode * \&gt;" alt="" coords="271,71,412,112"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_dyn_array.html" title="DynArray\&lt; Key \&gt;" alt="" coords="279,137,403,163"/>
-<area shape="rect" id="node7" href="$class_designar_1_1_dyn_array.html" title="DynArray\&lt; MapKey\&lt; Key,\l Value \&gt; \&gt;" alt="" coords="253,188,429,229"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_dyn_stack.html" title="Designar::DynStack\l\&lt; Designar::TreapRkNode *\&gt;" alt="" coords="477,67,669,108"/>
-<area shape="rect" id="node6" href="$class_designar_1_1_dyn_heap.html" title="Designar::DynHeap\&lt;\l Key, Cmp \&gt;" alt="" coords="501,132,646,173"/>
-</map>

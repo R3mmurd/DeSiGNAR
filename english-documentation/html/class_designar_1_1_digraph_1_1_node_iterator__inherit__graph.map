@@ -1,6 +1,0 @@
-<map id="Designar::Digraph&lt; NodeInfo, ArcInfo, GraphInfo &gt;::NodeIterator" name="Designar::Digraph&lt; NodeInfo, ArcInfo, GraphInfo &gt;::NodeIterator">
-<area shape="rect" id="node2" href="$class_designar_1_1_d_l_1_1_iterator.html" title="Designar::DL::Iterator" alt="" coords="5,206,153,233"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; NodeIterator, Node \&gt;" alt="" coords="178,199,373,240"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; NodeIterator, Node, false \&gt;" alt="" coords="179,109,372,151"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; NodeIterator, Node,\l RET_CPY \&gt;" alt="" coords="197,5,353,61"/>
-</map>

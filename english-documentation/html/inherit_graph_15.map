@@ -1,8 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_basic_iterator.html" title="Designar::BasicIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="5,13,195,54"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_forward_iterator.html" title="Designar::ForwardIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="243,13,432,54"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_bidirectional_iterator.html" title="Designar::BidirectionalIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="480,13,675,54"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_random_access_iterator.html" title="Designar::RandomAccessIterator\l\&lt; Iterator, bool, RET_CPY \&gt;" alt="" coords="723,13,939,54"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_array_iterator.html" title="Designar::ArrayIterator\l\&lt; Iterator, DynBitSet,\l bool, true \&gt;" alt="" coords="987,5,1141,61"/>
-<area shape="rect" id="node6" href="$class_designar_1_1_dyn_bit_set_1_1_iterator.html" title="Designar::DynBitSet\l::Iterator" alt="" coords="1189,13,1332,54"/>
-</map>

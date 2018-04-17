@@ -1,9 +1,0 @@
-<map id="Designar::SortedArraySet&lt; Key, Cmp &gt;" name="Designar::SortedArraySet&lt; Key, Cmp &gt;">
-<area shape="rect" id="node2" href="$class_designar_1_1_gen_array_set.html" title="Designar::GenArraySet\l\&lt; Key, Cmp, SortedArraySetOp\l\&lt; Key, Cmp \&gt; \&gt;" alt="" coords="539,173,745,229"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_sorted_array_set_op.html" title="Designar::SortedArraySet\lOp\&lt; Key, Cmp \&gt;" alt="" coords="271,5,441,47"/>
-<area shape="rect" id="node4" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; GenArraySet\&lt; Key, Cmp,\l SortedArraySetOp\&lt; Key, Cmp\l \&gt; \&gt;, Key \&gt;" alt="" coords="255,71,457,141"/>
-<area shape="rect" id="node5" href="$class_designar_1_1_set_algorithms.html" title="Designar::SetAlgorithms\l\&lt; GenArraySet\&lt; Key, Cmp,\l SortedArraySetOp\&lt; Key,\l Cmp \&gt; \&gt;, Key \&gt;" alt="" coords="264,165,448,236"/>
-<area shape="rect" id="node7" href="$class_designar_1_1_dyn_array.html" title="Designar::DynArray\l\&lt; Key \&gt;" alt="" coords="287,312,425,353"/>
-<area shape="rect" id="node8" href="$class_designar_1_1_fixed_array.html" title="Designar::FixedArray\l\&lt; Key \&gt;" alt="" coords="33,279,178,320"/>
-<area shape="rect" id="node9" href="$class_designar_1_1_container_algorithms.html" title="Designar::ContainerAlgorithms\l\&lt; DynArray\&lt; Key \&gt;, Key \&gt;" alt="" coords="5,344,205,385"/>
-</map>

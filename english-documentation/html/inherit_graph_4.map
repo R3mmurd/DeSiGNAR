@@ -1,5 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_base_bin_tree_node.html" title="Designar::BaseBinTreeNode\l\&lt; GT::Arc *, HeapNode\&lt;\l GT::Arc * \&gt;, BinTreeNodeNullValue\l::NULLPTR \&gt;" alt="" coords="5,24,239,95"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_heap_node.html" title="Designar::HeapNode\l\&lt; GT::Arc * \&gt;" alt="" coords="287,5,431,47"/>
-<area shape="rect" id="node3" href="$class_designar_1_1_heap_node.html" title="Designar::HeapNode\l\&lt; GT::Arc *\&gt;" alt="" coords="287,71,431,112"/>
-</map>

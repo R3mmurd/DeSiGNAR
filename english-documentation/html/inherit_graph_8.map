@@ -1,4 +1,0 @@
-<map id="Representación gráfica de la clase" name="Representación gráfica de la clase">
-<area shape="rect" id="node1" href="$class_designar_1_1_base_bin_tree_node.html" title="Designar::BaseBinTreeNode\l\&lt; MapKey\&lt; Key, Value \&gt;,\l TreapRkNode\&lt; MapKey\&lt; Key,\l Value \&gt; \&gt;, BinTreeNodeNullValue\l::SENTINEL \&gt;" alt="" coords="5,5,228,91"/>
-<area shape="rect" id="node2" href="$class_designar_1_1_treap_rk_node.html" title="Designar::TreapRkNode\l\&lt; MapKey\&lt; Key, Value \&gt; \&gt;" alt="" coords="276,27,459,69"/>
-</map>
