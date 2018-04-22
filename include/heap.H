@@ -28,6 +28,7 @@
 # include <array.H>
 # include <queue.H>
 # include <nodesdef.H>
+# include <sort.H>
 
 namespace Designar
 {
@@ -35,10 +36,6 @@ namespace Designar
   template <typename Key, class Cmp = std::less<Key>, nat_t cap = 100>
   class FixedHeap
   {
-    static void sift_up(Key *, nat_t, nat_t, Cmp &);
-
-    static void sift_down(Key *, nat_t, nat_t, Cmp &);
-
     nat_t num_items;
     Key   array[cap];
     Cmp & cmp;
@@ -176,43 +173,6 @@ namespace Designar
       return ret_val;
     }
   };
-
-  template <typename Key, class Cmp, nat_t cap>
-  void FixedHeap<Key, Cmp, cap>::sift_up(Key * a, nat_t l, nat_t r, Cmp & cmp)
-  {
-    nat_t i = r;
-
-    nat_t u = i / 2;
-
-    while (u >= l and cmp(a[i], a[u]))
-      {
-	std::swap(a[i], a[u]);
-	i = u;
-	u = i / 2;
-      }
-  }
-
-  template <typename Key, class Cmp, nat_t cap>
-  void FixedHeap<Key, Cmp, cap>::sift_down(Key * a, nat_t l, nat_t r, Cmp & cmp)
-  {
-    nat_t i = l;
-
-    nat_t c = i * 2;
-
-    while (c <= r)
-      {
-	if (c < r)
-	  if (cmp(a[c + 1], a[c]))
-	    ++c;
-
-	if (not cmp(a[c], a[i]))
-	  break;
-
-	std::swap(a[c], a[i]);
-	i = c;
-	c = i * 2;
-      }
-  }
 
   template <typename Key, class Cmp, nat_t cap>
   void FixedHeap<Key, Cmp, cap>::copy(const FixedHeap & h)

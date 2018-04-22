@@ -705,7 +705,7 @@ namespace Designar
       if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return static_cast<Node *>(DL::get_next())->get_item();
+      return static_cast<const Node *>(DL::get_next())->get_item();
     }
 
     T & get_last()
@@ -721,7 +721,7 @@ namespace Designar
       if (Base::is_empty())
 	throw std::underflow_error("List is empty");
 
-      return static_cast<Node *>(DL::get_prev())->get_item();
+      return static_cast<const Node *>(DL::get_prev())->get_item();
     }
 
     T remove_first()
@@ -974,143 +974,6 @@ namespace Designar
 	ptr = ptr->get_next();
 	++pos;
       }
-  }
-  
-  template <typename T, class Cmp>
-  inline std::tuple<NodeSLList<T>,
-		    typename NodeSLList<T>::Node *,
-		    NodeSLList<T>>
-    partition(NodeSLList<T> & l, Cmp & cmp)
-  {
-    auto pivot = l.remove_first();
-
-    NodeSLList<T> ls, gs;
-
-    while (not l.is_empty())
-      {
-	auto p = l.remove_first();
-
-	if (cmp(p->get_item(), pivot->get_item()))
-	  ls.append(p);
-	else
-	  gs.append(p);
-      }
-
-    return std::make_tuple(std::move(ls), pivot, std::move(gs));
-  }
-
-  template <typename T, class Cmp>
-  inline void quicksort(NodeSLList<T> & l, Cmp & cmp)
-  {
-    if (l.is_unitarian_or_empty())
-      return;
-
-    auto part = partition(l, cmp);
-
-    quicksort(std::get<0>(part), cmp);
-    quicksort(std::get<2>(part), cmp);
-
-    l.concat(std::get<0>(part));
-    l.append(std::get<1>(part));
-    l.concat(std::get<2>(part));
-  }
-
-  template <typename T, class Cmp = std::less<T>>
-  inline void quicksort(NodeSLList<T> & l, Cmp && cmp = Cmp())
-  {
-    quicksort<T, Cmp>(l, cmp);
-  }
-
-  template <class Cmp>
-  inline std::tuple<DL, DL *, DL> partition(DL & l, Cmp & cmp)
-  {
-    auto pivot = l.remove_next();
-
-    DL ls, gs;
-
-    while (not l.is_empty())
-      {
-	auto p = l.remove_next();
-
-	if (cmp(p, pivot))
-	  ls.insert_prev(p);
-	else
-	  gs.insert_prev(p);
-      }
-
-    return std::make_tuple(std::move(ls), pivot, std::move(gs));
-  }
-
-  template <class Cmp>
-  inline void quicksort(DL & l, Cmp & cmp)
-  {
-    if (l.is_unitarian_or_empty())
-      return;
-
-    auto part = partition(l, cmp);
-
-    quicksort(std::get<0>(part), cmp);
-    quicksort(std::get<2>(part), cmp);
-
-    l.concat(std::get<0>(part));
-    l.insert_prev(std::get<1>(part));
-    l.concat(std::get<2>(part));
-  }
-
-  template <class Cmp>
-  inline void quicksort(DL & l, Cmp && cmp = Cmp())
-  {
-    quicksort<Cmp>(l, cmp);
-  }
-
-  template <typename T, class Cmp>
-  struct KeyCmp
-  {
-    Cmp & cmp;
-
-    KeyCmp(Cmp & _cmp)
-      : cmp(_cmp)
-    {
-      // empty
-    }
-
-    KeyCmp(Cmp && _cmp = Cmp())
-      : cmp(_cmp)
-    {
-      // empty
-    }
-
-    bool operator () (DL * l, DL * r) const
-    {
-      return cmp(static_cast<DLNode<T> *>(l)->get_item(),
-		 static_cast<DLNode<T> *>(r)->get_item());
-    }
-  };
-  
-  template <typename T, class Cmp>
-  inline void quicksort(DLNode<T> & l, Cmp & cmp)
-  {
-    KeyCmp<T, Cmp> key_cmp(cmp);
-    quicksort<KeyCmp<T, Cmp>>(l, key_cmp);
-  }
-
-  template <typename T, class Cmp = std::less<T>>
-  inline void quicksort(DLNode<T> & l, Cmp && cmp = Cmp())
-  {
-    quicksort<T, Cmp>(l, cmp);
-  }
-
-  template <typename T, class Cmp>
-  inline void quicksort(DLList<T> & l, Cmp & cmp)
-  {
-    KeyCmp<T, Cmp> key_cmp(cmp);
-    quicksort<KeyCmp<T, Cmp>>(l, key_cmp);
-  }
-
-  template <typename T, class Cmp = std::less<T>>
-  inline void quicksort(DLList<T> & l, Cmp && cmp = Cmp())
-  {
-    quicksort<T, Cmp>(l, cmp);
   }
   
 } // end namespace Designar
