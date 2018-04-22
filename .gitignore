@@ -1,0 +1,7 @@
+*~
+bin/*.out
+include/*~
+lib/*.a
+obj/*.o
+samples/*~
+src/*~
