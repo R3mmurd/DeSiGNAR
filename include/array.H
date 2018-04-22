@@ -22,20 +22,6 @@
   aledrums@gmail.com
 */
 
-/*!
-*  \file array.H
-*  \author Alejandro Mujica
-*   
-*  \~English
-*
-*  \brief Array-based data structures and asociated algorithms
-*
-*  \~Spanish
-*
-*  \brief Estructuras de datos basadas en arreglos y sus algoritmos asociados
-*
-*/
-
 # ifndef DSGARRAY_H
 # define DSGARRAY_H
 
@@ -54,21 +40,14 @@ namespace Designar
   template <typename ArrayType, class Cmp>
   void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
 
-/*!
+/**
 *
-*	\class ArrayIterator array.H <array.H>
+*	@class ArrayIterator array.H <array.H>
 *
-*	\~English
-*	
-*	\brief Defined object that allows to traverse a DeSIGNAR
+*	@brief Defined object that allows to traverse a DeSIGNAR
 *	Array-based container.
 *
-*	\~Spanish
-*
-*	\brief Objeto definido que permite recorrer un Array de DeSIGNAR.
-*
-*/
-
+******************************************************************************/
   template <class Derived, class ArrayType, typename T, bool RET_CPY>
   class ArrayIterator : public RandomAccessIterator<Derived, T, RET_CPY>
   {
@@ -79,19 +58,14 @@ namespace Designar
     ArrayType * array_ptr;
     nat_t       curr; 
 
-/*! \fn nat_t get_location() const
+/**
 *
-* \~English
+*  @brief Getter method to obtain current location of the iterator.
 *
-*  \brief Getter method to obtain current location of the iterator.
 *
-* \~Spanish
+*  @brief Observador para obtener la posición actual del iterador.
 *
-*  \brief Observador para obtener la posición actual del iterador.
-*
-*/
-
-
+******************************************************************************/
     nat_t get_location() const
     {
       return curr;
@@ -100,40 +74,27 @@ namespace Designar
   public:
 
 
-/*! \fn nat_t ArrayIterator()
+/**
 *
-* \~English
+*  @brief Getter method to obtain current location of the iterator.
 *
-*  \brief Getter method to obtain current location of the iterator.
 *
-* \~Spanish
+*  @brief Observador para obtener la posición actual del iterador.
 *
-*  \brief Observador para obtener la posición actual del iterador.
-*
-*/
-
+******************************************************************************/
     ArrayIterator()
       : array_ptr(nullptr), curr(0)
     {
       // empty
     }
     
-/*! \fn ArrayIterator(const ArrayType&)
+/**
 *
-* \~English
-*
-*  \brief Array Iterator Parametric Constructor.
+*  @brief Array Iterator Parametric Constructor.
 *  Initializes *array_ptr* and *curr* in **a** and **0**.
-*  \param[in]  a     An **ArrayType** constant reference
+*  @param[in]  a     An **ArrayType** constant reference
 *
-* \~Spanish
-*
-*  \brief Constructor paramétrico de un iterador sobre Array,
-*  el cual inicializa array_ptr en **a** y *curr* en **0**.
-*  \param[in]  a     Una referencia constante a un **ArrayType**
-*
-*/
-
+******************************************************************************/
     ArrayIterator(const ArrayType & a)
       : array_ptr(&const_cast<ArrayType &>(a)), curr(0)
     {
@@ -141,48 +102,27 @@ namespace Designar
     }
 
     
-/*! \fn ArrayIterator(const ArrayType&, nat_t)
+/**
 *
-* \~English
-*
-*  \brief Array Iterator Parametric Constructor.
+*  @brief Array Iterator Parametric Constructor.
 *  Initializes *array_ptr* and *curr* in **a** and **c**.
-*  \param[in]  a     An **ArrayType** constant reference
-*  \param[in]  c     A **nat_t** indicating the current position
+*  @param[in]  a     An **ArrayType** constant reference
+*  @param[in]  c     A **nat_t** indicating the current position
 *
-* \~Spanish
-*
-*  \brief Constructor paramétrico de un iterador sobre Array,
-*  el cual inicializa array_ptr en **a** y *curr* en **c**.
-*  \param[in]  a     Una referencia constante a un **ArrayType**
-*  \param[in]  c     Un valor **nat_t** que indica la posición 
-*					  actual del iterador
-*
-*/
-
-    
+******************************************************************************/
     ArrayIterator(const ArrayType & a, nat_t c)
       : array_ptr(&const_cast<ArrayType &>(a)), curr(c)
     {
       // empty
     }
 
-/*! \fn ArrayIterator(const ArrayIterator&)
+/**
 *
-* \~English
-*
-*  \brief Array Iterator Copy Constructor.
+*  @brief Array Iterator Copy Constructor.
 *  Initializes ArrayIterator with a previous instance.
-*  \param[in]  it    An **ArrayIterator** constant reference
+*  @param[in]  it    An **ArrayIterator** constant reference
 *
-* \~Spanish
-*
-*  \brief Constructor por copia de un iterador sobre Array,
-*  el cual inicializa el iterador con una instancia previa.
-*  \param[in]  it    Una referencia constante a un **ArrayIterator**
-*
-*/
-
+******************************************************************************/
     ArrayIterator(const ArrayIterator & it)
       : array_ptr(it.array_ptr), curr(it.curr)
     {
@@ -190,47 +130,27 @@ namespace Designar
     }
 
 
-/*! \fn ArrayIterator(ArrayIterator&&)
+/**
 *
-* \~English
-*
-*  \brief Array Iterator Move Constructor.
+*  @brief Array Iterator Move Constructor.
 *  Initializes **ArrayIterator** with a previous instance using Move 
 *	Semantics
-*  \param[in]  it  An **ArrayIterator** rvalue
+*  @param[in]  it  An **ArrayIterator** rvalue
 *
-* \~Spanish
-*
-*  \brief Constructor por copia de un iterador sobre Array,
-*  el cual inicializa el iterador con una instancia previa usando Move 
-*	Semantics
-*  \param[in]  it  Una rvalue a un **ArrayIterator**
-*
-*/
-
-   
+******************************************************************************/  
     ArrayIterator(ArrayIterator && it)
       : ArrayIterator()
     {
       swap(it);
     }
   
-/*! \fn ArrayIterator & operator = (const ArrayIterator &)
+/**
 *
-* \~English
+*  @brief Assingment operator overload
+*  @param[in]  it  An ArrayIterator constant reference
+*  @return A modifiable reference of **this** object
 *
-*  \brief Assingment operator overload
-*  \param[in]  it  An ArrayIterator constant reference
-*  \return A modifiable reference of **this** object
-*
-* \~Spanish
-*
-*  \brief Sobrecarga del operador de asignación
-*  \param[in]  it  Una referencia constante a un ArrayIterator
-*  \return Una referencia modificable de **this**
-*
-*/
-
+******************************************************************************/
     ArrayIterator & operator = (const ArrayIterator & it)
     {
       if (this == &it)
@@ -241,22 +161,13 @@ namespace Designar
       return *this;
     }
 
-/*! \fn ArrayIterator & operator = (ArrayIterator &&)
+/**
 *
-* \~English
+*  @brief Assingment operator overload using Move Semantics.
+*  @param[in]  it  An ArrayIterator rvalue
+*  @return A modifiable reference of **this** object
 *
-*  \brief Assingment operator overload using Move Semantics.
-*  \param[in]  it  An ArrayIterator rvalue
-*  \return A modifiable reference of **this** object
-*
-* \~Spanish
-*
-*  \brief Sobrecarga del operador de asignación usando Move Semantics
-*  \param[in]  it  Una rvalue a un ArrayIterator
-*  \return Una referencia modificable de **this**
-*
-*/
-
+******************************************************************************/
     ArrayIterator & operator = (ArrayIterator && it)
     {
       swap(it);
@@ -264,45 +175,26 @@ namespace Designar
     }
  
 
-/*!
+/**	
 *
-*	\~English	
+*	@brief Swap `this` with a given iterator
+*	@param[in] it A reference to an iterator
+*	@return void
 *
-*	\brief Swap `this` with a given iterator
-*	\param[in] it A reference to an iterator
-*	\return void
-*	
-*	\~Spanish
-*
-*	\brief Intercambia `this` con un iterador pasado como parámetro
-*	\param[in] it Una referencia a un iterador
-*	\return Vacío
-*
-*/
-
+******************************************************************************/
     void swap(ArrayIterator & it)
     {
       std::swap(array_ptr, it.array_ptr);
       std::swap(curr, it.curr);
     }
 
-/*! \fn bool has_current() const
+/**
 *
-* \~English
+*  @brief Ask if there are still items in the Array which can be iterated.
+*  @return `true` if there are items to iterate, `false` otherwise.
 *
-*  \brief Ask if there are still items in the Array which can be iterated.
-*  \return `true` if there are items to iterate, `false` otherwise.
 *
-* \~Spanish
-*
-*  \brief Pregunta si aún hay elementos en el Array sobre los cuales se puede
-*	iterar.
-*  \return `true` si hay elementos sobre los cuales iterar, `false` si no los 
-*	hay.
-*
-*/
-
-
+******************************************************************************/
     bool has_current() const
     {
       return curr < array_ptr->size();
@@ -310,22 +202,13 @@ namespace Designar
 
 
 
-/*! \fn void next()
+/*
 *
-*\~English
-*
-*  \brief Displace iterator to the *next* item in the Array.
-*  \return void.
+*  @brief Displace iterator to the *next* item in the Array.
+*  @return void.
 *  \exception std::out_of_range if there is no next item
 *
-* \~Spanish
-*
-*  \brief Desplaza el iterador al *siguiente* elemento en el Array.
-*  \return Vacío.
-*  \exception std::out_of_range si no hay próximo elemento.
-*
-*/
-
+******************************************************************************/
     void next()
     {
       if (not has_current())
@@ -333,48 +216,27 @@ namespace Designar
       ++curr;
     }
 
-/*! \fn void next_n(nat_t p)
+/**
 *
-* \~English
-*
-*  \brief Displace iterator **n** items forward in the Array.
-*  \param[in] p Number of items in the array to displace from current
-*  \return void.
+*  @brief Displace iterator **n** items forward in the Array.
+*  @param[in] p Number of items in the array to displace from current
+*  @return void.
 *  \exception std::out_of_range if final position is higher than Array size
 *
-* \~Spanish
-*
-*  \brief Desplaza el iterador **n** elementos hacia adelante en el Array.
-*  \param[in] p  Número de elementos en el Array a desplazar desde el elemento
-*	 actual.
-*  \return Vacío.
-*  \exception std::out_of_range si la posición final es más grande que el 
-*	tamaño del Array
-*
-*/
-
+******************************************************************************/
     void next_n(nat_t p)
     {
       curr = std::min(curr + p, array_ptr->size());
     }
 
 
-/*! \fn void prev()
+/**
 *
-* \~English
-*
-*  \brief Displace iterator to the previous item in the Array.
-*  \return void.
+*  @brief Displace iterator to the previous item in the Array.
+*  @return void.
 *  \exception std::out_of_range if there are no previous items
 *
-* \~Spanish
-*
-*  \brief Desplaza el iterador al elemento anterior en el Array.
-*  \return void.
-*  \exception std::out_of_range si no hay elementos previos al actual
-*
-*/
-   
+******************************************************************************/
     void prev()
     {
       if (curr == 0)
@@ -384,22 +246,13 @@ namespace Designar
     }
 
 
-/*! \fn void prev_n(nat_t p)
+/**
 *
-* \~English
-*
-*  \brief Displace iterator to the previous item in the Array.
-*  \return void.
+*  @brief Displace iterator to the previous item in the Array.
+*  @return void.
 *  \exception std::out_of_range if there are no previous items
 *
-* \~Spanish
-*
-*  \brief Desplaza el iterador al elemento anterior en el Array.
-*  \return void.
-*  \exception std::out_of_range si no hay elementos previos al actual
-*
-*/
-
+******************************************************************************/
     void prev_n(nat_t p)
     {
       if (p > curr)
@@ -411,24 +264,14 @@ namespace Designar
       curr -= p;
     }
 
-/*! \fn void move_to(nat_t)
+/**
 *
-* \~English
-*
-*  \brief Displace iterator to an exact given position.
-*  \param[in] p  New iterator position in the Array
-*  \return void.
+*  @brief Displace iterator to an exact given position.
+*  @param[in] p  New iterator position in the Array
+*  @return void.
 *  \exception std::out_of_range if given position is out of range
 *
-* \~Spanish
-*
-*  \brief Desplaza el iterador a una posición exacta dada.
-*  \param[in] p  Nueva posición del iterador en el Array.
-*  \return void.
-*  \exception std::out_of_range si la posición dada está fuera del Array
-*
-*/
-
+******************************************************************************/
     void move_to(nat_t p)
     {
       curr = std::min(p, array_ptr->size());
@@ -436,39 +279,24 @@ namespace Designar
     
 
 
-/*! \fn void reset()
-
-* \~English
+/** \fn void reset()
 *
-*  \brief Reset **ArrayIterator** to the initial position of the Array.
-*  \return void
+*  @brief Reset **ArrayIterator** to the initial position of the Array.
+*  @return void
 *
-* \~Spanish
-*
-*  \brief Reestablece **ArrayIterator** a la posición inicial del Array.
-*  \return Vacío
-*/
-
-
+******************************************************************************/
     void reset()
     {
       curr = 0;
     }
     
 
-/*! \fn nat_t get_position() const
-* \~English
+/** 
 *
-*  \brief Getter method to obtain current position of the iterator.
-*  \return Current position of the iterator
+*  @brief Getter method to obtain current position of the iterator.
+*  @return Current position of the iterator
 *
-* \~Spanish
-*
-*  \brief Observador para obtener la posición actual del iterador.
-*  \return Posición actual del iterador
-*/
-
-
+******************************************************************************/
     nat_t get_position() const
     {
       return curr;
