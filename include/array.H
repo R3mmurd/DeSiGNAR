@@ -62,9 +62,6 @@ namespace Designar
 *
 *  @brief Getter method to obtain current location of the iterator.
 *
-*
-*  @brief Observador para obtener la posición actual del iterador.
-*
 ******************************************************************************/
     nat_t get_location() const
     {
@@ -75,11 +72,7 @@ namespace Designar
 
 
 /**
-*
 *  @brief Getter method to obtain current location of the iterator.
-*
-*
-*  @brief Observador para obtener la posición actual del iterador.
 *
 ******************************************************************************/
     ArrayIterator()
@@ -206,7 +199,7 @@ namespace Designar
 *
 *  @brief Displace iterator to the *next* item in the Array.
 *  @return void.
-*  \exception std::out_of_range if there is no next item
+*  @exception std::out_of_range if there is no next item
 *
 ******************************************************************************/
     void next()
@@ -221,7 +214,7 @@ namespace Designar
 *  @brief Displace iterator **n** items forward in the Array.
 *  @param[in] p Number of items in the array to displace from current
 *  @return void.
-*  \exception std::out_of_range if final position is higher than Array size
+*  @exception std::out_of_range if final position is higher than Array size
 *
 ******************************************************************************/
     void next_n(nat_t p)
@@ -234,7 +227,7 @@ namespace Designar
 *
 *  @brief Displace iterator to the previous item in the Array.
 *  @return void.
-*  \exception std::out_of_range if there are no previous items
+*  @exception std::out_of_range if there are no previous items
 *
 ******************************************************************************/
     void prev()
@@ -250,7 +243,7 @@ namespace Designar
 *
 *  @brief Displace iterator to the previous item in the Array.
 *  @return void.
-*  \exception std::out_of_range if there are no previous items
+*  @exception std::out_of_range if there are no previous items
 *
 ******************************************************************************/
     void prev_n(nat_t p)
@@ -269,7 +262,7 @@ namespace Designar
 *  @brief Displace iterator to an exact given position.
 *  @param[in] p  New iterator position in the Array
 *  @return void.
-*  \exception std::out_of_range if given position is out of range
+*  @exception std::out_of_range if given position is out of range
 *
 ******************************************************************************/
     void move_to(nat_t p)
