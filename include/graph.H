@@ -22,6 +22,20 @@
   aledrums@gmail.com
 */
 
+/*!
+*  \file graph.H
+*  \author Alejandro Mujica
+*   
+*  \~English
+*
+*  \brief Graph-based data structures and asociated algorithms
+*
+*  \~Spanish
+*
+*  \brief Estructuras de datos basadas en grafos y sus algoritmos asociados
+*
+*/
+
 # ifndef DSGGRAPH_H
 # define DSGGRAPH_H
 
@@ -432,7 +446,7 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
     
-/*! \fn  Node * search_node_ptr(Pred & pred)
+/*! \fn  Node * search_node_ptr(Pred & pred) const
 *
 * \~English
 *
@@ -458,7 +472,7 @@ namespace Designar
 				 pred);
     }
 
-/*!\fn Node * search_node_ptr(Pred && pred = Pred())
+/*!\fn Node * search_node_ptr(Pred && pred = Pred()) const
 *
 *   \~English 
 *   
@@ -898,7 +912,7 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
 
-/*! \fn       Arc * search_arc_ptr(Pred & pred)
+/*! \fn       Arc * search_arc_ptr(Pred & pred) const
 *
 * \~English
 *
@@ -924,7 +938,7 @@ namespace Designar
 				pred);
     }
 
-/*! \fn   Arc * search_arc_ptr(Pred && pred)
+/*! \fn   Arc * search_arc_ptr(Pred && pred) const
 *
 * \~English 
 *
@@ -1404,7 +1418,7 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
 
-/*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred & pred)
+/*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred & pred) const
 *
 * \~English
 *
@@ -1434,7 +1448,7 @@ namespace Designar
 				pred);
     }
 
-/*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred && pred)
+/*! \fn   Arc * search_adjacent_arc_ptr(Node & p, Pred && pred) const
 *
 * \~English 
 * 

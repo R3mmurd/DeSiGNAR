@@ -1,6 +1,5 @@
-/*! 
-
-   \copyright This file is part of Designar.
+/*
+  This file is part of Designar.
   Copyright (C) 2017 by Alejandro J. Mujica
 
   This program is free software: you can redistribute it and/or modify
@@ -18,18 +17,14 @@
 
   Any user request of this software, write to 
 
-  \author Alejandro Mujica
+  Alejandro Mujica
 
   aledrums@gmail.com
-
-}
-
-  
+*/
 
 /*!
 *  \file array.H
 *  \author Alejandro Mujica
-*  <a href="mailto:aledrums@gmail.com">aledrums@gmail.com</a>
 *   
 *  \~English
 *
@@ -259,7 +254,7 @@ namespace Designar
 *  \brief Sobrecarga del operador de asignación usando Move Semantics
 *  \param[in]  it  Una rvalue a un ArrayIterator
 *  \return Una referencia modificable de **this**
-
+*
 */
 
     ArrayIterator & operator = (ArrayIterator && it)
@@ -269,7 +264,21 @@ namespace Designar
     }
  
 
+/*!
 *
+*	\~English	
+*
+*	\brief Swap `this` with a given iterator
+*	\param[in] it A reference to an iterator
+*	\return void
+*	
+*	\~Spanish
+*
+*	\brief Intercambia `this` con un iterador pasado como parámetro
+*	\param[in] it Una referencia a un iterador
+*	\return Vacío
+*
+*/
 
     void swap(ArrayIterator & it)
     {
