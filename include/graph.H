@@ -81,14 +81,14 @@ namespace Designar
     DLNode<DLNode<DigraphArc> *> * arc_in_arc_list = nullptr;
   };
 
-/**
-*
-*  @class BaseGraph graph.H <graph.H>
-*
-*  @brief DeSIGNAR Graph Object. It contains all elemental operations
-*  on graphs and general set operations.
-*
-*********************************************************************/
+  /**
+   *
+   *  @class BaseGraph graph.H <graph.H>
+   *
+   *  @brief DeSIGNAR Graph Object. It contains all elemental operations
+   *  on graphs and general set operations.
+   *
+   ****************************************************************/
   template <class GT, class Node, class Arc,
 	    typename NodeInfoType, typename ArcInfoType>
   class BaseGraph
@@ -108,46 +108,47 @@ namespace Designar
 
     static void copy_graph(const GT &, GT &);
 
-/**
-*
-*  @brief Get nth node of the graph in depth first order
-*  @param[in]  i  Position of the desired node
-*  @return A modifiable reference of the desired node
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Get nth node of the graph in depth first order
+     *  @param[in]  i  Position of the desired node
+     *  @return A modifiable reference of the desired node
+     *
+     *************************************************************************/
     Node & nth_node(nat_t i)
     {
       return nth_it(me().nodes_begin(), me().nodes_end(), i);
     }
 
-/** 
-*
-*  @brief Get nth node of the graph in depth first order
-*  @param[in]  i  Position of the desired node
-*  @return A constant reference of the desired node
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Get nth node of the graph in depth first order
+     *  @param[in]  i  Position of the desired node
+     *  @return A constant reference of the desired node
+     *
+     *************************************************************************/
     const Node & nth_node(nat_t i) const
     {
       return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
     }
 
-/** 
-*
-*  @brief Apply an operation over all nodes of the graph
-*  @param[in]  op An operation to be executed for each node
-*  @return void
-*
-******************************************************************************/    template <class Op>
+    /** 
+     *
+     *  @brief Apply an operation over all nodes of the graph
+     *  @param[in]  op An operation to be executed for each node
+     *  @return void
+     *
+     *************************************************************************/
+    template <class Op>
     void for_each_node(Op & op) const
     {
       for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
     }
 
-/** 
-* @brief Similar  to previous one but with an rvalue parameter.
-*
-******************************************************************************/
+    /** 
+     * @brief Similar  to previous one but with an rvalue parameter.
+     *
+     *************************************************************************/
     template <class Op>
     void for_each_node(Op && op = Op()) const
     {
@@ -261,24 +262,25 @@ namespace Designar
 			   std::forward<Op>(op));
     }
     
-/** 
-*
-*  @brief Ask if all nodes of the graph satisfy a predicate
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return `true` if for each node the predicate is true, `false` otherwise
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Ask if all nodes of the graph satisfy a predicate
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return `true` if for each node the predicate is true, `false` 
+     *  otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool all_nodes(Pred & pred) const
     {
       return all_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-/** 
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool all_nodes(Pred && pred = Pred()) const
     {
@@ -286,25 +288,25 @@ namespace Designar
 		    std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Ask if there is at least one node which satifies a predicate
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return `true` if exist a node for the predicate is true, `false` 
-*  otherwise
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Ask if there is at least one node which satifies a predicate
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return `true` if exist a node for the predicate is true, `false` 
+     *  otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool exists_node(Pred & pred) const
     {
       return exists_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-/**
-*
-*  @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool exists_node(Pred && pred = Pred()) const
     {
@@ -312,25 +314,25 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Ask if there is not a single node which satifies a predicate
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return `true` if not exist a node for the predicate is true, `false`
-*   otherwise
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Ask if there is not a single node which satifies a predicate
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return `true` if not exist a node for the predicate is true, `false`
+     *   otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool none_node(Pred & pred) const
     {
       return none_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-/** 
-*
-* @brief Similar to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool none_node(Pred && pred = Pred()) const
     {
@@ -338,14 +340,14 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
     
-/**
-*
-*  @brief Search a node which satifies a predicate
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return A pointer to the node which the predicate is true, `nullptr`
-*   otherwise
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Search a node which satifies a predicate
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return A pointer to the node which the predicate is true, `nullptr`
+     *   otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     Node * search_node_ptr(Pred & pred) const
     {
@@ -354,11 +356,11 @@ namespace Designar
 				 pred);
     }
 
-/**
-*   
-*   @brief Similar to previous one but with an rvalue parameter. 
-*  
-******************************************************************************/
+    /**
+     *   
+     *   @brief Similar to previous one but with an rvalue parameter. 
+     *  
+     *************************************************************************/
     template <class Pred>
     Node * search_node_ptr(Pred && pred = Pred()) const
     {  
@@ -366,24 +368,24 @@ namespace Designar
 			   std::forward<Pred>(pred));
     }
 
-/**
-*
-*  @brief Remove first node inserted in the graph if a predicate is true
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return `true` if predicate is true for each node, `false` otherwise
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Remove first node inserted in the graph if a predicate is true
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return `true` if predicate is true for each node, `false` otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool remove_first_node_if(Pred & pred)
     {
       return remove_first_if_it(me().nodes_begin(), me().nodes_end(), pred);
     }
 
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-* 
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     * 
+     *************************************************************************/
     template <class Pred>
     bool remove_first_node_if(Pred && pred = Pred())
     {
@@ -392,24 +394,24 @@ namespace Designar
     }
 
 
-/** 
-*
-*  @brief Remove every node for which a predicate is true
-*  @param[in] pred A predicate to be evaluated for each node
-*  @return void
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Remove every node for which a predicate is true
+     *  @param[in] pred A predicate to be evaluated for each node
+     *  @return void
+     *
+     *************************************************************************/
     template <class Pred>
     void remove_node_if(Pred & pred)
     {
       remove_if_it(me().nodes_begin(), me().nodes_end(), pred);
     }
 
-/** 
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     void remove_node_if(Pred && pred = Pred())
     {
@@ -418,12 +420,13 @@ namespace Designar
     }
 
 
-/** 
-*
-*  @brief Get a DeSIGNAR Single Linked List containing all nodes of the graph
-*  @return A list containing all nodes of the graph
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Get a DeSIGNAR Single Linked List containing all nodes of the 
+     *  graph
+     *  @return A list containing all nodes of the graph
+     *
+     *************************************************************************/
     SLList<Node *> nodes() const
     {
       return map_it<SLList<Node *>>(const_me().nodes_begin(),
@@ -434,36 +437,36 @@ namespace Designar
 				    });
     }
 
-/**
-*
-*  @brief Get the n-th arc of the graph
-*  @param[in] i The position of the arc in the E (edges) set
-*  @return A modifiable reference to the n-th arc
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Get the n-th arc of the graph
+     *  @param[in] i The position of the arc in the E (edges) set
+     *  @return A modifiable reference to the n-th arc
+     *
+     *************************************************************************/
     Arc & nth_arc(nat_t i)
     {
       return nth_it(me().arcs_begin(), me().arcs_end(), i);
     }
   
 
-/** 
-* 
-* @brief Similar to previous one but with a constant return value. 
-* 
-******************************************************************************/
+    /** 
+     * 
+     * @brief Similar to previous one but with a constant return value. 
+     * 
+     *************************************************************************/
     const Arc & nth_arc(nat_t i) const
     {
       return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
     }
 
-/** 
-*
-*  @brief Apply an operation over every arc in the graph
-*  @param[in] op An operation to be executed over all arcs
-*  @return void
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Apply an operation over every arc in the graph
+     *  @param[in] op An operation to be executed over all arcs
+     *  @return void
+     *
+     *************************************************************************/
     template <class Op>
     void for_each_arc(Op & op) const
     {
@@ -471,11 +474,11 @@ namespace Designar
     }
   
 
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Op>
     void for_each_arc(Op && op) const
     {
@@ -590,24 +593,24 @@ namespace Designar
     }
 
 
-/** 
-*
-*  @brief Check if a predicate is true for all arcs
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return `true` if the predicate is true for all arcs, `false` otherwise
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Check if a predicate is true for all arcs
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return `true` if the predicate is true for all arcs, `false` otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool all_arcs(Pred & pred) const
     {
       return all_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
 
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool all_arcs(Pred && pred) const
     {
@@ -616,24 +619,25 @@ namespace Designar
     }
   
 
-/**
-*
-*  @brief Check if exist an arc which a given predicate is true
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return `true` if the predicate is true for at least one arc, 
-*   `false` otherwise
-*
-******************************************************************************/    template <class Pred>
+    /**
+     *
+     *  @brief Check if exist an arc which a given predicate is true
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return `true` if the predicate is true for at least one arc, 
+     *   `false` otherwise
+     *
+     *************************************************************************/
+    template <class Pred>
     bool exists_arc(Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
   
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool exists_arc(Pred && pred) const
     {
@@ -641,23 +645,25 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Check if there is no arc which a given predicate is true
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return `true` if the predicate is false for every arc, `false` otherwise
-*
-******************************************************************************/    template <class Pred>
+    /** 
+     *
+     *  @brief Check if there is no arc which a given predicate is true
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return `true` if the predicate is false for every arc, `false` 
+     *  otherwise
+     *
+     *************************************************************************/    
+    template <class Pred>
     bool none_arc(Pred & pred) const
     {
       return none_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
     
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool none_arc(Pred && pred) const
     {
@@ -665,14 +671,14 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Search the pointer to the first arc which a given predicate is 
-*   **true**
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return A pointer to the first arc which **pred** is true
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Search the pointer to the first arc which a given predicate is 
+     *   **true**
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return A pointer to the first arc which **pred** is true
+     *
+     *************************************************************************/
     template <class Pred> 
     Arc * search_arc_ptr(Pred & pred) const
     {
@@ -681,11 +687,11 @@ namespace Designar
 				pred);
     }
 
-/**
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /**
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     Arc * search_arc_ptr(Pred && pred) const
     {
@@ -693,13 +699,14 @@ namespace Designar
 			   std::forward<Pred>(pred));
     }
 
-/**
-*
-*  @brief Remove the first arc of the graph if a given predicate is **true**
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return `true` if removal was done, `false` otherwise
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Remove the first arc of the graph if a given predicate is 
+     *  **true**
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return `true` if removal was done, `false` otherwise
+     *
+     *************************************************************************/
     template <class Pred>
     bool remove_first_arc_if(Pred & pred)
     {
@@ -707,11 +714,11 @@ namespace Designar
     }
   
    
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool remove_first_arc_if(Pred && pred)
     {
@@ -719,23 +726,24 @@ namespace Designar
 				std::forward<Pred>(pred));
     }
 
-/**
-*
-*  @brief Remove all arcs which predicate is **true**
-*  @param[in] pred A predicate to be evaluated over all arcs
-*  @return void
-*
-******************************************************************************/    template <class Pred>
+    /**
+     *
+     *  @brief Remove all arcs which predicate is **true**
+     *  @param[in] pred A predicate to be evaluated over all arcs
+     *  @return void
+     *
+     *************************************************************************/    
+    template <class Pred>
     void remove_arc_if(Pred & pred)
     {
       remove_if_it(me().arcs_begin(), me().arcs_end(), pred);
     }
 
-/**
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /**
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     void remove_arc_if(Pred && pred)
     {
@@ -743,12 +751,12 @@ namespace Designar
     }
 
 
-/** 
-*
-*  @brief Get all arc set in the graph
-*  @return A DeSIGNAR Single Linked List where are stored all arcs
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Get all arc set in the graph
+     *  @return A DeSIGNAR Single Linked List where are stored all arcs
+     *
+     *************************************************************************/
     SLList<Arc *> arcs() const
     {
       return map_it<SLList<Arc *>>(const_me().arcs_begin(),
@@ -759,47 +767,51 @@ namespace Designar
 				   });
     }
 
-/** 
-*
-*  @brief Get the nth adjacent arc of a given node
-*  @param[in] p A node in the graph
-*  @param[in] i The n-th adjacent arc of **p**
-*  @return A modifiable reference to the n-th adjacent arc of **p**
-*
-******************************************************************************/    Arc & nth_adjacent_arc(Node & p, nat_t i)
+    /** 
+     *
+     *  @brief Get the nth adjacent arc of a given node
+     *  @param[in] p A node in the graph
+     *  @param[in] i The n-th adjacent arc of **p**
+     *  @return A modifiable reference to the n-th adjacent arc of **p**
+     *
+     *************************************************************************/
+    Arc & nth_adjacent_arc(Node & p, nat_t i)
     {
       return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
     }
   
 
-/** 
-* 
-* @brief Similar  to previous one but with an non-modifiable return value. 
-*
-******************************************************************************/    const Arc & nth_adjacent_arc(Node & p, nat_t i) const
+    /** 
+     * 
+     * @brief Similar  to previous one but with an non-modifiable return value. 
+     *
+     *************************************************************************/
+    const Arc & nth_adjacent_arc(Node & p, nat_t i) const
     {
       return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
     }
 
-/**
-*
-*  @brief Apply an specific operation over all adjacent arcs of a given node
-*  @param[in] p A node in the graph
-*  @param[in] op An operation to be executed on every adjacent arc of **p**
-*  @return void  
-*   
-******************************************************************************/
+    /**
+     *
+     *  @brief Apply an specific operation over all adjacent arcs of a given 
+     *  node
+     *  @param[in] p A node in the graph
+     *  @param[in] op An operation to be executed on every adjacent arc of 
+     *  **p**
+     *  @return void  
+     *   
+     *************************************************************************/
     template <class Op>
     void for_each_adjacent_arc(Node & p, Op & op) const
     {
       for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
     }
 
-/**
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /**
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Op>
     void for_each_adjacent_arc(Node & p, Op && op) const
     {
@@ -916,27 +928,28 @@ namespace Designar
 			   std::forward<Op>(op));
     }
   
-/**
-*
-*  @brief Check if a given predicate is true for all adjacent arcs of a 
-*   specific node
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of 
-*   **p**
-*  @return `true` if for each adjacent arc of **p** the predicate is true,
-*  `false` otherwise. 
-*    
-******************************************************************************/    template <class Pred>
+    /**
+     *
+     *  @brief Check if a given predicate is true for all adjacent arcs of a 
+     *   specific node
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of 
+     *   **p**
+     *  @return `true` if for each adjacent arc of **p** the predicate is true,
+     *  `false` otherwise. 
+     *    
+     *************************************************************************/    
+    template <class Pred>
     bool all_adjacent_arcs(Node & p, Pred & pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
 
-/**
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /**
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool all_adjacent_arcs(Node & p, Pred && pred) const
     {
@@ -944,28 +957,30 @@ namespace Designar
 		    std::forward<Pred>(pred));
     }
 
-/**
-*
-*  @brief Check if a given predicate is true for at least one adjacent arc of a
-*  specific node
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
-*  @return `true` if exist at least one adjacent arc of **p** for which 
-*   **pred**
-*  is true, `false` otherwise.     
-* 
-******************************************************************************/
+    /**
+     *
+     *  @brief Check if a given predicate is true for at least one adjacent 
+     *  arc of a
+     *  specific node
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of 
+     *  **p**
+     *  @return `true` if exist at least one adjacent arc of **p** for which 
+     *   **pred**
+     *  is true, `false` otherwise.     
+     * 
+     *************************************************************************/
     template <class Pred>
     bool exists_adjacent_arc(Node & p, Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
  
-/** 
-*
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     bool exists_adjacent_arc(Node & p, Pred && pred) const
     {
@@ -973,30 +988,34 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Check if a given predicate is false for all adjacent 
-*   arcs of a specific node
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent
-*   arc of **p**
-*  @return `true` if for each adjacent arc of **p** the predicate is false,
-*  `false` otherwise.     
-*
-******************************************************************************/    template <class Pred>
+    /** 
+     *
+     *  @brief Check if a given predicate is false for all adjacent 
+     *   arcs of a specific node
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent
+     *   arc of **p**
+     *  @return `true` if for each adjacent arc of **p** the predicate is 
+     *  false,
+     *  `false` otherwise.     
+     *
+     *************************************************************************/    
+    template <class Pred>
     bool none_adjacent_arc(Node & p, Pred & pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
     
-/** 
-*  @brief Search for the first adjacent arc for which a given predicate is true
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
-*  @return A pointer to an adjacent arc of **p** for which **pred** is 
-*   true.    
-* 
-******************************************************************************/
+    /** 
+     *  @brief Search for the first adjacent arc for which a given predicate 
+     *  is true
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of 
+     *  **p**
+     *  @return A pointer to an adjacent arc of **p** for which **pred** is 
+     *   true.    
+     * 
+     *************************************************************************/
     template <class Pred>
     bool none_adjacent_arc(Node & p, Pred && pred) const
     {
@@ -1004,15 +1023,17 @@ namespace Designar
 		     std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Search for the first adjacent arc for which a given predicate is true
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
-*  @return A pointer to an adjacent arc of **p** for which **pred** is
-*   true.     
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Search for the first adjacent arc for which a given predicate 
+     *  is true
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of 
+     *  **p**
+     *  @return A pointer to an adjacent arc of **p** for which **pred** is
+     *   true.     
+     *
+     *************************************************************************/
     template <class Pred>
     Arc * search_adjacent_arc_ptr(Node & p, Pred & pred) const
     {
@@ -1021,11 +1042,11 @@ namespace Designar
 				pred);
     }
 
-/** 
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/
+    /** 
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class Pred>
     Arc * search_adjacent_arc_ptr(Node & p, Pred && pred) const
     {
@@ -1034,62 +1055,68 @@ namespace Designar
 				std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Remove the first adjacent arc of a specific node which a
-*   given predicate is true
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
-*  @return `true` if removal was done, `false` otherwise.     
-*
-******************************************************************************/    template <class Pred>
+    /** 
+     *
+     *  @brief Remove the first adjacent arc of a specific node which a
+     *   given predicate is true
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of 
+     *  **p**
+     *  @return `true` if removal was done, `false` otherwise.     
+     *
+     *************************************************************************/    
+    template <class Pred>
     bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
     {
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
-/**
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/    template <class Pred>
+    /**
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/    
+    template <class Pred>
     bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
     {
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p),
 				std::forward<Pred>(pred));
     }
   
-/** 
-*
-*  @brief Remove all adjacent arcs of a specific node for 
-*   which a predicate evaluated in those arcs is true
-*  @param[in] p A node in the graph
-*  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
-*  @return void   
-*
-******************************************************************************/    template <class Pred>
+    /** 
+     *
+     *  @brief Remove all adjacent arcs of a specific node for 
+     *   which a predicate evaluated in those arcs is true
+     *  @param[in] p A node in the graph
+     *  @param[in] pred A predicate to be evaluated in every adjacent arc of **p**
+     *  @return void   
+     *
+     *************************************************************************/    
+    template <class Pred>
     void remove_adjacent_arc_if(Node & p, Pred & pred)
     {
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
-/** 
-* 
-* @brief Similar  to previous one but with an rvalue parameter. 
-*
-******************************************************************************/    template <class Pred>
+    /** 
+     * 
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/    
+    template <class Pred>
     void remove_adjacent_arc_if(Node & p, Pred && pred)
     {
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
     }
 
-/** 
-*
-*  @brief Get all adjacent arcs of a given node
-*  @param[in] p A reference to node in the graph
-*  @return  A DeSIGNAR Linked List containing all adjacent arcs of **p** 
-*
-******************************************************************************/    SLList<Arc *> adjacent_arcs(Node & p) const
+    /** 
+     *
+     *  @brief Get all adjacent arcs of a given node
+     *  @param[in] p A reference to node in the graph
+     *  @return  A DeSIGNAR Linked List containing all adjacent arcs of **p** 
+     *
+     *************************************************************************/    
+    SLList<Arc *> adjacent_arcs(Node & p) const
     {
       return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
 				   const_me().arcs_end(p),
@@ -1099,13 +1126,14 @@ namespace Designar
 				   });
     }
 
-/** 
-*
-*  @brief Reset all node tag info of a given graph tag
-*  @param[out] tag A GraphTag container
-*  @return void     
-*
-******************************************************************************/  void reset_all_node_tag(GraphTag tag)
+    /** 
+     *
+     *  @brief Reset all node tag info of a given graph tag
+     *  @param[out] tag A GraphTag container
+     *  @return void     
+     *
+     *************************************************************************/ 
+    void reset_all_node_tag(GraphTag tag)
     {
       for_each_node([&tag](Node & node)
 		    {
@@ -1113,12 +1141,13 @@ namespace Designar
 		    });
     }
 
-/** 
-*
-*  @brief Reset all node tag info 
-*  @return void     
-*
-******************************************************************************/    void reset_all_node_tag()
+    /** 
+     *
+     *  @brief Reset all node tag info 
+     *  @return void     
+     *
+     *************************************************************************/
+    void reset_all_node_tag()
     {
       for_each_node([](Node & node)
 		    {
@@ -1126,13 +1155,14 @@ namespace Designar
 		    });
     }
 
-/**
-*
-*  @brief Reset all arc tag info of a given graph tag
-*  @param[out] tag A GraphTag container
-*  @return void     
-*
-******************************************************************************/    void reset_all_arc_tag(GraphTag tag)
+    /**
+     *
+     *  @brief Reset all arc tag info of a given graph tag
+     *  @param[out] tag A GraphTag container
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_all_arc_tag(GraphTag tag)
     {
       for_each_arc([&tag](Arc & arc)
 		   {
@@ -1140,12 +1170,13 @@ namespace Designar
 		   });
     }
 
-/** 
-*
-*  @brief Reset all arc tag info
-*  @return void     
-*
-******************************************************************************/    void reset_all_arc_tag()
+    /** 
+     *
+     *  @brief Reset all arc tag info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_all_arc_tag()
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -1153,35 +1184,38 @@ namespace Designar
 		   });
     }
 
-/**
-*
-*  @brief Reset all tag info from a given GraphTag
-*  @param[out] tag A GraphTag container
-*  @return void     
-*
-******************************************************************************/    void reset_tag(GraphTag tag)
+    /**
+     *
+     *  @brief Reset all tag info from a given GraphTag
+     *  @param[out] tag A GraphTag container
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_tag(GraphTag tag)
     {
       reset_all_node_tag(tag);
       reset_all_arc_tag(tag);
     }
 
-/** 
-*
-*  @brief Reset all tag info
-*  @return void     
-*
-******************************************************************************/    void reset_all_tags()
+    /** 
+     *
+     *  @brief Reset all tag info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_all_tags()
     {
       reset_all_node_tag();
       reset_all_arc_tag();
     }
 
-/** 
-*
-*  @brief Reset node cookies info
-*  @return void     
-*
-******************************************************************************/    void reset_node_cookies()
+    /** 
+     *
+     *  @brief Reset node cookies info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_node_cookies()
     {
       for_each_node([](Node & node)
 		    {
@@ -1189,12 +1223,13 @@ namespace Designar
 		    });
     }
 
-/**
-*
-*  @brief Reset arc cookies info
-*  @return void     
-*
-******************************************************************************/    void reset_arc_cookies()
+    /**
+     *
+     *  @brief Reset arc cookies info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_arc_cookies()
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -1202,12 +1237,13 @@ namespace Designar
 		   });
     }
 
-/** 
-*
-*  @brief Reset node counter info
-*  @return void     
-*
-******************************************************************************/   void reset_node_counter()
+    /** 
+     *
+     *  @brief Reset node counter info
+     *  @return void     
+     *
+     *************************************************************************/   
+    void reset_node_counter()
     {
       for_each_node([](Node & node)
 		    {
@@ -1215,12 +1251,13 @@ namespace Designar
 		    });
     }
 
-/**
-*
-*  @brief Reset arc counter info
-*  @return void     
-*
-******************************************************************************/    void reset_arc_counter()
+    /**
+     *
+     *  @brief Reset arc counter info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_arc_counter()
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -1228,34 +1265,37 @@ namespace Designar
 		   });
     }
 
-/**
-*
-*  @brief Reset all counters info
-*  @return void   
-*
-******************************************************************************/    void reset_counters()
+    /**
+     *
+     *  @brief Reset all counters info
+     *  @return void   
+     *
+     *************************************************************************/    
+    void reset_counters()
     {
       reset_node_counter();
       reset_arc_counter();
     }
 
-/**
-*
-*  @brief Reset all cookies info
-*  @return void     
-*
-******************************************************************************/    void reset_cookies()
+    /**
+     *
+     *  @brief Reset all cookies info
+     *  @return void     
+     *
+     *************************************************************************/    
+    void reset_cookies()
     {
       reset_node_cookies();
       reset_arc_cookies();
     }
 
-/**
-*
-*  @brief Reset all nodes info
-*  @return void    
-*
-******************************************************************************/    void reset_nodes()
+    /**
+     *
+     *  @brief Reset all nodes info
+     *  @return void    
+     *
+     *************************************************************************/    
+    void reset_nodes()
     {
       for_each_node([](Node & node)
 		    {
@@ -1263,12 +1303,13 @@ namespace Designar
 		    });
     }
 
-/**
-*
-*  @brief Reset all arcs info
-*  @return void     
-*   
-******************************************************************************/    void reset_arcs()
+    /**
+     *
+     *  @brief Reset all arcs info
+     *  @return void     
+     *   
+     *************************************************************************/    
+    void reset_arcs()
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -1277,14 +1318,14 @@ namespace Designar
     }
   };
 
-/**
-*
-*  @brief Copy a given graph into another one
-*  @param[in] src The soource graph to be copied
-*  @param[out] tgt A target graph where src copy will be stored
-*  @return void.     
-*
-******************************************************************************/
+  /**
+   *
+   *  @brief Copy a given graph into another one
+   *  @param[in] src The soource graph to be copied
+   *  @param[out] tgt A target graph where src copy will be stored
+   *  @return void.     
+   *
+   *************************************************************************/
   template <typename GT, class Node, class Arc,
 	    typename NodeInfoType, typename ArcInfoType>
   void BaseGraph<GT, Node, Arc, NodeInfoType, ArcInfoType>::

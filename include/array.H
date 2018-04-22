@@ -40,14 +40,14 @@ namespace Designar
   template <typename ArrayType, class Cmp>
   void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
 
-/**
-*
-*	@class ArrayIterator array.H <array.H>
-*
-*	@brief Defined object that allows to traverse a DeSIGNAR
-*	Array-based container.
-*
-******************************************************************************/
+  /**
+   *
+   *	@class ArrayIterator array.H <array.H>
+   *
+   *	@brief Defined object that allows to traverse a DeSIGNAR
+   *	Array-based container.
+   *
+   *************************************************************************/
   template <class Derived, class ArrayType, typename T, bool RET_CPY>
   class ArrayIterator : public RandomAccessIterator<Derived, T, RET_CPY>
   {
@@ -58,11 +58,11 @@ namespace Designar
     ArrayType * array_ptr;
     nat_t       curr; 
 
-/**
-*
-*  @brief Getter method to obtain current location of the iterator.
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Getter method to obtain current location of the iterator.
+     *
+     *************************************************************************/
     nat_t get_location() const
     {
       return curr;
@@ -71,23 +71,23 @@ namespace Designar
   public:
 
 
-/**
-*  @brief Getter method to obtain current location of the iterator.
-*
-******************************************************************************/
+    /**
+     *  @brief Getter method to obtain current location of the iterator.
+     *
+     *************************************************************************/
     ArrayIterator()
       : array_ptr(nullptr), curr(0)
     {
       // empty
     }
     
-/**
-*
-*  @brief Array Iterator Parametric Constructor.
-*  Initializes *array_ptr* and *curr* in **a** and **0**.
-*  @param[in]  a     An **ArrayType** constant reference
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Array Iterator Parametric Constructor.
+     *  Initializes *array_ptr* and *curr* in **a** and **0**.
+     *  @param[in]  a     An **ArrayType** constant reference
+     *
+     *************************************************************************/
     ArrayIterator(const ArrayType & a)
       : array_ptr(&const_cast<ArrayType &>(a)), curr(0)
     {
@@ -95,27 +95,27 @@ namespace Designar
     }
 
     
-/**
-*
-*  @brief Array Iterator Parametric Constructor.
-*  Initializes *array_ptr* and *curr* in **a** and **c**.
-*  @param[in]  a     An **ArrayType** constant reference
-*  @param[in]  c     A **nat_t** indicating the current position
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Array Iterator Parametric Constructor.
+     *  Initializes *array_ptr* and *curr* in **a** and **c**.
+     *  @param[in]  a     An **ArrayType** constant reference
+     *  @param[in]  c     A **nat_t** indicating the current position
+     *
+     *************************************************************************/
     ArrayIterator(const ArrayType & a, nat_t c)
       : array_ptr(&const_cast<ArrayType &>(a)), curr(c)
     {
       // empty
     }
 
-/**
-*
-*  @brief Array Iterator Copy Constructor.
-*  Initializes ArrayIterator with a previous instance.
-*  @param[in]  it    An **ArrayIterator** constant reference
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Array Iterator Copy Constructor.
+     *  Initializes ArrayIterator with a previous instance.
+     *  @param[in]  it    An **ArrayIterator** constant reference
+     *
+     *************************************************************************/
     ArrayIterator(const ArrayIterator & it)
       : array_ptr(it.array_ptr), curr(it.curr)
     {
@@ -123,27 +123,27 @@ namespace Designar
     }
 
 
-/**
-*
-*  @brief Array Iterator Move Constructor.
-*  Initializes **ArrayIterator** with a previous instance using Move 
-*	Semantics
-*  @param[in]  it  An **ArrayIterator** rvalue
-*
-******************************************************************************/  
+    /**
+     *
+     *  @brief Array Iterator Move Constructor.
+     *  Initializes **ArrayIterator** with a previous instance using Move 
+     *	Semantics
+     *  @param[in]  it  An **ArrayIterator** rvalue
+     *
+     *************************************************************************/  
     ArrayIterator(ArrayIterator && it)
       : ArrayIterator()
     {
       swap(it);
     }
   
-/**
-*
-*  @brief Assingment operator overload
-*  @param[in]  it  An ArrayIterator constant reference
-*  @return A modifiable reference of **this** object
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Assingment operator overload
+     *  @param[in]  it  An ArrayIterator constant reference
+     *  @return A modifiable reference of **this** object
+     *
+     *************************************************************************/
     ArrayIterator & operator = (const ArrayIterator & it)
     {
       if (this == &it)
@@ -154,13 +154,13 @@ namespace Designar
       return *this;
     }
 
-/**
-*
-*  @brief Assingment operator overload using Move Semantics.
-*  @param[in]  it  An ArrayIterator rvalue
-*  @return A modifiable reference of **this** object
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Assingment operator overload using Move Semantics.
+     *  @param[in]  it  An ArrayIterator rvalue
+     *  @return A modifiable reference of **this** object
+     *
+     *************************************************************************/
     ArrayIterator & operator = (ArrayIterator && it)
     {
       swap(it);
@@ -168,26 +168,26 @@ namespace Designar
     }
  
 
-/**	
-*
-*	@brief Swap `this` with a given iterator
-*	@param[in] it A reference to an iterator
-*	@return void
-*
-******************************************************************************/
+    /**	
+     *
+     *	@brief Swap `this` with a given iterator
+     *	@param[in] it A reference to an iterator
+     *	@return void
+     *
+     *************************************************************************/
     void swap(ArrayIterator & it)
     {
       std::swap(array_ptr, it.array_ptr);
       std::swap(curr, it.curr);
     }
 
-/**
-*
-*  @brief Ask if there are still items in the Array which can be iterated.
-*  @return `true` if there are items to iterate, `false` otherwise.
-*
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Ask if there are still items in the Array which can be iterated.
+     *  @return `true` if there are items to iterate, `false` otherwise.
+     *
+     *
+     *************************************************************************/
     bool has_current() const
     {
       return curr < array_ptr->size();
@@ -195,41 +195,41 @@ namespace Designar
 
 
 
-/*
-*
-*  @brief Displace iterator to the *next* item in the Array.
-*  @return void.
-*  @exception std::out_of_range if there is no next item
-*
-******************************************************************************/
+    /*
+     *
+     *  @brief Displace iterator to the *next* item in the Array.
+     *  @return void.
+     *  @exception std::out_of_range if there is no next item
+     *
+     *************************************************************************/
     void next()
     {
       if (not has_current())
-		return;
+	return;
       ++curr;
     }
 
-/**
-*
-*  @brief Displace iterator **n** items forward in the Array.
-*  @param[in] p Number of items in the array to displace from current
-*  @return void.
-*  @exception std::out_of_range if final position is higher than Array size
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Displace iterator **n** items forward in the Array.
+     *  @param[in] p Number of items in the array to displace from current
+     *  @return void.
+     *  @exception std::out_of_range if final position is higher than Array size
+     *
+     *************************************************************************/
     void next_n(nat_t p)
     {
       curr = std::min(curr + p, array_ptr->size());
     }
 
 
-/**
-*
-*  @brief Displace iterator to the previous item in the Array.
-*  @return void.
-*  @exception std::out_of_range if there are no previous items
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Displace iterator to the previous item in the Array.
+     *  @return void.
+     *  @exception std::out_of_range if there are no previous items
+     *
+     *************************************************************************/
     void prev()
     {
       if (curr == 0)
@@ -239,13 +239,13 @@ namespace Designar
     }
 
 
-/**
-*
-*  @brief Displace iterator to the previous item in the Array.
-*  @return void.
-*  @exception std::out_of_range if there are no previous items
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Displace iterator to the previous item in the Array.
+     *  @return void.
+     *  @exception std::out_of_range if there are no previous items
+     *
+     *************************************************************************/
     void prev_n(nat_t p)
     {
       if (p > curr)
@@ -257,14 +257,14 @@ namespace Designar
       curr -= p;
     }
 
-/**
-*
-*  @brief Displace iterator to an exact given position.
-*  @param[in] p  New iterator position in the Array
-*  @return void.
-*  @exception std::out_of_range if given position is out of range
-*
-******************************************************************************/
+    /**
+     *
+     *  @brief Displace iterator to an exact given position.
+     *  @param[in] p  New iterator position in the Array
+     *  @return void.
+     *  @exception std::out_of_range if given position is out of range
+     *
+     *************************************************************************/
     void move_to(nat_t p)
     {
       curr = std::min(p, array_ptr->size());
@@ -272,24 +272,24 @@ namespace Designar
     
 
 
-/** \fn void reset()
-*
-*  @brief Reset **ArrayIterator** to the initial position of the Array.
-*  @return void
-*
-******************************************************************************/
+    /** \fn void reset()
+     *
+     *  @brief Reset **ArrayIterator** to the initial position of the Array.
+     *  @return void
+     *
+     *************************************************************************/
     void reset()
     {
       curr = 0;
     }
     
 
-/** 
-*
-*  @brief Getter method to obtain current position of the iterator.
-*  @return Current position of the iterator
-*
-******************************************************************************/
+    /** 
+     *
+     *  @brief Getter method to obtain current position of the iterator.
+     *  @return Current position of the iterator
+     *
+     *************************************************************************/
     nat_t get_position() const
     {
       return curr;
@@ -1349,19 +1349,19 @@ namespace Designar
   } 
 
   template <typename Key, class Cmp = std::less<Key>>
-  class ArraySet : public GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>
-  {
-    using Base = GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>;
-    using Base::Base;
-  };
+    class ArraySet : public GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>
+    {
+      using Base = GenArraySet<Key, Cmp, UnsortedArraySetOp<Key, Cmp>>;
+      using Base::Base;
+    };
 
   template <typename Key, class Cmp = std::less<Key>>
-  class SortedArraySet :
+    class SortedArraySet :
     public GenArraySet<Key, Cmp, SortedArraySetOp<Key, Cmp>>
-  {
-    using Base = GenArraySet<Key, Cmp, SortedArraySetOp<Key, Cmp>>;
-    using Base::Base;
-  };
+    {
+      using Base = GenArraySet<Key, Cmp, SortedArraySetOp<Key, Cmp>>;
+      using Base::Base;
+    };
 
   template <typename T, nat_t N = 2>
   class MultiDimArray
