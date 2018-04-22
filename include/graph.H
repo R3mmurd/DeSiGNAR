@@ -166,7 +166,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_nodes_if(Op & op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
 				     op, pred);
     }
 
@@ -175,7 +176,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_nodes_if(Op & op, Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
 				     op, std::forward<Pred>(pred));
     }
     
@@ -184,7 +186,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_nodes_if(Op && op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
 				     std::forward<Op>(op), pred);
     }
 
@@ -193,7 +196,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_nodes_if(Op && op = Op(), Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().nodes_begin(),
+				     const_me().nodes_end(),
 				     std::forward<Op>(op),
 				     std::forward<Pred>(pred));
     }
@@ -277,8 +281,9 @@ namespace Designar
     template <class Pred>
     Node * search_node_ptr(Pred && pred = Pred()) const
     {  
-      return search_ptr_it(const_me().nodes_begin(), const_me().nodes_end(),
-			   std::forward<Pred>(pred));
+      return search_ptr_it<Node>(const_me().nodes_begin(),
+				 const_me().nodes_end(),
+				 std::forward<Pred>(pred));
     }
     
     template <class Pred>
@@ -385,7 +390,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_arcs_if(Op & op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
 				     op, pred);
     }
 
@@ -394,7 +400,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_arcs_if(Op & op, Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
 				     op, std::forward<Pred>(pred));
     }
     
@@ -403,7 +410,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_arcs_if(Op && op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
 				     std::forward<Op>(op), pred);
     }
   
@@ -412,7 +420,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_arcs_if(Op && op = Op(), Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(), const_me().end(),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(),
+				     const_me().arcs_end(),
 				     std::forward<Op>(op),
 				     std::forward<Pred>(pred));
     }
@@ -496,8 +505,8 @@ namespace Designar
     template <class Pred>
     Arc * search_arc_ptr(Pred && pred) const
     {
-      return search_ptr_it(const_me().arcs_begin(), const_me().arcs_end(),
-			   std::forward<Pred>(pred));
+      return search_ptr_it<Arc>(const_me().arcs_begin(), const_me().arcs_end(),
+				std::forward<Pred>(pred));
     }
   
     template <class Pred>
@@ -604,7 +613,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_adjacent_arcs_if(Node & p, Op & op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
 				     op, pred);
     }
 
@@ -614,7 +624,8 @@ namespace Designar
     ContainerRet
     map_adjacent_arcs_if(Node & p, Op & op, Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
 				     op, std::forward<Pred>(pred));
     }
     
@@ -623,7 +634,8 @@ namespace Designar
 	      class Op, class Pred>
     ContainerRet map_adjacent_arcs_if(Node & p, Op && op, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
 				     std::forward<Op>(op), pred);
     }
 
@@ -633,7 +645,8 @@ namespace Designar
     ContainerRet
     map_adjacent_arcs_if(Node & p, Op && op = Op(), Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().begin(p), const_me().end(p),
+      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
+				     const_me().arcs_end(p),
 				     std::forward<Op>(op),
 				     std::forward<Pred>(pred));
     }

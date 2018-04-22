@@ -359,6 +359,18 @@ namespace Designar
       Item p = map_key(std::forward<Key>(k), Value());
       return BaseSet::find(std::move(p)).second;
     }
+
+    bool has(const Key & k) const
+    {
+      Item p = map_key(k, Value());
+      return BaseSet::has(std::move(p));
+    }
+
+    bool has(Key && k) const
+    {
+      Item p = map_key(std::forward<Key>(k), Value());
+      return BaseSet::has(std::move(p));
+    }
     
     bool remove(const Key & k)
     {
