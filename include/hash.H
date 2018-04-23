@@ -70,13 +70,13 @@ namespace Designar
 
   template <typename Key,
 	    class Cmp = std::equal_to<Key>>
-  class HashSet: private FixedArray<DLList<Key>>,
-		 public ContainerAlgorithms<HashSet<Key, Cmp>, Key>,
-		 public SetAlgorithms<HashSet<Key, Cmp>, Key>
+  class LHashTable: private FixedArray<DLList<Key>>,
+		    public ContainerAlgorithms<LHashTable<Key, Cmp>, Key>,
+		    public SetAlgorithms<LHashTable<Key, Cmp>, Key>
   {
     using List      = DLList<Key>;
     using BaseArray = FixedArray<List>;
-
+    
   public:
     using ItemType    = Key;
     using KeyType     = Key;
@@ -86,22 +86,22 @@ namespace Designar
     using CmpType     = Cmp;
     using HashFctPtr  = nat_t (*) (const Key &);
     using HashFctType = std::function<nat_t(const Key &)>;
-
+    
     static constexpr nat_t  DFT_SIZE        = 32;
     static constexpr real_t DFT_LOWER_ALPHA = 0.25;
     static constexpr real_t DFT_UPPER_ALPHA = 0.75;
-
+    
   private:
     nat_t       num_items;
     Cmp       & cmp;
     HashFctType hash_fct;
     real_t      lower_alpha;
     real_t      upper_alpha;
-
+    
     void clear_lists();
-
+    
     void resize(nat_t);
-
+    
     
     Key * search_in_list(List & list, const Key & k)
     {
@@ -110,114 +110,115 @@ namespace Designar
 			       return cmp(k, item);
 			     });
     }
-
+    
     const Key * search_in_list(const List & list, const Key & k) const
     {
       return list.search_ptr([&k, this](const auto & item)
-			     {
-			       return cmp(k, item);
-			     });
+	      {
+		return cmp(k, item);
+	      });
     }
-
+    
     nat_t h(const Key & item) const
     {
       return hash_fct(item) % BaseArray::get_capacity();
     }
     
   public:    
-    HashSet(nat_t size, Cmp & _cmp, HashFctType fct,
-	    real_t _lower_alpha, real_t _upper_alpha)
+    LHashTable(nat_t size, Cmp & _cmp, HashFctType fct,
+	       real_t _lower_alpha, real_t _upper_alpha)
       : BaseArray(size), num_items(0), cmp(_cmp), hash_fct(fct),
       lower_alpha(_lower_alpha), upper_alpha(_upper_alpha)
     {
       // empty
     }
-
-    HashSet(nat_t size, Cmp & _cmp, HashFctType fct)
-      : HashSet(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(nat_t size, Cmp && _cmp, HashFctType fct)
-      : HashSet(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(nat_t size, Cmp & _cmp, HashFctPtr fct = &super_fast_hash)
-      : HashSet(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(nat_t size, Cmp && _cmp = Cmp(), HashFctPtr fct = &super_fast_hash)
-      : HashSet(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(Cmp & _cmp, HashFctType fct)
-      : HashSet(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(Cmp && _cmp, HashFctType fct)
-      : HashSet(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(Cmp & _cmp, HashFctPtr fct = &super_fast_hash)
-      : HashSet(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    HashSet(Cmp && _cmp = Cmp(), HashFctPtr fct = &super_fast_hash)
-      : HashSet(_cmp, fct)
+    
+    LHashTable(nat_t size, Cmp & _cmp, HashFctType fct)
+      : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
     {
       // empty
     }
     
-    HashSet(const HashSet & h)
+    LHashTable(nat_t size, Cmp && _cmp, HashFctType fct)
+	: LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+    
+    LHashTable(nat_t size, Cmp & _cmp, HashFctPtr fct = &super_fast_hash)
+      : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+
+    LHashTable(nat_t size, Cmp && _cmp = Cmp(),
+	       HashFctPtr fct = &super_fast_hash)
+      : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+      
+    LHashTable(Cmp & _cmp, HashFctType fct)
+      : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+    
+    LHashTable(Cmp && _cmp, HashFctType fct)
+      : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+
+    LHashTable(Cmp & _cmp, HashFctPtr fct = &super_fast_hash)
+      : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+
+    LHashTable(Cmp && _cmp = Cmp(), HashFctPtr fct = &super_fast_hash)
+      : LHashTable(_cmp, fct)
+    {
+      // empty
+    }
+      
+    LHashTable(const LHashTable & h)
       : BaseArray(h), num_items(h.num_items), cmp(h.cmp), hash_fct(h.hash_fct),
       lower_alpha(h.lower_alpha), upper_alpha(h.upper_alpha)
     {
       // empty
     }
 
-    HashSet(HashSet && h)
-      : HashSet()
+    LHashTable(LHashTable && h)
+      : LHashTable()
     {
       swap(h);
     }
 
-    HashSet(const std::initializer_list<Key> &);
-
-    HashSet & operator = (const HashSet & h)
+    LHashTable(const std::initializer_list<Key> &);
+    
+    LHashTable & operator = (const LHashTable & h)
     {
       if (this == &h)
 	return *this;
-
+      
       (BaseArray &) *this = h;
       num_items = h.num_items;
       cmp = h.cmp;
       hash_fct = h.hash_fct;
       lower_alpha = h.lower_alpha;
       upper_alpha = h.upper_alpha;
-
+      
       return *this;
     }
-
-    HashSet & operator = (HashSet && h)
+    
+    LHashTable & operator = (LHashTable && h)
     {
       swap(h);
       return *this;
     }
-
-    void swap(HashSet & h)
+    
+    void swap(LHashTable & h)
     {
       BaseArray::swap(h);
       std::swap(num_items, h.num_items);
@@ -226,22 +227,22 @@ namespace Designar
       std::swap(lower_alpha, h.lower_alpha);
       std::swap(upper_alpha, h.upper_alpha);
     }
-
+    
     Cmp & get_cmp()
     {
       return cmp;
     }
-
+    
     const Cmp & get_cmp() const
     {
       return cmp;
     }
-
+    
     const HashFctType & get_hash_fct() const
     {
       return hash_fct;
     }
-
+    
     real_t get_lower_alpha() const
     {
       return lower_alpha;
@@ -251,17 +252,17 @@ namespace Designar
     {
       return upper_alpha;
     }
-
+    
     void set_lower_alpha(real_t value)
     {
       lower_alpha = value;
     }
-
+    
     void set_upper_alpha(real_t value)
     {
       upper_alpha = value;
     }
-
+    
     void reset_alpha_values()
     {
       lower_alpha = DFT_LOWER_ALPHA;
@@ -459,9 +460,9 @@ namespace Designar
 	return false;
 
       bool result = list.remove_first_if([&k, this](const auto & item)
-					 {
-					   return cmp(k, item);
-					 });
+	      {
+		return cmp(k, item);
+	      });
 
       if (not result)
 	return false;
@@ -481,10 +482,10 @@ namespace Designar
 
     class Iterator : public BidirectionalIterator<Iterator, Key>
     {
-      friend class HashSet;
+      friend class LHashTable;
       friend class BasicIterator<Iterator, Key>;
       
-      HashSet               * set_ptr;
+      LHashTable            * set_ptr;
       lint_t                  set_pos;
       typename List::Iterator list_it;
       lint_t                  pos;
@@ -501,8 +502,8 @@ namespace Designar
 	return pos;
       }
 
-      Iterator(const HashSet & h, int)
-	: set_ptr(&const_cast<HashSet &>(h)), set_pos(h.M()),
+      Iterator(const LHashTable & h, int)
+	: set_ptr(&const_cast<LHashTable &>(h)), set_pos(h.M()),
 	  list_it(), pos(h.N())
       {
 	locate_end();
@@ -515,8 +516,8 @@ namespace Designar
 	// empty
       }
 
-      Iterator(const HashSet & h)
-	: set_ptr(&const_cast<HashSet &>(h)), set_pos(0), list_it(), pos(0)
+      Iterator(const LHashTable & h)
+	: set_ptr(&const_cast<LHashTable &>(h)), set_pos(0), list_it(), pos(0)
       {
 	locate_next(set_pos);
       }
@@ -642,16 +643,16 @@ namespace Designar
   };
 
   template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::clear_lists()
+  void LHashTable<Key, Cmp>::clear_lists()
   {
     for (nat_t i = 0; i < BaseArray::get_capacity(); ++i)
       BaseArray::at(i).clear();
   }
     
   template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::resize(nat_t sz)
+  void LHashTable<Key, Cmp>::resize(nat_t sz)
   {
-    HashSet new_hash_set(sz, cmp, hash_fct, lower_alpha, upper_alpha);
+    LHashTable new_hash_set(sz, cmp, hash_fct, lower_alpha, upper_alpha);
 
     for (Key & item : *this)
       new_hash_set.append(std::move(item));
@@ -660,15 +661,15 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  HashSet<Key, Cmp>::HashSet(const std::initializer_list<Key> & l)
-    : HashSet()
+  LHashTable<Key, Cmp>::LHashTable(const std::initializer_list<Key> & l)
+    : LHashTable()
   {
     for (const Key & item : l)
       append(item);
   }
 
   template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::Iterator::locate_end()
+  void LHashTable<Key, Cmp>::Iterator::locate_end()
   {
     while (set_pos > 0 and set_ptr->at(set_pos - 1).is_empty())
       --set_pos;
@@ -680,7 +681,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::Iterator::locate_next(nat_t i)
+  void LHashTable<Key, Cmp>::Iterator::locate_next(nat_t i)
   {
     if (set_ptr->is_empty())
       return;
@@ -699,7 +700,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  void HashSet<Key, Cmp>::Iterator::locate_prev(nat_t i)
+  void LHashTable<Key, Cmp>::Iterator::locate_prev(nat_t i)
   {
     if (set_ptr->is_empty())
       return;

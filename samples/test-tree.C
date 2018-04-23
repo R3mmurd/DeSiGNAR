@@ -22,8 +22,7 @@
   aledrums@gmail.com
 */
 
-# include <array.H>
-# include <tree.H>
+# include <set.H>
 
 using namespace std;
 using namespace Designar;

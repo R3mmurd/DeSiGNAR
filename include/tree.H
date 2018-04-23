@@ -93,832 +93,832 @@ namespace Designar
   
   
   template <typename Key, class Cmp = std::less<Key>>
-    class TreeSet : public ContainerAlgorithms<TreeSet<Key, Cmp>, Key>,
-		    public SetAlgorithms<TreeSet<Key, Cmp>, Key>
-  {
-  public:
-    using Node = TreapRkNode<Key>;
+    class RankedTreap : public ContainerAlgorithms<RankedTreap<Key, Cmp>, Key>,
+			public SetAlgorithms<RankedTreap<Key, Cmp>, Key>
+    {
+    public:
+      using Node = TreapRkNode<Key>;
       
-  private:    
-    Node    head;
-    Node *& root;
-    Cmp   & cmp;
+    private:    
+      Node    head;
+      Node *& root;
+      Cmp   & cmp;
     
-    rng_t rng;
+      rng_t rng;
 
-    static bool verify(Node *, Cmp & cmp);
+      static bool verify(Node *, Cmp & cmp);
 
-    static Node * copy(Node *);
+      static Node * copy(Node *);
 
-    static void destroy(Node *&);
+      static void destroy(Node *&);
     
-    static Node * rotate_left(Node *);
+      static Node * rotate_left(Node *);
 
-    static Node * rotate_right(Node *);
+      static Node * rotate_right(Node *);
 
-    static bool split_key(Node *, const Key &, Node *&, Node *&, Cmp &);
+      static bool split_key(Node *, const Key &, Node *&, Node *&, Cmp &);
 
-    static Node * exclusive_join(Node *&, Node *&);
+      static Node * exclusive_join(Node *&, Node *&);
     
-    static Node * insert(Node *&, Node *, Cmp &);
+      static Node * insert(Node *&, Node *, Cmp &);
 
-    static Node * search(Node *, const Key &, Cmp &);
+      static Node * search(Node *, const Key &, Cmp &);
 
-    static Node * search(Node *, Key &&, Cmp &);
+      static Node * search(Node *, Key &&, Cmp &);
 
-    static Node * search_or_insert(Node *&, Node *, Cmp &);
+      static Node * search_or_insert(Node *&, Node *, Cmp &);
 
-    static Node * remove_root(Node *& root)
-    {
-      Node * ret_val = root;
-      root = exclusive_join(L(root), R(root));
-      return ret_val;
-    }
+      static Node * remove_root(Node *& root)
+      {
+	Node * ret_val = root;
+	root = exclusive_join(L(root), R(root));
+	return ret_val;
+      }
 
-    static Node * remove(Node *&, const Key &, Cmp &);
+      static Node * remove(Node *&, const Key &, Cmp &);
 
-    static Node * remove_pos(Node *&, nat_t);
+      static Node * remove_pos(Node *&, nat_t);
 
-    static Node * select(Node *, nat_t);
+      static Node * select(Node *, nat_t);
 
-    static lint_t position(Node *, const Key &, Cmp &);
+      static lint_t position(Node *, const Key &, Cmp &);
     
-    static Node * min(Node *);
+      static Node * min(Node *);
 
-    static Node * max(Node *);
+      static Node * max(Node *);
 
-    template <class Op>
-    static void preorder_rec(Node *, Op &);
+      template <class Op>
+      static void preorder_rec(Node *, Op &);
 
-    template <class Op>
-    static void inorder_rec(Node *, Op &);
+      template <class Op>
+      static void inorder_rec(Node *, Op &);
 
-    template <class Op>
-    static void postorder_rec(Node *, Op &);
+      template <class Op>
+      static void postorder_rec(Node *, Op &);
     
-    Key * insert(Node * p)
-    {
-      PRIOR(p) = rng();
+      Key * insert(Node * p)
+      {
+	PRIOR(p) = rng();
 	
-      if (insert(root, p, cmp) != Node::null)
-	return &KEY(p);
+	if (insert(root, p, cmp) != Node::null)
+	  return &KEY(p);
       
-      delete p;
-      return nullptr;
-    }
-
-    Key * search_or_insert(Node * p)
-    {
-      PRIOR(p) = rng();
-	
-      Node * result = search_or_insert(root, p, cmp);
-
-      if (p != result)
 	delete p;
-
-      return &KEY(result);
-    }
-
-  public:
-    using ItemType  = Key;
-    using KeyType   = Key;
-    using DataType  = Key;
-    using ValueType = Key;
-    using SizeType  = nat_t;
-    using CmpType   = Cmp;
-    
-    bool verify() const
-    {
-      return verify(root, cmp);
-    }
-    
-    TreeSet(rng_seed_t seed, Cmp & _cmp)
-      : head(), root(L(&head)), cmp(_cmp), rng(seed)
-    {
-      // empty
-    }
-
-    TreeSet(Cmp & _cmp)
-      : TreeSet(time(nullptr), _cmp)
-    {
-      // empty
-    }
-
-    TreeSet(Cmp && _cmp = Cmp())
-      : TreeSet(_cmp)
-    {
-      // empty
-    }
-
-    TreeSet(rng_seed_t seed, Cmp && _cmp = Cmp())
-      : TreeSet(seed, _cmp)
-    {
-      // empty
-    }
-
-    TreeSet(const TreeSet & t)
-      : TreeSet(t.cmp)
-    {
-      root = copy(t.root);
-    }
-
-    TreeSet(TreeSet && t)
-      : TreeSet()
-    {
-      swap(t);
-    }
-
-    TreeSet(const std::initializer_list<Key> &);
-
-    ~TreeSet()
-    {
-      clear();
-    }
-
-    TreeSet & operator = (const TreeSet & t)
-    {
-      if (this == &t)
-	return *this;
-
-      clear();
-      root = copy(t.root);
-      cmp = t.cmp;
-      return *this;
-    }
-
-    TreeSet & operator = (TreeSet && t)
-    {
-      swap(t);
-      return *this;
-    }
-
-    void swap(TreeSet & t)
-    {
-      std::swap(root, t.root);
-      std::swap(cmp, t.cmp);
-    }
-
-    bool is_empty() const
-    {
-      return root == Node::null;
-    }
-
-    bool is_sorted() const
-    {
-      return true;
-    }
-
-    nat_t size() const
-    {
-      return COUNT(root);
-    }
-
-    void clear()
-    {
-      destroy(root);
-    }
-
-    Cmp & get_cmp()
-    {
-      return cmp;
-    }
-
-    const Cmp & get_cmp() const
-    {
-      return cmp;
-    }
-
-    Key * insert(const Key & k)
-    {
-      Node * p = new Node(k);
-      return insert(p);
-    }
-
-    Key * insert(Key && k)
-    {
-      Node * p = new Node(std::forward<Key>(k));
-      return insert(p);
-    }
-
-    Key * append(const Key & k)
-    {
-      return insert(k);
-    }
-
-    Key * append(Key && k)
-    {
-      return insert(std::forward<Key>(k));
-    }
-
-    Key * search(const Key & k)
-    {
-      Node * result = search(root, k, cmp);
-      
-      if (result == Node::null)
 	return nullptr;
-
-      return &KEY(result);	  
-    }
-
-    const Key * search(const Key & k) const
-    {
-      Node * result = search(root, k, cmp);
-      
-      if (result == Node::null)
-	return nullptr;
-
-      return &KEY(result);	  
-    }
-
-    Key * search_or_insert(const Key & k)
-    {
-      Node * p = new Node(k);
-      return search_or_insert(p);
-    }
-
-    Key * search_or_insert(Key && k)
-    {
-      Node * p = new Node(std::forward<Key>(k));
-      return search_or_insert(p);
-    }
-
-    Key & find(const Key & k)
-    {
-      Key * result = search(k);
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    const Key & find(const Key & k) const
-    {
-      const Key * result = search(k);
-
-      if (result == nullptr)
-	throw std::domain_error("Key not found");
-
-      return *result;
-    }
-
-    bool remove(const Key & k)
-
-    {
-      Node * result = remove(root, k, cmp);
-
-      if (result == Node::null)
-	return false;
-
-      delete result;
-      return true;
-    }
-
-    Key remove_pos(nat_t i)
-    {
-      if (i >= size())
-	throw std::out_of_range("Infix position is out of range");
-      
-      Node * result = remove_pos(root, i);
-      Key ret_val = std::move(KEY(result));
-      delete result;
-      return ret_val;
-    }
-
-    const Key & min() const
-    {
-      if (is_empty())
-	throw std::underflow_error("Tree is empty");
-
-      return KEY(min(root));
-    }
-
-    const Key & max() const
-    {
-      if (is_empty())
-	throw std::underflow_error("Tree is empty");
-
-      return KEY(max(root));
-    }
-
-    std::tuple<TreeSet, TreeSet> split_key(const Key & k)
-    {
-      TreeSet ts, tg;
-
-      if (split_key(root, k, ts.root, tg.root, cmp))
-	root = Node::null;
-
-      return std::make_tuple(ts, tg);
-    }
-
-    void exclusive_join(TreeSet & ts, TreeSet & tg)
-    {
-      root = exclusive_join(ts.root, tg.root);
-      ts.root = tg.root = Node::null;
-    }
-
-    Key & select(nat_t i)
-    {
-      if (i >= size())
-	throw std::out_of_range("Infix position is out of range");
-
-      return KEY(select(root, i));
-    }
-
-    const Key & select(nat_t i) const
-    {
-      if (i >= size())
-	throw std::out_of_range("Infix position is out of range");
-
-      return KEY(select(root, i));
-    }
-
-    lint_t position(const Key & k) const
-    {
-      return position(root, k, cmp);
-    }
-
-    Key & operator [] (nat_t i)
-    {
-      return select(i);
-    }
-
-    const Key & operator [] (nat_t i) const
-    {
-      return select(i);
-    }
-
-    template <class Op>
-    void for_each_preorder(Op & op)
-    {
-      preorder_rec<Op>(root, op);
-    }
-
-    template <class Op>
-    void for_each_preorder(Op && op = Op())
-    {
-      for_each_preorder<Op>(op);
-    }
-
-    template <class Op>
-    void for_each_inorder(Op & op)
-    {
-      inorder_rec<Op>(root, op);
-    }
-
-    template <class Op>
-    void for_each_inorder(Op && op = Op())
-    {
-      for_each_inorder<Op>(op);
-    }
-
-    template <class Op>
-    void for_each_postorder(Op & op)
-    {
-      postorder_rec<Op>(root, op);
-    }
-
-    template <class Op>
-    void for_each_postorder(Op && op = Op())
-    {
-      for_each_postorder<Op>(op);
-    }
-
-    class PreorderIterator
-    {
-      friend class TreeSet;
-      
-      DynStack<Node *> stack;
-      Node *    root = Node::null;
-      Node *    curr = Node::null;
-      lint_t    pos = 0;
-
-      Node * last(Node *);
-
-    protected:
-      PreorderIterator(const TreeSet & t, int)
-	: root(t.root), curr(Node::null), pos(t.size())
-      {
-	// empty
       }
-      
-      Node * get_location() const
+
+      Key * search_or_insert(Node * p)
       {
-	return curr;
+	PRIOR(p) = rng();
+	
+	Node * result = search_or_insert(root, p, cmp);
+
+	if (p != result)
+	  delete p;
+
+	return &KEY(result);
       }
 
     public:
-      PreorderIterator(const TreeSet & t)
-	: root(t.root), curr(root)
+      using ItemType  = Key;
+      using KeyType   = Key;
+      using DataType  = Key;
+      using ValueType = Key;
+      using SizeType  = nat_t;
+      using CmpType   = Cmp;
+    
+      bool verify() const
+      {
+	return verify(root, cmp);
+      }
+    
+      RankedTreap(rng_seed_t seed, Cmp & _cmp)
+	: head(), root(L(&head)), cmp(_cmp), rng(seed)
       {
 	// empty
       }
 
-      PreorderIterator(const PreorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+      RankedTreap(Cmp & _cmp)
+	: RankedTreap(time(nullptr), _cmp)
       {
 	// empty
       }
 
-      PreorderIterator(PreorderIterator && it)
+      RankedTreap(Cmp && _cmp = Cmp())
+	: RankedTreap(_cmp)
       {
-	swap(it);
+	// empty
       }
 
-      PreorderIterator & operator = (const PreorderIterator & it)
+      RankedTreap(rng_seed_t seed, Cmp && _cmp = Cmp())
+	: RankedTreap(seed, _cmp)
       {
-	if (this == &it)
+	// empty
+      }
+
+      RankedTreap(const RankedTreap & t)
+	: RankedTreap(t.cmp)
+      {
+	root = copy(t.root);
+      }
+
+      RankedTreap(RankedTreap && t)
+	: RankedTreap()
+      {
+	swap(t);
+      }
+
+      RankedTreap(const std::initializer_list<Key> &);
+
+      ~RankedTreap()
+      {
+	clear();
+      }
+
+      RankedTreap & operator = (const RankedTreap & t)
+      {
+	if (this == &t)
 	  return *this;
 
-	stack = it.stack;
-	root = it.root;
-	curr = it.curr;
-	pos = it.pos;
-
+	clear();
+	root = copy(t.root);
+	cmp = t.cmp;
 	return *this;
       }
 
-      PreorderIterator & operator = (PreorderIterator && it)
+      RankedTreap & operator = (RankedTreap && t)
       {
-	swap(it);
+	swap(t);
 	return *this;
       }
+
+      void swap(RankedTreap & t)
+      {
+	std::swap(root, t.root);
+	std::swap(cmp, t.cmp);
+      }
+
+      bool is_empty() const
+      {
+	return root == Node::null;
+      }
+
+      bool is_sorted() const
+      {
+	return true;
+      }
+
+      nat_t size() const
+      {
+	return COUNT(root);
+      }
+
+      void clear()
+      {
+	destroy(root);
+      }
+
+      Cmp & get_cmp()
+      {
+	return cmp;
+      }
+
+      const Cmp & get_cmp() const
+      {
+	return cmp;
+      }
+
+      Key * insert(const Key & k)
+      {
+	Node * p = new Node(k);
+	return insert(p);
+      }
+
+      Key * insert(Key && k)
+      {
+	Node * p = new Node(std::forward<Key>(k));
+	return insert(p);
+      }
+
+      Key * append(const Key & k)
+      {
+	return insert(k);
+      }
+
+      Key * append(Key && k)
+      {
+	return insert(std::forward<Key>(k));
+      }
+
+      Key * search(const Key & k)
+      {
+	Node * result = search(root, k, cmp);
       
-      void swap(PreorderIterator & it)
-      {
-	std::swap(stack, it.stack);
-	std::swap(root, it.root);
-	std::swap(curr, it.curr);
-	std::swap(pos, it.pos);
+	if (result == Node::null)
+	  return nullptr;
+
+	return &KEY(result);	  
       }
 
-      void reset()
+      const Key * search(const Key & k) const
       {
-	stack.clear();
-	pos = 0;
-	curr = root;
-      }
-
-      nat_t get_position() const
-      {
-	return pos;
-      }
-
-      bool has_current() const
-      {
-	return curr != Node::null;
-      }
-
-      Key & get_current()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-	
-	return KEY(curr);
-      }
-
-      const Key & get_current() const
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-	
-	return KEY(curr);
-      }
-
-      void next()
-      {
-	if (not has_current())
-	  return;
-
-	stack.push(curr);
-
-	curr = L(curr);
-
-	++pos;
-
-	if (curr != Node::null)
-	  return;
-
-	while (not stack.is_empty() and curr == Node::null)
-	  curr = R(stack.pop());	  
-      }
-    };
-
-    class InorderIterator
-    {
-      friend class TreeSet;
+	Node * result = search(root, k, cmp);
       
-      DynStack<Node *> stack;
-      Node * root = Node::null;
-      Node * curr = Node::null;
-      lint_t pos = 0;
+	if (result == Node::null)
+	  return nullptr;
 
-      Node * search_min(Node *);
-
-      Node * search_max(Node *);
-
-      void init()
-      {
-	if (root == Node::null)
-	  return;
-
-	pos = 0;
-	curr = search_min(root);
+	return &KEY(result);	  
       }
 
-    protected:
-      InorderIterator(const TreeSet & t, int)
-	: root(t.root), curr(Node::null), pos(t.size())
+      Key * search_or_insert(const Key & k)
       {
-	// empty
+	Node * p = new Node(k);
+	return search_or_insert(p);
       }
+
+      Key * search_or_insert(Key && k)
+      {
+	Node * p = new Node(std::forward<Key>(k));
+	return search_or_insert(p);
+      }
+
+      Key & find(const Key & k)
+      {
+	Key * result = search(k);
+
+	if (result == nullptr)
+	  throw std::domain_error("Key not found");
+
+	return *result;
+      }
+
+      const Key & find(const Key & k) const
+      {
+	const Key * result = search(k);
+
+	if (result == nullptr)
+	  throw std::domain_error("Key not found");
+
+	return *result;
+      }
+
+      bool remove(const Key & k)
+
+      {
+	Node * result = remove(root, k, cmp);
+
+	if (result == Node::null)
+	  return false;
+
+	delete result;
+	return true;
+      }
+
+      Key remove_pos(nat_t i)
+      {
+	if (i >= size())
+	  throw std::out_of_range("Infix position is out of range");
       
-      Node * get_location() const
-      {
-	return curr;
+	Node * result = remove_pos(root, i);
+	Key ret_val = std::move(KEY(result));
+	delete result;
+	return ret_val;
       }
 
-    public:
-      InorderIterator(const TreeSet & t)
-	: root(t.root)
+      const Key & min() const
       {
-	init();
+	if (is_empty())
+	  throw std::underflow_error("Tree is empty");
+
+	return KEY(min(root));
       }
 
-      InorderIterator(const InorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+      const Key & max() const
       {
-	// empty
+	if (is_empty())
+	  throw std::underflow_error("Tree is empty");
+
+	return KEY(max(root));
       }
 
-      InorderIterator(InorderIterator && it)
+      std::tuple<RankedTreap, RankedTreap> split_key(const Key & k)
       {
-	swap(it);
+	RankedTreap ts, tg;
+
+	if (split_key(root, k, ts.root, tg.root, cmp))
+	  root = Node::null;
+
+	return std::make_tuple(ts, tg);
       }
 
-      InorderIterator & operator = (const InorderIterator & it)
+      void exclusive_join(RankedTreap & ts, RankedTreap & tg)
       {
-	if (this == &it)
+	root = exclusive_join(ts.root, tg.root);
+	ts.root = tg.root = Node::null;
+      }
+
+      Key & select(nat_t i)
+      {
+	if (i >= size())
+	  throw std::out_of_range("Infix position is out of range");
+
+	return KEY(select(root, i));
+      }
+
+      const Key & select(nat_t i) const
+      {
+	if (i >= size())
+	  throw std::out_of_range("Infix position is out of range");
+
+	return KEY(select(root, i));
+      }
+
+      lint_t position(const Key & k) const
+      {
+	return position(root, k, cmp);
+      }
+
+      Key & operator [] (nat_t i)
+      {
+	return select(i);
+      }
+
+      const Key & operator [] (nat_t i) const
+      {
+	return select(i);
+      }
+
+      template <class Op>
+      void for_each_preorder(Op & op)
+      {
+	preorder_rec<Op>(root, op);
+      }
+
+      template <class Op>
+      void for_each_preorder(Op && op = Op())
+      {
+	for_each_preorder<Op>(op);
+      }
+
+      template <class Op>
+      void for_each_inorder(Op & op)
+      {
+	inorder_rec<Op>(root, op);
+      }
+
+      template <class Op>
+      void for_each_inorder(Op && op = Op())
+      {
+	for_each_inorder<Op>(op);
+      }
+
+      template <class Op>
+      void for_each_postorder(Op & op)
+      {
+	postorder_rec<Op>(root, op);
+      }
+
+      template <class Op>
+      void for_each_postorder(Op && op = Op())
+      {
+	for_each_postorder<Op>(op);
+      }
+
+      class PreorderIterator
+      {
+	friend class RankedTreap;
+      
+	DynStack<Node *> stack;
+	Node *    root = Node::null;
+	Node *    curr = Node::null;
+	lint_t    pos = 0;
+
+	Node * last(Node *);
+
+      protected:
+	PreorderIterator(const RankedTreap & t, int)
+	  : root(t.root), curr(Node::null), pos(t.size())
+	{
+	  // empty
+	}
+      
+	Node * get_location() const
+	{
+	  return curr;
+	}
+
+      public:
+	PreorderIterator(const RankedTreap & t)
+	  : root(t.root), curr(root)
+	{
+	  // empty
+	}
+
+	PreorderIterator(const PreorderIterator & it)
+	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	{
+	  // empty
+	}
+
+	PreorderIterator(PreorderIterator && it)
+	{
+	  swap(it);
+	}
+
+	PreorderIterator & operator = (const PreorderIterator & it)
+	{
+	  if (this == &it)
+	    return *this;
+
+	  stack = it.stack;
+	  root = it.root;
+	  curr = it.curr;
+	  pos = it.pos;
+
 	  return *this;
+	}
 
-	stack = it.stack;
-	root = it.root;
-	curr = it.curr;
-	pos = it.pos;
-
-	return *this;
-      }
-
-      InorderIterator & operator = (InorderIterator && it)
-      {
-	swap(it);
-	return *this;
-      }
-      
-      void swap(InorderIterator & it)
-      {
-	std::swap(stack, it.stack);
-	std::swap(root, it.root);
-	std::swap(curr, it.curr);
-	std::swap(pos, it.pos);
-      }
-
-      void reset()
-      {
-	stack.clear();
-	init();
-      }
-
-      void reset_last()
-      {
-	pos = -1;
-	stack.clear();
-	curr = search_max(root);
-      }
-
-      nat_t get_position() const
-      {
-	return pos;
-      }
-
-      bool has_current() const
-      {
-	return curr != Node::null;
-      }
-
-      Key & get_current()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-	
-	return KEY(curr);
-      }
-
-      const Key & get_current() const
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-	
-	return KEY(curr);
-      }
-
-      void next()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-
-	++pos;
-	curr = R(curr);
-	
-	if (curr != Node::null)
-	  curr = search_min(curr);
-	else
-	  if (not stack.is_empty())
-	    curr = stack.pop();
-      }
-    };
-
-    class PostorderIterator
-    {
-      friend class TreeSet;
-      
-      DynStack<Node *> stack;
-      Node * root = Node::null;
-      Node * curr = Node::null;
-      lint_t pos = 0;
-
-      Node * first(Node *);
-
-      void init()
-      {
-	if (root == Node::null)
-	  return;
-
-	pos = 0;
-	curr = first(root);
-      }
-
-    protected:
-      PostorderIterator(const TreeSet & t, int)
-	: root(t.root), curr(Node::null), pos(t.size())
-      {
-	// empty
-      }
-
-      Node * get_location() const
-      {
-	return curr;
-      }
-
-    public:
-      PostorderIterator(const TreeSet & t)
-	: root(t.root)
-      {
-	init();
-      }
-
-      PostorderIterator(const PostorderIterator & it)
-	: stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
-      {
-	// empty
-      }
-
-      PostorderIterator(PostorderIterator && it)
-      {
-	swap(it);
-      }
-
-      PostorderIterator & operator = (const PostorderIterator & it)
-      {
-	if (this == &it)
+	PreorderIterator & operator = (PreorderIterator && it)
+	{
+	  swap(it);
 	  return *this;
-
-	stack = it.stack;
-	root = it.root;
-	curr = it.curr;
-	pos = it.pos;
-
-	return *this;
-      }
-
-      PostorderIterator & operator = (PostorderIterator && it)
-      {
-	swap(it);
-	return *this;
-      }
+	}
       
-      void swap(PostorderIterator & it)
-      {
-	std::swap(stack, it.stack);
-	std::swap(root, it.root);
-	std::swap(curr, it.curr);
-	std::swap(pos, it.pos);
-      }
+	void swap(PreorderIterator & it)
+	{
+	  std::swap(stack, it.stack);
+	  std::swap(root, it.root);
+	  std::swap(curr, it.curr);
+	  std::swap(pos, it.pos);
+	}
 
-      void reset()
-      {
-	stack.clear();
-	init();
-      }
+	void reset()
+	{
+	  stack.clear();
+	  pos = 0;
+	  curr = root;
+	}
 
-      void reset_last()
-      {
-	pos = -1;
-	stack.clear();
-	curr = root;
-      }
+	nat_t get_position() const
+	{
+	  return pos;
+	}
 
-      nat_t get_position() const
-      {
-	return pos;
-      }
+	bool has_current() const
+	{
+	  return curr != Node::null;
+	}
 
-      bool has_current() const
-      {
-	return curr != Node::null;
-      }
-
-      Key & get_current()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	Key & get_current()
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
 	
-	return KEY(curr);
-      }
+	  return KEY(curr);
+	}
 
-      const Key & get_current() const
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
+	const Key & get_current() const
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
 	
-	return KEY(curr);
-      }
+	  return KEY(curr);
+	}
 
-      void next()
-      {
-	if (not has_current())
-	  throw std::overflow_error("There is not current element");
-
-	++pos;
-
-	if (stack.is_empty())
-	  {
-	    curr = Node::null;
+	void next()
+	{
+	  if (not has_current())
 	    return;
-	  }
 
-	Node *& parent = stack.top();
+	  stack.push(curr);
 
-	if (curr == R(parent) or R(parent) == Node::null)
-	  {
-	    curr = stack.pop();
+	  curr = L(curr);
+
+	  ++pos;
+
+	  if (curr != Node::null)
 	    return;
-	  }
 
-	curr = first(R(parent));
+	  while (not stack.is_empty() and curr == Node::null)
+	    curr = R(stack.pop());	  
+	}
+      };
+
+      class InorderIterator
+      {
+	friend class RankedTreap;
+      
+	DynStack<Node *> stack;
+	Node * root = Node::null;
+	Node * curr = Node::null;
+	lint_t pos = 0;
+
+	Node * search_min(Node *);
+
+	Node * search_max(Node *);
+
+	void init()
+	{
+	  if (root == Node::null)
+	    return;
+
+	  pos = 0;
+	  curr = search_min(root);
+	}
+
+      protected:
+	InorderIterator(const RankedTreap & t, int)
+	  : root(t.root), curr(Node::null), pos(t.size())
+	{
+	  // empty
+	}
+      
+	Node * get_location() const
+	{
+	  return curr;
+	}
+
+      public:
+	InorderIterator(const RankedTreap & t)
+	  : root(t.root)
+	{
+	  init();
+	}
+
+	InorderIterator(const InorderIterator & it)
+	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	{
+	  // empty
+	}
+
+	InorderIterator(InorderIterator && it)
+	{
+	  swap(it);
+	}
+
+	InorderIterator & operator = (const InorderIterator & it)
+	{
+	  if (this == &it)
+	    return *this;
+
+	  stack = it.stack;
+	  root = it.root;
+	  curr = it.curr;
+	  pos = it.pos;
+
+	  return *this;
+	}
+
+	InorderIterator & operator = (InorderIterator && it)
+	{
+	  swap(it);
+	  return *this;
+	}
+      
+	void swap(InorderIterator & it)
+	{
+	  std::swap(stack, it.stack);
+	  std::swap(root, it.root);
+	  std::swap(curr, it.curr);
+	  std::swap(pos, it.pos);
+	}
+
+	void reset()
+	{
+	  stack.clear();
+	  init();
+	}
+
+	void reset_last()
+	{
+	  pos = -1;
+	  stack.clear();
+	  curr = search_max(root);
+	}
+
+	nat_t get_position() const
+	{
+	  return pos;
+	}
+
+	bool has_current() const
+	{
+	  return curr != Node::null;
+	}
+
+	Key & get_current()
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+	
+	  return KEY(curr);
+	}
+
+	const Key & get_current() const
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+	
+	  return KEY(curr);
+	}
+
+	void next()
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+
+	  ++pos;
+	  curr = R(curr);
+	
+	  if (curr != Node::null)
+	    curr = search_min(curr);
+	  else
+	    if (not stack.is_empty())
+	      curr = stack.pop();
+	}
+      };
+
+      class PostorderIterator
+      {
+	friend class RankedTreap;
+      
+	DynStack<Node *> stack;
+	Node * root = Node::null;
+	Node * curr = Node::null;
+	lint_t pos = 0;
+
+	Node * first(Node *);
+
+	void init()
+	{
+	  if (root == Node::null)
+	    return;
+
+	  pos = 0;
+	  curr = first(root);
+	}
+
+      protected:
+	PostorderIterator(const RankedTreap & t, int)
+	  : root(t.root), curr(Node::null), pos(t.size())
+	{
+	  // empty
+	}
+
+	Node * get_location() const
+	{
+	  return curr;
+	}
+
+      public:
+	PostorderIterator(const RankedTreap & t)
+	  : root(t.root)
+	{
+	  init();
+	}
+
+	PostorderIterator(const PostorderIterator & it)
+	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	{
+	  // empty
+	}
+
+	PostorderIterator(PostorderIterator && it)
+	{
+	  swap(it);
+	}
+
+	PostorderIterator & operator = (const PostorderIterator & it)
+	{
+	  if (this == &it)
+	    return *this;
+
+	  stack = it.stack;
+	  root = it.root;
+	  curr = it.curr;
+	  pos = it.pos;
+
+	  return *this;
+	}
+
+	PostorderIterator & operator = (PostorderIterator && it)
+	{
+	  swap(it);
+	  return *this;
+	}
+      
+	void swap(PostorderIterator & it)
+	{
+	  std::swap(stack, it.stack);
+	  std::swap(root, it.root);
+	  std::swap(curr, it.curr);
+	  std::swap(pos, it.pos);
+	}
+
+	void reset()
+	{
+	  stack.clear();
+	  init();
+	}
+
+	void reset_last()
+	{
+	  pos = -1;
+	  stack.clear();
+	  curr = root;
+	}
+
+	nat_t get_position() const
+	{
+	  return pos;
+	}
+
+	bool has_current() const
+	{
+	  return curr != Node::null;
+	}
+
+	Key & get_current()
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+	
+	  return KEY(curr);
+	}
+
+	const Key & get_current() const
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+	
+	  return KEY(curr);
+	}
+
+	void next()
+	{
+	  if (not has_current())
+	    throw std::overflow_error("There is not current element");
+
+	  ++pos;
+
+	  if (stack.is_empty())
+	    {
+	      curr = Node::null;
+	      return;
+	    }
+
+	  Node *& parent = stack.top();
+
+	  if (curr == R(parent) or R(parent) == Node::null)
+	    {
+	      curr = stack.pop();
+	      return;
+	    }
+
+	  curr = first(R(parent));
+	}
+      };
+
+      class Iterator : public InorderIterator,
+		       public ForwardIterator<Iterator, Key>
+      {
+	friend class RankedTreap;
+	friend class BasicIterator<Iterator, Key>;
+	using Base = InorderIterator;
+	using Base::Base;
+      };
+
+      Iterator begin()
+      {
+	return Iterator(*this);
+      }
+
+      Iterator begin() const
+      {
+	return Iterator(*this);
+      }
+
+      Iterator end()
+      {
+	return Iterator(*this, 0);
+      }
+
+      Iterator end() const
+      {
+	return Iterator(*this, 0);
       }
     };
-
-    class Iterator : public InorderIterator,
-		     public ForwardIterator<Iterator, Key>
-    {
-      friend class TreeSet;
-      friend class BasicIterator<Iterator, Key>;
-      using Base = InorderIterator;
-      using Base::Base;
-    };
-
-    Iterator begin()
-    {
-      return Iterator(*this);
-    }
-
-    Iterator begin() const
-    {
-      return Iterator(*this);
-    }
-
-    Iterator end()
-    {
-      return Iterator(*this, 0);
-    }
-
-    Iterator end() const
-    {
-      return Iterator(*this, 0);
-    }
-  };
 
   template <typename Key, class Cmp>
-  TreeSet<Key, Cmp>::TreeSet(const std::initializer_list<Key> & l)
-    : TreeSet()
+  RankedTreap<Key, Cmp>::RankedTreap(const std::initializer_list<Key> & l)
+    : RankedTreap()
   {
     for (const auto & item : l)
       append(item);
   }
 
   template <typename Key, class Cmp>
-  bool TreeSet<Key, Cmp>::verify(Node * r, Cmp & cmp)
+  bool RankedTreap<Key, Cmp>::verify(Node * r, Cmp & cmp)
   {
     if (r == Node::null)
       return true;
@@ -945,7 +945,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node * TreeSet<Key, Cmp>::copy(Node * r)
+  typename RankedTreap<Key, Cmp>::Node * RankedTreap<Key, Cmp>::copy(Node * r)
   {
     if (r == Node::null)
       return Node::null;
@@ -959,7 +959,7 @@ namespace Designar
   }
   
   template <typename Key, class Cmp>
-  void TreeSet<Key, Cmp>::destroy(Node *& r)
+  void RankedTreap<Key, Cmp>::destroy(Node *& r)
   {
     if (r == Node::null)
       return;
@@ -971,7 +971,8 @@ namespace Designar
   }
   
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node * TreeSet<Key, Cmp>::rotate_left(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::rotate_left(Node * r)
   {
     Node * q = R(r);
     R(r) = L(q);
@@ -984,7 +985,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node * TreeSet<Key, Cmp>::rotate_right(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::rotate_right(Node * r)
   {
     Node * q = L(r);
     L(r) = R(q);
@@ -996,9 +998,9 @@ namespace Designar
     return q;
   }
 
-    template <typename Key, class Cmp>
-  bool TreeSet<Key, Cmp>::split_key(Node * r, const Key & k,
-				    Node *& ts, Node *& tg, Cmp & cmp)
+  template <typename Key, class Cmp>
+  bool RankedTreap<Key, Cmp>::split_key(Node * r, const Key & k,
+					Node *& ts, Node *& tg, Cmp & cmp)
   {
     if (r == Node::null)
       {
@@ -1029,8 +1031,8 @@ namespace Designar
   }
   
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::exclusive_join(Node *& ts, Node *& tg)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::exclusive_join(Node *& ts, Node *& tg)
   {
     if (ts == Node::null)
       return tg;
@@ -1053,8 +1055,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::insert(Node *& r, Node * p, Cmp & cmp)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::insert(Node *& r, Node * p, Cmp & cmp)
   {
     if (r == Node::null)
       {
@@ -1095,8 +1097,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::search(Node * r, const Key & k, Cmp & cmp)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::search(Node * r, const Key & k, Cmp & cmp)
   {
     if (r == Node::null)
       return Node::null;
@@ -1110,8 +1112,8 @@ namespace Designar
   }
   
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::search(Node * r, Key && k, Cmp & cmp)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::search(Node * r, Key && k, Cmp & cmp)
   {
     if (r == Node::null)
       return Node::null;
@@ -1126,8 +1128,8 @@ namespace Designar
 
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::search_or_insert(Node *& r, Node * p, Cmp & cmp)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::search_or_insert(Node *& r, Node * p, Cmp & cmp)
   {
     if (r == Node::null)
       {
@@ -1168,8 +1170,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::remove(Node *& r, const Key & k, Cmp & cmp)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::remove(Node *& r, const Key & k, Cmp & cmp)
   {
     if (r == Node::null)
       return Node::null;
@@ -1197,8 +1199,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::remove_pos(Node *& r, nat_t i)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::remove_pos(Node *& r, nat_t i)
   {
     if (COUNT(L(r)) == i)
       return remove_root(r);
@@ -1215,8 +1217,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::select(Node * r, nat_t i)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::select(Node * r, nat_t i)
   {
     if (COUNT(L(r)) == i)
       return r;
@@ -1228,7 +1230,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  lint_t TreeSet<Key, Cmp>::position(Node * r, const Key & k, Cmp & cmp)
+  lint_t RankedTreap<Key, Cmp>::position(Node * r, const Key & k, Cmp & cmp)
   {
     if (r == Node::null)
       return -1;
@@ -1248,7 +1250,7 @@ namespace Designar
     return COUNT(L(r));
   }
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node * TreeSet<Key, Cmp>::min(Node * r)
+  typename RankedTreap<Key, Cmp>::Node * RankedTreap<Key, Cmp>::min(Node * r)
   {
     while (L(r) != Node::null)
       r = L(r);
@@ -1256,8 +1258,8 @@ namespace Designar
     return r;
   }
 
-    template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node * TreeSet<Key, Cmp>::max(Node * r)
+  template <typename Key, class Cmp>
+  typename RankedTreap<Key, Cmp>::Node * RankedTreap<Key, Cmp>::max(Node * r)
   {
     while (R(r) != Node::null)
       r = R(r);
@@ -1267,7 +1269,7 @@ namespace Designar
   
   template <typename Key, class Cmp>
   template <class Op>
-  void TreeSet<Key, Cmp>::preorder_rec(Node * r, Op & op)
+  void RankedTreap<Key, Cmp>::preorder_rec(Node * r, Op & op)
   {
     if (r == Node::null)
       return;
@@ -1279,7 +1281,7 @@ namespace Designar
 
   template <typename Key, class Cmp>
   template <class Op>
-  void TreeSet<Key, Cmp>::inorder_rec(Node * r, Op & op)
+  void RankedTreap<Key, Cmp>::inorder_rec(Node * r, Op & op)
   {
     if (r == Node::null)
       return;
@@ -1291,7 +1293,7 @@ namespace Designar
 
   template <typename Key, class Cmp>
   template <class Op>
-  void TreeSet<Key, Cmp>::postorder_rec(Node * r, Op & op)
+  void RankedTreap<Key, Cmp>::postorder_rec(Node * r, Op & op)
   {
     if (r == Node::null)
       return;
@@ -1302,8 +1304,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::PreorderIterator::last(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::PreorderIterator::last(Node * r)
   {
     while (true)
       {
@@ -1320,8 +1322,8 @@ namespace Designar
   }
   
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::InorderIterator::search_min(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::InorderIterator::search_min(Node * r)
   {
     while (L(r) != Node::null)
       {
@@ -1333,8 +1335,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::InorderIterator::search_max(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::InorderIterator::search_max(Node * r)
   {
     while (R(r) != Node::null)
       r = R(r);
@@ -1343,8 +1345,8 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  typename TreeSet<Key, Cmp>::Node *
-  TreeSet<Key, Cmp>::PostorderIterator::first(Node * r)
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::PostorderIterator::first(Node * r)
   {
     while (true)
       {

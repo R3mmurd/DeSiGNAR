@@ -25,9 +25,7 @@
 # ifndef DSGMAP_H
 # define DSGMAP_H
 
-# include <array.H>
-# include <tree.H>
-# include <hash.H>
+# include <set.H>
 
 namespace Designar
 {
@@ -161,13 +159,12 @@ namespace Designar
     }
   };
 
-  template <template <typename, class> class Set,
-	    typename Key, typename Value, class Cmp>
-  class GenMap : public Set<MapKey<Key, Value>, CmpWrapper<Key, Value, Cmp>>
-  {
-    using BaseSet        = Set<MapKey<Key, Value>, CmpWrapper<Key, Value, Cmp>>;
-    using Item           = MapKey<Key, Value>;
 
+  template <typename Key, typename Value, class Cmp, class BaseSet>
+  class GenMap :
+    public BaseSet
+  {
+    using Item = MapKey<Key, Value>;
     using BaseSet::BaseSet;
 
   public:
@@ -399,14 +396,17 @@ namespace Designar
     }
   };
 
-  template <typename Key, typename Value, class Cmp = std::less<Key>>
-  class ArrayMap : public GenMap<ArraySet, Key, Value, Cmp>
+  template <typename Key, typename Value, class Cmp = std::less<Key>,
+	    template <typename, class> class ArrayType = UnsortedArraySet>
+  class ArrayMap : public GenMap<Key, Value, Cmp,
+				 ArraySet<MapKey<Key, Value>,
+					  CmpWrapper<Key, Value, Cmp>,
+					  ArrayType>>
   {
-    using BaseArray     = ArraySet<MapKey<Key, Value>,
-				   CmpWrapper<Key, Value, Cmp>>;
-    using BaseMap        = GenMap<ArraySet, Key, Value, Cmp>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
     using Item           = MapKey<Key, Value>;
+    using BaseArray      = ArraySet<Item, CmpWrapperType, ArrayType>;
+    using BaseMap        = GenMap<Key, Value, Cmp, BaseArray>;
 
   public:
     ArrayMap(nat_t cap, Cmp & _cmp)
@@ -461,14 +461,18 @@ namespace Designar
     }
   };
 
-  template <typename Key, typename Value, class Cmp = std::less<Key>>
-  class TreeMap : public GenMap<TreeSet, Key, Value, Cmp>
+  template <typename Key, typename Value, class Cmp = std::less<Key>,
+	    template <typename, class> class TreeType = RankedTreap>
+  class TreeMap : public GenMap<Key, Value, Cmp,
+				TreeSet<MapKey<Key, Value>,
+					CmpWrapper<Key, Value, Cmp>,
+					TreeType>>
   {
-    using BaseTree       = TreeSet<MapKey<Key, Value>,
-				   CmpWrapper<Key, Value, Cmp>>;
-    using BaseMap        = GenMap<TreeSet, Key, Value, Cmp>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
     using Item           = MapKey<Key, Value>;
+    using BaseTree       = TreeSet<Item, CmpWrapperType, TreeType>;
+    using BaseMap        = GenMap<Key, Value, Cmp, BaseTree>;
+    
 
   public:
     TreeMap(rng_seed_t seed, Cmp & _cmp)
@@ -535,17 +539,19 @@ namespace Designar
     return fct(p.first);
   }
   
-  template <typename Key,
-	    typename Value,
-	    class Cmp = std::equal_to<Key>>
-  class HashMap : public GenMap<HashSet, Key, Value, Cmp>
+  template <typename Key, typename Value, class Cmp = std::equal_to<Key>,
+	    template <typename, class> class HashTableType = LHashTable>
+  class HashMap : public GenMap<Key, Value, Cmp,
+				HashSet<MapKey<Key, Value>,
+					CmpWrapper<Key, Value, Cmp>,
+					HashTableType>>
   {
-    using BaseMap        = GenMap<HashSet, Key, Value, Cmp>;
-    using HashFctPtr     = nat_t (*) (const Key &);
-    using HashFctType    = std::function<nat_t(const Key &)>;
     using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
     using Item           = MapKey<Key, Value>;
-    using BaseHash       = HashSet<Item, CmpWrapperType>;
+    using BaseHash       = HashSet<Item, CmpWrapperType, LHashTable>;
+    using BaseMap        = GenMap<Key, Value, Cmp, BaseHash>;
+    using HashFctPtr     = nat_t (*) (const Key &);
+    using HashFctType    = std::function<nat_t(const Key &)>;
     
     HashFctType fct;
 
@@ -625,8 +631,10 @@ namespace Designar
     }
   };
   
-  template <typename Key, typename Value, class Cmp>
-  HashMap<Key, Value, Cmp>::HashMap(const std::initializer_list<Item> & l)
+  template <typename Key, typename Value, class Cmp,
+	    template <typename, class> class HashTableType>
+  HashMap<Key, Value, Cmp, HashTableType>::
+  HashMap(const std::initializer_list<Item> & l)
     : HashMap(l.size())
   {
     for (const auto & item : l)

@@ -24,8 +24,7 @@
  
 # include <bitset.H>
 # include <list.H>
-# include <tree.H>
-# include <hash.H>
+# include <set.H>
 # include <polygon.H>
 
 using namespace std;
