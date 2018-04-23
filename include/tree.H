@@ -108,6 +108,8 @@ namespace Designar
 
       static bool verify(Node *, Cmp & cmp);
 
+      static bool verify_dup(Node *, Cmp & cmp);
+
       static Node * copy(Node *);
 
       static void destroy(Node *&);
@@ -118,67 +120,78 @@ namespace Designar
 
       static bool split_key(Node *, const Key &, Node *&, Node *&, Cmp &);
 
+      static void split_key_dup(Node *, const Key &, Node *&, Node *&,
+				Cmp &);
+
       static Node * exclusive_join(Node *&, Node *&);
     
       static Node * insert(Node *&, Node *, Cmp &);
-
+      
+      static Node * insert_dup(Node *&, Node *, Cmp &);
+      
       static Node * search(Node *, const Key &, Cmp &);
-
+      
       static Node * search(Node *, Key &&, Cmp &);
-
+      
       static Node * search_or_insert(Node *&, Node *, Cmp &);
-
+      
       static Node * remove_root(Node *& root)
       {
 	Node * ret_val = root;
 	root = exclusive_join(L(root), R(root));
 	return ret_val;
       }
-
+      
       static Node * remove(Node *&, const Key &, Cmp &);
-
+      
       static Node * remove_pos(Node *&, nat_t);
-
+      
       static Node * select(Node *, nat_t);
-
+      
       static lint_t position(Node *, const Key &, Cmp &);
-    
+      
       static Node * min(Node *);
-
+      
       static Node * max(Node *);
-
+      
       template <class Op>
       static void preorder_rec(Node *, Op &);
-
+      
       template <class Op>
       static void inorder_rec(Node *, Op &);
-
+      
       template <class Op>
       static void postorder_rec(Node *, Op &);
-    
+      
       Key * insert(Node * p)
       {
 	PRIOR(p) = rng();
 	
 	if (insert(root, p, cmp) != Node::null)
 	  return &KEY(p);
-      
+	
 	delete p;
 	return nullptr;
       }
-
+      
+      Key * insert_dup(Node * p)
+      {
+	PRIOR(p) = rng();
+	return &KEY(insert_dup(root, p, cmp));
+      }
+      
       Key * search_or_insert(Node * p)
       {
 	PRIOR(p) = rng();
 	
 	Node * result = search_or_insert(root, p, cmp);
-
+	
 	if (p != result)
 	  delete p;
-
+	
 	return &KEY(result);
       }
-
+      
     public:
       using ItemType  = Key;
       using KeyType   = Key;
@@ -186,12 +199,17 @@ namespace Designar
       using ValueType = Key;
       using SizeType  = nat_t;
       using CmpType   = Cmp;
-    
+      
       bool verify() const
       {
 	return verify(root, cmp);
       }
-    
+
+      bool verify_dup() const
+      {
+	return verify_dup(root, cmp);
+      }
+      
       RankedTreap(rng_seed_t seed, Cmp & _cmp)
 	: head(), root(L(&head)), cmp(_cmp), rng(seed)
       {
@@ -287,25 +305,47 @@ namespace Designar
       {
 	return cmp;
       }
-
+      
       Key * insert(const Key & k)
       {
 	Node * p = new Node(k);
 	return insert(p);
       }
-
+      
       Key * insert(Key && k)
       {
 	Node * p = new Node(std::forward<Key>(k));
 	return insert(p);
       }
-
+      
+      Key * insert_dup(const Key & k)
+      {
+	Node * p = new Node(k);
+	return insert_dup(p);
+      }
+      
+      Key * insert_dup(Key && k)
+      {
+	Node * p = new Node(std::forward<Key>(k));
+	return insert_dup(p);
+      }
+      
       Key * append(const Key & k)
       {
 	return insert(k);
       }
-
+      
       Key * append(Key && k)
+      {
+	return insert(std::forward<Key>(k));
+      }
+      
+      Key * append_dup(const Key & k)
+      {
+	return insert_dup(k);
+      }
+      
+      Key * append_dup(Key && k)
       {
 	return insert(std::forward<Key>(k));
       }
@@ -408,6 +448,14 @@ namespace Designar
 	if (split_key(root, k, ts.root, tg.root, cmp))
 	  root = Node::null;
 
+	return std::make_tuple(ts, tg);
+      }
+
+      std::tuple<RankedTreap, RankedTreap> split_key_dup(const Key & k)
+      {
+	RankedTreap ts, tg;
+	split_key_dup(root, k, ts.root, tg.root, cmp);
+	root = Node::null;
 	return std::make_tuple(ts, tg);
       }
 
@@ -945,6 +993,33 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
+  bool RankedTreap<Key, Cmp>::verify_dup(Node * r, Cmp & cmp)
+  {
+    if (r == Node::null)
+      return true;
+
+    Node * lc = L(r);
+    Node * rc = R(r);
+
+    if (not verify_dup(lc, cmp))
+      return false;
+
+    if (not verify_dup(rc, cmp))
+      return false;
+
+    bool test = (COUNT(r) == (COUNT(lc) + COUNT(rc) + 1)) and
+      (PRIOR(r) <= PRIOR(lc)) and (PRIOR(r) <= PRIOR(rc));
+
+    if (lc != Node::null)
+      test = test and not cmp(KEY(r), KEY(lc));
+
+    if (rc != Node::null)
+      test = test and not cmp(KEY(rc), KEY(r));
+
+    return test;
+  }
+
+  template <typename Key, class Cmp>
   typename RankedTreap<Key, Cmp>::Node * RankedTreap<Key, Cmp>::copy(Node * r)
   {
     if (r == Node::null)
@@ -1017,7 +1092,7 @@ namespace Designar
 	    return true;
 	  }
       }
-    else
+    else if (cmp(KEY(r), k))
       {
 	if (split_key(R(r), k, R(r), tg, cmp))
 	  {
@@ -1028,6 +1103,31 @@ namespace Designar
       }
 
     return false;
+  }
+
+  template <typename Key, class Cmp>
+  void RankedTreap<Key, Cmp>::split_key_dup(Node * r, const Key & k,
+					    Node *& ts, Node *& tg,
+					    Cmp & cmp)
+  {
+    if (r == Node::null)
+      {
+	ts = tg = Node::null;
+	return;
+      }
+    
+    if (cmp(k, KEY(r)))
+      {
+	split_key_dup(L(r), k, ts, L(r), cmp);
+	tg = r;
+	COUNT(tg) -= COUNT(ts);
+      }
+    else
+      {
+	split_key_dup(R(r), k, R(r), tg, cmp);
+	ts = r;
+	COUNT(ts) -= COUNT(tg);
+      }
   }
   
   template <typename Key, class Cmp>
@@ -1094,6 +1194,44 @@ namespace Designar
       }
     
     return Node::null;
+  }
+
+  template <typename Key, class Cmp>
+  typename RankedTreap<Key, Cmp>::Node *
+  RankedTreap<Key, Cmp>::insert_dup(Node *& r, Node * p, Cmp & cmp)
+  {
+    if (r == Node::null)
+      {
+	r = p;
+	return r;
+      }
+    
+    if (cmp(KEY(p), KEY(r)))
+      {
+	Node * result = insert_dup(L(r), p, cmp);
+
+	if (result == Node::null)
+	  return Node::null;
+	
+	++COUNT(r);
+	    
+	if (PRIOR(L(r)) < PRIOR(r))
+	  r = result = rotate_right(r);
+	
+	return result;
+      }
+    
+    Node * result = insert_dup(R(r), p, cmp);
+    
+    if (result == Node::null)
+      return Node::null;
+    
+    ++COUNT(r);
+    
+    if (PRIOR(R(r)) < PRIOR(r))
+      r = result = rotate_left(r);
+    
+    return result;	
   }
 
   template <typename Key, class Cmp>

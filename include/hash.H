@@ -343,15 +343,60 @@ namespace Designar
       return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
+    Key * insert_dup(const Key & item)
+    {
+      nat_t i = h(item);
+
+      List & list = BaseArray::at(i);
+
+      if (alpha() < upper_alpha)
+	{
+	  ++num_items;
+	  return &list.append(item);
+	}
+      
+      resize(BaseArray::get_capacity() * 2);
+      i = h(item);
+      ++num_items;
+      return &BaseArray::at(i).insert(item);
+    }
+
+    Key * insert_dup(Key && item)
+    {
+      nat_t i = h(item);
+      
+      List & list = BaseArray::at(i);
+
+      if (alpha() < upper_alpha)
+	{
+	  ++num_items;
+	  return &list.insert(std::forward<Key>(item));
+	}
+      
+      resize(BaseArray::get_capacity() * 2);
+      i = h(item);
+      ++num_items;
+      return &BaseArray::at(i).insert(std::forward<Key>(item));
+    }
+
     Key * append(const Key & k)
     {
       return insert(k);
     }
 
-
     Key * append(Key && k)
     {
       return insert(std::forward<Key>(k));
+    }
+
+    Key * append_dup(const Key & k)
+    {
+      return insert_dup(k);
+    }
+
+    Key * append_dup(Key && k)
+    {
+      return insert_dup(std::forward<Key>(k));
     }
 
     Key * search(const Key & k)

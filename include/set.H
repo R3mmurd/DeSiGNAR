@@ -63,9 +63,51 @@ namespace Designar
       return true;
     }
 
-    Key * insert(const Key &);
+    Key * insert(const Key & item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(item);
+      
+      if (equal_key(item, array.at(pos)))
+	return nullptr;
+      
+      return &array.insert(pos, item);
+    }
     
-    Key * insert(Key &&);
+    Key * insert(Key && item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(std::forward<Key>(item));
+      
+      if (equal_key(item, array.at(pos)))
+	return nullptr;
+      
+      return &array.insert(pos, std::forward<Key>(item));
+    }
+    
+    Key * insert_dup(const Key & item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(item);
+      
+      return &array.insert(pos, item);
+    }
+    
+    Key * insert_dup(Key && item)
+    {
+      lint_t pos = search(item, 0, array.size() - 1);
+      
+      if (pos == array.size())
+	return &array.append(std::forward<Key>(item));
+      
+      return &array.insert(pos, std::forward<Key>(item));
+    }
     
     Key * search_or_insert(const Key & item)
     {
@@ -108,34 +150,6 @@ namespace Designar
       return search(item, 0, array.size() - 1);
     }
   };
-
-  template <typename Key, class Cmp>
-  Key * SortedArraySetOp<Key, Cmp>::insert(const Key & item)
-  {
-    lint_t pos = search(item, 0, array.size() - 1);
-    
-    if (pos == array.size())
-      return &array.append(item);
-    
-    if (equal_key(item, array.at(pos)))
-      return nullptr;
-    
-    return &array.insert(pos, item);
-  }
-
-  template <typename Key, class Cmp>
-  Key * SortedArraySetOp<Key, Cmp>::insert(Key && item)
-  {
-    lint_t pos = search(item, 0, array.size() - 1);
-
-    if (pos == array.size())
-      return &array.append(std::forward<Key>(item));
-
-    if (equal_key(item, array.at(pos)))
-      return nullptr;
-
-    return &array.insert(pos, std::forward<Key>(item));
-  }
 
   template <typename Key, class Cmp>
   lint_t SortedArraySetOp<Key, Cmp>::
@@ -202,6 +216,16 @@ namespace Designar
       if (pos < array.size())
 	return nullptr;
       
+      return &array.append(std::forward<Key>(item));
+    }
+
+    Key * insert_dup(const Key & item)
+    {
+      return &array.append(item);
+    }
+    
+    Key * insert_dup(Key && item)
+    {
       return &array.append(std::forward<Key>(item));
     }
 
@@ -370,6 +394,16 @@ namespace Designar
     Key * append(Key && k)
     {
       return ArraySetOp::insert(std::forward<Key>(k));
+    }
+
+    Key * append_dup(const Key & k)
+    {
+      return ArraySetOp::insert_dup(k);
+    }
+    
+    Key * append_dup(Key && k)
+    {
+      return ArraySetOp::insert_dup(std::forward<Key>(k));
     }
     
     Key * search(const Key & item)
