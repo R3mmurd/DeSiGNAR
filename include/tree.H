@@ -77,6 +77,12 @@ namespace Designar
     {
       return prior;
     }
+
+    void reset()
+    {
+      BaseNode::reset();
+      count = 1;
+    }
   };
 
   template <class RkNode>
@@ -118,12 +124,16 @@ namespace Designar
 
       static Node * rotate_right(Node *);
 
+      static void split_pos(Node *, nat_t, Node *&, Node *&);
+
       static bool split_key(Node *, const Key &, Node *&, Node *&, Cmp &);
 
       static void split_key_dup(Node *, const Key &, Node *&, Node *&,
 				Cmp &);
 
       static Node * exclusive_join(Node *&, Node *&);
+
+      static void join_dup(Node *&, Node *&, Cmp &);
     
       static Node * insert(Node *&, Node *, Cmp &);
       
@@ -441,6 +451,17 @@ namespace Designar
 	return KEY(max(root));
       }
 
+      std::tuple<RankedTreap, RankedTreap> split_pos(nat_t i)
+      {
+	if (i >= size())
+	  throw std::out_of_range("Infix position is out of range");
+	
+	RankedTreap ts, tg;
+	split_pos(root, i, ts.root, tg.root);
+	root = Node::null;
+	return std::make_tuple(std::move(ts), std::move(tg));
+      }
+
       std::tuple<RankedTreap, RankedTreap> split_key(const Key & k)
       {
 	RankedTreap ts, tg;
@@ -448,7 +469,7 @@ namespace Designar
 	if (split_key(root, k, ts.root, tg.root, cmp))
 	  root = Node::null;
 
-	return std::make_tuple(ts, tg);
+	return std::make_tuple(std::move(ts), std::move(tg));
       }
 
       std::tuple<RankedTreap, RankedTreap> split_key_dup(const Key & k)
@@ -456,12 +477,19 @@ namespace Designar
 	RankedTreap ts, tg;
 	split_key_dup(root, k, ts.root, tg.root, cmp);
 	root = Node::null;
-	return std::make_tuple(ts, tg);
+	return std::make_tuple(std::move(ts), std::move(tg));
       }
 
       void exclusive_join(RankedTreap & ts, RankedTreap & tg)
       {
 	root = exclusive_join(ts.root, tg.root);
+	ts.root = tg.root = Node::null;
+      }
+
+      void join_dup(RankedTreap & ts, RankedTreap & tg)
+      {
+	join_dup(ts.root, tg.root, cmp);
+	root = ts.root;
 	ts.root = tg.root = Node::null;
       }
 
@@ -1074,6 +1102,33 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
+  void RankedTreap<Key, Cmp>::split_pos(Node * r, nat_t i,
+					Node *& ts, Node *& tg)
+  {
+    if (i == COUNT(L(r)))
+      {
+	ts = L(r);
+	tg = r;
+	L(tg) = Node::null;
+	COUNT(tg) -= COUNT(ts);
+	return;
+      }
+
+    if (i < COUNT(L(r)))
+      {
+	split_pos(L(r), i, ts, L(r));
+	tg = r;
+	COUNT(r) -= COUNT(ts);
+      }
+    else
+      {
+	split_pos(R(r), i - (COUNT(L(r)) + 1), R(r), tg);
+	ts = r;
+	COUNT(r) -= COUNT(tg);
+      }
+  }
+
+  template <typename Key, class Cmp>
   bool RankedTreap<Key, Cmp>::split_key(Node * r, const Key & k,
 					Node *& ts, Node *& tg, Cmp & cmp)
   {
@@ -1152,6 +1207,21 @@ namespace Designar
 	L(tg) = exclusive_join(ts, L(tg));
 	return tg;
       }
+  }
+
+  template <typename Key, class Cmp>
+  void RankedTreap<Key, Cmp>::join_dup(Node *& t1, Node *& t2, Cmp & cmp)
+  {
+    if (t2 == Node::null)
+      return;
+
+    Node * l = L(t2);
+    Node * r = R(t2);
+    
+    t2->reset();
+    t1 = insert_dup(t1, t2, cmp);
+    join_dup(t1, l, cmp);
+    join_dup(t1, r, cmp);
   }
 
   template <typename Key, class Cmp>
