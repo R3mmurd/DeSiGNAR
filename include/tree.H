@@ -1219,7 +1219,7 @@ namespace Designar
     Node * r = R(t2);
     
     t2->reset();
-    t1 = insert_dup(t1, t2, cmp);
+    insert_dup(t1, t2, cmp);
     join_dup(t1, l, cmp);
     join_dup(t1, r, cmp);
   }
