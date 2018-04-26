@@ -130,6 +130,7 @@ int main()
   assert(tree_dup.size() == 25);
   assert(tree_dup.equal<SLList<lint_t>>(
     {1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5}));
+  assert(tree_dup.verify_dup());
 
   auto pdup = tree_dup.split_key_dup(3);
   assert(tree_dup.is_empty());
@@ -139,6 +140,11 @@ int main()
   assert(get<1>(pdup).verify_dup());
   assert(get<0>(pdup).equal<SLList<lint_t>>({1,1,1,1,1,2,2,2,2,2,3,3,3,3,3}));
   assert(get<1>(pdup).equal<SLList<lint_t>>({4,4,4,4,4,5,5,5,5,5}));
+
+  tree_dup.join_dup(get<0>(pdup), get<1>(pdup));
+  assert(get<0>(pdup).is_empty());
+  assert(get<1>(pdup).is_empty());
+  assert(tree_dup.size() == 25);  
 
   auto list = tree.to_list();
 
