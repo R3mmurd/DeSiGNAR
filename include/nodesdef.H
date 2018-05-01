@@ -961,6 +961,11 @@ namespace Designar
     {
       return rchild;
     }
+
+    void reset()
+    {
+      lchild = rchild = null;
+    }
   };
 
   template <typename Key, class DerivedNodeType, BinTreeNodeNullValue NULL_VALUE>

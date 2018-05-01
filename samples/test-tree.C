@@ -22,8 +22,7 @@
   aledrums@gmail.com
 */
 
-# include <array.H>
-# include <tree.H>
+# include <set.H>
 
 using namespace std;
 using namespace Designar;
@@ -114,9 +113,38 @@ int main()
 
   assert(tree.equal({2,4,6,8,10}));
 
+  auto q = tree.split_key(6);
+  assert(get<0>(q).size() == 0);
+  assert(get<1>(q).size() == 0);
+  assert(tree.size() == 5);
+
   TreeSet<lint_t> tree_mv = move(tree_cpy);
   assert(tree_cpy.is_empty());
   assert(tree_mv.size() == 4);
+
+  TreeSet<lint_t> tree_dup;
+  for (int i = 0; i < 5; ++i)
+    for (int j = 0; j < 5; ++j)
+      tree_dup.insert_dup(i + 1);
+
+  assert(tree_dup.size() == 25);
+  assert(tree_dup.equal<SLList<lint_t>>(
+    {1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5}));
+  assert(tree_dup.verify_dup());
+
+  auto pdup = tree_dup.split_key_dup(3);
+  assert(tree_dup.is_empty());
+  assert(get<0>(pdup).size() == 15);
+  assert(get<1>(pdup).size() == 10);
+  assert(get<0>(pdup).verify_dup());
+  assert(get<1>(pdup).verify_dup());
+  assert(get<0>(pdup).equal<SLList<lint_t>>({1,1,1,1,1,2,2,2,2,2,3,3,3,3,3}));
+  assert(get<1>(pdup).equal<SLList<lint_t>>({4,4,4,4,4,5,5,5,5,5}));
+
+  tree_dup.join_dup(get<0>(pdup), get<1>(pdup));
+  assert(get<0>(pdup).is_empty());
+  assert(get<1>(pdup).is_empty());
+  assert(tree_dup.size() == 25);  
 
   auto list = tree.to_list();
 

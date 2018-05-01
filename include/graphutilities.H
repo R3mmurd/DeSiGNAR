@@ -366,6 +366,17 @@ namespace Designar
       return *list.get_first().arc;
     }
 
+    const ArcType & get_first_arc() const
+    {
+      if (list.is_empty())
+        throw std::underflow_error("Path is empty");
+
+      if (list.is_unitarian())
+        throw std::underflow_error("Path has only one node (without arcs)");
+
+      return *list.get_first().arc;
+    }
+
     template <class Op>
     void for_each(Op & op) const
     {

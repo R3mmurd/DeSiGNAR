@@ -22,7 +22,7 @@
   aledrums@gmail.com
 */
 
-# include <hash.H>
+# include <set.H>
 # include <sort.H>
 
 using namespace std;
