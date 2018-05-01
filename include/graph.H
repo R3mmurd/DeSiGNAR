@@ -760,7 +760,7 @@ namespace Designar
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
     }
 
-    SLList<Arc *>adjacent_arcs(Node & p) const
+    SLList<Arc *> adjacent_arcs(Node & p) const
     {
       return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
 				   const_me().arcs_end(p),
