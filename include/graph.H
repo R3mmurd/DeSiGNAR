@@ -770,7 +770,7 @@ namespace Designar
 				   });
     }
     
-    void reset_all_node_tag(GraphTag tag)
+    void reset_all_node_tag(GraphTag tag) const
     {
       for_each_node([&tag](Node & node)
 		    {
@@ -778,7 +778,7 @@ namespace Designar
 		    });
     }
 
-    void reset_all_node_tag()
+    void reset_all_node_tag() const
     {
       for_each_node([](Node & node)
 		    {
@@ -786,7 +786,7 @@ namespace Designar
 		    });
     }
 
-    void reset_all_arc_tag(GraphTag tag)
+    void reset_all_arc_tag(GraphTag tag) const
     {
       for_each_arc([&tag](Arc & arc)
 		   {
@@ -794,7 +794,7 @@ namespace Designar
 		   });
     }
 
-    void reset_all_arc_tag()
+    void reset_all_arc_tag() const
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -802,19 +802,19 @@ namespace Designar
 		   });
     }
 
-    void reset_tag(GraphTag tag)
+    void reset_tag(GraphTag tag) const
     {
       reset_all_node_tag(tag);
       reset_all_arc_tag(tag);
     }
 
-    void reset_all_tags()
+    void reset_all_tags() const
     {
       reset_all_node_tag();
       reset_all_arc_tag();
     }
 
-    void reset_node_cookies()
+    void reset_node_cookies() const
     {
       for_each_node([](Node & node)
 		    {
@@ -822,7 +822,7 @@ namespace Designar
 		    });
     }
 
-    void reset_arc_cookies()
+    void reset_arc_cookies() const
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -830,7 +830,7 @@ namespace Designar
 		   });
     }
 
-   void reset_node_counter()
+   void reset_node_counter() const
     {
       for_each_node([](Node & node)
 		    {
@@ -838,7 +838,7 @@ namespace Designar
 		    });
     }
 
-    void reset_arc_counter()
+    void reset_arc_counter() const
     {
       for_each_arc([](Arc & arc)
 		   {
@@ -846,19 +846,19 @@ namespace Designar
 		   });
     }
 
-    void reset_counters()
+    void reset_counters() const
     {
       reset_node_counter();
       reset_arc_counter();
     }
 
-    void reset_cookies()
+    void reset_cookies() const
     {
       reset_node_cookies();
       reset_arc_cookies();
     }
 
-    void reset_nodes()
+    void reset_nodes() const
     {
       for_each_node([](Node & node)
 		    {
@@ -866,7 +866,7 @@ namespace Designar
 		    });
     }
 
-    void reset_arcs()
+    void reset_arcs() const
     {
       for_each_arc([](Arc & arc)
 		   {

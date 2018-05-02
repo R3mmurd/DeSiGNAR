@@ -31,6 +31,18 @@
 namespace Designar
 {
 
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  lint_t binary_search(const ArrayType<T> &, const T &,
+		       lint_t, lint_t, Cmp &);
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  lint_t sequential_search(const ArrayType<T> &, const T &,
+			   lint_t, lint_t, Cmp &);
+
   template <class ArrayType, class Cmp>
   void insertion_sort(ArrayType &, lint_t, lint_t, Cmp &);
 
@@ -65,6 +77,88 @@ namespace Designar
   template <class SRCL, class TGTL>
   TGTL reverse(const SRCL &);
 
+  template <typename T, template <typename> class ArrayType, class Cmp>
+  lint_t binary_search(const ArrayType<T> & a, const T & k,
+		       lint_t l, lint_t r, Cmp & cmp)
+  {
+    if (l > r)
+      return l;
+    
+    lint_t m = (l + r) / 2;
+    
+    if (cmp(k, a.at(m)))
+      return binary_search(a, k, l, m - 1, cmp);
+    else if (cmp(a.at(m), k))
+      return binary_search(a, k, m + 1, r, cmp);
+    
+    return m;
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  inline lint_t binary_search(const ArrayType<T> & a, T & k,
+			      lint_t l, lint_t r, Cmp && cmp = Cmp())
+  {
+    return binary_search<T, ArrayType, Cmp>(a, k, l, r, cmp);
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  inline lint_t binary_search(const ArrayType<T> & a, const T & k,
+			      Cmp & cmp)
+  {
+    return binary_search<T, ArrayType, Cmp>(a, k, 0, a.size() - 1, cmp);
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  inline lint_t binary_search(const ArrayType<T> & a, const T & k,
+			      Cmp && cmp = Cmp())
+  {
+    return binary_search<T, ArrayType, Cmp>(a, k, cmp);
+  }
+
+  template <typename T, template <typename> class ArrayType, class Cmp>
+  lint_t sequential_search(const ArrayType<T> & a, const T & k,
+			   lint_t l, lint_t r, Cmp & cmp)
+  {
+    lint_t i = l;
+    
+    while (i <= r and not cmp(k, a.at(i)))
+      ++i;
+    
+    return i;
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  lint_t sequential_search(const ArrayType<T> & a, const T & k,
+			   lint_t l, lint_t r, Cmp && cmp = Cmp())
+  {
+    return sequential_search<T, ArrayType, Cmp>(a, k, l, r, cmp);
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  lint_t sequential_search(const ArrayType<T> & a, const T & k, Cmp & cmp)
+  {
+    return sequential_search<T, ArrayType, Cmp>(a, k, 0, a.size() - 1, cmp);
+  }
+
+  template <typename T,
+	    template <typename> class ArrayType,
+	    class Cmp = std::less<T>>
+  lint_t sequential_search(const ArrayType<T> & a, const T & k,
+			   Cmp && cmp = Cmp())
+  {
+    return sequential_search<T, ArrayType, Cmp>(a, k, cmp);
+  }
+   
   template <class ArrayType, class Cmp>
   void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
   {

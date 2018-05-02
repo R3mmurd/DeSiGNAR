@@ -47,6 +47,21 @@ namespace Designar
     }
 
   public:
+    bool has_curr() const
+    {
+      return const_me().has_current();
+    }
+    
+    RetType<RET_CPY, T, T&> get_curr()
+    {
+      return me().get_current();
+    }
+
+    const RetType<RET_CPY, T, T&> get_curr() const
+    {
+      return const_me().get_current();
+    }
+    
     RetType<RET_CPY, T, T&> operator * ()
     {
       return me().get_current();
