@@ -44,7 +44,7 @@ namespace Designar
    *
    *	@class ArrayIterator array.H <array.H>
    *
-   *	@brief Defined object that allows to traverse a DeSIGNAR
+   *	@brief Defined object that allows to traverse an
    *	Array-based container.
    *
    *************************************************************************/
@@ -72,7 +72,7 @@ namespace Designar
 
 
     /**
-     *  @brief Getter method to obtain current location of the iterator.
+     *  @brief Constructor
      *
      *************************************************************************/
     ArrayIterator()
@@ -83,8 +83,7 @@ namespace Designar
     
     /**
      *
-     *  @brief Array Iterator Parametric Constructor.
-     *  Initializes *array_ptr* and *curr* in **a** and **0**.
+     *  @brief Parametric Constructor.
      *  @param[in]  a     An **ArrayType** constant reference
      *
      *************************************************************************/
@@ -97,8 +96,7 @@ namespace Designar
     
     /**
      *
-     *  @brief Array Iterator Parametric Constructor.
-     *  Initializes *array_ptr* and *curr* in **a** and **c**.
+     *  @brief Parametric Constructor.
      *  @param[in]  a     An **ArrayType** constant reference
      *  @param[in]  c     A **nat_t** indicating the current position
      *
@@ -111,7 +109,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Array Iterator Copy Constructor.
+     *  @brief Copy Constructor.
      *  Initializes ArrayIterator with a previous instance.
      *  @param[in]  it    An **ArrayIterator** constant reference
      *
@@ -125,7 +123,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Array Iterator Move Constructor.
+     *  @brief Move Constructor.
      *  Initializes **ArrayIterator** with a previous instance using Move 
      *	Semantics
      *  @param[in]  it  An **ArrayIterator** rvalue
@@ -183,8 +181,8 @@ namespace Designar
 
     /**
      *
-     *  @brief Ask if there are still items in the Array which can be iterated.
-     *  @return `true` if there are items to iterate, `false` otherwise.
+     *  @brief Verify if the iterator is in a valid position.
+     *  @return `true` if it is in a valid position, `false` otherwise.
      *
      *
      *************************************************************************/
@@ -197,7 +195,7 @@ namespace Designar
 
     /*
      *
-     *  @brief Displace iterator to the *next* item in the Array.
+     *  @brief Move iterator to the *next* item in the Array.
      *  @return void.
      *  @exception std::out_of_range if there is no next item
      *
@@ -211,8 +209,8 @@ namespace Designar
 
     /**
      *
-     *  @brief Displace iterator **n** items forward in the Array.
-     *  @param[in] p Number of items in the array to displace from current
+     *  @brief Move iterator **n** items forward in the Array.
+     *  @param[in] p Number of items in the array to move from current
      *  @return void.
      *  @exception std::out_of_range if final position is higher than Array size
      *
@@ -225,7 +223,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Displace iterator to the previous item in the Array.
+     *  @brief Move iterator to the previous item in the Array.
      *  @return void.
      *  @exception std::out_of_range if there are no previous items
      *
@@ -241,7 +239,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Displace iterator to the previous item in the Array.
+     *  @brief Move iterator n steps back in the Array.
      *  @return void.
      *  @exception std::out_of_range if there are no previous items
      *
@@ -259,7 +257,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Displace iterator to an exact given position.
+     *  @brief Move iterator to an exact given position.
      *  @param[in] p  New iterator position in the Array
      *  @return void.
      *  @exception std::out_of_range if given position is out of range
@@ -272,7 +270,7 @@ namespace Designar
     
 
 
-    /** \fn void reset()
+    /**
      *
      *  @brief Reset **ArrayIterator** to the initial position of the Array.
      *  @return void

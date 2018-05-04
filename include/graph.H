@@ -88,7 +88,7 @@ namespace Designar
    *  @brief DeSIGNAR Graph Object. It contains all elemental operations
    *  on graphs and general set operations.
    *
-   ****************************************************************/
+   ***************************************************************************/
   template <class GT, class Node, class Arc,
 	    typename NodeInfoType, typename ArcInfoType>
   class BaseGraph
@@ -146,6 +146,7 @@ namespace Designar
     }
 
     /** 
+     *
      * @brief Similar  to previous one but with an rvalue parameter.
      *
      *************************************************************************/
