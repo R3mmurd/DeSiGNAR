@@ -1,0 +1,38 @@
+rm -f ./lib/libDesignar.a
+ar -cvq ./lib/libDesignar.a ./obj/setalgorithms.o ./obj/random.o ./obj/nodesdef.o ./obj/vector2D.o ./obj/range.o ./obj/bitset.o ./obj/containeralgorithms.o ./obj/set.o ./obj/typetraits.o ./obj/italgorithms.o ./obj/heap.o ./obj/map.o ./obj/relation.o ./obj/triangle.o ./obj/types.o ./obj/stack.o ./obj/array.o ./obj/graphutilities.o ./obj/stringutilities.o ./obj/now.o ./obj/list.o ./obj/polygon.o ./obj/queue.o ./obj/intutilities.o ./obj/math.o ./obj/graphalgorithms.o ./obj/graph.o ./obj/segment.o ./obj/buildgraph.o ./obj/sort.o ./obj/hash.o ./obj/iterator.o ./obj/tree.o ./obj/point2D.o
+a - ./obj/setalgorithms.o
+a - ./obj/random.o
+a - ./obj/nodesdef.o
+a - ./obj/vector2D.o
+a - ./obj/range.o
+a - ./obj/bitset.o
+a - ./obj/containeralgorithms.o
+a - ./obj/set.o
+a - ./obj/typetraits.o
+a - ./obj/italgorithms.o
+a - ./obj/heap.o
+a - ./obj/map.o
+a - ./obj/relation.o
+a - ./obj/triangle.o
+a - ./obj/types.o
+a - ./obj/stack.o
+a - ./obj/array.o
+a - ./obj/graphutilities.o
+a - ./obj/stringutilities.o
+a - ./obj/now.o
+a - ./obj/list.o
+a - ./obj/polygon.o
+a - ./obj/queue.o
+a - ./obj/intutilities.o
+a - ./obj/math.o
+a - ./obj/graphalgorithms.o
+a - ./obj/graph.o
+a - ./obj/segment.o
+a - ./obj/buildgraph.o
+a - ./obj/sort.o
+a - ./obj/hash.o
+a - ./obj/iterator.o
+a - ./obj/tree.o
+a - ./obj/point2D.o
+clang++ -std=c++14 -g -O0 -DDEBUG -Wall -Wextra -Wcast-align -Wno-sign-compare -Wno-write-strings -Wno-parentheses -Wfloat-equal -pedantic -I./include samples/demo-topological_sort.C -o bin/demo-topological_sort -L./lib -lDesignar -lpthread
+Makefile:41: fallo en las instrucciones para el objetivo 'bin/demo-topological_sort'
