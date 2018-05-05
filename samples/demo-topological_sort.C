@@ -39,13 +39,13 @@ void write_graph(DGT & g, const char * name)
        << " arcs\n\n";
 
   cout << "Node set of " << name << "\n";
-  g.for_each_node([&](const auto & n) { cout << n.get_info() << endl; });
+  g.for_each_node([&](auto n) { cout << n -> get_info() << endl; });
 
   cout << "\nArc set of " << name << "\n";
-  g.for_each_arc([&](const auto & a)
+  g.for_each_arc([&](auto a)
 		 {
-		   const string & s = a.get_src_node().get_info();
-		   const string & t = a.get_tgt_node().get_info();
+		   const string s = a -> get_src_node() -> get_info();
+		   const string t = a -> get_tgt_node() -> get_info();
 		   cout << s << " -> " << t  << endl;
 		 });
 
@@ -55,15 +55,15 @@ void write_graph(DGT & g, const char * name)
 int main()
 {
   DGT dag;
-  DGT::Node & a = dag.insert_node("Medias");
-  DGT::Node & b = dag.insert_node("Interiores");
-  DGT::Node & c = dag.insert_node("Camisa");
-  DGT::Node & d = dag.insert_node("Pantalón");
-  DGT::Node & e = dag.insert_node("Corbata");
-  DGT::Node & f = dag.insert_node("Zapatos");
-  DGT::Node & g = dag.insert_node("Correa");
-  DGT::Node & h = dag.insert_node("Chaleco");
-  DGT::Node & i = dag.insert_node("Paltó");
+  DGT::Node * a = dag.insert_node("Medias");
+  DGT::Node * b = dag.insert_node("Interiores");
+  DGT::Node * c = dag.insert_node("Camisa");
+  DGT::Node * d = dag.insert_node("Pantalón");
+  DGT::Node * e = dag.insert_node("Corbata");
+  DGT::Node * f = dag.insert_node("Zapatos");
+  DGT::Node * g = dag.insert_node("Correa");
+  DGT::Node * h = dag.insert_node("Chaleco");
+  DGT::Node * i = dag.insert_node("Paltó");
 
   dag.insert_arc(a, f);
   dag.insert_arc(b, d);
