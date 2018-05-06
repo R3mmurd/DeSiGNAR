@@ -1078,43 +1078,43 @@ namespace Designar
     }
     
   public:
-    GraphNode & get_src_node()
+    GraphNode * get_src_node()
     {
-      return *src_node;
+      return src_node;
     }
     
-    const GraphNode & get_src_node() const
+    GraphNode * get_src_node() const
     {
-      return *src_node;
+      return src_node;
     }
     
-    GraphNode & get_tgt_node()
+    GraphNode * get_tgt_node()
     {
-      return *tgt_node;
+      return tgt_node;
     }
     
-    const GraphNode & get_tgt_node() const
+    GraphNode * get_tgt_node() const
     {
-      return *tgt_node;
+      return tgt_node;
     }
     
-    GraphNode & get_connected_node(GraphNode & node)
+    GraphNode * get_connected_node(GraphNode * node)
     {
-      if (&node == &get_src_node())
+      if (node == get_src_node())
 	return get_tgt_node();
       
-      if (&node == &get_tgt_node())
+      if (node == get_tgt_node())
 	return get_src_node();
       
       throw std::logic_error("Arc is not adjacent to node");
     }
     
-    const GraphNode & get_connected_node(GraphNode & node) const
+    GraphNode * get_connected_node(GraphNode * node) const
     {
-      if (&node == &get_src_node())
+      if (node == get_src_node())
 	return get_tgt_node();
       
-      if (&node == &get_tgt_node())
+      if (node == get_tgt_node())
 	return get_src_node();
       
       throw std::logic_error("Arc is not adjacent to node");
