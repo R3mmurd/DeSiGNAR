@@ -28,9 +28,55 @@
 # include <array.H>
 # include <tree.H>
 # include <hash.H>
+# include <sort.H>
 
 namespace Designar
 {
+  template <typename Key, class Cmp = std::less<Key>>
+  struct NotEqualKey
+  {
+    Cmp & cmp;
+
+    NotEqualKey(Cmp & c)
+      : cmp(c)
+    {
+      // empty
+    }
+
+    NotEqualKey(Cmp && c = Cmp())
+      : cmp(c)
+    {
+      // empty
+    }
+
+    bool operator () (const Key & a, const Key & b) const
+    {
+      return cmp(a, b) or cmp(b, a);
+    }
+  };
+
+  template <typename Key, class Cmp = std::less<Key>>
+  struct EqualKey
+  {
+    Cmp & cmp;
+
+    EqualKey(Cmp & c)
+      : cmp(c)
+    {
+      // empty
+    }
+
+    EqualKey(Cmp && c = Cmp())
+      : cmp(c)
+    {
+      // empty
+    }
+
+    bool operator () (const Key & a, const Key & b) const
+    {
+      return not NotEqualKey<Key, Cmp>(cmp)(a, b);
+    }
+  };
 
   template <typename Key, class Cmp>
   class SortedArraySetOp
@@ -38,22 +84,19 @@ namespace Designar
     DynArray<Key> & array;
     Cmp           & cmp;
 
-  protected:
-    bool not_equal_key(const Key & k1, const Key & k2) const
-    {
-      return cmp(k1, k2) or cmp(k2, k1);
-    }
 
-    bool equal_key(const Key & k1, const Key & k2) const
+  protected:
+    NotEqualKey<Key, Cmp> not_equal_key;
+    EqualKey<Key, Cmp>    equal_key;
+
+    lint_t search(const Key & k, lint_t l, lint_t r) const
     {
-      return not not_equal_key(k1, k2);
+      return binary_search(array, k, l, r, cmp);
     }
-    
-    lint_t search(const Key &, lint_t, lint_t) const;
 
   public:
     SortedArraySetOp(DynArray<Key> & a, Cmp & c)
-      : array(a), cmp(c)
+      : array(a), cmp(c), not_equal_key(cmp), equal_key(cmp)
     {
       // empty
     }
@@ -152,44 +195,24 @@ namespace Designar
   };
 
   template <typename Key, class Cmp>
-  lint_t SortedArraySetOp<Key, Cmp>::
-  search(const Key & k, lint_t l, lint_t r) const
-  {
-    if (l > r)
-      return l;
-
-    lint_t m = (l + r) / 2;
-
-    if (cmp(k, array.at(m)))
-      return search(k, l, m - 1);
-    else if (cmp(array.at(m), k))
-      return search(k, m + 1, r);
-
-    return m;
-  }
-
-  template <typename Key, class Cmp>
   class UnsortedArraySetOp
   {
     DynArray<Key> & array;
     Cmp           & cmp;
+
+  protected:
+    NotEqualKey<Key, Cmp> not_equal_key;
+    EqualKey<Key, Cmp>    equal_key;
     
   protected:
-    bool not_equal_key(const Key & k1, const Key & k2) const
+    lint_t search(const Key & k, lint_t l, lint_t r) const
     {
-      return cmp(k1, k2) or cmp(k2, k1);
+      return sequential_search(array, k, l, r, equal_key);
     }
-
-    bool equal_key(const Key & k1, const Key & k2) const
-    {
-      return not not_equal_key(k1, k2);
-    }
-    
-    lint_t search(const Key &, lint_t, lint_t) const;
     
   public:
     UnsortedArraySetOp(DynArray<Key> & a, Cmp & c)
-      : array(a), cmp(c)
+      : array(a), cmp(c), not_equal_key(cmp), equal_key(cmp)
     {
       // empty
     }
@@ -266,18 +289,6 @@ namespace Designar
       return search(item, 0, array.size() - 1);
     }
   };
-
-  template <typename Key, class Cmp>
-  lint_t UnsortedArraySetOp<Key, Cmp>::
-  search(const Key & k, lint_t l, lint_t r) const
-  {
-    lint_t i = l;
-    
-    while (i <= r and not_equal_key(k, array.at(i)))
-      ++i;
-    
-    return i;
-  }
   
   template <typename Key, class Cmp, class ArraySetOp>
   class GenArraySet :
@@ -292,18 +303,8 @@ namespace Designar
     using ValueType = Key;
     using SizeType  = nat_t;
     
-    DynArray<Key> array;
-    Cmp         & cmp;
-    
-    bool not_equal_key(const Key & e1, const Key & e2) const
-    {
-      return cmp(e1, e2) or cmp(e2, e1);
-    }
-    
-    bool equal_key(const Key & e1, const Key & e2) const
-    {
-      return not not_equal_key(e1, e2);
-    }
+    DynArray<Key>         array;
+    Cmp                 & cmp;
     
   public:
     GenArraySet(nat_t cap, Cmp & _cmp)
@@ -410,7 +411,7 @@ namespace Designar
     {
       lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (pos >= this->size() or not_equal_key(item, array.at(pos)))
+      if (pos >= this->size() or ArraySetOp::not_equal_key(item, array.at(pos)))
 	return nullptr;
       
       return &array.at(pos);
@@ -420,7 +421,7 @@ namespace Designar
     {
       lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (pos >= this->size() or not_equal_key(item, array.at(pos)))
+      if (pos >= this->size() or ArraySetOp::not_equal_key(item, array.at(pos)))
 	return nullptr;
       
       return &array.at(pos);
@@ -446,7 +447,7 @@ namespace Designar
     {
       lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
       
-      if (pos >= this->size() or not_equal_key(array.at(pos), item))
+      if (pos >= this->size() or ArraySetOp::not_equal_key(array.at(pos), item))
 	return false;
       
       ArraySetOp::remove_pos(pos);

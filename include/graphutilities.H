@@ -157,8 +157,8 @@ namespace Designar
       // Empty
     }
 
-    Path(GT & graph)
-      : ptr_owner_graph(&graph), list()
+    Path(const GT & graph)
+      : ptr_owner_graph(const_cast<GT *>(&graph)), list()
     {
       // Empty
     }
@@ -540,7 +540,7 @@ namespace Designar
   }
   
   template <class GT, class Distance>
-  inline void allocate_node_info(GT & g)
+  inline void allocate_node_info(const GT & g)
   {
     g.for_each_node([](auto node)
     {
@@ -549,7 +549,7 @@ namespace Designar
   }
   
   template <class GT, class Distance>
-  inline void allocate_arc_info(GT & g)
+  inline void allocate_arc_info(const GT & g)
   {
     g.for_each_arc([] (auto arc)
     {
@@ -558,7 +558,7 @@ namespace Designar
   }
   
   template <class GT, class Distance>
-  void destroy_node_info(GT & g)
+  void destroy_node_info(const GT & g)
   {
     g.for_each_node([] (Node<GT> * node)
 		    {
@@ -578,7 +578,7 @@ namespace Designar
   }
 
   template <class GT, class Distance>
-  void destroy_arc_info(GT & g)
+  void destroy_arc_info(const GT & g)
   {
     g.for_each_arc([&] (Arc<GT> * arc)
 		   {
