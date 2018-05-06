@@ -39,13 +39,13 @@ void write_graph(DGT & g, const char * name)
        << " arcs\n\n";
 
   cout << "Node set of " << name << "\n";
-  g.for_each_node([&](auto n) { cout << n -> get_info() << endl; });
+  g.for_each_node([&] (auto n) { cout << n->get_info() << endl; });
 
   cout << "\nArc set of " << name << "\n";
-  g.for_each_arc([&](auto a)
+  g.for_each_arc([&] (auto a)
 		 {
-		   const string s = a -> get_src_node() -> get_info();
-		   const string t = a -> get_tgt_node() -> get_info();
+		   const string & s = a->get_src_node()->get_info();
+		   const string & t = a->get_tgt_node()->get_info();
 		   cout << s << " -> " << t  << endl;
 		 });
 

@@ -395,6 +395,29 @@ namespace Designar
 		 static_cast<DLNode<T> *>(r)->get_item());
     }
   };
+
+  template <typename T, class Cmp>
+  struct PtrCmp
+  {
+    Cmp & cmp;
+
+    PtrCmp(Cmp & _cmp)
+      : cmp(_cmp)
+    {
+      // empty
+    }
+
+    PtrCmp(Cmp && _cmp = Cmp())
+      : cmp(_cmp)
+    {
+      // empty
+    }
+
+    bool operator () (const T & a, const T & b) const
+    {
+      return cmp(const_cast<T *>(&a), const_cast<T *>(&b));
+    }
+  };
   
   template <typename T, class Cmp>
   inline void quicksort(DLNode<T> & l, Cmp & cmp)

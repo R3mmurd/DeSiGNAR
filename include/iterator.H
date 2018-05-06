@@ -47,12 +47,12 @@ namespace Designar
     }
 
   public:
-    RetType<RET_CPY, T, T&> operator * ()
+    RetType<RET_CPY, T, T &> operator * ()
     {
       return me().get_current();
     }
 
-    const RetType<RET_CPY, T, T&> operator * () const
+    const RetType<RET_CPY, T, T &> operator * () const
     {
       return const_me().get_current();
     }

@@ -78,10 +78,10 @@ bool graph_equal(const G & g1, const G & g2)
   
   bool ra = a1.equal(a2, [] (auto a, auto b)
 		     {
-		       return (a->get_src_node() -> get_info()
-			       == b->get_src_node() -> get_info())
-		       and (a->get_tgt_node() -> get_info()
-			    == b->get_tgt_node() -> get_info())
+		       return (a->get_src_node()->get_info()
+			       == b->get_src_node()->get_info())
+		       and (a->get_tgt_node()->get_info()
+			    == b->get_tgt_node()->get_info())
 		       and (a->get_info() == b->get_info());
 		     });
 
@@ -98,11 +98,11 @@ int main()
   GT g1 = p_random_graph<GT>(100, 0.7, false,
 			     [&nc] (auto & p)
 			     {
-			       p -> get_info() = ++nc;
+			       p->get_info() = ++nc;
 			     },
 			     [&ac] (auto & a)
 			     {
-			       a -> get_info() = ++ac;
+			       a->get_info() = ++ac;
 			     });
 
   OutputGraph<GT> outg;
@@ -134,11 +134,11 @@ int main()
   GT dg1 = p_random_graph<GT>(100, 0.7, false,
 			      [&nc] (auto & p)
 			      {
-				p -> get_info() = ++nc;
+				p->get_info() = ++nc;
 			      },
 			      [&ac] (auto & a)
 			      {
-				a -> get_info() = ++ac;
+				a->get_info() = ++ac;
 			      });
 
   OutputGraph<GT> outdg;

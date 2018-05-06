@@ -303,7 +303,8 @@ namespace Designar
      
     SLList<Node *> nodes() const
     {
-      return to_list_it(const_me().nodes_begin(), const_me().nodes_end());
+      return to_list_it<Node *>(const_me().nodes_begin(),
+				const_me().nodes_end());
     }
 
     Arc * nth_arc(nat_t i)
@@ -509,7 +510,7 @@ namespace Designar
   
     SLList<Arc *> arcs() const
     {
-      return to_list_it(const_me().arcs_begin(), const_me().arcs_end());
+      return to_list_it<Arc *>(const_me().arcs_begin(), const_me().arcs_end());
     }
   
     Arc * nth_adjacent_arc(Node * p, nat_t i)
@@ -714,115 +715,116 @@ namespace Designar
     template <class Pred>
     void remove_adjacent_arc_if(Node * p, Pred && pred)
     {
-      remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
+      remove_if_it(me().arcs_begin(p), me().arcs_end(p),
+		   std::forward<Pred>(pred));
     }
 
     SLList<Arc *> adjacent_arcs(Node * p) const
     {
-      return to_list_it(const_me().arcs_begin(p), const_me().arcs_end(p));
+      return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
     }
     
-    void reset_all_node_tag(GraphTag tag)
+    void reset_all_node_tag(GraphTag tag) const
     {
-      for_each_node([&tag](Node & node)
+      for_each_node([&tag](Node * node)
 		    {
-		      node.unvisit(tag);
+		      node->unvisit(tag);
 		    });
     }
 
-    void reset_all_node_tag()
+    void reset_all_node_tag() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.reset_tag();
+		      node->reset_tag();
 		    });
     }
 
-    void reset_all_arc_tag(GraphTag tag)
+    void reset_all_arc_tag(GraphTag tag) const
     {
-      for_each_arc([&tag](Arc & arc)
+      for_each_arc([&tag](Arc * arc)
 		   {
-		     arc.unvisit(tag);
+		     arc->unvisit(tag);
 		   });
     }
 
-    void reset_all_arc_tag()
+    void reset_all_arc_tag() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.reset_tag();
+		     arc->reset_tag();
 		   });
     }
 
-    void reset_tag(GraphTag tag)
+    void reset_tag(GraphTag tag) const
     {
       reset_all_node_tag(tag);
       reset_all_arc_tag(tag);
     }
 
-    void reset_all_tags()
+    void reset_all_tags() const
     {
       reset_all_node_tag();
       reset_all_arc_tag();
     }
 
-    void reset_node_cookies()
+    void reset_node_cookies() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.cookie() = nullptr;
+		      node->cookie() = nullptr;
 		    });
     }
 
-    void reset_arc_cookies()
+    void reset_arc_cookies() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.cookie() = nullptr;
+		     arc->cookie() = nullptr;
 		   });
     }
 
-   void reset_node_counter()
+   void reset_node_counter() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.counter() = 0;
+		      node->counter() = 0;
 		    });
     }
 
-    void reset_arc_counter()
+    void reset_arc_counter() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.counter() = 0;
+		     arc->counter() = 0;
 		   });
     }
 
-    void reset_counters()
+    void reset_counters() const
     {
       reset_node_counter();
       reset_arc_counter();
     }
 
-    void reset_cookies()
+    void reset_cookies() const
     {
       reset_node_cookies();
       reset_arc_cookies();
     }
 
-    void reset_nodes()
+    void reset_nodes() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.reset();
+		      node->reset();
 		    });
     }
 
-    void reset_arcs()
+    void reset_arcs() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.reset();
+		     arc->reset();
 		   });
     }
   };
@@ -848,7 +850,7 @@ namespace Designar
         Node * stgt = a->get_tgt_node();
         Node * tsrc = map_nodes[ssrc];
         Node * ttgt = map_nodes[stgt];
-        tgt->insert_arc(tsrc, ttgt, a->get_info());
+        tgt.insert_arc(tsrc, ttgt, a->get_info());
       }
   }
   
@@ -1146,9 +1148,9 @@ namespace Designar
     }
     
     class NodeIterator : public DL::Iterator,
-                         public BidirectionalIterator<NodeIterator, Node, true>
+                         public BidirectionalIterator<NodeIterator, Node *, true>
     {
-      friend class BasicIterator<NodeIterator, Node, true>;
+      friend class BasicIterator<NodeIterator, Node *, true>;
       
       using Base = DL::Iterator;
       
@@ -1231,9 +1233,9 @@ namespace Designar
     };
     
     class ArcIterator : public DL::Iterator,
-			public BidirectionalIterator<ArcIterator, Arc, true>
+			public BidirectionalIterator<ArcIterator, Arc *, true>
     {
-      friend class BasicIterator<ArcIterator, Arc, true>;
+      friend class BasicIterator<ArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -1317,9 +1319,9 @@ namespace Designar
     
     class AdjacentArcIterator : public DL::Iterator,
 				public BidirectionalIterator<AdjacentArcIterator,
-							     Arc, true>
+							     Arc *, true>
     {
-      friend class BasicIterator<AdjacentArcIterator, Arc, true>;
+      friend class BasicIterator<AdjacentArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -1408,7 +1410,7 @@ namespace Designar
 	return get_current()->get_connected_node(node_ptr);
       }
 
-      const Node & get_tgt_node() const
+      const Node * get_tgt_node() const
       {
 	return get_current()->get_connected_node(node_ptr);
       }
@@ -1480,7 +1482,9 @@ namespace Designar
     template <class Cmp>
     void sort_nodes(Cmp & cmp)
     {
-      quicksort<Node, Cmp>(*dl_to_node(&node_list), cmp);
+      using C = PtrCmp<Node, Cmp>;
+      C c(cmp);
+      quicksort<Node, C>(*dl_to_node(&node_list), c);
     }
 
     template <class Cmp>
@@ -1492,7 +1496,9 @@ namespace Designar
     template <class Cmp>
     void sort_arcs(Cmp & cmp)
     {
-      quicksort<Arc, Cmp>(*dl_to_arc(&arc_list), cmp);
+      using C = PtrCmp<Arc, Cmp>;
+      C c(cmp);
+      quicksort<Arc, C>(*dl_to_arc(&arc_list), c);
     }
 
     template <class Cmp>
@@ -1821,9 +1827,9 @@ namespace Designar
     }
     
     class NodeIterator : public DL::Iterator,
-                         public BidirectionalIterator<NodeIterator, Node, true>
+                         public BidirectionalIterator<NodeIterator, Node *, true>
     {
-      friend class BasicIterator<NodeIterator, Node, true>;
+      friend class BasicIterator<NodeIterator, Node *, true>;
       
       using Base = DL::Iterator;
       
@@ -1906,9 +1912,9 @@ namespace Designar
     };
     
     class ArcIterator : public DL::Iterator,      
-                        public BidirectionalIterator<ArcIterator, Arc, true>
+                        public BidirectionalIterator<ArcIterator, Arc *, true>
     {
-      friend class BasicIterator<ArcIterator, Arc, true>;
+      friend class BasicIterator<ArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -1992,9 +1998,9 @@ namespace Designar
     
     class AdjacentArcIterator
       : public DL::Iterator,
-	public BidirectionalIterator<AdjacentArcIterator, Arc, true>
+	public BidirectionalIterator<AdjacentArcIterator, Arc *, true>
     {
-      friend class BasicIterator<AdjacentArcIterator, Arc, true>;
+      friend class BasicIterator<AdjacentArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       

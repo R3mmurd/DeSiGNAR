@@ -42,19 +42,19 @@ void print_graph(const G & g, const string & name)
 
   g.for_each_node([] (auto p)
 		  {
-		    cout << p -> get_info() << endl;
+		    cout << p->get_info() << endl;
 		  });
 
   cout << g.get_num_arcs() << " arcs:\n";
 
-  string c = g.is_digraph() ? " -> " : " -- ";
+  string c = g.is_digraph() ? "->" : " -- ";
 
   g.for_each_arc([&c] ( auto a)
 		 {
-		    auto p = a -> get_src_node();
-		    auto q = a -> get_tgt_node();
-		   cout << p -> get_info() << c
-			<< q -> get_info() << endl;
+		    auto p = a->get_src_node();
+		    auto q = a->get_tgt_node();
+		   cout << p->get_info() << c
+			<< q->get_info() << endl;
 		 });
     
 }
@@ -63,11 +63,11 @@ int main()
 {
   GT g;
 
-  GT::Node ga = g.insert_node("a");
-  GT::Node gb = g.insert_node("b");
-  GT::Node gc = g.insert_node("c");
-  GT::Node gd = g.insert_node("d");
-  GT::Node ge = g.insert_node("e");
+  GT::Node * ga = g.insert_node("a");
+  GT::Node * gb = g.insert_node("b");
+  GT::Node * gc = g.insert_node("c");
+  GT::Node * gd = g.insert_node("d");
+  GT::Node * ge = g.insert_node("e");
   g.insert_node("f");
 
   g.insert_arc(ga, gb);
@@ -152,8 +152,8 @@ int main()
     {
       auto p = a->get_src_node();
       auto q = a->get_tgt_node();
-      cout << p -> get_info() << " -- "
-	   << q -> get_info() << endl;      
+      cout << p->get_info() << " -- "
+	   << q->get_info() << endl;      
     }
   
   DGT dg;

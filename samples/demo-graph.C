@@ -45,14 +45,14 @@ void write_graph(Graph & g, const char & name)
        << " arcs\n\n";
 
   cout << "Node set of " << name << "\n";
-  g.for_each_node([&](auto n) { cout << n -> get_info() << endl; });
+  g.for_each_node([&](auto n) { cout << n->get_info() << endl; });
 
   cout << "\nArc set of " << name << "\n";
   g.for_each_arc([&](auto a)
 		 {
-		   const string & s = a -> get_src_node() -> get_info();
-		   const string & t = a -> get_tgt_node() -> get_info();
-		   cout << s << connector << t << "(" << a -> get_info()
+		   const string & s = a->get_src_node()->get_info();
+		   const string & t = a->get_tgt_node()->get_info();
+		   cout << s << connector << t << "(" << a->get_info()
 			<< ")" << endl;
 		 });
 
@@ -60,16 +60,16 @@ void write_graph(Graph & g, const char & name)
 }
 
 template <class Graph>
-void write_node(Graph & g, typename Graph::Node & p)
+void write_node(Graph & g, typename Graph::Node * p)
 {
   string connector = g.is_digraph() ? "->" : "--";
   
-  g.for_each_adjacent_arc(p, [&](auto a)
+  g.for_each_adjacent_arc(p, [&] (auto a)
 			  {
 			    const string c =
-			      a -> get_connected_node(p) -> get_info();
-			    cout << p -> get_info() << connector << c
-				 << "(" << a -> get_info() << ")" << endl;
+			      a->get_connected_node(p)->get_info();
+			    cout << p->get_info() << connector << c
+				 << "(" << a->get_info() << ")" << endl;
 			  });
 }
 
@@ -116,7 +116,7 @@ int main()
   
   depth_first_traverse(i, [] (auto p)
 	      {
-		cout << p -> get_info() << " ";
+		cout << p->get_info() << " ";
 	      });
   
   cout << endl << endl;
@@ -125,14 +125,14 @@ int main()
   
   depth_first_traverse_sufix(i, [] (auto p)
 	      {
-		cout << p -> get_info() << " ";
+		cout << p->get_info() << " ";
 	      });
   
   cout << endl << endl;
 
   Path<GT> path = depth_first_search_path(i, n1, n4);
 
-  cout << "Path between " << n1 -> get_info() << " and " << n4 -> get_info() << ": ";
+  cout << "Path between " << n1->get_info() << " and " << n4->get_info() << ": ";
 
   path.for_each([] (auto c, auto r)
 		{
@@ -148,7 +148,7 @@ int main()
   
   breadth_first_traverse(i, [] (auto p)
 			 {
-			   cout << p -> get_info() << " ";
+			   cout << p->get_info() << " ";
 			 });
   
   cout << endl << endl;
@@ -157,7 +157,7 @@ int main()
 
   path = breadth_first_search_path(i, n1, n4);
 
-  cout << "Path between " << n1 -> get_info() << " and " << n4 -> get_info() << ": ";
+  cout << "Path between " << n1->get_info() << " and " << n4->get_info() << ": ";
 
   path.for_each([] (auto c, auto r)
 		{
@@ -218,7 +218,7 @@ int main()
   
   depth_first_traverse(di, [] (auto p)
 	       {
-		 cout << p -> get_info() << " ";
+		 cout << p->get_info() << " ";
 	       });
   
   cout << endl << endl;
@@ -227,14 +227,15 @@ int main()
   
   depth_first_traverse_sufix(di, [] (auto p)
 	       {
-		 cout << p -> get_info() << " ";
+		 cout << p->get_info() << " ";
 	       });
   
   cout << endl << endl;
 
   Path<DGT> dpath = depth_first_search_path(di, dn1, dn4);
 
-  cout << "Path between " << dn1 -> get_info() << " and " << dn4 -> get_info() << ": ";
+  cout << "Path between " << dn1->get_info() << " and "
+       << dn4->get_info() << ": ";
 
   dpath.for_each([] (auto c, auto r)
 		 {
@@ -250,7 +251,7 @@ int main()
   
   breadth_first_traverse(di, [] (auto p)
 			 {
-			   cout << p -> get_info() << " ";
+			   cout << p->get_info() << " ";
 			 });
 
   cout << endl << endl;
@@ -259,7 +260,8 @@ int main()
 
   dpath = breadth_first_search_path(di, dn1, dn4);
 
-  cout << "Path between " << dn1 -> get_info() << " and " << dn4 -> get_info() << ": ";
+  cout << "Path between " << dn1->get_info() << " and "
+       << dn4->get_info() << ": ";
   
   dpath.for_each([] (auto c, auto r)
 		 {
