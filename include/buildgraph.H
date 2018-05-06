@@ -95,23 +95,23 @@ namespace Designar
 
     for (nat_t i = 0; i < num_nodes; ++i)
       {
-	Node<GT> & p = g.insert_node();
+	Node<GT> * p = g.insert_node();
 	node_init(p);
-	nodes[i] = &p;
+	nodes[i] = p;
       }
 
     for (nat_t i = 0; i < num_nodes - 1; ++i)
       for (nat_t j = i + 1; j < num_nodes; ++j)
 	{
-	  Node<GT> & s = *nodes[i];
-	  Node<GT> & t = *nodes[j];
-	  Arc<GT> & fa = g.insert_arc(s, t);
+	  Node<GT> * s = nodes[i];
+	  Node<GT> * t = nodes[j];
+	  Arc<GT> * fa = g.insert_arc(s, t);
 	  arc_init(fa);
-
+	  
 	  if (not g.is_digraph())
 	    continue;
-
-	  Arc<GT> & ba = g.insert_arc(t, s);
+	  
+	  Arc<GT> * ba = g.insert_arc(t, s);
 	  arc_init(ba);
 	}
 	
@@ -132,43 +132,43 @@ namespace Designar
       throw std::length_error("The minimun size must be 2 x 2");
     
     MultiDimArray<Node<GT> *, 2> mat(height, width);
-
+    
     GT g;
 
     for (nat_t i = 0; i < height; ++i)
       for (nat_t j = 0; j < width; ++j)
 	{
-	  mat(i, j) = &g.insert_node();
-	  node_init(*mat(i ,j), i, j);
-
+	  mat(i, j) = g.insert_node();
+	  node_init(mat(i ,j), i, j);
+	  
 	  if (j > 0)
 	    {
-	      auto & a = g.insert_arc(*mat(i, j - 1), *mat(i, j));
+	      auto a = g.insert_arc(mat(i, j - 1), mat(i, j));
 	      arc_init(a, i, j);
 	    }
-
+	  
 	  if (i > 0)
 	    {
-	      auto & a = g.insert_arc(*mat(i - 1, j), *mat(i, j));
+	      auto a = g.insert_arc(mat(i - 1, j), mat(i, j));
 	      arc_init(a, i, j);
 	    }
-
+	  
 	  if (with_diagonal)
 	    {
 	      if (i > 0 and j > 0)
 		{
-		  auto & a = g.insert_arc(*mat(i - 1, j - 1), *mat(i, j));
+		  auto a = g.insert_arc(mat(i - 1, j - 1), mat(i, j));
 		  arc_init(a, i, j);
 		}
 	      
 	      if (i > 0 and j + 1 < width)
 		{
-		  auto & a = g.insert_arc(*mat(i - 1, j + 1), *mat(i, j));
+		  auto a = g.insert_arc(mat(i - 1, j + 1), mat(i, j));
 		  arc_init(a, i, j);
 		}
 	    }
 	}
-
+    
     return g;
   }
 
@@ -192,23 +192,23 @@ namespace Designar
 
     for (nat_t i = 0; i < num_nodes; ++i)
       {
-	Node<GT> & p = g.insert_node();
+	Node<GT> * p = g.insert_node();
 	node_init(p);
-	nodes[i] = &p;
+	nodes[i] = p;
       }
 
     for (nat_t i = 0; i < num_arcs; ++i)
       {
-	Node<GT> & s = *nodes[random_uniform(rng, nodes.size())];
-	Node<GT> & t = *nodes[random_uniform(rng, nodes.size())];
+	Node<GT> * s = nodes[random_uniform(rng, nodes.size())];
+	Node<GT> * t = nodes[random_uniform(rng, nodes.size())];
 
-	if (&s == &t)
+	if (s == t)
 	  continue;
 
 	if (g.search_arc(s, t) != nullptr)
 	  continue;
 
-	Arc<GT> & a = g.insert_arc(s, t);
+	Arc<GT> * a = g.insert_arc(s, t);
 	arc_init(a);
       }
 
@@ -244,16 +244,16 @@ namespace Designar
 
     for (nat_t i = 0; i < num_nodes; ++i)
       {
-	Node<GT> & p = g.insert_node();
+	Node<GT> * p = g.insert_node();
 	node_init(p);
-	nodes[i] = &p;
+	nodes[i] = p;
       }
 
     for (nat_t i = 0; i < num_nodes - 1; ++i)
       for (nat_t j = i + 1; j < num_nodes; ++j)
 	if (random_Bernoulli(rng, prob_arc))
 	  {
-	    Arc<GT> & a = g.insert_arc(*nodes[i], *nodes[j]);
+	    Arc<GT> * a = g.insert_arc(nodes[i], nodes[j]);
 	    arc_init(a);
 	  }
 
@@ -264,17 +264,17 @@ namespace Designar
 
     if (l.size() == 1)
       return g;
-
+    
     auto it1 = l.begin();
     auto it2 = l.begin();
     it2.next();
-
+    
     for ( ; it2.has_current(); it1.next(), it2.next())
       {
 	auto & l1 = *it1;
 	auto & l2 = *it2;
-
-	Arc<GT> & a = g.insert_arc(*l1.get_first(), *l2.get_last());
+	
+	Arc<GT> * a = g.insert_arc(l1.get_first(), l2.get_last());
 	arc_init(a);
       }
     

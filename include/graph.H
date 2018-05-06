@@ -98,12 +98,12 @@ namespace Designar
   public:
     static void copy_graph(const GT &, GT &);
     
-    Node & nth_node(nat_t i)
+    Node * nth_node(nat_t i)
     {
       return nth_it(me().nodes_begin(), me().nodes_end(), i);
     }
 
-    const Node & nth_node(nat_t i) const
+    Node * nth_node(nat_t i) const
     {
       return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
     }
@@ -121,28 +121,17 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
-    template <class ContainerRet = SLList<NodeInfoType>, class Pred>
+    template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().nodes_begin(),
-				     const_me().nodes_end(),
-				     [] (const Node & p)
-				     {
-				       return p.get_info();
-				     },
-				     pred);
+      return filter_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
-    template <class ContainerRet = SLList<NodeInfoType>, class Pred>
+    template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().nodes_begin(),
-				     const_me().nodes_end(),
-				     [] (const Node & p)
-				     {
-				       return p.get_info();
-				     },
-				     std::forward<Pred>(pred));
+      return filter_it(const_me().nodes_begin(), const_me().nodes_end(),
+		       std::forward<Pred>(pred));
     }
 
     template <typename RetT = NodeInfoType,
@@ -314,20 +303,16 @@ namespace Designar
      
     SLList<Node *> nodes() const
     {
-      return map_it<SLList<Node *>>(const_me().nodes_begin(),
-				    const_me().nodes_end(),
-				    [] (const Node & p)
-				    {
-				      return const_cast<Node *>(&p);
-				    });
+      return to_list_it<Node *>(const_me().nodes_begin(),
+				const_me().nodes_end());
     }
 
-    Arc & nth_arc(nat_t i)
+    Arc * nth_arc(nat_t i)
     {
       return nth_it(me().arcs_begin(), me().arcs_end(), i);
     }
   
-    const Arc & nth_arc(nat_t i) const
+    Arc * nth_arc(nat_t i) const
     {
       return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
     }
@@ -345,28 +330,17 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
-    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().arcs_begin(),
-				     const_me().arcs_end(),
-				     [] (const Arc & a)
-				     {
-				       return a.get_info();
-				     },
-				     pred);
+      return filter_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
 
-    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().arcs_begin(),
-				     const_me().arcs_end(),
-				     [] (const Arc & a)
-				     {
-				       return a.get_info();
-				     },
-				     std::forward<Pred>(pred));
+      return filter_it(const_me().arcs_begin(), const_me().arcs_end(),
+		       std::forward<Pred>(pred));
     }
 
     template <typename RetT = ArcInfoType,
@@ -536,64 +510,48 @@ namespace Designar
   
     SLList<Arc *> arcs() const
     {
-      return map_it<SLList<Arc *>>(const_me().arcs_begin(),
-				   const_me().arcs_end(),
-				   [] (const Arc & a)
-				   {
-				     return const_cast<Arc *>(&a);
-				   });
+      return to_list_it<Arc *>(const_me().arcs_begin(), const_me().arcs_end());
     }
   
-    Arc & nth_adjacent_arc(Node & p, nat_t i)
+    Arc * nth_adjacent_arc(Node * p, nat_t i)
     {
       return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
     }
   
-    const Arc & nth_adjacent_arc(Node & p, nat_t i) const
+    Arc * nth_adjacent_arc(Node * p, nat_t i) const
     {
       return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
     }
   
     template <class Op>
-    void for_each_adjacent_arc(Node & p, Op & op) const
+    void for_each_adjacent_arc(Node * p, Op & op) const
     {
       for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
     }
   
     template <class Op>
-    void for_each_adjacent_arc(Node & p, Op && op) const
+    void for_each_adjacent_arc(Node * p, Op && op) const
     {
       for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		  std::forward<Op>(op));
     }
 
-    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
-    ContainerRet filter_adjacent_arcs(Node & p, Pred & pred) const
+    template <class ContainerRet = SLList<Arc *>, class Pred>
+    ContainerRet filter_adjacent_arcs(Node * p, Pred & pred) const
     {
-      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
-				     const_me().arcs_end(p),
-				     [] (const Arc & a)
-				     {
-				       return a.get_info();
-				     },
-				     pred);
+      return filter_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
 
     template <class ContainerRet = SLList<ArcInfoType>, class Pred>
-    ContainerRet filter_adjacent_arcs(Node & p, Pred && pred = Pred()) const
+    ContainerRet filter_adjacent_arcs(Node * p, Pred && pred = Pred()) const
     {
-      return map_if_it<ContainerRet>(const_me().arcs_begin(p),
-				     const_me().arcs_end(p),
-				     [] (const Arc & a)
-				     {
-				       return a.get_info();
-				     },
-				     std::forward<Pred>(pred));
+      return filter_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		       std::forward<Pred>(pred));
     }
 
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
-    ContainerRet map_adjacent_arcs(Node & p, Op & op) const
+    ContainerRet map_adjacent_arcs(Node * p, Op & op) const
     {
       return map_it<ContainerRet>(const_me().arcs_begin(p),
 				  const_me().arcs_end(p), op);
@@ -601,7 +559,7 @@ namespace Designar
 
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
-    ContainerRet map_adjacent_arcs(Node & p, Op && op = Op()) const
+    ContainerRet map_adjacent_arcs(Node * p, Op && op = Op()) const
     {
       return map_it<ContainerRet>(const_me().arcs_begin(p),
 				  const_me().arcs_end(p),
@@ -611,7 +569,7 @@ namespace Designar
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
-    ContainerRet map_adjacent_arcs_if(Node & p, Op & op, Pred & pred) const
+    ContainerRet map_adjacent_arcs_if(Node * p, Op & op, Pred & pred) const
     {
       return map_if_it<ContainerRet>(const_me().arcs_begin(p),
 				     const_me().arcs_end(p),
@@ -622,7 +580,7 @@ namespace Designar
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet
-    map_adjacent_arcs_if(Node & p, Op & op, Pred && pred = Pred()) const
+    map_adjacent_arcs_if(Node * p, Op & op, Pred && pred = Pred()) const
     {
       return map_if_it<ContainerRet>(const_me().arcs_begin(p),
 				     const_me().arcs_end(p),
@@ -632,7 +590,7 @@ namespace Designar
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
-    ContainerRet map_adjacent_arcs_if(Node & p, Op && op, Pred & pred) const
+    ContainerRet map_adjacent_arcs_if(Node * p, Op && op, Pred & pred) const
     {
       return map_if_it<ContainerRet>(const_me().arcs_begin(p),
 				     const_me().arcs_end(p),
@@ -643,7 +601,7 @@ namespace Designar
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
     ContainerRet
-    map_adjacent_arcs_if(Node & p, Op && op = Op(), Pred && pred = Pred()) const
+    map_adjacent_arcs_if(Node * p, Op && op = Op(), Pred && pred = Pred()) const
     {
       return map_if_it<ContainerRet>(const_me().arcs_begin(p),
 				     const_me().arcs_end(p),
@@ -652,28 +610,28 @@ namespace Designar
     }
 
     template <typename RetT, class Op>
-    RetT fold_adjacent_arcs(Node & p, const RetT & init_val, Op & op) const
+    RetT fold_adjacent_arcs(Node * p, const RetT & init_val, Op & op) const
     {
       return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
 			   init_val, op);
     }
 
     template <typename RetT, class Op>
-    RetT fold_adjacent_arcs(Node & p, const RetT & init_val, Op && op = Op()) const
+    RetT fold_adjacent_arcs(Node * p, const RetT & init_val, Op && op = Op()) const
     {
       return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
 			   init_val, std::forward<Op>(op));
     }
 
     template <typename RetT, class Op>
-    RetT fold_adjacent_arcs(Node & p, RetT && init_val, Op & op) const
+    RetT fold_adjacent_arcs(Node * p, RetT && init_val, Op & op) const
     {
       return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
 			   std::forward<RetT>(init_val), op);
     }
 
     template <typename RetT, class Op>
-    RetT fold_adjacent_arcs(Node & p, RetT && init_val, Op && op = Op()) const
+    RetT fold_adjacent_arcs(Node * p, RetT && init_val, Op && op = Op()) const
     {
       return fold_it<RetT>(const_me().arcs_begin(p), const_me().arcs_end(p),
 			   std::forward<RetT>(init_val),
@@ -681,46 +639,46 @@ namespace Designar
     }
   
     template <class Pred>
-    bool all_adjacent_arcs(Node & p, Pred & pred) const
+    bool all_adjacent_arcs(Node * p, Pred & pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
   
     template <class Pred>
-    bool all_adjacent_arcs(Node & p, Pred && pred) const
+    bool all_adjacent_arcs(Node * p, Pred && pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		    std::forward<Pred>(pred));
     }
   
     template <class Pred>
-    bool exists_adjacent_arc(Node & p, Pred & pred) const
+    bool exists_adjacent_arc(Node * p, Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
   
     template <class Pred>
-    bool exists_adjacent_arc(Node & p, Pred && pred) const
+    bool exists_adjacent_arc(Node * p, Pred && pred) const
     {
       return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		       std::forward<Pred>(pred));
     }
 
     template <class Pred>
-    bool none_adjacent_arc(Node & p, Pred & pred) const
+    bool none_adjacent_arc(Node * p, Pred & pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
   
     template <class Pred>
-    bool none_adjacent_arc(Node & p, Pred && pred) const
+    bool none_adjacent_arc(Node * p, Pred && pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		     std::forward<Pred>(pred));
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred & pred) const
+    Arc * search_adjacent_arc_ptr(Node * p, Pred & pred) const
     {
       return search_ptr_it<Arc>(const_me().arcs_begin(p),
 				const_me().arcs_end(p),
@@ -728,7 +686,7 @@ namespace Designar
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node & p, Pred && pred) const
+    Arc * search_adjacent_arc_ptr(Node * p, Pred && pred) const
     {
       return search_ptr_it<Arc>(const_me().arcs_begin(p),
 				const_me().arcs_end(p),
@@ -736,69 +694,65 @@ namespace Designar
     }
   
     template <class Pred>
-    bool remove_first_adjacent_arc_if(Node & p, Pred & pred)
+    bool remove_first_adjacent_arc_if(Node * p, Pred & pred)
     {
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
     template <class Pred>
-    bool remove_first_adjacent_arc_if(Node & p, Pred && pred)
+    bool remove_first_adjacent_arc_if(Node * p, Pred && pred)
     {
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p),
 				std::forward<Pred>(pred));
     }
   
     template <class Pred>
-    void remove_adjacent_arc_if(Node & p, Pred & pred)
+    void remove_adjacent_arc_if(Node * p, Pred & pred)
     {
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
     template <class Pred>
-    void remove_adjacent_arc_if(Node & p, Pred && pred)
+    void remove_adjacent_arc_if(Node * p, Pred && pred)
     {
-      remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
+      remove_if_it(me().arcs_begin(p), me().arcs_end(p),
+		   std::forward<Pred>(pred));
     }
 
-    SLList<Arc *> adjacent_arcs(Node & p) const
+    SLList<Arc *> adjacent_arcs(Node * p) const
     {
-      return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
-				   const_me().arcs_end(p),
-				   [] (const Arc & a)
-				   {
-				     return const_cast<Arc *>(&a);
-				   });
+      return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
     }
     
     void reset_all_node_tag(GraphTag tag) const
     {
-      for_each_node([&tag](Node & node)
+      for_each_node([&tag](Node * node)
 		    {
-		      node.unvisit(tag);
+		      node->unvisit(tag);
 		    });
     }
 
     void reset_all_node_tag() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.reset_tag();
+		      node->reset_tag();
 		    });
     }
 
     void reset_all_arc_tag(GraphTag tag) const
     {
-      for_each_arc([&tag](Arc & arc)
+      for_each_arc([&tag](Arc * arc)
 		   {
-		     arc.unvisit(tag);
+		     arc->unvisit(tag);
 		   });
     }
 
     void reset_all_arc_tag() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.reset_tag();
+		     arc->reset_tag();
 		   });
     }
 
@@ -816,33 +770,33 @@ namespace Designar
 
     void reset_node_cookies() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.cookie() = nullptr;
+		      node->cookie() = nullptr;
 		    });
     }
 
     void reset_arc_cookies() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.cookie() = nullptr;
+		     arc->cookie() = nullptr;
 		   });
     }
 
    void reset_node_counter() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.counter() = 0;
+		      node->counter() = 0;
 		    });
     }
 
     void reset_arc_counter() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.counter() = 0;
+		     arc->counter() = 0;
 		   });
     }
 
@@ -860,17 +814,17 @@ namespace Designar
 
     void reset_nodes() const
     {
-      for_each_node([](Node & node)
+      for_each_node([](Node * node)
 		    {
-		      node.reset();
+		      node->reset();
 		    });
     }
 
     void reset_arcs() const
     {
-      for_each_arc([](Arc & arc)
+      for_each_arc([](Arc * arc)
 		   {
-		     arc.reset();
+		     arc->reset();
 		   });
     }
   };
@@ -884,19 +838,19 @@ namespace Designar
 
     for (auto it = src.nodes_begin(); it != src.nodes_end(); ++it)
       {
-        Node * p = &it.get_current();
-        Node * q = &tgt.insert_node(p->get_info());
+        Node * p = it.get_current();
+        Node * q = tgt.insert_node(p->get_info());
         map_nodes[p] = q;
       }
 
     for (auto it = src.arcs_begin(); it != src.arcs_end(); ++it)
       {
-        Arc  & a    = it.get_current();
-        Node & ssrc = a.get_src_node();
-        Node & stgt = a.get_tgt_node();
-        Node & tsrc = *map_nodes[&ssrc];
-        Node & ttgt = *map_nodes[&stgt];
-        tgt.insert_arc(tsrc, ttgt, a.get_info());
+        Arc  * a    = it.get_current();
+        Node * ssrc = a->get_src_node();
+        Node * stgt = a->get_tgt_node();
+        Node * tsrc = map_nodes[ssrc];
+        Node * ttgt = map_nodes[stgt];
+        tgt.insert_arc(tsrc, ttgt, a->get_info());
       }
   }
   
@@ -946,19 +900,19 @@ namespace Designar
       return static_cast<GAdArc *>(ptr);
     }
 
-    static GNode * to_gnode(Node & node)
+    static GNode * to_gnode(Node * node)
     {
       GNode * node_zero    = 0;
       nat_t   off_set      = (nat_t) &node_zero->get_item();
-      nat_t   node_address = (nat_t) &node;
+      nat_t   node_address = (nat_t) node;
       return (GNode *) (node_address - off_set); 
     }
 
-    static GArc * to_garc(Arc & arc)
+    static GArc * to_garc(Arc * arc)
     {
       GArc * arc_zero    = 0;
       nat_t  off_set     = (nat_t) &arc_zero->get_item();
-      nat_t  arc_address = (nat_t) &arc;
+      nat_t  arc_address = (nat_t) arc;
       return (GArc *) (arc_address - off_set); 
     }
     
@@ -968,14 +922,14 @@ namespace Designar
     nat_t     num_arcs;
     DL        arc_list;
 
-    GNode * insert_node(GNode * p)
+    GNode * insert_gnode(GNode * p)
     {
       node_list.insert_prev(p);
       ++num_nodes;
       return p;
     }
     
-    GArc * insert_arc(Node * src, Node * tgt)
+    GArc * insert_garc(Node * src, Node * tgt)
     {
       GArc * arc = new GArc(Arc(src, tgt));
 
@@ -1101,36 +1055,36 @@ namespace Designar
       return info;
     }
 
-    Node & get_first_node()
+    Node * get_first_node()
     {
       if (node_list.is_empty())
 	throw std::underflow_error("Graph has not nodes");
 
-      return dl_to_node(node_list.get_next())->get_item();
+      return &dl_to_node(node_list.get_next())->get_item();
     }
 
-    const Node & get_first_node() const
+    Node * get_first_node() const
     {
       if (node_list.is_empty())
 	throw std::underflow_error("Graph has not nodes");
 
-      return dl_to_node(node_list.get_next())->get_item();
+      return &dl_to_node(node_list.get_next())->get_item();
     }
 
-    Arc & get_first_arc()
+    Arc * get_first_arc()
     {
       if (arc_list.is_empty())
 	throw std::underflow_error("Graph has not arcs");
 
-      return dl_to_arc(arc_list.get_next())->get_item();
+      return &dl_to_arc(arc_list.get_next())->get_item();
     }
 
-    const Arc & get_first_arc() const
+    Arc * get_first_arc() const
     {
       if (arc_list.is_empty())
 	throw std::underflow_error("Graph has not arcs");
 
-      return dl_to_arc(arc_list.get_next())->get_item();
+      return &dl_to_arc(arc_list.get_next())->get_item();
     }
 
     nat_t get_num_nodes() const
@@ -1143,62 +1097,60 @@ namespace Designar
       return num_arcs;
     }
 
-    Node & insert_node()
+    Node * insert_node()
     {
-      GNode * node = insert_node(new GNode);
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode);
+      return &node->get_item();
     }
 
-    Node & insert_node(const NodeInfo & info)
+    Node * insert_node(const NodeInfo & info)
     {
-      GNode * node = insert_node(new GNode(Node(info)));
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode(Node(info)));
+      return &node->get_item();
     }
 
-    Node & insert_node(NodeInfo && info)
+    Node * insert_node(NodeInfo && info)
     {
-      GNode * node = insert_node(new GNode(Node(std::forward<NodeInfo>(info))));
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode(Node(std::forward<NodeInfo>(info))));
+      return &node->get_item();
     }
 
-    Arc & insert_arc(Node & s, Node & t)
+    Arc * insert_arc(Node * s, Node * t)
     {
-      Node * src = &s;
-      Node * tgt = &t;
-      GArc * arc = insert_arc(src, tgt);
-      return arc->get_item();
+      GArc * arc = insert_garc(s, t);
+      return &arc->get_item();
     }
     
-    Arc & insert_arc(Node & src, Node & tgt, const ArcInfo & info)
+    Arc * insert_arc(Node * src, Node * tgt, const ArcInfo & info)
     {
-      Arc & ref_arc = insert_arc(src, tgt);
-      ref_arc.get_info() = info;
-      return ref_arc;
+      Arc * arc = insert_arc(src, tgt);
+      arc->get_info() = info;
+      return arc;
     }
 
-    Arc & insert_arc(Node & src, Node & tgt, ArcInfo && info)
+    Arc * insert_arc(Node * src, Node * tgt, ArcInfo && info)
     {
-      Arc & ref_arc = insert_arc(src, tgt);
-      ref_arc.get_info() = std::move(info);
-      return ref_arc;
+      Arc * arc = insert_arc(src, tgt);
+      arc->get_info() = std::move(info);
+      return arc;
     }
 
-    void remove_arc(Arc & a)
+    void remove_arc(Arc * a)
     {
       GArc * arc = to_garc(a);
       remove_arc(arc);
     }
 
-    void remove_node(Node & n)
+    void remove_node(Node * n)
     {
       GNode * node = to_gnode(n);
       remove_node(node);
     }
     
     class NodeIterator : public DL::Iterator,
-                         public BidirectionalIterator<NodeIterator, Node>
+                         public BidirectionalIterator<NodeIterator, Node *, true>
     {
-      friend class BasicIterator<NodeIterator, Node>;
+      friend class BasicIterator<NodeIterator, Node *, true>;
       
       using Base = DL::Iterator;
       
@@ -1259,14 +1211,14 @@ namespace Designar
 	std::swap(graph_ptr, it.graph_ptr);
       }
 
-      Node & get_current()
+      Node * get_current()
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return &dl_to_node(Base::get_current())->get_item();
       }
 
-      const Node & get_current() const
+      Node * get_current() const
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return &dl_to_node(Base::get_current())->get_item();
       }
 
       void del()
@@ -1281,9 +1233,9 @@ namespace Designar
     };
     
     class ArcIterator : public DL::Iterator,
-			public BidirectionalIterator<ArcIterator, Arc>
+			public BidirectionalIterator<ArcIterator, Arc *, true>
     {
-      friend class BasicIterator<ArcIterator, Arc>;
+      friend class BasicIterator<ArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -1344,14 +1296,14 @@ namespace Designar
 	std::swap(graph_ptr, it.graph_ptr);
       }
       
-      Arc & get_current()
+      Arc * get_current()
       {
-	return dl_to_arc(Base::get_current())->get_item();
+	return &dl_to_arc(Base::get_current())->get_item();
       }
       
-      const Arc & get_current() const
+      Arc * get_current() const
       {
-	return dl_to_arc(Base::get_current())->get_item();
+	return &dl_to_arc(Base::get_current())->get_item();
       }
 
       void del()
@@ -1367,9 +1319,9 @@ namespace Designar
     
     class AdjacentArcIterator : public DL::Iterator,
 				public BidirectionalIterator<AdjacentArcIterator,
-							     Arc>
+							     Arc *, true>
     {
-      friend class BasicIterator<AdjacentArcIterator, Arc>;
+      friend class BasicIterator<AdjacentArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -1383,16 +1335,16 @@ namespace Designar
 	// empty
       }
       
-      AdjacentArcIterator(const Graph & g, const Node & n)
-	: Base(const_cast<DL *>(&n.adjacent_arc_list)),
-	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      AdjacentArcIterator(const Graph & g, Node * n)
+	: Base(const_cast<DL *>(&n->adjacent_arc_list)),
+	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(n)
       {
 	// empty
       }
 
-      AdjacentArcIterator(const Graph & g, const Node & n, DL * curr)
-	: Base(const_cast<DL *>(&n.adjacent_arc_list), curr),
-	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      AdjacentArcIterator(const Graph & g, Node * n, DL * curr)
+	: Base(const_cast<DL *>(&n->adjacent_arc_list), curr),
+	  graph_ptr(const_cast<Graph *>(&g)), node_ptr(n)
       {
 	// empty
       }
@@ -1433,34 +1385,34 @@ namespace Designar
 	std::swap(node_ptr, it.node_ptr);
       }
       
-      Arc & get_current()
+      Arc * get_current()
       {
-	return dl_to_adjacent_arc(Base::get_current())->get_item()->get_item();
+	return &dl_to_adjacent_arc(Base::get_current())->get_item()->get_item();
       }
 
-      const Arc & get_current() const
+      Arc * get_current() const
       {
-	return dl_to_adjacent_arc(Base::get_current())->get_item()->get_item();
+	return &dl_to_adjacent_arc(Base::get_current())->get_item()->get_item();
       }
 
-      Node & get_src_node()
+      Node * get_src_node()
       {
-	return *node_ptr;
+	return node_ptr;
       }
 
-      const Node & get_src_node() const
+      Node * get_src_node() const
       {
-	return *node_ptr;
+	return node_ptr;
       }
 
-      Node & get_tgt_node()
+      Node * get_tgt_node()
       {
-	return get_current().get_connected_node(*node_ptr);
+	return get_current()->get_connected_node(node_ptr);
       }
 
-      const Node & get_tgt_node() const
+      const Node * get_tgt_node() const
       {
-	return get_current().get_connected_node(*node_ptr);
+	return get_current()->get_connected_node(node_ptr);
       }
     };
 
@@ -1504,33 +1456,35 @@ namespace Designar
       return ArcIterator(*this, const_cast<DL *>(&arc_list));
     }
 
-    AdjacentArcIterator arcs_begin(Node & p)
+    AdjacentArcIterator arcs_begin(Node * p)
     {
       return AdjacentArcIterator(*this, p);
     }
 
-    const AdjacentArcIterator arcs_begin(Node & p) const
+    const AdjacentArcIterator arcs_begin(Node * p) const
     {
       return AdjacentArcIterator(*this, p);
     }
 
-    AdjacentArcIterator arcs_end(Node & p)
+    AdjacentArcIterator arcs_end(Node * p)
     {
-      return AdjacentArcIterator(*this, p, &p.adjacent_arc_list);
+      return AdjacentArcIterator(*this, p, &p->adjacent_arc_list);
     }
 
-    const AdjacentArcIterator arcs_end(Node & p) const
+    const AdjacentArcIterator arcs_end(Node * p) const
     {
       return AdjacentArcIterator(*this, p,
-				 const_cast<DL *>(&p.adjacent_arc_list));
+				 const_cast<DL *>(&p->adjacent_arc_list));
     }
 
-    Arc * search_arc(Node &, Node &);
+    Arc * search_arc(Node *, Node *);
     
     template <class Cmp>
     void sort_nodes(Cmp & cmp)
     {
-      quicksort<Node, Cmp>(*dl_to_node(&node_list), cmp);
+      using C = PtrCmp<Node, Cmp>;
+      C c(cmp);
+      quicksort<Node, C>(*dl_to_node(&node_list), c);
     }
 
     template <class Cmp>
@@ -1542,7 +1496,9 @@ namespace Designar
     template <class Cmp>
     void sort_arcs(Cmp & cmp)
     {
-      quicksort<Arc, Cmp>(*dl_to_arc(&arc_list), cmp);
+      using C = PtrCmp<Arc, Cmp>;
+      C c(cmp);
+      quicksort<Arc, C>(*dl_to_arc(&arc_list), c);
     }
 
     template <class Cmp>
@@ -1583,15 +1539,15 @@ namespace Designar
 
   template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
   typename Graph<NodeInfo, ArcInfo, GraphInfo>::Arc *
-  Graph<NodeInfo, ArcInfo, GraphInfo>::search_arc(Node & s, Node & t)
+  Graph<NodeInfo, ArcInfo, GraphInfo>::search_arc(Node * s, Node * t)
   {
     for (AdjacentArcIterator it(*this, s); it.has_current(); it.next())
-      if (&it.get_tgt_node() == &t)
-	return &*it;
+      if (it.get_tgt_node() == t)
+	return *it;
 
     for (AdjacentArcIterator it(*this, t); it.has_current(); it.next())
-      if (&it.get_tgt_node() == &s)
-	return &*it;
+      if (it.get_tgt_node() == s)
+	return *it;
 
     return nullptr;
   }
@@ -1642,19 +1598,19 @@ namespace Designar
       return static_cast<GAdArc *>(ptr);
     }
 
-    static GNode * to_gnode(Node & node)
+    static GNode * to_gnode(Node * node)
     {
       GNode * node_zero    = 0;
       nat_t   off_set      = (nat_t) &node_zero->get_item();
-      nat_t   node_address = (nat_t) &node;
+      nat_t   node_address = (nat_t) node;
       return (GNode *) (node_address - off_set); 
     }
 
-    static GAdArc * to_garc(Arc & arc)
+    static GAdArc * to_garc(Arc * arc)
     {
       GAdArc * arc_zero    = 0;
       nat_t    off_set     = (nat_t) &arc_zero->get_item();
-      nat_t    arc_address = (nat_t) &arc;
+      nat_t    arc_address = (nat_t) arc;
       return (GAdArc *) (arc_address - off_set); 
     }
     
@@ -1664,14 +1620,14 @@ namespace Designar
     nat_t     num_arcs;
     DL        arc_list;
 
-    GNode * insert_node(GNode * p)
+    GNode * insert_gnode(GNode * p)
     {
       node_list.insert_prev(p);
       ++num_nodes;
       return p;
     }
     
-    GAdArc * insert_arc(Node * src, Node * tgt)
+    GAdArc * insert_garc(Node * src, Node * tgt)
     {
       GAdArc * arc = new GAdArc(Arc(src, tgt));
       
@@ -1778,36 +1734,36 @@ namespace Designar
       return info;
     }
 
-    Node & get_first_node()
+    Node * get_first_node()
     {
       if (node_list.is_empty())
 	throw std::underflow_error("Graph has not nodes");
 
-      return dl_to_node(node_list.get_next())->get_item();
+      return &dl_to_node(node_list.get_next())->get_item();
     }
 
-    const Node & get_first_node() const
+    Node * get_first_node() const
     {
       if (node_list.is_empty())
 	throw std::underflow_error("Graph has not nodes");
 
-      return dl_to_node(node_list.get_next())->get_item();
+      return &dl_to_node(node_list.get_next())->get_item();
     }
 
-    Arc & get_first_arc()
+    Arc * get_first_arc()
     {
       if (arc_list.is_empty())
 	throw std::underflow_error("Graph has not arcs");
 
-      return dl_to_arc(arc_list.get_next())->get_item()->get_item();
+      return &dl_to_arc(arc_list.get_next())->get_item()->get_item();
     }
 
-    const Arc & get_first_arc() const
+    Arc * get_first_arc() const
     {
       if (arc_list.is_empty())
 	throw std::underflow_error("Graph has not arcs");
 
-      return dl_to_arc(arc_list.get_next())->get_item()->get_item();
+      return &dl_to_arc(arc_list.get_next())->get_item()->get_item();
     }
 
     nat_t get_num_nodes() const
@@ -1820,62 +1776,60 @@ namespace Designar
       return num_arcs;
     }
 
-    Node & insert_node()
+    Node * insert_node()
     {
-      GNode * node = insert_node(new GNode);
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode);
+      return &node->get_item();
     }
 
-    Node & insert_node(const NodeInfo & info)
+    Node * insert_node(const NodeInfo & info)
     {
-      GNode * node = insert_node(new GNode(Node(info)));
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode(Node(info)));
+      return &node->get_item();
     }
 
-    Node & insert_node(NodeInfo && info)
+    Node * insert_node(NodeInfo && info)
     {
-      GNode * node = insert_node(new GNode(Node(std::forward<NodeInfo>(info))));
-      return node->get_item();
+      GNode * node = insert_gnode(new GNode(Node(std::forward<NodeInfo>(info))));
+      return &node->get_item();
     }
 
-    Arc & insert_arc(Node & s, Node & t)
+    Arc * insert_arc(Node * s, Node * t)
     {
-      Node   * src = &s;
-      Node   * tgt = &t;
-      GAdArc * arc = insert_arc(src, tgt);
-      return arc->get_item();
+      GAdArc * arc = insert_garc(s, t);
+      return &arc->get_item();
     }
     
-    Arc & insert_arc(Node & src, Node & tgt, const ArcInfo & info)
+    Arc * insert_arc(Node * src, Node * tgt, const ArcInfo & info)
     {
-      Arc & ref_arc = insert_arc(src, tgt);
-      ref_arc.get_info() = info;
-      return ref_arc;
+      Arc * arc = insert_arc(src, tgt);
+      arc->get_info() = info;
+      return arc;
     }
 
-    Arc & insert_arc(Node & src, Node & tgt, ArcInfo && info)
+    Arc * insert_arc(Node * src, Node * tgt, ArcInfo && info)
     {
-      Arc & ref_arc = insert_arc(src, tgt);
-      ref_arc.get_info() = std::move(info);
-      return ref_arc;
+      Arc * arc = insert_arc(src, tgt);
+      arc->get_info() = std::move(info);
+      return arc;
     }
 
-    void remove_arc(Arc & a)
+    void remove_arc(Arc * a)
     {
       GAdArc * arc = to_garc(a);
       remove_arc(arc);
     }
 
-    void remove_node(Node & n)
+    void remove_node(Node * n)
     {
       GNode * node = to_gnode(n);
       remove_node(node);
     }
     
     class NodeIterator : public DL::Iterator,
-                         public BidirectionalIterator<NodeIterator, Node>
+                         public BidirectionalIterator<NodeIterator, Node *, true>
     {
-      friend class BasicIterator<NodeIterator, Node>;
+      friend class BasicIterator<NodeIterator, Node *, true>;
       
       using Base = DL::Iterator;
       
@@ -1936,14 +1890,14 @@ namespace Designar
 	std::swap(graph_ptr, it.graph_ptr);
       }
 
-      Node & get_current()
+      Node * get_current()
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return &dl_to_node(Base::get_current())->get_item();
       }
 
-      const Node & get_current() const
+      Node * get_current() const
       {
-	return dl_to_node(Base::get_current())->get_item();
+	return &dl_to_node(Base::get_current())->get_item();
       }
 
       void del()
@@ -1958,9 +1912,9 @@ namespace Designar
     };
     
     class ArcIterator : public DL::Iterator,      
-                        public BidirectionalIterator<ArcIterator, Arc>
+                        public BidirectionalIterator<ArcIterator, Arc *, true>
     {
-      friend class BasicIterator<ArcIterator, Arc>;
+      friend class BasicIterator<ArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -2021,14 +1975,14 @@ namespace Designar
 	std::swap(graph_ptr, it.graph_ptr);
       }
       
-      Arc & get_current()
+      Arc * get_current()
       {
-	return dl_to_arc(Base::get_current())->get_item()->get_item();
+	return &dl_to_arc(Base::get_current())->get_item()->get_item();
       }
       
-      const Arc & get_current() const
+      Arc * get_current() const
       {
-	return dl_to_arc(Base::get_current())->get_item()->get_item();
+	return &dl_to_arc(Base::get_current())->get_item()->get_item();
       }
 
       void del()
@@ -2044,9 +1998,9 @@ namespace Designar
     
     class AdjacentArcIterator
       : public DL::Iterator,
-	public BidirectionalIterator<AdjacentArcIterator, Arc>
+	public BidirectionalIterator<AdjacentArcIterator, Arc *, true>
     {
-      friend class BasicIterator<AdjacentArcIterator, Arc>;
+      friend class BasicIterator<AdjacentArcIterator, Arc *, true>;
       
       using Base = DL::Iterator;
       
@@ -2060,16 +2014,16 @@ namespace Designar
 	// empty
       }
       
-      AdjacentArcIterator(const Digraph & g, const Node & n)
-	: Base(const_cast<DL *>(&n.adjacent_arc_list)),
-	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      AdjacentArcIterator(const Digraph & g, Node * n)
+	: Base(const_cast<DL *>(&n->adjacent_arc_list)),
+	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(n)
       {
 	// empty
       }
 
-      AdjacentArcIterator(const Digraph & g, const Node & n, DL * curr)
-	: Base(const_cast<DL *>(&n.adjacent_arc_list), curr),
-	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(const_cast<Node *>(&n))
+      AdjacentArcIterator(const Digraph & g, Node * n, DL * curr)
+	: Base(const_cast<DL *>(&n->adjacent_arc_list), curr),
+	  graph_ptr(const_cast<Digraph *>(&g)), node_ptr(n)
       {
 	// empty
       }
@@ -2110,44 +2064,34 @@ namespace Designar
 	std::swap(node_ptr, it.node_ptr);
       }
       
-      Arc & get_current()
+      Arc * get_current()
       {
-	return dl_to_adjacent_arc(Base::get_current())->get_item();
+	return &dl_to_adjacent_arc(Base::get_current())->get_item();
       }
 
-      const Arc & get_current() const
+      const Arc * get_current() const
       {
-	return dl_to_adjacent_arc(Base::get_current())->get_item();
+	return &dl_to_adjacent_arc(Base::get_current())->get_item();
       }
 
-      Arc & operator * ()
+      Node * get_src_node()
       {
-	return get_current();
+	return node_ptr;
       }
 
-      const Arc & operator * () const
+      Node * get_src_node() const
       {
-	return get_current();
+	return node_ptr;
       }
 
-      Node & get_src_node()
+      Node * get_tgt_node()
       {
-	return *node_ptr;
+	return get_current()->get_tgt_node();
       }
 
-      const Node & get_src_node() const
+      const Node * get_tgt_node() const
       {
-	return *node_ptr;
-      }
-
-      Node & get_tgt_node()
-      {
-	return get_current().get_tgt_node();
-      }
-
-      const Node & get_tgt_node() const
-      {
-	return get_current().get_tgt_node();
+	return get_current()->get_tgt_node();
       }
     };
 
@@ -2191,28 +2135,28 @@ namespace Designar
       return ArcIterator(*this, const_cast<DL *>(&arc_list));
     }
 
-    AdjacentArcIterator arcs_begin(Node & p)
+    AdjacentArcIterator arcs_begin(Node * p)
     {
       return AdjacentArcIterator(*this, p);
     }
 
-    const AdjacentArcIterator arcs_begin(Node & p) const
+    const AdjacentArcIterator arcs_begin(Node * p) const
     {
       return AdjacentArcIterator(*this, p);
     }
 
-    AdjacentArcIterator arcs_end(Node & p)
+    AdjacentArcIterator arcs_end(Node * p)
     {
-      return AdjacentArcIterator(*this, p, &p.adjacent_arc_list);
+      return AdjacentArcIterator(*this, p, &p->adjacent_arc_list);
     }
 
-    const AdjacentArcIterator arcs_end(Node & p) const
+    const AdjacentArcIterator arcs_end(Node * p) const
     {
       return AdjacentArcIterator(*this, p,
-				 const_cast<DL *>(&p.adjacent_arc_list));
+				 const_cast<DL *>(&p->adjacent_arc_list));
     }
 
-    Arc * search_arc(Node &, Node &);
+    Arc * search_arc(Node *, Node *);
     
     template <class Cmp>
     void sort_nodes(Cmp & cmp)
@@ -2278,11 +2222,11 @@ namespace Designar
   
   template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
   typename Digraph<NodeInfo, ArcInfo, GraphInfo>::Arc *
-  Digraph<NodeInfo, ArcInfo, GraphInfo>::search_arc(Node & s, Node & t)
+  Digraph<NodeInfo, ArcInfo, GraphInfo>::search_arc(Node * s, Node * t)
   {
     for (AdjacentArcIterator it(*this, s); it.has_current(); it.next())
-      if (&it.get_tgt_node() == &t)
-	return &*it;
+      if (it.get_tgt_node() == t)
+	return *it;
 
     return nullptr;
   }
