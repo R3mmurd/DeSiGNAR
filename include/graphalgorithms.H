@@ -35,7 +35,7 @@ namespace Designar
   /* Depth first based algorithms */
 
   template <class GT, class Op>
-  void depth_first_traverse_prefix_rec(GT &, Node<GT> &, Op &);
+  void depth_first_traverse_prefix_rec(GT &, Node<GT> *, Op &);
 
   template <class GT, class Op>
   void depth_first_traverse_prefix(GT &, Op & op);
@@ -47,7 +47,7 @@ namespace Designar
   }
   
   template <class GT, class Op>
-  void depth_first_traverse_sufix_rec(GT &, Node<GT> &, Op &);
+  void depth_first_traverse_sufix_rec(GT &, Node<GT> *, Op &);
 
   template <class GT, class Op>
   void depth_first_traverse_sufix(GT &, Op & op);
@@ -71,22 +71,22 @@ namespace Designar
   }
 
   template <class GT>
-  bool depth_first_search_path_rec(GT &, Node<GT> &, Node<GT> &, Path<GT> &);
+  bool depth_first_search_path_rec(GT &, Node<GT> *, Node<GT> *, Path<GT> &);
 
   template <class GT>
-  Path<GT> depth_first_search_path(GT &, Node<GT> &, Node<GT> &);
+  Path<GT> depth_first_search_path(GT &, Node<GT> *, Node<GT> *);
 
   template <class GT>
-  bool test_cycle_rec(GT &, Node<GT> &, bool);
+  bool test_cycle_rec(GT &, Node<GT> *, bool);
 
   template <class GT>
-  bool has_cycle(GT &, Node<GT> &);
+  bool has_cycle(GT &, Node<GT> *);
 
   template <class GT>
   bool has_cycle(GT &);
 
   template <class GT>
-  bool is_graph_acyclique(GT &, Node<GT> &);
+  bool is_graph_acyclique(GT &, Node<GT> *);
  
   template <class GT>
   bool is_graph_acyclique(GT &);
@@ -95,35 +95,35 @@ namespace Designar
   GT invert_digraph(GT &, bool);
 
   template <class GT>
-  void build_subgraph_rec(GT &, Node<GT> &, GT &);
+  void build_subgraph_rec(GT &, Node<GT> *, GT &);
 
   template <class GT>
   SLList<GT> compute_connected_components(GT &);
 
   template <class GT>
-  void add_nodes_to_component_rec(GT &, Node<GT> &, SLList<Node<GT> *> &);
+  void add_nodes_to_component_rec(GT &, Node<GT> *, SLList<Node<GT> *> &);
 
   template <class GT>
   SLList<SLList<Node<GT> *>> connected_components_node_list(GT &);
 
   template <class GT>
-  void compute_cut_nodes_rec(GT &, Node<GT> &, Arc<GT> &,
+  void compute_cut_nodes_rec(GT &, Node<GT> *, Arc<GT> &,
 			     SLList<Node<GT> *> &, lint_t &);
 
   template <class GT>
   SLList<Node<GT> *> compute_cut_nodes(GT &);
 
   template <class GT>
-  void paint_cut_nodes_connected_components_rec(GT &, Node<GT> &, lint_t);
+  void paint_cut_nodes_connected_components_rec(GT &, Node<GT> *, lint_t);
 
   template <class GT>
-  void paint_from_cut_node(GT &, Node<GT> &, lint_t &);
+  void paint_from_cut_node(GT &, Node<GT> *, lint_t &);
 
   template <class GT>
   lint_t paint_cut_nodes_subgraphs(GT &, const SLList<Node<GT> *> &);
 
   template <class GT>
-  void build_cut_nodes_subgraph_rec(GT &, Node<GT> &, GT &, lint_t);
+  void build_cut_nodes_subgraph_rec(GT &, Node<GT> *, GT &, lint_t);
 
   template <class GT>
   SLList<GT> build_cut_nodes_subgraphs(GT &);
@@ -137,7 +137,7 @@ namespace Designar
     compute_cut_nodes_connected_components(GT &, const SLList<Node<GT> *> &);
 
   template <class GT>
-  void Kosaraju_build_subgraph_rec(GT &, Node<GT> &, GT &, nat_t);
+  void Kosaraju_build_subgraph_rec(GT &, Node<GT> *, GT &, nat_t);
 
   template <class GT>
   SLList<GT> Kosaraju_compute_strong_connected_components(GT &);
@@ -148,10 +148,10 @@ namespace Designar
   /* Breadth first based algorithms */
 
   template <class GT, class Op>
-  void breadth_first_traverse(GT &, Node<GT> &, Op &);
+  void breadth_first_traverse(GT &, Node<GT> *, Op &);
   
   template <class GT, class Op>
-  void breadth_first_traverse(GT & g, Node<GT> & p, Op && op = Op())
+  void breadth_first_traverse(GT & g, Node<GT> * p, Op && op = Op())
   {
     breadth_first_traverse<GT, Op>(g, p, op);
   }
@@ -169,7 +169,7 @@ namespace Designar
   }
 
   template <class GT>
-  Path<GT> breadth_first_search_path(GT & g, Node<GT> &, Node<GT> &);
+  Path<GT> breadth_first_search_path(GT & g, Node<GT> *, Node<GT> *);
 
   template <class GT>
   SLList<Node<GT> *> bf_topological_sort(GT &);
@@ -178,47 +178,47 @@ namespace Designar
   SLList<SLList<Node<GT> *>> topological_ranks(GT &);
 
   template <class GT, class Op>
-  void depth_first_traverse_prefix_rec(GT & g, Node<GT> & p, Op & op)
+  void depth_first_traverse_prefix_rec(GT & g, Node<GT> * p, Op & op)
   {
-    if (p.is_visited(GraphTag::DEPTH_FIRST))
+    if (p -> is_visited(GraphTag::DEPTH_FIRST))
       return;
     
     op(p);
-    p.visit(GraphTag::DEPTH_FIRST);
+    p -> visit(GraphTag::DEPTH_FIRST);
     
     for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
       {
-	Arc<GT> & a = *it;
+	Arc<GT> * a = it;
 
-	if (a.is_visited(GraphTag::DEPTH_FIRST))
+	if (a -> is_visited(GraphTag::DEPTH_FIRST))
 	  continue;
 
-	a.visit(GraphTag::DEPTH_FIRST);
+	a -> visit(GraphTag::DEPTH_FIRST);
 
-	Node<GT> & q = it.get_tgt_node();
+	Node<GT> * q = it -> get_tgt_node();
 
 	depth_first_traverse_prefix_rec(g, q, op);
       }
   }
 
   template <class GT, class Op>
-  void depth_first_traverse_sufix_rec(GT & g, Node<GT> & p, Op & op)
+  void depth_first_traverse_sufix_rec(GT & g, Node<GT> * p, Op & op)
   {
-    if (p.is_visited(GraphTag::DEPTH_FIRST))
+    if (p -> is_visited(GraphTag::DEPTH_FIRST))
       return;
 
-    p.visit(GraphTag::DEPTH_FIRST);
+    p -> visit(GraphTag::DEPTH_FIRST);
 
     for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
       {
-	Arc<GT> & a = *it;
+	Arc<GT> * a = it;
 
-	if (a.is_visited(GraphTag::DEPTH_FIRST))
+	if (a -> is_visited(GraphTag::DEPTH_FIRST))
 	  continue;
 
-	a.visit(GraphTag::DEPTH_FIRST);
+	a -> visit(GraphTag::DEPTH_FIRST);
 
-	Node<GT> & q = it.get_tgt_node();
+	Node<GT> * q = it -> get_tgt_node();
 
 	depth_first_traverse_sufix_rec(g, q, op);
       }
@@ -227,29 +227,29 @@ namespace Designar
   }
 
   template <class GT>
-  bool depth_first_search_path_rec(GT & g, Node<GT> & p, Node<GT> & end,
+  bool depth_first_search_path_rec(GT & g, Node<GT> * p, Node<GT> * end,
 				   Path<GT> & path)
   {
-    if (p.is_visited(GraphTag::DEPTH_FIRST))
+    if (p -> is_visited(GraphTag::DEPTH_FIRST))
       return false;
     
-    p.visit(GraphTag::DEPTH_FIRST);
+    p -> visit(GraphTag::DEPTH_FIRST);
     
     path.append(p);
     
-    if (&p == &end)
+    if (p == end)
       return true;
     
     for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
       {
 	Arc<GT> & a = *it;
 
-	if (a.is_visited(GraphTag::DEPTH_FIRST))
+	if (a -> is_visited(GraphTag::DEPTH_FIRST))
 	  continue;
 
-        a.visit(GraphTag::DEPTH_FIRST);
+        a -> visit(GraphTag::DEPTH_FIRST);
 
-	Node<GT> & q = it.get_tgt_node();
+	Node<GT> * q = it -> get_tgt_node();
        
 	if (depth_first_search_path_rec(g, q, end, path))
 	  return true;
@@ -260,23 +260,23 @@ namespace Designar
   }
 
   template <class GT>
-  bool test_cycle_rec(GT & g, Node<GT> & p, bool has)
+  bool test_cycle_rec(GT & g, Node<GT> * p, bool has)
   {
-    if (p.is_visited(GraphTag::DEPTH_FIRST))
+    if (p -> is_visited(GraphTag::DEPTH_FIRST))
       return has;
     
-    p.visit(GraphTag::DEPTH_FIRST);
+    p -> visit(GraphTag::DEPTH_FIRST);
 
     for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
       {
-	Arc<GT> & a = *it;
+	Arc<GT> * a = it;
 
-	if (a.is_visited(GraphTag::DEPTH_FIRST))
+	if (a -> is_visited(GraphTag::DEPTH_FIRST))
 	  continue;
 
-	a.visit(GraphTag::DEPTH_FIRST);
+	a -> visit(GraphTag::DEPTH_FIRST);
 
-	Node<GT> & q = it.get_tgt_node();
+	Node<GT> * q = it -> get_tgt_node();
 
 	if (test_cycle_rec(g, q, has) == has)
 	  return has;
@@ -1875,17 +1875,17 @@ namespace Designar
 	typename Distance::Type accum;
       };
     
-      static BFNodeInfo *& BFNI(Node & p)
+      static BFNodeInfo *& BFNI(Node * p)
       {
-	return (BFNodeInfo *&) p.cookie();
+	return (BFNodeInfo *&) p -> cookie();
       }
 
-      static typename Distance::Type & ACC(Node & p)
+      static typename Distance::Type & ACC(Node * p)
       {
 	return BFNI(p)->accum;
       }
 
-      static nat_t & IDX(Node & p)
+      static nat_t & IDX(Node * p)
       {
 	return BFNI(p)->idx;
       }
@@ -1896,7 +1896,7 @@ namespace Designar
       {
 	nat_t i = 0;
       
-	g.for_each_node([&] (Node & p)
+	g.for_each_node([&] (Node * p)
 	      {
 		pred[i] = nullptr;
 		arcs[i] = nullptr;
@@ -1909,17 +1909,17 @@ namespace Designar
 
       static void destroy_node_info(GT & g)
       {
-	g.for_each_node([] (Node & p)
+	g.for_each_node([] (Node * p)
 	      {
 		delete BFNI(p);
 		BFNI(p) = nullptr;
 	      });
       }
 
-      bool relax(Arc & a, FixedArray<Node *> & pred, FixedArray<Arc *> & arcs)
+      bool relax(Arc *a, FixedArray<Node *> & pred, FixedArray<Arc *> & arcs)
       {
-	Node & s = a.get_src_node();
-	Node & t = a.get_tgt_node();
+	Node * s = a -> get_src_node();
+	Node * t = a -> get_tgt_node();
 
 	if (ACC(s) == Distance::MAX)
 	  return false;
@@ -1929,8 +1929,8 @@ namespace Designar
 	if (cmp(sum, ACC(t)))
 	  {
 	    const nat_t & i = IDX(t);
-	    pred[i] = &s;
-	    arcs[i] = &a;
+	    pred[i] = s;
+	    arcs[i] = a;
 	    ACC(t) = sum;
 	    return true;
 	  }
@@ -1954,9 +1954,9 @@ namespace Designar
 	// empty
       }
 
-      std::tuple<bool, GT> build_min_path_tree(GT &, Node &);
+      std::tuple<bool, GT> build_min_path_tree(GT &, Node *);
 
-      bool paint_min_path_tree(GT & g, Node & start)
+      bool paint_min_path_tree(GT & g, Node * start -> 
       {
 	auto t = build_min_path_tree(g, start);
 
@@ -1967,14 +1967,14 @@ namespace Designar
 
 	GT & tree = std::get<1>(t);
       
-	tree.for_each_node([] (const Node & t_node)
+	tree.for_each_node([] (const Node * t_node)
 			   {
 			     Node * ptr_g_node = mapped_node_ptr<GT>(t_node);  
 			     ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
 			     ptr_g_node->cookie() = nullptr;
 			   });
       
-	tree.for_each_arc([](const Arc & t_arc)
+	tree.for_each_arc([](const Arc * t_arc)
 			  {
 			    Arc * ptr_g_arc = mapped_arc_ptr<GT>(t_arc);
 			    ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
@@ -1983,7 +1983,7 @@ namespace Designar
 	return true;
       }
 
-      std::tuple<bool, Path<GT>> search_min_path(GT & g, Node & start, Node & end)
+      std::tuple<bool, Path<GT>> search_min_path(GT & g, Node * start, Node * end)
       {
 	auto t = build_min_path_tree(g, start, end);
       
@@ -1992,8 +1992,8 @@ namespace Designar
       
 	GT & tree = std::get<1>(t);
       
-	Node & t_start = *mapped_node_ptr<GT>(start);
-	Node & t_end   = *mapped_node_ptr<GT>(end);
+	Node * t_start = mapped_node_ptr<GT>(start);
+	Node * t_end   = mapped_node_ptr<GT>(end);
       
 	Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
 	Path<GT> path(g);
@@ -2008,7 +2008,7 @@ namespace Designar
 		if (ptr_arc == nullptr)
 		  return;
 			
-		Arc & arc = *mapped_arc_ptr<GT>(*ptr_arc);
+		Arc * arc = *mapped_arc_ptr<GT>(*ptr_arc);
 		path.append(arc);
 	      });
       
@@ -2053,7 +2053,7 @@ namespace Designar
       {
 	had_relaxation = false;
 
-	g.for_each_arc([&] (Arc & a)
+	g.for_each_arc([&] (Arc * a)
 		       {
 			 if (relax(a, pred, arcs))
 			   had_relaxation = true;
@@ -2065,7 +2065,7 @@ namespace Designar
 
     had_relaxation = false;
     
-    g.for_each_arc([&] (Arc & a)
+    g.for_each_arc([&] (Arc * a)
 		   {
 		     if (relax(a, pred, arcs))
 		       had_relaxation = true;
@@ -2102,27 +2102,27 @@ namespace Designar
 	if (a == nullptr)
 	  continue;
 
-	Node & s = a->get_src_node();
+	Node * s = a->get_src_node();
 
 	Node * st = mapped_node_ptr<GT>(s);
 
 	if (st == nullptr)
 	  {
-	    st = &tree.insert_node(s.get_info());
+	    st = tree.insert_node(s -> get_info());
 	    map_nodes<GT>(s, *st);
 	  }
 	
-	Node & t = a->get_tgt_node();
+	Node * t = a->get_tgt_node();
 
 	Node * tt = mapped_node_ptr<GT>(t);
 
 	if (tt == nullptr)
 	  {
-	    tt = &tree.insert_node(t.get_info());
-	    map_nodes<GT>(t, *tt);
+	    tt = tree.insert_node(t -> get_info());
+	    map_nodes<GT>(t, tt);
 	  }
 
-	Arc & at = tree.insert_arc(*st, *tt, a->get_info());
+	Arc * at = tree.insert_arc(*st, *tt, a->get_info());
 	map_arcs<GT>(*a, at);
       }
     
@@ -2157,20 +2157,20 @@ namespace Designar
 
       MGraph mg;
 
-      g.for_each_node([&] (Node & p)
+      g.for_each_node([&] (Node * p)
 		      {
-			MNode * mp = &mg.insert_node();
-			mp->get_info().append(&p);
+			MNode * mp = mg -> insert_node();
+			mp->get_info().append(p);
 			map_nodes<GT, MGraph>(p, *mp);
 		      });
 
-      g.for_each_arc([&] (Arc & a)
+      g.for_each_arc([&] (Arc * a)
 		     {
-		       Node & p = a.get_src_node();
-		       Node & q = a.get_tgt_node();
+		       Node * p = a -> get_src_node();
+		       Node * q = a -> get_tgt_node();
 			       
-		       MNode & mp = *mapped_node_ptr<GT, MGraph>(p);
-		       MNode & mq = *mapped_node_ptr<GT, MGraph>(q);
+		       MNode * mp = *mapped_node_ptr<GT, MGraph>(p);
+		       MNode * mq = *mapped_node_ptr<GT, MGraph>(q);
 
 		       mg.insert_arc(mp, mq, &a);
 		     });
@@ -2181,7 +2181,7 @@ namespace Designar
     ArcSet build_arcs(MGraph & mg)
     {
       ArcSet ret;
-      mg.for_each_arc([&] (MArc & a) { ret.insert(&a); });
+      mg.for_each_arc([&] (MArc * a) { ret.insert(a); });
       return ret;
     }
 
@@ -2245,21 +2245,21 @@ namespace Designar
   };
 
   template <class GT>
-  void KargerMinCut<GT>::contract_arc(MGraph & mg, MNode & p, MNode & q,
-				      MNode & r, ArcSet & arcs)
+  void KargerMinCut<GT>::contract_arc(MGraph & mg, MNode * p, MNode * q,
+				      MNode * r, ArcSet & arcs)
   {
     for (AdArcIt<MGraph> it(mg, p); it.has_current(); it.next())
       {
-	MArc  & a = it.get_current();
-	MNode & t = it.get_tgt_node();
+	MArc  * a = it -> get_current();
+	MNode * t = it -> get_tgt_node();
 	
-	arcs.remove(&a);
+	arcs.remove(a);
 	
-	if (&t == &q)
+	if (t == q)
 	  continue;
 	
-	MArc & aa = mg.insert_arc(t, r, a.get_info());
-	arcs.insert(&aa);
+	MArc * aa = mg.insert_arc(t, r, a.get_info());
+	arcs.insert(aa);
       }
   }
   
@@ -2272,12 +2272,12 @@ namespace Designar
 	MArc * ma = arcs.select(i);
 	arcs.remove(ma);
 
-	MNode & x = ma->get_src_node();
-	MNode & y = ma->get_tgt_node();
+	MNode * x = ma->get_src_node();
+	MNode * y = ma->get_tgt_node();
 	
-	MNode & z = mg.insert_node();
-	z.get_info().swap(x.get_info());
-	z.get_info().concat(y.get_info());
+	MNode * z = mg.insert_node();
+	z -> get_info().swap(x -> get_info());
+	z -> get_info().concat(y -> get_info());
 
 	contract_arc(mg, x, y, z, arcs);
 	contract_arc(mg, y, x, z, arcs);
@@ -2314,16 +2314,16 @@ namespace Designar
 	SLList<Arc *> tmp_cut;
 
 	for (ArcIt<MGraph> it(mg); it.has_current(); it.next())
-	  tmp_cut.append(it.get_current().get_info());
+	  tmp_cut.append(it.get_current() -> get_info());
 
 	cut.swap(tmp_cut);
 
-	MArc & first_arc = mg.get_first_arc();
+	MArc * first_arc = mg.get_first_arc();
 
-	MNode & src = first_arc.get_src_node();
+	MNode * src = first_arc -> get_src_node();
 	ss.swap(src.get_info());
 	
-	MNode & tgt = first_arc.get_tgt_node();
+	MNode * tgt = first_arc -> get_tgt_node();
 	ts.swap(tgt.get_info());
       }
 
@@ -2363,9 +2363,9 @@ namespace Designar
 	    class GraphOutput = DftGraphOutput<GT>>
   class OutputGraph
   {
-    NodeOutput  & node_out;
-    ArcOutput   & arc_out;
-    GraphOutput & graph_out;
+    NodeOutput  * node_out;
+    ArcOutput   * arc_out;
+    GraphOutput * graph_out;
 
     using Sz = typename GT::SetSizeType;
 
@@ -2416,19 +2416,19 @@ namespace Designar
 
     Sz i = 0;
 
-    g.for_each_node([&] (const Node<GT> & p)
+    g.for_each_node([&] (const Node<GT> * p)
 		    {
 		      node_out(out, p);
 		      out << '\n';
-		      map_nodes_pos[const_cast<Node<GT> *>(&p)] = i++;
+		      map_nodes_pos[const_cast<Node<GT> *>(p)] = i++;
 		    });
 
-    g.for_each_arc([&] (const Arc<GT> & a)
+    g.for_each_arc([&] (const Arc<GT> * a)
 		   {
-		     Arc<GT> & arc_ref = const_cast<Arc<GT> &>(a);
-		     Sz s = map_nodes_pos[&arc_ref.get_src_node()];
-		     Sz t = map_nodes_pos[&arc_ref.get_tgt_node()];
-		     out << s << ' ' << t << ' ';
+		     Arc<GT> & arc_ref = const_cast<Arc<GT> *>(a);
+		     Sz *s = map_nodes_pos[arc_ref -> get_src_node()];
+		     Sz *t = map_nodes_pos[arc_ref -> get_tgt_node()];
+		     out << *s << ' ' << *t << ' ';
 		     arc_out(out, a);
 		     out << '\n';
 		   });
@@ -2439,13 +2439,13 @@ namespace Designar
   write_in_bin_mode(const GT & g, std::ofstream & out)
   {
     bool is_d = g.is_digraph();
-    out.write(reinterpret_cast<char *>(&is_d), sizeof(bool));
+    out.write(reinterpret_cast<char *>(is_d), sizeof(bool));
 
     Sz num_nodes = g.get_num_nodes();
     Sz num_arcs = g.get_num_arcs();
     
-    out.write(reinterpret_cast<char *>(&num_nodes), sizeof(Sz));
-    out.write(reinterpret_cast<char *>(&num_arcs), sizeof(Sz));
+    out.write(reinterpret_cast<char *>(num_nodes), sizeof(Sz));
+    out.write(reinterpret_cast<char *>(num_arcs), sizeof(Sz));
     
     graph_out(out, g);
 
@@ -2453,19 +2453,19 @@ namespace Designar
 
     Sz i = 0;
 
-    g.for_each_node([&] (const Node<GT> & p)
+    g.for_each_node([&] (const Node<GT> * p)
 		    {
 		      node_out(out, p);
-		      map_nodes_pos[const_cast<Node<GT> *>(&p)] = i++;
+		      map_nodes_pos[const_cast<Node<GT> *>(p)] = i++;
 		    });
 
-    g.for_each_arc([&] (const Arc<GT> & a)
+    g.for_each_arc([&] (const Arc<GT> * a)
 		   {
-		     Arc<GT> & arc_ref = const_cast<Arc<GT> &>(a);
-		     Sz s = map_nodes_pos[&arc_ref.get_src_node()];
-		     Sz t = map_nodes_pos[&arc_ref.get_tgt_node()];
-		     out.write(reinterpret_cast<char *>(&s), sizeof(Sz));
-		     out.write(reinterpret_cast<char *>(&t), sizeof(Sz));
+		     Arc<GT> & arc_ref = const_cast<Arc<GT> *>(a);
+		     Sz *s = map_nodes_pos[arc_ref.get_src_node()];
+		     Sz *t = map_nodes_pos[arc_ref.get_tgt_node()];
+		     out.write(reinterpret_cast<char *>(s), sizeof(Sz));
+		     out.write(reinterpret_cast<char *>(t), sizeof(Sz));
 		     arc_out(out, a);
 		   });
   }
@@ -2476,8 +2476,8 @@ namespace Designar
 	    class GraphInput = DftGraphInput<GT>>
   class InputGraph
   {
-    NodeInput  & node_in;
-    ArcInput   & arc_in;
+    NodeInput  * node_in;
+    ArcInput   * arc_in;
     GraphInput & graph_in;
 
     using Sz = typename GT::SetSizeType;
@@ -2534,9 +2534,9 @@ namespace Designar
 
     for (Sz i = 0; i < num_nodes; ++i)
       {
-	Node<GT> & p = g.insert_node();
+	Node<GT> * p = g.insert_node();
 	node_in(in, p);
-	nodes[i] = &p;
+	nodes[i] = p;
       }
 
     for (Sz i = 0; i < num_arcs; ++i)
@@ -2545,9 +2545,9 @@ namespace Designar
 	in >> s;
 	Sz t;
 	in >> t;
-	Node<GT> & src = *nodes[s];
-	Node<GT> & tgt = *nodes[t];
-	Arc<GT> & a = g.insert_arc(src, tgt);
+	Node<GT> * src = nodes[s];
+	Node<GT> * tgt = nodes[t];
+	Arc<GT> * a = g.insert_arc(src, tgt);
 	arc_in(in, a);
       }
 
@@ -2663,22 +2663,22 @@ namespace Designar
     
     Sz i = 0;
     
-    g.for_each_node([&](const Node<GT> & node)
+    g.for_each_node([&](const Node<GT> * node)
 		    {
 		      output << "  " << i << "[" << node_attr(node) << "];\n";
-		      map[const_cast<Node<GT> *>(&node)] = i;
+		      map[const_cast<Node<GT> *>(node)] = i;
 		      ++i;
 		    });
     
     output << "\n  // Arcs \n\n";
     
-    g.for_each_arc([&](const Arc<GT> & arc)
+    g.for_each_arc([&](const Arc<GT> * arc)
 		   {
-		     Arc<GT>  & arc_ref  = const_cast<Arc<GT> &>(arc);
-		     Node<GT> & src_node = arc_ref.get_src_node();
-		     Node<GT> & tgt_node = arc_ref.get_tgt_node();
-		     Sz src_index = map[&src_node];
-		     Sz tgt_index = map[&tgt_node];
+		     Arc<GT>  * arc_ref  = const_cast<Arc<GT> *>(arc);
+		     Node<GT> * src_node = arc_ref -> get_src_node();
+		     Node<GT> * tgt_node = arc_ref -> get_tgt_node();
+		     Sz src_index = map[src_node];
+		     Sz tgt_index = map[tgt_node];
 		     
 		     output << "  "
 			    << src_index << arc_connector << tgt_index
