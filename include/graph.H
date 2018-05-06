@@ -1068,7 +1068,7 @@ namespace Designar
       if (node_list.is_empty())
 	throw std::underflow_error("Graph has not nodes");
 
-      return &dl_to_node(node_list.get_next())->get_item();
+      return &dl_to_node(const_cast<DL &>(node_list).get_next())->get_item();
     }
 
     Arc * get_first_arc()
@@ -1084,7 +1084,7 @@ namespace Designar
       if (arc_list.is_empty())
 	throw std::underflow_error("Graph has not arcs");
 
-      return &dl_to_arc(arc_list.get_next())->get_item();
+      return &dl_to_arc(const_cast<DL &>(arc_list).get_next())->get_item();
     }
 
     nat_t get_num_nodes() const
