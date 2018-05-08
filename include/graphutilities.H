@@ -542,7 +542,7 @@ namespace Designar
   template <class GT, class Distance>
   inline void allocate_node_info(const GT & g)
   {
-    g.for_each_node([](auto node)
+    g.for_each_node([](Node<GT> * node)
     {
       NI<GT, Distance>(node) = new MinPathNodeInfo<GT, Distance>;
     });
@@ -551,7 +551,7 @@ namespace Designar
   template <class GT, class Distance>
   inline void allocate_arc_info(const GT & g)
   {
-    g.for_each_arc([] (auto arc)
+    g.for_each_arc([] (Arc<GT> * arc)
     {
       AI<GT, Distance>(arc) = new MinPathArcInfo<GT, Distance>;
     });

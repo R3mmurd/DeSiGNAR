@@ -1585,6 +1585,7 @@ namespace Designar
 	  }
       }
 
+    heap.clear();
     destroy_node_info<GT, Distance>(g);
     destroy_arc_info<GT, Distance>(g);
 
@@ -1665,7 +1666,8 @@ namespace Designar
 	    put_in_heap<GT, Distance>(arc, tgt, heap);
 	  }
       }
-    
+
+    heap.clear();
     destroy_node_info<GT, Distance>(g);
     destroy_arc_info<GT, Distance>(g);
     
@@ -1846,7 +1848,8 @@ namespace Designar
 	    put_in_heap<GT, Distance>(arc, tgt, heap);
 	  }
       }
-    
+
+    heap.clear();
     destroy_node_info<GT, Distance>(g);
     destroy_arc_info<GT, Distance>(g);
     
