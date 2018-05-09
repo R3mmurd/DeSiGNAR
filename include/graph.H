@@ -260,19 +260,18 @@ namespace Designar
     }
     
     template <class Pred>
-    Node * search_node_ptr(Pred & pred) const
+    Node * search_node(Pred & pred) const
     {
-      return search_ptr_it<Node>(const_me().nodes_begin(),
-				 const_me().nodes_end(),
-				 pred);
+      for (auto it = const_me().nodes_begin(); it = const_me().nodes_end(); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
-
+    
     template <class Pred>
-    Node * search_node_ptr(Pred && pred = Pred()) const
+    Node * search_node(Pred && pred = Pred()) const
     {  
-      return search_ptr_it<Node>(const_me().nodes_begin(),
-				 const_me().nodes_end(),
-				 std::forward<Pred>(pred));
+      return search_node<Pred>(pred);
     }
     
     template <class Pred>
@@ -469,18 +468,18 @@ namespace Designar
     }
   
     template <class Pred> 
-    Arc * search_arc_ptr(Pred & pred) const
+    Arc * search_arc(Pred & pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(),
-				const_me().arcs_end(),
-				pred);
+      for (auto it = const_me().arcs_begin(); it = const_me().arcs_end(); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
   
     template <class Pred>
-    Arc * search_arc_ptr(Pred && pred) const
+    Arc * search_arc(Pred && pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(), const_me().arcs_end(),
-				std::forward<Pred>(pred));
+      return search_arc<Pred>(pred);
     }
   
     template <class Pred>
@@ -678,19 +677,18 @@ namespace Designar
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node * p, Pred & pred) const
+    Arc * search_adjacent_arc(Node * p, Pred & pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(p),
-				const_me().arcs_end(p),
-				pred);
+      for (auto it = const_me().arcs_begin(p); it = const_me().arcs_end(p); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
   
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node * p, Pred && pred) const
+    Arc * search_adjacent_arc(Node * p, Pred && pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(p),
-				const_me().arcs_end(p),
-				std::forward<Pred>(pred));
+      return search_adjacent_arc<Pred>(p, pred);
     }
   
     template <class Pred>
