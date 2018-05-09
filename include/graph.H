@@ -262,7 +262,8 @@ namespace Designar
     template <class Pred>
     Node * search_node(Pred & pred) const
     {
-      for (auto it = const_me().nodes_begin(); it = const_me().nodes_end(); ++it)
+      for (auto it = const_me().nodes_begin();
+	   it != const_me().nodes_end(); ++it)
 	if (pred(*it))
 	  return *it;
       return nullptr;
@@ -470,7 +471,8 @@ namespace Designar
     template <class Pred> 
     Arc * search_arc(Pred & pred) const
     {
-      for (auto it = const_me().arcs_begin(); it = const_me().arcs_end(); ++it)
+      for (auto it = const_me().arcs_begin();
+	   it != const_me().arcs_end(); ++it)
 	if (pred(*it))
 	  return *it;
       return nullptr;
@@ -679,7 +681,8 @@ namespace Designar
     template <class Pred>
     Arc * search_adjacent_arc(Node * p, Pred & pred) const
     {
-      for (auto it = const_me().arcs_begin(p); it = const_me().arcs_end(p); ++it)
+      for (auto it = const_me().arcs_begin(p);
+	   it != const_me().arcs_end(p); ++it)
 	if (pred(*it))
 	  return *it;
       return nullptr;
