@@ -61,6 +61,8 @@ namespace Designar
 
     void negate();
 
+    void scale(double);
+
     bool is_opposite(const Vector2D &) const;
 
     Vector2D get_opposite() const;

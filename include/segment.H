@@ -184,7 +184,7 @@ namespace Designar
 
     bool intersects_with(const GenSegment & s) const
     {
-      if (itersects_properly_with(s))
+      if (intersects_properly_with(s))
 	return true;
       
       return contains_to(s.src_point) or contains_to(s.tgt_point) or

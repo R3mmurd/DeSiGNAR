@@ -197,7 +197,7 @@ namespace Designar
       return num_equal(area_of_parallelogram(p, q, *this), NumT(0));
     }
 
-    bool is_between(const GenPoint2D & p, const GenPoint2D & q)
+    bool is_between(const GenPoint2D & p, const GenPoint2D & q) const
     {
       if (not is_collinear_with(p, q))
 	return false;

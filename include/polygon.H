@@ -27,6 +27,7 @@
 
 # include <segment.H>
 # include <nodesdef.H>
+# include <italgorithms.H>
 
 namespace Designar
 {
@@ -422,6 +423,106 @@ namespace Designar
     SegmentIterator segments_end() const
     {
       return SegmentIterator(*this, const_cast<DL *>(&vertex_list));
+    }
+
+    template <class Op>
+    void for_each_vertex(Op & op) const
+    {
+      for_each_it(vertices_begin(), vertices_end(), op);
+    }
+
+    template <class Op>
+    void for_each_vertex(Op && op = Op()) const
+    {
+      for_each_it(vertices_begin(), vertices_end(), std::forward<Op>(op));
+    }
+
+    template <class Pred>
+    bool all_vertex(Pred & pred) const
+    {
+      return all_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool all_vertex(Pred && pred = Pred()) const
+    {
+      return all_it(vertices_begin(), vertices_end(), std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool exists_vertex(Pred & pred) const
+    {
+      return exists_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool exists_vertex(Pred && pred = Pred()) const
+    {
+      return exists_it(vertices_begin(), vertices_end(),
+		       std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool none_vertex(Pred & pred) const
+    {
+      return none_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool none_vertex(Pred && pred = Pred()) const
+    {
+      return none_it(vertices_begin(), vertices_end(),
+		     std::forward<Pred>(pred));
+    }
+    
+    template <class Op>
+    void for_each_segment(Op & op) const
+    {
+      for_each_it(segments_begin(), segments_end(), op);
+    }
+
+    template <class Op>
+    void for_each_segment(Op && op = Op()) const
+    {
+      for_each_it(segments_begin(), segments_end(), std::forward<Op>(op));
+    }
+
+    template <class Pred>
+    bool all_segment(Pred & pred) const
+    {
+      return all_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool all_segment(Pred && pred = Pred()) const
+    {
+      return all_it(segments_begin(), segments_end(), std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool exists_segment(Pred & pred) const
+    {
+      return exists_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool exists_segment(Pred && pred = Pred()) const
+    {
+      return exists_it(segments_begin(), segments_end(),
+		       std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool none_segment(Pred & pred) const
+    {
+      return none_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool none_segment(Pred && pred = Pred()) const
+    {
+      return none_it(segments_begin(), segments_end(),
+		     std::forward<Pred>(pred));
     }
   };
 
