@@ -1747,7 +1747,7 @@ namespace Designar
 		if (ptr_arc == nullptr)
 		  return;
 		
-		Arc<GT> * arc = mapped_arc<GT>(*ptr_arc);
+		Arc<GT> * arc = mapped_arc<GT>(ptr_arc);
 		path.append(arc);
 	      });
       
