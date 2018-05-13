@@ -144,13 +144,13 @@ namespace Designar
 	  if (j > 0)
 	    {
 	      auto a = g.insert_arc(mat(i, j - 1), mat(i, j));
-	      arc_init(a, i, j);
+	      arc_init(a);
 	    }
 	  
 	  if (i > 0)
 	    {
 	      auto a = g.insert_arc(mat(i - 1, j), mat(i, j));
-	      arc_init(a, i, j);
+	      arc_init(a);
 	    }
 	  
 	  if (with_diagonal)
@@ -158,13 +158,13 @@ namespace Designar
 	      if (i > 0 and j > 0)
 		{
 		  auto a = g.insert_arc(mat(i - 1, j - 1), mat(i, j));
-		  arc_init(a, i, j);
+		  arc_init(a);
 		}
 	      
 	      if (i > 0 and j + 1 < width)
 		{
 		  auto a = g.insert_arc(mat(i - 1, j + 1), mat(i, j));
-		  arc_init(a, i, j);
+		  arc_init(a);
 		}
 	    }
 	}
