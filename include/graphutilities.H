@@ -415,7 +415,7 @@ namespace Designar
 
     SLList<Node<GT> *> nodes() const
     {
-      return list.template map<Node<GT> *>([] (auto & pd)
+      return list.template map<Node<GT> *,SLList<Node<GT> *>>([] (auto & pd)
 					   {
 					     return pd.node;
 					   });

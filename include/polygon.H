@@ -27,6 +27,7 @@
 
 # include <segment.H>
 # include <nodesdef.H>
+# include <italgorithms.H>
 
 namespace Designar
 {
@@ -118,6 +119,65 @@ namespace Designar
     {
       vertex_list.insert_prev(new Vertex(std::forward<PointT>(p)));
       ++num_vertices;
+    }
+
+    PointT & get_first_vertex()
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(vertex_list.get_next())->get_item();
+    }
+
+    const PointT & get_first_vertex() const
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
+    }
+
+    PointT & get_last_vertex()
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(vertex_list.get_prev())->get_item();
+    }
+
+    const PointT & get_last_vertex() const
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+    }
+
+    SegmentType get_first_segment() const
+    {
+      if (num_vertices < 2)
+	throw std::length_error("Polygon has not segments");
+
+      const PointT & s =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
+      const PointT & t =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_next()->get_next()))
+	->get_item();
+      return SegmentType(s, t);
+    }
+
+    SegmentType get_last_segment() const
+    {
+      if (num_vertices < 2)
+	throw std::length_error("Polygon has not segments");
+
+      const PointT & s =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_prev())->get_prev())
+	->get_item();
+      const PointT & t =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+      
+      return SegmentType(s, t);
     }
 
     bool is_empty() const
@@ -423,12 +483,112 @@ namespace Designar
     {
       return SegmentIterator(*this, const_cast<DL *>(&vertex_list));
     }
+
+    template <class Op>
+    void for_each_vertex(Op & op) const
+    {
+      for_each_it(vertices_begin(), vertices_end(), op);
+    }
+
+    template <class Op>
+    void for_each_vertex(Op && op = Op()) const
+    {
+      for_each_it(vertices_begin(), vertices_end(), std::forward<Op>(op));
+    }
+
+    template <class Pred>
+    bool all_vertex(Pred & pred) const
+    {
+      return all_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool all_vertex(Pred && pred = Pred()) const
+    {
+      return all_it(vertices_begin(), vertices_end(), std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool exists_vertex(Pred & pred) const
+    {
+      return exists_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool exists_vertex(Pred && pred = Pred()) const
+    {
+      return exists_it(vertices_begin(), vertices_end(),
+		       std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool none_vertex(Pred & pred) const
+    {
+      return none_it(vertices_begin(), vertices_end(), pred);
+    }
+
+    template <class Pred>
+    bool none_vertex(Pred && pred = Pred()) const
+    {
+      return none_it(vertices_begin(), vertices_end(),
+		     std::forward<Pred>(pred));
+    }
+    
+    template <class Op>
+    void for_each_segment(Op & op) const
+    {
+      for_each_it(segments_begin(), segments_end(), op);
+    }
+
+    template <class Op>
+    void for_each_segment(Op && op = Op()) const
+    {
+      for_each_it(segments_begin(), segments_end(), std::forward<Op>(op));
+    }
+
+    template <class Pred>
+    bool all_segment(Pred & pred) const
+    {
+      return all_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool all_segment(Pred && pred = Pred()) const
+    {
+      return all_it(segments_begin(), segments_end(), std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool exists_segment(Pred & pred) const
+    {
+      return exists_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool exists_segment(Pred && pred = Pred()) const
+    {
+      return exists_it(segments_begin(), segments_end(),
+		       std::forward<Pred>(pred));
+    }
+
+    template <class Pred>
+    bool none_segment(Pred & pred) const
+    {
+      return none_it(segments_begin(), segments_end(), pred);
+    }
+
+    template <class Pred>
+    bool none_segment(Pred && pred = Pred()) const
+    {
+      return none_it(segments_begin(), segments_end(),
+		     std::forward<Pred>(pred));
+    }
   };
 
   template <class PointT>
   void GenPolygon<PointT>::copy(const GenPolygon & p)
   {
-    Vertex * v = dl_to_vertex(p.vertex_list.get_next());
+    Vertex * v = dl_to_vertex(const_cast<DL *>(p.vertex_list.get_next()));
 
     while (v != &p.vertex_list)
       {
