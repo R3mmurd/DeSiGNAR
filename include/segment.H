@@ -219,13 +219,13 @@ namespace Designar
       real_t ts = slope();
       real_t ss = s.slope();
 
-      if (ts == 0)
+      if (real_equal(ts, 0.))
 	{
-	  return ss == INF or ss == -INF;
+	  return real_equal(ss, INF) or real_equal(ss, -INF);
 	}
 
-      if (ts == INF or ts == -INF)
-	return ss == 0;
+      if (real_equal(ts, INF) or real_equal(ts, -INF))
+	return real_equal(ss, 0.);
 
       return real_equal(ts, -1. / ss);
     }
