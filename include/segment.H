@@ -39,7 +39,11 @@ namespace Designar
   public:
     using PointType = PointT;
     
-    GenSegment() = default;
+    GenSegment()
+      : src_point(), tgt_point()
+    {
+      // empty
+    }
 
     GenSegment(const PointT & sp, const PointT & tp)
       : src_point(sp), tgt_point(tp)
@@ -178,8 +182,8 @@ namespace Designar
 
       return (s.is_to_right_from(src_point) xor
 	      s.is_to_right_from(tgt_point)) and
-	(is_to_right_from(src_point) xor
-	 is_to_right_from(tgt_point));      
+	(is_to_right_from(s.src_point) xor
+	 is_to_right_from(s.tgt_point));      
     }
 
     bool intersects_with(const GenSegment & s) const
@@ -210,6 +214,55 @@ namespace Designar
       return slope() == s.slope();
     }
 
+    bool is_perpendicular_with(const GenSegment & s) const
+    {
+      real_t ts = slope();
+      real_t ss = s.slope();
+
+      if (ts == 0)
+	{
+	  return ss == INF or ss == -INF;
+	}
+
+      if (ts == INF or ts == -INF)
+	return ss == 0;
+
+      return real_equal(ts, -1. / ss);
+    }
+
+    GenSegment get_perpendicular(const PointT & p) const
+    {
+      real_t m1 = slope();
+      real_t m2 = -1. / m1;
+
+      const typename PointT::NumberType & x1 = src_point.get_x();
+      const typename PointT::NumberType & y1 = src_point.get_y();
+      
+      const typename PointT::NumberType & x2 = p.get_x();
+      const typename PointT::NumberType & y2 = p.get_y();
+
+      const typename PointT::NumberType x = 
+	real_t(y2 - y1 + m1 * x1 - m2 * x2) / real_t(m1 - m2);
+      
+      const typename PointT::NumberType y = m1 * (x - x1) + y1;
+      
+      PointT q(x, y);
+      return GenSegment(p, q);
+    }
+    
+    double counterclockwise_angle_with(const GenSegment & s)
+    {
+      auto dxt = tgt_point.get_x() - src_point.get_x();
+      auto dyt = tgt_point.get_y() - src_point.get_y();
+      auto dxs = s.tgt_point.get_x() - s.src_point.get_x();
+      auto dys = s.tgt_point.get_y() - s.src_point.get_y();
+
+      auto dot = dxt * dxs + dyt * dys;
+      auto det = dxt * dys - dyt * dxs;
+
+      return atan2(det, dot);
+    }    
+
     GenSegment get_opposite() const
     {
       return GenSegment(tgt_point, src_point);
@@ -232,7 +285,7 @@ namespace Designar
       const typename PointT::NumberType x = 
 	real_t(y2 - y1 + m1 * x1 - m2 * x2) / real_t(m1 - m2);
       
-      const typename PointT::Number_Type y = m1 * (x - x1) + y1;
+      const typename PointT::NumberType y = m1 * (x - x1) + y1;
       
       return PointT(x, y);
     }

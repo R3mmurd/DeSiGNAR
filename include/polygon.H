@@ -121,6 +121,65 @@ namespace Designar
       ++num_vertices;
     }
 
+    PointT & get_first_vertex()
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(vertex_list.get_next())->get_item();
+    }
+
+    const PointT & get_first_vertex() const
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
+    }
+
+    PointT & get_last_vertex()
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(vertex_list.get_prev())->get_item();
+    }
+
+    const PointT & get_last_vertex() const
+    {
+      if (num_vertices == 0)
+	throw std::length_error("Polygon has not vertices");
+      
+      return dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+    }
+
+    SegmentType get_first_segment() const
+    {
+      if (num_vertices < 2)
+	throw std::length_error("Polygon has not segments");
+
+      const PointT & s =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
+      const PointT & t =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_next()->get_next()))
+	->get_item();
+      return SegmentType(s, t);
+    }
+
+    SegmentType get_last_segment() const
+    {
+      if (num_vertices < 2)
+	throw std::length_error("Polygon has not segments");
+
+      const PointT & s =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_prev())->get_prev())
+	->get_item();
+      const PointT & t =
+	dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+      
+      return SegmentType(s, t);
+    }
+
     bool is_empty() const
     {
       return num_vertices == 0;
@@ -529,7 +588,7 @@ namespace Designar
   template <class PointT>
   void GenPolygon<PointT>::copy(const GenPolygon & p)
   {
-    Vertex * v = dl_to_vertex(p.vertex_list.get_next());
+    Vertex * v = dl_to_vertex(const_cast<DL *>(p.vertex_list.get_next()));
 
     while (v != &p.vertex_list)
       {
