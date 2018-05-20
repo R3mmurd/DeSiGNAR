@@ -34,7 +34,7 @@ namespace Designar
   constexpr real_t PI_2    = PI/2.;
   constexpr real_t PI_4    = PI/4.;
   constexpr real_t PI3_2   = 3.*PI/2.;
-  constexpr real_t EPSILON = 1e-9;
+  constexpr real_t EPSILON = 1e-6;
   constexpr real_t INF     = std::numeric_limits<real_t>::infinity();
 
   enum class Sign { NEGATIVE, POSITIVE, ZERO };
@@ -59,8 +59,8 @@ namespace Designar
 
   template <>
   bool num_equal<float>(float, float);
-  template <>
   
+  template <>
   bool num_equal<double>(double, double);
 
   template <>
