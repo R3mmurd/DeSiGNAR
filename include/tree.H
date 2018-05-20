@@ -683,46 +683,49 @@ namespace Designar
       class InorderIterator
       {
 	friend class RankedTreap;
-      
+	
+	RankedTreap * set_ptr = nullptr;
 	DynStack<Node *> stack;
 	Node * root = Node::null;
 	Node * curr = Node::null;
 	lint_t pos = 0;
-
+	
 	Node * search_min(Node *);
-
+	
 	Node * search_max(Node *);
-
+	
 	void init()
 	{
 	  if (root == Node::null)
 	    return;
-
+	  
 	  pos = 0;
 	  curr = search_min(root);
 	}
 
       protected:
 	InorderIterator(const RankedTreap & t, int)
-	  : root(t.root), curr(Node::null), pos(t.size())
+	  : set_ptr(const_cast<RankedTreap *>(&t)), root(set_ptr->root),
+	    curr(Node::null), pos(COUNT(root))
 	{
 	  // empty
 	}
-      
+	
 	Node * get_location() const
 	{
 	  return curr;
 	}
-
+	
       public:
 	InorderIterator(const RankedTreap & t)
-	  : root(t.root)
+	  : set_ptr(const_cast<RankedTreap *>(&t)), root(set_ptr->root)
 	{
 	  init();
 	}
 
 	InorderIterator(const InorderIterator & it)
-	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	  : set_ptr(it.set_ptr), stack(it.stack), root(it.root), curr(it.curr),
+	    pos(it.pos)
 	{
 	  // empty
 	}
@@ -767,7 +770,7 @@ namespace Designar
 
 	void reset_last()
 	{
-	  pos = -1;
+	  pos = COUNT(root) - 1;
 	  stack.clear();
 	  curr = search_max(root);
 	}
@@ -811,6 +814,19 @@ namespace Designar
 	  else
 	    if (not stack.is_empty())
 	      curr = stack.pop();
+	}
+
+	Key del()
+	{
+	  if (not has_current())
+	    throw std::logic_error("There is not current element");
+	  
+	  Key to_remove = KEY(curr);
+	  next();
+	  --pos;
+	  set_ptr->remove(to_remove);
+
+	  return to_remove;
 	}
       };
 
