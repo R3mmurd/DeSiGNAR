@@ -1,2 +1,14 @@
+<<<<<<< HEAD
 /en-doc/*
 /es-doc/*
+=======
+*~
+bin/*.out
+include/*~
+lib/*.a
+obj/*.o
+samples/*~
+src/*~
+en-doc/*
+es-doc/*
+>>>>>>> master

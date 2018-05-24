@@ -31,15 +31,6 @@
 
 namespace Designar
 {
-  template <class ArrayType, class Cmp>
-  void insertion_sort(ArrayType &, lint_t, lint_t, Cmp &);
-  
-  template <typename ArrayType, class Cmp>
-  lint_t partition(ArrayType &, lint_t, lint_t, Cmp &);
-  
-  template <typename ArrayType, class Cmp>
-  void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
-
   /**
    *
    *	@class ArrayIterator array.H <array.H>
@@ -69,8 +60,6 @@ namespace Designar
     }
     
   public:
-
-
     /**
      *  @brief Constructor
      *
@@ -92,7 +81,6 @@ namespace Designar
     {
       // empty
     }
-
     
     /**
      *
@@ -120,7 +108,6 @@ namespace Designar
       // empty
     }
 
-
     /**
      *
      *  @brief Move Constructor.
@@ -134,7 +121,7 @@ namespace Designar
     {
       swap(it);
     }
-  
+
     /**
      *
      *  @brief Assingment operator overload
@@ -164,7 +151,6 @@ namespace Designar
       swap(it);
       return *this;
     }
- 
 
     /**	
      *
@@ -179,6 +165,7 @@ namespace Designar
       std::swap(curr, it.curr);
     }
 
+
     /**
      *
      *  @brief Verify if the iterator is in a valid position.
@@ -190,8 +177,6 @@ namespace Designar
     {
       return curr < array_ptr->size();
     }
-
-
 
     /*
      *
@@ -236,7 +221,6 @@ namespace Designar
       --curr;
     }
 
-
     /**
      *
      *  @brief Move iterator n steps back in the Array.
@@ -268,7 +252,6 @@ namespace Designar
       curr = std::min(p, array_ptr->size());
     }
     
-
 
     /**
      *
@@ -883,6 +866,7 @@ namespace Designar
       BaseArray::at(i) = std::move(BaseArray::at(i + 1));
   }
 
+<<<<<<< HEAD
   template <typename Key, class Cmp>
   class SortedArraySetOp
   {
@@ -1361,6 +1345,8 @@ namespace Designar
       using Base::Base;
     };
 
+=======
+>>>>>>> master
   template <typename T, nat_t N = 2>
   class MultiDimArray
   {

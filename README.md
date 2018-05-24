@@ -1,4 +1,4 @@
-![alt text](DeSIGNAR-logo.png)
+![alt text](logo.png)
 
 # DeSiGNAR (Data Structures GeNeral librARy)
 

@@ -34,9 +34,6 @@ namespace Designar
   template <typename ContainerType = DynArray<std::string>>
   ContainerType split_string(const std::string &, const std::string &);
   
-  template <typename T>
-  std::string to_str(const T &);
-
   template <typename ContainerType>
   ContainerType split_string(const std::string & str, const std::string & sep)
   {
@@ -57,14 +54,6 @@ namespace Designar
     ss.append(str.substr(beg, str.size() - beg));
 
     return ss;
-  }
-
-  template <typename T>
-  std::string to_str(const T & value)
-  {
-    std::stringstream sstr;
-    sstr << value;
-    return sstr.str();
   }
   
 } // end namespace Designar
