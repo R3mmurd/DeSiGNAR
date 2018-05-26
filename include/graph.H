@@ -94,20 +94,25 @@ namespace Designar
     {
       return *static_cast<const GT *>(this);
     }
+
+    template <class RetT, class It>
+    RetT * nth_graph_element(const It &, const It &, nat_t);
     
   public:
     static void copy_graph(const GT &, GT &);
     
     Node * nth_node(nat_t i)
     {
-      return nth_it(me().nodes_begin(), me().nodes_end(), i);
+      return nth_graph_element<Node>(const_me().nodes_begin(),
+				     const_me().nodes_end(), i);
     }
 
     Node * nth_node(nat_t i) const
     {
-      return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
+      return nth_graph_element<Node>(const_me().nodes_begin(),
+				     const_me().nodes_end(), i);
     }
-
+    
     template <class Op>
     void for_each_node(Op & op) const
     {
@@ -309,12 +314,14 @@ namespace Designar
 
     Arc * nth_arc(nat_t i)
     {
-      return nth_it(me().arcs_begin(), me().arcs_end(), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(),
+				    const_me().arcs_end(), i);
     }
   
     Arc * nth_arc(nat_t i) const
     {
-      return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(),
+				    const_me().arcs_end(), i);
     }
   
     template <class Op>
@@ -516,12 +523,14 @@ namespace Designar
   
     Arc * nth_adjacent_arc(Node * p, nat_t i)
     {
-      return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(p),
+				    const_me().arcs_end(p), i);
     }
   
     Arc * nth_adjacent_arc(Node * p, nat_t i) const
     {
-      return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(p),
+				    const_me().arcs_end(p), i);
     }
   
     template <class Op>
@@ -829,6 +838,22 @@ namespace Designar
 		   });
     }
   };
+  
+  template <typename GT, class Node, class Arc,
+	    typename NodeInfoType, typename ArcInfoType>
+  template <class RetT, class It>
+  RetT * BaseGraph<GT, Node, Arc, NodeInfoType, ArcInfoType>::
+  nth_graph_element(const It & a, const It & b, nat_t pos)
+  {
+    for (It i = a; i != b; ++i)
+      {
+	if (pos == 0)
+	  return *i;
+	--pos;
+      }
+    
+    return nullptr;
+  }
 
   template <typename GT, class Node, class Arc,
 	    typename NodeInfoType, typename ArcInfoType>
