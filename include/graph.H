@@ -476,19 +476,31 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *  @brief Apply a filter to all arcs in the graph using a given predicate
+     *  @param[in] pred A predicate to be evaluated over each arc
+     *  @return A container with all arcs filtered
+     *
+     *************************************************************************/
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred & pred) const
     {
       return filter_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
 
+    /** 
+     *
+     * @brief Similar  to previous one but with an rvalue parameter. 
+     *
+     *************************************************************************/
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred && pred = Pred()) const
     {
       return filter_it(const_me().arcs_begin(), const_me().arcs_end(),
 		       std::forward<Pred>(pred));
     }
-
+    
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_arcs(Op & op) const
