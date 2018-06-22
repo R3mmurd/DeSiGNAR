@@ -32,7 +32,13 @@
 
 namespace Designar
 {
-
+ /**
+   *
+   *  @class FixedHeap heap.H <heap.H>
+   *
+   *  @brief DeSIGNAR Heap with fixed size.
+   *
+   ***************************************************************************/
   template <typename Key, class Cmp = std::less<Key>, nat_t cap = 100>
   class FixedHeap
   {
@@ -98,41 +104,90 @@ namespace Designar
       return *this;
     }
 
+    /** 
+     *
+     *  @brief Get comparison criteria
+     *  @return A modifiable reference of the comparison criteria
+     *
+     *************************************************************************/
     Cmp & get_cmp()
     {
       return cmp;
     }
 
+
+    /** 
+     *
+     *  @brief Similar to previous one but with a constant return value
+     *
+     *************************************************************************/
     const Cmp & get_cmp() const
     {
       return cmp;
     }
     
+    /** 
+     *
+     *  @brief Set number of items contained in the heap to 0
+     *  @return void
+     *
+     *************************************************************************/
     void clear()
     {
       num_items = 0;
     }
 
+    /** 
+     *
+     *  @brief Check if the heap is empty
+     *  @return `true` if the heap is empty, `false` otherwise
+     *
+     *************************************************************************/
     bool is_empty() const
     {
       return num_items == 0;
     }
 
+    /** 
+     *
+     *  @brief Check if the heap is full and cannot be added more items
+     *  @return `true` if the heap is full, `false` otherwise
+     *
+     *************************************************************************/
     bool is_full() const
     {
       return num_items == cap;
     }
 
+    /** 
+     *
+     *  @brief Get the number of items contained in the heap
+     *  @return The number of items in the heap
+     *
+     *************************************************************************/
     nat_t size() const
     {
       return num_items;
     }
 
+    /** 
+     *
+     *  @brief Get the maximum capacity of items that can be stored in the heap
+     *  @return The cap of the heap
+     *
+     *************************************************************************/
     nat_t get_capacity() const
     {
       return cap;
     }
 
+    /** 
+     *
+     *  @brief Insert an item to the heap
+     *  @param[in]  item  A constant reference to the item to be inserted
+     *  @return void
+     *
+     *************************************************************************/
     void insert(const Key & item)
     {
       if (is_full())
@@ -143,6 +198,11 @@ namespace Designar
       sift_up(array - 1, 1, num_items, cmp);
     }
 
+    /** 
+     *
+     *  @brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     void insert(Key && item)
     {
       if (is_full())
@@ -153,6 +213,12 @@ namespace Designar
       sift_up(array - 1, 1, num_items, cmp);
     }
 
+    /** 
+     *
+     *  @brief Get the top item of the heap
+     *  @return A constant reference to the item in the top of the heap
+     *
+     *************************************************************************/
     const Key & top() const
     {
       if (is_empty())
@@ -161,6 +227,13 @@ namespace Designar
       return array[0];
     }
 
+
+    /** 
+     *
+     *  @brief Extract the first item in the heap
+     *  @return The item in the top of the heap
+     *
+     *************************************************************************/
     Key get()
     {
       if (is_empty())

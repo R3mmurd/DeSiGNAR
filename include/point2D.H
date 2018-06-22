@@ -90,7 +90,7 @@ namespace Designar
     GenPoint2D & operator = (const GenPoint2D & p)
     {
       if (this == &p)
-	return this;
+	return *this;
 
       x = p.x;
       y = p.y;
@@ -128,6 +128,11 @@ namespace Designar
     void set_x(NumT && _x)
     {
       x = std::move(_x);
+    }
+
+    void set_y(const NumT & _y)
+    {
+      y = _y;
     }
 
     void set_y(NumT && _y)
@@ -197,7 +202,7 @@ namespace Designar
       return num_equal(area_of_parallelogram(p, q, *this), NumT(0));
     }
 
-    bool is_between(const GenPoint2D & p, const GenPoint2D & q)
+    bool is_between(const GenPoint2D & p, const GenPoint2D & q) const
     {
       if (not is_collinear_with(p, q))
 	return false;

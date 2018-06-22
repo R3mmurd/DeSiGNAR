@@ -374,9 +374,11 @@ namespace Designar
   template <class It, class Pred>
   void remove_if_it(const It & a, const It & b, Pred & pred)
   {
-    for (It i = a; i != b; ++i)
+    for (It i = a; i != b; )
       if (pred(*i))
 	i.del();
+      else
+	++i;
   }
 
   template <class It, class Pred>

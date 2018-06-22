@@ -84,6 +84,12 @@ namespace Designar
     y *= -1.;
   }
 
+  void Vector2D::scale(double r)
+  {
+    x *= r;
+    y *= r;
+  }
+
   void Vector2D::normalize()
   {
     real_t length = magnitude();

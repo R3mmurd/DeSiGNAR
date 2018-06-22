@@ -341,11 +341,13 @@ namespace Designar
      *
      *************************************************************************/
     template <class Pred>
-    Node * search_node_ptr(Pred & pred) const
+    Node * search_node(Pred & pred) const
     {
-      return search_ptr_it<Node>(const_me().nodes_begin(),
-				 const_me().nodes_end(),
-				 pred);
+      for (auto it = const_me().nodes_begin();
+	   it != const_me().nodes_end(); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
 
     /**
@@ -354,11 +356,9 @@ namespace Designar
      *  
      *************************************************************************/
     template <class Pred>
-    Node * search_node_ptr(Pred && pred = Pred()) const
+    Node * search_node(Pred && pred = Pred()) const
     {  
-      return search_ptr_it<Node>(const_me().nodes_begin(),
-				 const_me().nodes_end(),
-				 std::forward<Pred>(pred));
+      return search_node<Pred>(pred);
     }
 
     /**
@@ -674,11 +674,13 @@ namespace Designar
      *
      *************************************************************************/
     template <class Pred> 
-    Arc * search_arc_ptr(Pred & pred) const
+    Arc * search_arc(Pred & pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(),
-				const_me().arcs_end(),
-				pred);
+      for (auto it = const_me().arcs_begin();
+	   it != const_me().arcs_end(); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
 
     /**
@@ -687,10 +689,9 @@ namespace Designar
      *
      *************************************************************************/
     template <class Pred>
-    Arc * search_arc_ptr(Pred && pred) const
+    Arc * search_arc(Pred && pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(), const_me().arcs_end(),
-				std::forward<Pred>(pred));
+      return search_arc<Pred>(pred);
     }
   
     /**
@@ -908,7 +909,6 @@ namespace Designar
 			   std::forward<Op>(op));
     }
   
-<<<<<<< HEAD
     /**
      *
      *  @brief Check if a given predicate is true for all adjacent arcs of a 
@@ -920,30 +920,23 @@ namespace Designar
      *  `false` otherwise. 
      *    
      *************************************************************************/    
-=======
->>>>>>> master
     template <class Pred>
     bool all_adjacent_arcs(Node * p, Pred & pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
-<<<<<<< HEAD
 
     /**
      * 
      * @brief Similar  to previous one but with an rvalue parameter. 
      *
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
     bool all_adjacent_arcs(Node * p, Pred && pred) const
     {
       return all_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		    std::forward<Pred>(pred));
     }
-<<<<<<< HEAD
 
     /**
      *
@@ -958,24 +951,17 @@ namespace Designar
      *  is true, `false` otherwise.     
      * 
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
     bool exists_adjacent_arc(Node * p, Pred & pred) const
     {
       return exists_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
-<<<<<<< HEAD
  
     /** 
      *
      * @brief Similar  to previous one but with an rvalue parameter. 
      *
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
     bool exists_adjacent_arc(Node * p, Pred && pred) const
     {
@@ -983,7 +969,6 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
-<<<<<<< HEAD
     /** 
      *
      *  @brief Check if a given predicate is false for all adjacent 
@@ -996,15 +981,12 @@ namespace Designar
      *  `false` otherwise.     
      *
      *************************************************************************/    
-=======
->>>>>>> master
     template <class Pred>
     bool none_adjacent_arc(Node * p, Pred & pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
-<<<<<<< HEAD
-    
+
     /** 
      *  @brief Search for the first adjacent arc for which a given predicate 
      *  is true
@@ -1015,16 +997,12 @@ namespace Designar
      *   true.    
      * 
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
     bool none_adjacent_arc(Node * p, Pred && pred) const
     {
       return none_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		     std::forward<Pred>(pred));
     }
-<<<<<<< HEAD
 
     /** 
      *
@@ -1037,34 +1015,26 @@ namespace Designar
      *   true.     
      *
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node * p, Pred & pred) const
+    Arc * search_adjacent_arc(Node * p, Pred & pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(p),
-				const_me().arcs_end(p),
-				pred);
+      for (auto it = const_me().arcs_begin(p);
+	   it != const_me().arcs_end(p); ++it)
+	if (pred(*it))
+	  return *it;
+      return nullptr;
     }
-<<<<<<< HEAD
 
     /** 
      * 
      * @brief Similar  to previous one but with an rvalue parameter. 
      *
      *************************************************************************/
-=======
-  
->>>>>>> master
     template <class Pred>
-    Arc * search_adjacent_arc_ptr(Node * p, Pred && pred) const
+    Arc * search_adjacent_arc(Node * p, Pred && pred) const
     {
-      return search_ptr_it<Arc>(const_me().arcs_begin(p),
-				const_me().arcs_end(p),
-				std::forward<Pred>(pred));
+      return search_adjacent_arc<Pred>(p, pred);
     }
-<<<<<<< HEAD
 
     /** 
      *
@@ -1076,23 +1046,17 @@ namespace Designar
      *  @return `true` if removal was done, `false` otherwise.     
      *
      *************************************************************************/    
-=======
-  
->>>>>>> master
     template <class Pred>
     bool remove_first_adjacent_arc_if(Node * p, Pred & pred)
     {
       return remove_first_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
-<<<<<<< HEAD
     /**
      * 
      * @brief Similar  to previous one but with an rvalue parameter. 
      *
-     *************************************************************************/    
-=======
->>>>>>> master
+     *************************************************************************/   
     template <class Pred>
     bool remove_first_adjacent_arc_if(Node * p, Pred && pred)
     {
@@ -1100,7 +1064,6 @@ namespace Designar
 				std::forward<Pred>(pred));
     }
   
-<<<<<<< HEAD
     /** 
      *
      *  @brief Remove all adjacent arcs of a specific node for 
@@ -1110,24 +1073,22 @@ namespace Designar
      *  @return void   
      *
      *************************************************************************/    
-=======
->>>>>>> master
     template <class Pred>
     void remove_adjacent_arc_if(Node * p, Pred & pred)
     {
       remove_if_it(me().arcs_begin(p), me().arcs_end(p), pred);
     }
   
-<<<<<<< HEAD
     /** 
      * 
      * @brief Similar  to previous one but with an rvalue parameter. 
      *
      *************************************************************************/    
     template <class Pred>
-    void remove_adjacent_arc_if(Node & p, Pred && pred)
+    void remove_adjacent_arc_if(Node * p, Pred && pred)
     {
-      remove_if_it(me().arcs_begin(p), me().arcs_end(p), std::forward<Pred>(pred));
+      remove_if_it(me().arcs_begin(p), me().arcs_end(p),
+		   std::forward<Pred>(pred));
     }
 
     /** 
@@ -1137,14 +1098,9 @@ namespace Designar
      *  @return  A DeSIGNAR Linked List containing all adjacent arcs of **p** 
      *
      *************************************************************************/    
-    SLList<Arc *> adjacent_arcs(Node & p) const
+    SLList<Arc *> adjacent_arcs(Node * p) const
     {
-      return map_it<SLList<Arc *>>(const_me().arcs_begin(p),
-				   const_me().arcs_end(p),
-				   [] (const Arc & a)
-				   {
-				     return const_cast<Arc *>(&a);
-				   });
+      return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
     }
 
     /** 
@@ -1154,42 +1110,21 @@ namespace Designar
      *  @return void     
      *
      *************************************************************************/ 
-    void reset_all_node_tag(GraphTag tag)
-    {
-      for_each_node([&tag](Node & node)
-=======
-    template <class Pred>
-    void remove_adjacent_arc_if(Node * p, Pred && pred)
-    {
-      remove_if_it(me().arcs_begin(p), me().arcs_end(p),
-		   std::forward<Pred>(pred));
-    }
-
-    SLList<Arc *> adjacent_arcs(Node * p) const
-    {
-      return to_list_it<Arc *>(const_me().arcs_begin(p), const_me().arcs_end(p));
-    }
-    
     void reset_all_node_tag(GraphTag tag) const
     {
       for_each_node([&tag](Node * node)
->>>>>>> master
 		    {
 		      node->unvisit(tag);
 		    });
     }
 
-<<<<<<< HEAD
     /** 
      *
      *  @brief Reset all node tag info 
      *  @return void     
      *
      *************************************************************************/
-    void reset_all_node_tag()
-=======
     void reset_all_node_tag() const
->>>>>>> master
     {
       for_each_node([](Node * node)
 		    {
@@ -1285,7 +1220,7 @@ namespace Designar
      *  @return void     
      *
      *************************************************************************/   
-   void reset_node_counter() const
+    void reset_node_counter() const
     {
       for_each_node([](Node * node)
 		    {
