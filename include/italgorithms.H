@@ -171,12 +171,14 @@ namespace Designar
   template <typename RetT, class It>
   RetT & nth_it(const It & a, const It & b, nat_t pos)
   {
-    RetT * ret_val = nth_ptr_it<RetT, It>(a, b, pos);
+    for (It i = a; i != b; ++i)
+      {
+	if (pos == 0)
+	  return *i;
+	--pos;
+      }
 
-    if (ret_val == nullptr)
-      throw std::overflow_error("Index is to large");
-
-    return *ret_val;
+    throw std::overflow_error("Index is to large");
   }
   
   template <class It, class Op>

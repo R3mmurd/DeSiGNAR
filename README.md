@@ -16,14 +16,14 @@ The structure of this library is:
 | *lib* |When you compile the library, in this directory will be added the file **libDesignar.a.**|
 | *bin* |When you compile the samples, in this directory will be added the binary files to execute.|
 
-In order to compile the library you must execute 
+In order to compile the library you should execute 
 
 ```shell
 
 ~$ make library
 
 ```
-In order to compile the samples you must execute 
+In order to compile the samples should execute 
 
 ```shell
 

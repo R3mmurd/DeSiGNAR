@@ -189,6 +189,14 @@ int main()
   assert(ts1.cartesian_product(as2).equal({{1,3},{1,4},{1,5},{1,6},{2,3},{2,4},{2,5},{2,6},{3,3},{3,4},{3,5},{3,6},{4,3},{4,4},{4,5},{4,6}}));
 
   assert(ts1.zip(ts2).equal({{1,3},{2,4},{3,5},{4,6}}));
+
+  TreeSet<int> ttt{1,2,3,4,5,6,7,8,9,10};
+
+  ttt.remove_first_if([] (auto item) { return item > 5; });
+  assert(ttt.equal({1,2,3,4,5,7,8,9,10}));
+
+  ttt.remove_if( [] (int x) { return (x & 1); });
+  assert(ttt.equal({2,4,8,10}));
   
   cout << "Everything ok!\n";
 

@@ -85,7 +85,7 @@ namespace Designar
    *
    *  @class BaseGraph graph.H <graph.H>
    *
-   *  @brief DeSIGNAR Graph Object. It contains all elemental operations
+   *  @brief DeSIGNAR Graph. It contains all elemental operations
    *  on graphs and general set operations.
    *
    ***************************************************************************/
@@ -102,6 +102,9 @@ namespace Designar
     {
       return *static_cast<const GT *>(this);
     }
+
+    template <class RetT, class It>
+    RetT * nth_graph_element(const It &, const It &, nat_t);
     
   public:
     static void copy_graph(const GT &, GT &);
@@ -115,7 +118,8 @@ namespace Designar
      *************************************************************************/
     Node * nth_node(nat_t i)
     {
-      return nth_it(me().nodes_begin(), me().nodes_end(), i);
+      return nth_graph_element<Node>(const_me().nodes_begin(),
+				     const_me().nodes_end(), i);
     }
 
     /** 
@@ -127,7 +131,8 @@ namespace Designar
      *************************************************************************/
     Node * nth_node(nat_t i) const
     {
-      return nth_it(const_me().nodes_begin(), const_me().nodes_end(), i);
+      return nth_graph_element<Node>(const_me().nodes_begin(),
+				     const_me().nodes_end(), i);
     }
 
     /** 
@@ -145,7 +150,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter.
+     * @brief Similar  to previous one but with a rvalue parameter.
      *
      *************************************************************************/
     template <class Op>
@@ -155,12 +160,24 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *  @brief Filter all nodes of a graph using a given predicate
+     *  @param[in]  pred A predicate to be evaluated in each node
+     *  @return A list of all nodes that match with the given predicate
+     *
+     *************************************************************************/
     template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred & pred) const
     {
       return filter_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred && pred = Pred()) const
     {
@@ -168,6 +185,13 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
+     /** 
+     *
+     *  @brief Apply a operation over all nodes without modifying
+     *  @param[in]  op A operation to be executed for each node
+     *  @return A list of all nodes after op was applied for each node
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_nodes(Op & op) const
@@ -176,6 +200,11 @@ namespace Designar
 				  const_me().nodes_end(), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_nodes(Op && op = Op()) const
@@ -184,6 +213,15 @@ namespace Designar
 				  const_me().nodes_end(), std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *  @brief Apply a function over all nodes for which a given pred is true
+     *	without modifying any of them
+     *  @param[in]  op A operation to be executed for each node
+     *	@param[in]	pred A predicate to be evaluated in every node 
+     *  @return A list of all nodes after op was applied for each node
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -194,6 +232,11 @@ namespace Designar
 				     op, pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -204,6 +247,11 @@ namespace Designar
 				     op, std::forward<Pred>(pred));
     }
     
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -214,6 +262,11 @@ namespace Designar
 				     std::forward<Op>(op), pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = NodeInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -225,6 +278,14 @@ namespace Designar
 				     std::forward<Pred>(pred));
     }
 
+    /** 
+     *
+     *  @brief Apply a folding operation over all nodes, with an initial value
+     *  @param[in]  init_val Initial value for folding
+     *	@param[in]	op Operation to be executed during folding
+     *  @return A list of all nodes after op was applied for each node
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_nodes(const RetT & init_val, Op & op) const
     {
@@ -232,6 +293,11 @@ namespace Designar
 			   init_val, op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_nodes(const RetT & init_val, Op && op = Op()) const
     {
@@ -239,6 +305,11 @@ namespace Designar
 			   init_val, std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_nodes(RetT && init_val, Op & op) const
     {
@@ -246,6 +317,11 @@ namespace Designar
 			   std::forward<RetT>(init_val), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_nodes(RetT && init_val, Op && op = Op()) const
     {
@@ -270,7 +346,7 @@ namespace Designar
 
     /** 
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -296,7 +372,7 @@ namespace Designar
 
     /**
      *
-     *  @brief Similar  to previous one but with an rvalue parameter. 
+     *  @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -322,7 +398,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar to previous one but with an rvalue parameter. 
+     * @brief Similar to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -352,7 +428,7 @@ namespace Designar
 
     /**
      *   
-     *   @brief Similar to previous one but with an rvalue parameter. 
+     *   @brief Similar to previous one but with a rvalue parameter. 
      *  
      *************************************************************************/
     template <class Pred>
@@ -376,7 +452,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      * 
      *************************************************************************/
     template <class Pred>
@@ -402,7 +478,7 @@ namespace Designar
 
     /** 
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -438,7 +514,8 @@ namespace Designar
      *************************************************************************/
     Arc * nth_arc(nat_t i)
     {
-      return nth_it(me().arcs_begin(), me().arcs_end(), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(),
+				    const_me().arcs_end(), i);
     }
   
     /** 
@@ -448,7 +525,8 @@ namespace Designar
      *************************************************************************/
     Arc * nth_arc(nat_t i) const
     {
-      return nth_it(const_me().arcs_begin(), const_me().arcs_end(), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(),
+				    const_me().arcs_end(), i);
     }
 
     /** 
@@ -466,7 +544,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Op>
@@ -479,7 +557,7 @@ namespace Designar
     /** 
      *
      *  @brief Apply a filter to all arcs in the graph using a given predicate
-     *  @param[in] pred A predicate to be evaluated over each arc
+     *  @param[in] pred A predicate to be evaluated for each arc
      *  @return A container with all arcs filtered
      *
      *************************************************************************/
@@ -491,7 +569,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class ContainerRet = SLList<Arc *>, class Pred>
@@ -501,6 +579,13 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
     
+    /** 
+     *
+     *  @brief Apply a operation over all arcs without modifying
+     *  @param[in]  op A operation to be executed for each arc
+     *  @return A list of all arcs after op was applied for each arc
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_arcs(Op & op) const
@@ -509,6 +594,11 @@ namespace Designar
 				  const_me().arcs_end(), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_arcs(Op && op = Op()) const
@@ -517,6 +607,15 @@ namespace Designar
 				  const_me().arcs_end(), std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *  @brief Apply a function over all arcs for which a given pred is true
+     *	without modifying any of them
+     *  @param[in]  op A operation to be executed for each arc
+     *	@param[in]	pred A predicate to be evaluated in every arc 
+     *  @return A list of all arcs after op was applied for each arc
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -527,6 +626,11 @@ namespace Designar
 				     op, pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -537,6 +641,11 @@ namespace Designar
 				     op, std::forward<Pred>(pred));
     }
     
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -546,7 +655,12 @@ namespace Designar
 				     const_me().arcs_end(),
 				     std::forward<Op>(op), pred);
     }
-  
+  	
+  	/** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -558,6 +672,14 @@ namespace Designar
 				     std::forward<Pred>(pred));
     }
     
+    /** 
+     *
+     *  @brief Apply a folding operation over all arcs, with an initial value
+     *  @param[in]  init_val Initial value for folding
+     *	@param[in]	op Operation to be executed during folding
+     *  @return A list of all arcs after op was applied for each arc
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_arcs(const RetT & init_val, Op & op) const
     {
@@ -565,6 +687,11 @@ namespace Designar
 			   init_val, op);
     }
     
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_arcs(const RetT & init_val, Op && op = Op()) const
     {
@@ -572,6 +699,11 @@ namespace Designar
 			   init_val, std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_arcs(RetT && init_val, Op & op) const
     {
@@ -579,6 +711,11 @@ namespace Designar
 			   std::forward<RetT>(init_val), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_arcs(RetT && init_val, Op && op = Op()) const
     {
@@ -603,7 +740,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -629,7 +766,7 @@ namespace Designar
   
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -655,7 +792,7 @@ namespace Designar
 
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -685,7 +822,7 @@ namespace Designar
 
     /**
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -710,7 +847,7 @@ namespace Designar
   
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -735,7 +872,7 @@ namespace Designar
 
     /**
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -765,7 +902,8 @@ namespace Designar
      *************************************************************************/
     Arc * nth_adjacent_arc(Node * p, nat_t i)
     {
-      return nth_it(me().arcs_begin(p), me().arcs_end(p), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(p),
+				    const_me().arcs_end(p), i);
     }
 
     /** 
@@ -775,7 +913,8 @@ namespace Designar
      *************************************************************************/
     Arc * nth_adjacent_arc(Node * p, nat_t i) const
     {
-      return nth_it(const_me().arcs_begin(p), const_me().arcs_end(p), i);
+      return nth_graph_element<Arc>(const_me().arcs_begin(p),
+				    const_me().arcs_end(p), i);
     }
 
 
@@ -797,7 +936,7 @@ namespace Designar
    
     /**
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Op>
@@ -807,12 +946,27 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
+     /**
+     *
+     *  @brief Apply an specific operation over all adjacent arcs of a given 
+     *  node
+     *  @param[in] p A node in the graph
+     *  @param[in] op An operation to be executed on every adjacent arc of 
+     *  **p**
+     *  @return void  
+     *   
+     *************************************************************************/
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_adjacent_arcs(Node * p, Pred & pred) const
     {
       return filter_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <class ContainerRet = SLList<ArcInfoType>, class Pred>
     ContainerRet filter_adjacent_arcs(Node * p, Pred && pred = Pred()) const
     {
@@ -820,6 +974,15 @@ namespace Designar
 		       std::forward<Pred>(pred));
     }
 
+
+     /** 
+     *
+     *  @brief Apply a operation over all adjacent arcs without modifying
+     * 	@param[in]	p A pointer to a given node
+     *  @param[in]  op A operation to be executed for each arc
+     *  @return A list of all arcs after op was applied for each adjacent arc
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_adjacent_arcs(Node * p, Op & op) const
@@ -828,6 +991,11 @@ namespace Designar
 				  const_me().arcs_end(p), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>, class Op>
     ContainerRet map_adjacent_arcs(Node * p, Op && op = Op()) const
@@ -837,6 +1005,15 @@ namespace Designar
 				  std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *  @brief Apply a function over all adjacent arcs for which a 
+     *	given pred is true without modifying any of them
+     *  @param[in]  op A operation to be executed for each arc
+     *	@param[in]	pred A predicate to be evaluated in every arc 
+     *  @return A list of all adjacent arcs after op was applied for each arc
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -847,6 +1024,11 @@ namespace Designar
 				     op, pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -858,6 +1040,11 @@ namespace Designar
 				     op, std::forward<Pred>(pred));
     }
     
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -868,6 +1055,11 @@ namespace Designar
 				     std::forward<Op>(op), pred);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT = ArcInfoType,
 	      class ContainerRet = SLList<RetT>,
 	      class Op, class Pred>
@@ -880,6 +1072,14 @@ namespace Designar
 				     std::forward<Pred>(pred));
     }
 
+    /** 
+     *
+     *  @brief Apply a folding operation over all adjacent arcs, with an initial value
+     *  @param[in]  init_val Initial value for folding
+     *	@param[in]	op Operation to be executed during folding
+     *  @return A list of all adjacent arcs after op was applied for each arc
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_adjacent_arcs(Node * p, const RetT & init_val, Op & op) const
     {
@@ -887,6 +1087,11 @@ namespace Designar
 			   init_val, op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_adjacent_arcs(Node * p, const RetT & init_val, Op && op = Op()) const
     {
@@ -894,6 +1099,11 @@ namespace Designar
 			   init_val, std::forward<Op>(op));
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_adjacent_arcs(Node * p, RetT && init_val, Op & op) const
     {
@@ -901,6 +1111,11 @@ namespace Designar
 			   std::forward<RetT>(init_val), op);
     }
 
+    /** 
+     *
+     *	@brief Similar to previous one but with a rvalue parameter
+     *
+     *************************************************************************/
     template <typename RetT, class Op>
     RetT fold_adjacent_arcs(Node * p, RetT && init_val, Op && op = Op()) const
     {
@@ -928,7 +1143,7 @@ namespace Designar
 
     /**
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -959,7 +1174,7 @@ namespace Designar
  
     /** 
      *
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -1027,7 +1242,7 @@ namespace Designar
 
     /** 
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/
     template <class Pred>
@@ -1054,7 +1269,7 @@ namespace Designar
   
     /**
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/   
     template <class Pred>
@@ -1081,7 +1296,7 @@ namespace Designar
   
     /** 
      * 
-     * @brief Similar  to previous one but with an rvalue parameter. 
+     * @brief Similar  to previous one but with a rvalue parameter. 
      *
      *************************************************************************/    
     template <class Pred>
@@ -1294,6 +1509,22 @@ namespace Designar
 		   });
     }
   };
+  
+  template <typename GT, class Node, class Arc,
+	    typename NodeInfoType, typename ArcInfoType>
+  template <class RetT, class It>
+  RetT * BaseGraph<GT, Node, Arc, NodeInfoType, ArcInfoType>::
+  nth_graph_element(const It & a, const It & b, nat_t pos)
+  {
+    for (It i = a; i != b; ++i)
+      {
+	if (pos == 0)
+	  return *i;
+	--pos;
+      }
+    
+    return nullptr;
+  }
 
   /**
    *
