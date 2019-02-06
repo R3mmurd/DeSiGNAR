@@ -1345,8 +1345,6 @@ namespace Designar
       using Base::Base;
     };
 
-=======
->>>>>>> master
   template <typename T, nat_t N = 2>
   class MultiDimArray
   {

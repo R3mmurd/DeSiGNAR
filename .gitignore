@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-/en-doc/*
-/es-doc/*
-=======
 *~
 bin/*.out
 include/*~
@@ -11,4 +7,3 @@ samples/*~
 src/*~
 en-doc/*
 es-doc/*
->>>>>>> master
