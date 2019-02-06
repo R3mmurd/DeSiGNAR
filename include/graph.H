@@ -129,14 +129,16 @@ namespace Designar
     template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred & pred) const
     {
-      return filter_it(const_me().nodes_begin(), const_me().nodes_end(), pred);
+      return filter_it<ContainerRet>
+	(const_me().nodes_begin(), const_me().nodes_end(), pred);
     }
 
     template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred && pred = Pred()) const
     {
-      return filter_it(const_me().nodes_begin(), const_me().nodes_end(),
-		       std::forward<Pred>(pred));
+      return filter_it<ContainerRet>
+	(const_me().nodes_begin(), const_me().nodes_end(),
+	 std::forward<Pred>(pred));
     }
 
     template <typename RetT = NodeInfoType,
@@ -340,14 +342,16 @@ namespace Designar
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred & pred) const
     {
-      return filter_it(const_me().arcs_begin(), const_me().arcs_end(), pred);
+      return filter_it<ContainerRet>
+	(const_me().arcs_begin(), const_me().arcs_end(), pred);
     }
 
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred && pred = Pred()) const
     {
-      return filter_it(const_me().arcs_begin(), const_me().arcs_end(),
-		       std::forward<Pred>(pred));
+      return filter_it<ContainerRet>
+	(const_me().arcs_begin(), const_me().arcs_end(),
+	 std::forward<Pred>(pred));
     }
 
     template <typename RetT = ArcInfoType,
@@ -549,14 +553,16 @@ namespace Designar
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_adjacent_arcs(Node * p, Pred & pred) const
     {
-      return filter_it(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
+      return filter_it<ContainerRet>
+	(const_me().arcs_begin(p), const_me().arcs_end(p), pred);
     }
 
-    template <class ContainerRet = SLList<ArcInfoType>, class Pred>
+    template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_adjacent_arcs(Node * p, Pred && pred = Pred()) const
     {
-      return filter_it(const_me().arcs_begin(p), const_me().arcs_end(p),
-		       std::forward<Pred>(pred));
+      return filter_it<ContainerRet>
+	(const_me().arcs_begin(p), const_me().arcs_end(p),
+	 std::forward<Pred>(pred));
     }
 
     template <typename RetT = ArcInfoType,
