@@ -44,7 +44,7 @@ namespace Designar
   template <class It, class Op>
   void for_each_it(const It &, const It &, Op && op = Op());
 
-  template <class It, class ContainerRet, class Pred>
+  template <class ContainerRet, class It, class Pred>
   ContainerRet filter_it(const It &, const It &, Pred &);
 
   template <class ContainerRet, class It, class Pred>
