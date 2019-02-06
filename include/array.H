@@ -866,7 +866,6 @@ namespace Designar
       BaseArray::at(i) = std::move(BaseArray::at(i + 1));
   }
 
-<<<<<<< HEAD
   template <typename Key, class Cmp>
   class SortedArraySetOp
   {
