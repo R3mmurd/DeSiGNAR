@@ -126,6 +126,19 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
+    template <class Op>
+    void for_each_node_pair(Op & op) const
+    {
+      for_each_pair_it(const_me().nodes_begin(), const_me().nodes_end(), op);
+    }
+
+    template <class Op>
+    void for_each_node_pair(Op && op = Op()) const
+    {
+      for_each_pair_it(const_me().nodes_begin(), const_me().nodes_end(),
+		       std::forward<Op>(op));
+    }
+
     template <class ContainerRet = SLList<Node *>, class Pred>
     ContainerRet filter_nodes(Pred & pred) const
     {
