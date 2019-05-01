@@ -44,6 +44,12 @@ namespace Designar
   template <class It, class Op>
   void for_each_it(const It &, const It &, Op && op = Op());
 
+  template <class It, class Op>
+  void for_each_pair_it(const It &, const It &, Op &);
+
+  template <class It, class Op>
+  void for_each_pair_it(const It &, const It &, Op && op = Op());
+
   template <class ContainerRet, class It, class Pred>
   ContainerRet filter_it(const It &, const It &, Pred &);
 
@@ -192,6 +198,21 @@ namespace Designar
   void for_each_it(const It & a, const It & b, Op && op)
   {
     for_each_it<It, Op>(a, b, op);
+  }
+
+  template <class It, class Op>
+  void for_each_pair_it(const It & a, const It & b, Op & op)
+  {
+    It last_i = prev_it(b);
+    for (It i = a; i != last_i; ++i)
+      for (It j = next_it(i); j != b; ++j)
+	op(*i, *j);
+  }
+
+  template <class It, class Op>
+  void for_each_pair_it(const It & a, const It & b, Op && op)
+  {
+    for_each_pair_it<It, Op>(a, b, op);
   }
 
   template <class ContainerRet, class It, class Pred>
