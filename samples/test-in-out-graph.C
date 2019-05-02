@@ -93,15 +93,15 @@ int main()
   nat_t nc = 0;
   nat_t ac = 0;
 
-  GT g1 = p_random_graph<GT>(100, 0.7, false,
-			     [&nc] (auto & p)
-			     {
-			       p->get_info() = ++nc;
-			     },
-			     [&ac] (auto & a)
-			     {
-			       a->get_info() = ++ac;
-			     });
+  GT g1 = er_random_graph<GT>(100, 0.7, false,
+			      [&nc] (auto & p)
+			      {
+				p->get_info() = ++nc;
+			      },
+			      [&ac] (auto & a)
+			      {
+				a->get_info() = ++ac;
+			      });
 
   OutputGraph<GT> outg;
   InputGraph<GT> ing;
@@ -130,15 +130,15 @@ int main()
   nc = 0;
   ac = 0;
 
-  DGT dg1 = p_random_graph<DGT>(100, 0.7, false,
-				[&nc] (auto & p)
-				{
-				  p->get_info() = ++nc;
-				},
-				[&ac] (auto & a)
-				{
-				  a->get_info() = ++ac;
-				});
+  DGT dg1 = er_random_graph<DGT>(100, 0.7, false,
+				 [&nc] (auto & p)
+				 {
+				   p->get_info() = ++nc;
+				 },
+				 [&ac] (auto & a)
+				 {
+				   a->get_info() = ++ac;
+				 });
   
   OutputGraph<DGT> outdg;
   InputGraph<DGT> indg;

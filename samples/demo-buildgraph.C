@@ -91,37 +91,37 @@ int main()
 
   i = 0;
   
-  GT rghpnc = p_random_graph<GT>(5, 0.8, false, [&i] (GT::Node * p)
-				 {
-				   p->get_info() = ++i;
-				 });
+  GT rghpnc = er_random_graph<GT>(5, 0.8, false, [&i] (GT::Node * p)
+				  {
+				    p->get_info() = ++i;
+				  });
   
   Dot().write_graph(rghpnc, "random-graph-hp-nc.dot");
 
   i = 0;
 
-  GT rghpc = p_random_graph<GT>(5, 0.8, true, [&i] (GT::Node * p)
-				{
-				  p->get_info() = ++i;
-				});
+  GT rghpc = er_random_graph<GT>(5, 0.8, true, [&i] (GT::Node * p)
+				 {
+				   p->get_info() = ++i;
+				 });
   
   Dot().write_graph(rghpc, "random-graph-hp-c.dot");
 
   i = 0;
   
-  GT rglpnc = p_random_graph<GT>(10, 0.2, false, [&i] (GT::Node * p)
-				 {
-				   p->get_info() = ++i;
-				 });
+  GT rglpnc = er_random_graph<GT>(10, 0.2, false, [&i] (GT::Node * p)
+				  {
+				    p->get_info() = ++i;
+				  });
   
   Dot().write_graph(rglpnc, "random-graph-lp-nc.dot");
 
   i = 0;
 
-  GT rglpc = p_random_graph<GT>(10, 0.2, true, [&i] (GT::Node * p)
-				{
-				  p->get_info() = ++i;
-				});
+  GT rglpc = er_random_graph<GT>(10, 0.2, true, [&i] (GT::Node * p)
+				 {
+				   p->get_info() = ++i;
+				 });
   
   Dot().write_graph(rglpc, "random-graph-lp-c.dot");
   

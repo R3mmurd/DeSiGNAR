@@ -76,22 +76,22 @@ namespace Designar
 		  ArcInit && arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT ps_random_graph(nat_t, real_t, rng_seed_t, bool, NodeInit &, ArcInit &);
+  GT er_random_graph(nat_t, real_t, rng_seed_t, bool, NodeInit &, ArcInit &);
 
   template <class GT,
 	    class NodeInit = DftNodeInit<GT>,
 	    class ArcInit = DftArcInit<GT>>
-  GT ps_random_graph(nat_t, real_t, rng_seed_t, bool grant_connectivity = false,
-		    NodeInit && node_init = NodeInit(),
-		    ArcInit && arc_init = ArcInit());
+  GT er_random_graph(nat_t, real_t, rng_seed_t, bool grant_connectivity = false,
+		     NodeInit && node_init = NodeInit(),
+		     ArcInit && arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT p_random_graph(nat_t, real_t, bool, NodeInit &, ArcInit &);
+  GT er_random_graph(nat_t, real_t, bool, NodeInit &, ArcInit &);
 
   template <class GT,
 	    class NodeInit = DftNodeInit<GT>,
 	    class ArcInit = DftArcInit<GT>>
-  GT p_random_graph(nat_t, real_t, bool grant_connectivity = false,
+  GT er_random_graph(nat_t, real_t, bool grant_connectivity = false,
 		    NodeInit && node_init = NodeInit(),
 		    ArcInit && arc_init = ArcInit());
 
@@ -270,7 +270,7 @@ namespace Designar
 		  NodeInit && node_init, ArcInit && arc_init)
   {
     return random_graph<GT, NodeInit, ArcInit>
-    (num_nodes, num_arcs, seed, node_init, arc_init);
+      (num_nodes, num_arcs, seed, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
@@ -278,11 +278,11 @@ namespace Designar
 		  NodeInit && node_init, ArcInit && arc_init)
   {
     return random_graph<GT, NodeInit, ArcInit>
-    (num_nodes, num_arcs, get_random_seed(), node_init, arc_init);
+      (num_nodes, num_arcs, get_random_seed(), node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT ps_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
+  GT er_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
 		     bool grant_connectivity, NodeInit & node_init,
 		     ArcInit & arc_init)
   {
@@ -332,28 +332,28 @@ namespace Designar
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT ps_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
-		    bool grant_connectivity, NodeInit && node_init,
-		    ArcInit && arc_init)
+  GT er_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
+		     bool grant_connectivity, NodeInit && node_init,
+		     ArcInit && arc_init)
   {
-    return ps_random_graph<GT, NodeInit, ArcInit>
-    (num_nodes, prob_arc, seed, grant_connectivity, node_init, arc_init);
+    return er_random_graph<GT, NodeInit, ArcInit>
+      (num_nodes, prob_arc, seed, grant_connectivity, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT p_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
+  GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
 		    NodeInit & node_init, ArcInit & arc_init)
   {
-    return ps_random_graph<GT, NodeInit, ArcInit>
-    (num_nodes, prob_arc, get_random_seed(), grant_connectivity,
-     node_init, arc_init);
+    return er_random_graph<GT, NodeInit, ArcInit>
+      (num_nodes, prob_arc, get_random_seed(), grant_connectivity,
+       node_init, arc_init);
   }
   
   template <class GT, class NodeInit, class ArcInit>
-  GT p_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
+  GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
 		    NodeInit && node_init, ArcInit && arc_init)
   {
-    return p_random_graph<GT, NodeInit, ArcInit>
+    return er_random_graph<GT, NodeInit, ArcInit>
       (num_nodes, prob_arc, grant_connectivity, node_init, arc_init);
   }
   
