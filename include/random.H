@@ -48,6 +48,8 @@ namespace Designar
 
   nat_t random_binomial(rng_t &, nat_t, real_t p = DEFAULT_P);
 
+  bool flip(rng_t &, real_t p = DEFAULT_P);
+
   nat_t throw_dice(rng_t &, nat_t num_faces = DEFAULT_DICE_NUM_FACES);
 
   template <typename T>
