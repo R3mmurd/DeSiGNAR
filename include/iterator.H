@@ -196,13 +196,24 @@ namespace Designar
   }
 
   template <class It>
+  It next_it_c(const It & it)
+  {
+    It ret_val = it;
+    ret_val.next();
+
+    if (not ret_val.has_current())
+      ret_val.reset_first();
+
+    return ret_val;
+  }
+
+  template <class It>
   It prev_it(const It & it)
   {
     It ret_val = it;
     ret_val.prev();
     return ret_val;
   }
-
 } // end namespace Designar
   
 # endif // DSGITERATOR_H
