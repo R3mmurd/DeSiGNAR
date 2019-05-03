@@ -48,7 +48,7 @@ namespace Designar
     return std::binomial_distribution<nat_t>(n, p)(rng);
   }
 
-  bool flip(rng_t &, real_t p)
+  bool flip(rng_t & rng, real_t p)
   {
     return random_Bernoulli(rng, p);
   }
