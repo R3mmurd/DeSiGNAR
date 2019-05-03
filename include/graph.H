@@ -127,6 +127,19 @@ namespace Designar
     }
 
     template <class Op>
+    void enum_for_each_node(Op & op) const
+    {
+      enum_for_each_it(const_me().nodes_begin(), const_me().nodes_end(), op);
+    }
+
+    template <class Op>
+    void enum_for_each_node(Op && op = Op()) const
+    {
+      enum_for_each_it(const_me().nodes_begin(), const_me().nodes_end(),
+		       std::forward<Op>(op));
+    }
+
+    template <class Op>
     void for_each_node_pair(Op & op) const
     {
       for_each_pair_it(const_me().nodes_begin(), const_me().nodes_end(), op);
@@ -352,6 +365,19 @@ namespace Designar
 		  std::forward<Op>(op));
     }
 
+    template <class Op>
+    void enum_for_each_arc(Op & op) const
+    {
+      enum_for_each_it(const_me().arcs_begin(), const_me().arcs_end(), op);
+    }
+  
+    template <class Op>
+    void enum_for_each_arc(Op && op) const
+    {
+      enum_for_each_it(const_me().arcs_begin(), const_me().arcs_end(),
+		       std::forward<Op>(op));
+    }
+
     template <class ContainerRet = SLList<Arc *>, class Pred>
     ContainerRet filter_arcs(Pred & pred) const
     {
@@ -561,6 +587,19 @@ namespace Designar
     {
       for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p),
 		  std::forward<Op>(op));
+    }
+
+    template <class Op>
+    void enum_for_each_adjacent_arc(Node * p, Op & op) const
+    {
+      enum_for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p), op);
+    }
+  
+    template <class Op>
+    void enum_for_each_adjacent_arc(Node * p, Op && op) const
+    {
+      enum_for_each_it(const_me().arcs_begin(p), const_me().arcs_end(p),
+		       std::forward<Op>(op));
     }
 
     template <class ContainerRet = SLList<Arc *>, class Pred>

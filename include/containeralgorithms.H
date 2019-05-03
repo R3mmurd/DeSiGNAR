@@ -69,6 +69,19 @@ namespace Designar
     {
       for_each_it(const_me().begin(), const_me().end(), std::forward<Op>(op));
     }
+
+    template <class Op>
+    void enum_for_each(Op & op) const
+    {
+      enum_for_each_it(const_me().begin(), const_me().end(), op);
+    }
+
+    template <class Op>
+    void enum_for_each(Op && op = Op()) const
+    {
+      enum_for_each_it(const_me().begin(), const_me().end(),
+		       std::forward<Op>(op));
+    }
     
     template <class ContainerRet, class Pred>
     ContainerRet filter(Pred & pred) const
