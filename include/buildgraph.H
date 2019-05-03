@@ -92,8 +92,8 @@ namespace Designar
 	    class NodeInit = DftNodeInit<GT>,
 	    class ArcInit = DftArcInit<GT>>
   GT er_random_graph(nat_t, real_t, bool grant_connectivity = false,
-		    NodeInit && node_init = NodeInit(),
-		    ArcInit && arc_init = ArcInit());
+		     NodeInit && node_init = NodeInit(),
+		     ArcInit && arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
   GT full_graph(nat_t num_nodes, NodeInit & node_init, ArcInit & arc_init)
@@ -140,11 +140,8 @@ namespace Designar
 
     for (auto i = g.nodes_begin(); i != g.nodes_end(); ++i)
       {
-	auto j = next_it(i);
+	auto j = next_it_c(i);
 	
-	if (not j.has_current())
-	  j.reset();
-
 	for (nat_t k = 0; k < num_neighbors / 2; ++k)
 	  {
 	    Arc<GT> * fa = g.insert_arc(*i, *j);
@@ -156,10 +153,7 @@ namespace Designar
 		arc_init(ba);
 	      }
 
-	    j.next();
-	    
-	    if (not j.has_current())
-	      j.reset();
+	    j = next_it_c(j);
 	  }
       }
     
@@ -288,25 +282,33 @@ namespace Designar
   {
     GT g;
 
-    FixedArray<Node<GT> *> nodes(num_nodes);
-
     rng_t rng(seed);
 
     for (nat_t i = 0; i < num_nodes; ++i)
       {
 	Node<GT> * p = g.insert_node();
 	node_init(p);
-	nodes[i] = p;
       }
 
-    for (nat_t i = 0; i < num_nodes - 1; ++i)
-      for (nat_t j = i + 1; j < num_nodes; ++j)
-	if (random_Bernoulli(rng, prob_arc))
-	  {
-	    Arc<GT> * a = g.insert_arc(nodes[i], nodes[j]);
-	    arc_init(a);
-	  }
+    g.for_each_node_pair([&g, &arc_init, prob_arc, &rng] (Node<GT> * s,
+							  Node<GT> * t)
+			 {
+			   if (flip(rng, prob_arc))
+			     {
+			       Arc<GT> * fa = g.insert_arc(s, t);
+			       arc_init(fa);
+			     }
+			   
+			   if (not g.is_digraph())
+			     return;
 
+			   if (flip(rng, prob_arc))
+			     {
+			       Arc<GT> * ba = g.insert_arc(t, s);
+			       arc_init(ba);
+			     }
+			 });
+    
     if (not grant_connectivity)
       return g;
 
@@ -342,7 +344,7 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
-		    NodeInit & node_init, ArcInit & arc_init)
+		     NodeInit & node_init, ArcInit & arc_init)
   {
     return er_random_graph<GT, NodeInit, ArcInit>
       (num_nodes, prob_arc, get_random_seed(), grant_connectivity,
@@ -351,12 +353,11 @@ namespace Designar
   
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
-		    NodeInit && node_init, ArcInit && arc_init)
+		     NodeInit && node_init, ArcInit && arc_init)
   {
     return er_random_graph<GT, NodeInit, ArcInit>
       (num_nodes, prob_arc, grant_connectivity, node_init, arc_init);
   }
-  
 } // end namespace Designar
 
 # endif // DSGBUILDGRAPH_H
