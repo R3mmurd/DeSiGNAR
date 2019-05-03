@@ -45,6 +45,12 @@ namespace Designar
   void for_each_it(const It &, const It &, Op && op = Op());
 
   template <class It, class Op>
+  void enum_for_each_it(const It &, const It &, Op &);
+
+  template <class It, class Op>
+  void enum_for_each_it(const It &, const It &, Op && op = Op());
+
+  template <class It, class Op>
   void for_each_pair_it(const It &, const It &, Op &);
 
   template <class It, class Op>
@@ -198,6 +204,20 @@ namespace Designar
   void for_each_it(const It & a, const It & b, Op && op)
   {
     for_each_it<It, Op>(a, b, op);
+  }
+
+  template <class It, class Op>
+  void enum_for_each_it(const It & a, const It & b, Op & op)
+  {
+    nat_t p = 0;
+    for (It i = a; i != b; ++i, ++p)
+      op(p, *i);
+  }
+
+  template <class It, class Op>
+  void enum_for_each_it(const It & a, const It & b, Op && op)
+  {
+    enum_for_each_it<It, Op>(a, b, op);
   }
 
   template <class It, class Op>
