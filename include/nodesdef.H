@@ -384,7 +384,7 @@ namespace Designar
       {
 	if (not has_current())
 	  return;
-
+	
 	curr = curr->get_next();
       }
 
@@ -396,9 +396,14 @@ namespace Designar
 	curr = curr->get_prev();
       }
 
-      void reset()
+      void reset_first()
       {
-	curr = head->get_next(); 
+	curr = head->get_next();
+      }
+
+      void reset_last()
+      {
+	curr = head->get_prev();
       }
 
       DL * del()
@@ -746,7 +751,6 @@ namespace Designar
 
       MTreeNode * first;
       MTreeNode * curr;
-      nat_t       pos;
 
     protected:
       MTreeNode * get_location() const
@@ -762,14 +766,13 @@ namespace Designar
       }
 
       ChildrenIterator(const MTreeNode & node)
-	: first(const_cast<MTreeNode *>(&node)->get_first_child()),
-	  curr(first), pos(0)
+	: first(const_cast<MTreeNode *>(&node)->get_first_child()), curr(first)
       {
 	// empty
       }
 
       ChildrenIterator(const ChildrenIterator & it)
-	: first(it.first), curr(it.curr), pos(it.pos)
+	: first(it.first), curr(it.curr)
       {
 	// empty
       }
@@ -787,8 +790,6 @@ namespace Designar
 
 	first = it.first;
 	curr  = it.curr;
-	pos   = it.pos;
-
 	return *this;
       }
 
@@ -802,12 +803,6 @@ namespace Designar
       {
 	std::swap(first, it.first);
 	std::swap(curr, it.curr);
-	std::swap(pos, it.pos);
-      }
-
-      nat_t get_position() const
-      {
-	return pos;
       }
 
       bool has_current() const
@@ -836,7 +831,6 @@ namespace Designar
 	if (not has_current())
 	  throw std::out_of_range("There is not next element");
 
-	++pos;
 	curr = curr->get_right_sibling();
       }
 
@@ -844,8 +838,6 @@ namespace Designar
       {
 	if (curr == first)
 	  throw std::out_of_range("There is not previous element");
-
-	--pos;
 
 	if (curr == nullptr)
 	  curr = to_treenode(first->get_prev());

@@ -358,10 +358,6 @@ namespace Designar
       SLList * list_ptr;
       Node   * curr;
       Node   * pred;
-      lint_t   pos;
-
-      void locate_position();
-
 
     protected:
       Node * get_location() const
@@ -371,26 +367,26 @@ namespace Designar
       
     public:
       Iterator()
-	: list_ptr(nullptr), curr(nullptr), pred(nullptr), pos(-1)
+	: list_ptr(nullptr), curr(nullptr), pred(nullptr)
       {
 	// empty
       }
       
       Iterator(const SLList<T> & l)
 	: list_ptr(&const_cast<SLList<T> &>(l)),
-	  curr(((BaseList &)l).get_first()), pred(nullptr), pos(0)
+	  curr(((BaseList &)l).get_first()), pred(nullptr)
       {
 	// empty
       }
 
       Iterator(const SLList<T> & l, Node * c)
-	: list_ptr(&const_cast<SLList<T> &>(l)), curr(c), pred(nullptr), pos(0)
+	: list_ptr(&const_cast<SLList<T> &>(l)), curr(c), pred(nullptr)
       {
-	locate_position();
+	// empty
       }
 
       Iterator(const Iterator & it)
-	: list_ptr(it.list_ptr), curr(it.curr), pred(it.pred), pos(it.pos)
+	: list_ptr(it.list_ptr), curr(it.curr), pred(it.pred)
       {
 	// empty
       }
@@ -409,7 +405,6 @@ namespace Designar
 	list_ptr = it.list_ptr;
 	curr = it.curr;
 	pred = it.pred;
-	pos = it.pos;
 
 	return *this;
       }
@@ -425,14 +420,8 @@ namespace Designar
 	std::swap(list_ptr, it.list_ptr);
 	std::swap(curr, it.curr);
 	std::swap(pred, it.pred);
-	std::swap(pos, it.pos);
       }
       
-      lint_t get_position() const
-      {
-	return pos;
-      }
-
       bool has_current() const
       {
 	return curr != nullptr;
@@ -460,14 +449,12 @@ namespace Designar
 	  return;
 
 	pred = curr;
-	++pos;
 	curr = curr->get_next();
       }
 
-      void reset()
+      void reset_first()
       {
 	curr = ((BaseList *) list_ptr)->get_first();
-	pos = 0;
       }
 
       T del()
@@ -577,26 +564,6 @@ namespace Designar
 	  return item;
       }
     throw std::out_of_range("Index out of range");
-  }
-
-  template <typename T>
-  void SLList<T>::Iterator::locate_position()
-  {
-    if (curr == nullptr)
-      {
-	pos = list_ptr->size();
-	pred = ((BaseList *)list_ptr)->get_last();
-	return;
-      }
-    
-    Node * ptr = ((BaseList *)list_ptr)->get_first();
-
-    while (ptr != curr)
-      {
-	pred = ptr;
-	ptr = ptr->get_next();
-	++pos;
-      }
   }
 
   template <typename T>
@@ -782,33 +749,27 @@ namespace Designar
       using Base = DL::Iterator;
       
       DLList * list_ptr;
-      lint_t   pos;
-
-      void locate_position();
-
     public:
       Iterator()
-	: Base(), list_ptr(nullptr), pos(-1)
+	: Base(), list_ptr(nullptr)
       {
 	// empty
       }
       
       Iterator(const DLList & l)
-	: Base(&const_cast<DLList &>(l)), list_ptr(&const_cast<DLList &>(l)),
-	  pos(0)
+	: Base(&const_cast<DLList &>(l)), list_ptr(&const_cast<DLList &>(l))
       {
 	// empty
       }
       
       Iterator(const DLList & l, DL * c)
-	: Base(&const_cast<DLList &>(l), c), list_ptr(&const_cast<DLList &>(l)),
-	  pos(0)
+	: Base(&const_cast<DLList &>(l), c), list_ptr(&const_cast<DLList &>(l))
       {
-	locate_position();
+	// empty
       }
 
       Iterator(const Iterator & it)
-	: Base(it), list_ptr(it.list_ptr), pos(it.pos)
+	: Base(it), list_ptr(it.list_ptr)
       {
 	// empty
       }
@@ -826,7 +787,6 @@ namespace Designar
 
 	(Base &) *this = it;
 	list_ptr = it.list_ptr;
-	pos = it.pos;
 	return *this;
       }
 
@@ -840,12 +800,6 @@ namespace Designar
       {
 	Base::swap(it);
 	std::swap(list_ptr, it.list_ptr);
-	std::swap(pos, it.pos);
-      }
-
-      lint_t get_position() const
-      {
-	return pos;
       }
 
       T & get_current()
@@ -865,18 +819,6 @@ namespace Designar
 	delete p;
 	--list_ptr->num_items;
 	return ret_val;
-      }
-
-      void next()
-      {
-	Base::next();
-	++pos;
-      }
-
-      void prev()
-      {
-	Base::prev();
-	--pos;
       }
     };
 
@@ -962,18 +904,6 @@ namespace Designar
 	  return item;
       }
     throw std::out_of_range("Index out of range");
-  }
-
-  template <typename T>
-  void DLList<T>::Iterator::locate_position()
-  {    
-    DL * ptr = list_ptr->get_next();
-    
-    while (ptr != Base::get_location())
-      {
-	ptr = ptr->get_next();
-	++pos;
-      }
   }
   
 } // end namespace Designar

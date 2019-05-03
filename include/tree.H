@@ -567,13 +567,12 @@ namespace Designar
 	DynStack<Node *> stack;
 	Node *    root = Node::null;
 	Node *    curr = Node::null;
-	lint_t    pos = 0;
 
 	Node * last(Node *);
 
       protected:
 	PreorderIterator(const RankedTreap & t, int)
-	  : root(t.root), curr(Node::null), pos(t.size())
+	  : root(t.root), curr(Node::null)
 	{
 	  // empty
 	}
@@ -591,7 +590,7 @@ namespace Designar
 	}
 
 	PreorderIterator(const PreorderIterator & it)
-	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	  : stack(it.stack), root(it.root), curr(it.curr)
 	{
 	  // empty
 	}
@@ -609,7 +608,6 @@ namespace Designar
 	  stack = it.stack;
 	  root = it.root;
 	  curr = it.curr;
-	  pos = it.pos;
 
 	  return *this;
 	}
@@ -625,19 +623,12 @@ namespace Designar
 	  std::swap(stack, it.stack);
 	  std::swap(root, it.root);
 	  std::swap(curr, it.curr);
-	  std::swap(pos, it.pos);
 	}
 
-	void reset()
+	void reset_first()
 	{
 	  stack.clear();
-	  pos = 0;
 	  curr = root;
-	}
-
-	nat_t get_position() const
-	{
-	  return pos;
 	}
 
 	bool has_current() const
@@ -670,8 +661,6 @@ namespace Designar
 
 	  curr = L(curr);
 
-	  ++pos;
-
 	  if (curr != Node::null)
 	    return;
 
@@ -688,7 +677,6 @@ namespace Designar
 	DynStack<Node *> stack;
 	Node * root = Node::null;
 	Node * curr = Node::null;
-	lint_t pos = 0;
 	
 	Node * search_min(Node *);
 	
@@ -698,15 +686,14 @@ namespace Designar
 	{
 	  if (root == Node::null)
 	    return;
-	  
-	  pos = 0;
+
 	  curr = search_min(root);
 	}
 
       protected:
 	InorderIterator(const RankedTreap & t, int)
 	  : set_ptr(const_cast<RankedTreap *>(&t)), root(set_ptr->root),
-	    curr(Node::null), pos(COUNT(root))
+	    curr(Node::null)
 	{
 	  // empty
 	}
@@ -724,8 +711,7 @@ namespace Designar
 	}
 
 	InorderIterator(const InorderIterator & it)
-	  : set_ptr(it.set_ptr), stack(it.stack), root(it.root), curr(it.curr),
-	    pos(it.pos)
+	  : set_ptr(it.set_ptr), stack(it.stack), root(it.root), curr(it.curr)
 	{
 	  // empty
 	}
@@ -743,7 +729,6 @@ namespace Designar
 	  stack = it.stack;
 	  root = it.root;
 	  curr = it.curr;
-	  pos = it.pos;
 
 	  return *this;
 	}
@@ -759,10 +744,9 @@ namespace Designar
 	  std::swap(stack, it.stack);
 	  std::swap(root, it.root);
 	  std::swap(curr, it.curr);
-	  std::swap(pos, it.pos);
 	}
 
-	void reset()
+	void reset_first()
 	{
 	  stack.clear();
 	  init();
@@ -770,14 +754,8 @@ namespace Designar
 
 	void reset_last()
 	{
-	  pos = COUNT(root) - 1;
 	  stack.clear();
 	  curr = search_max(root);
-	}
-
-	nat_t get_position() const
-	{
-	  return pos;
 	}
 
 	bool has_current() const
@@ -806,7 +784,6 @@ namespace Designar
 	  if (not has_current())
 	    throw std::overflow_error("There is not current element");
 
-	  ++pos;
 	  curr = R(curr);
 	
 	  if (curr != Node::null)
@@ -823,7 +800,6 @@ namespace Designar
 	  
 	  Key to_remove = KEY(curr);
 	  next();
-	  --pos;
 	  set_ptr->remove(to_remove);
 
 	  return to_remove;
@@ -837,7 +813,6 @@ namespace Designar
 	DynStack<Node *> stack;
 	Node * root = Node::null;
 	Node * curr = Node::null;
-	lint_t pos = 0;
 
 	Node * first(Node *);
 
@@ -846,13 +821,12 @@ namespace Designar
 	  if (root == Node::null)
 	    return;
 
-	  pos = 0;
 	  curr = first(root);
 	}
 
       protected:
 	PostorderIterator(const RankedTreap & t, int)
-	  : root(t.root), curr(Node::null), pos(t.size())
+	  : root(t.root), curr(Node::null)
 	{
 	  // empty
 	}
@@ -870,7 +844,7 @@ namespace Designar
 	}
 
 	PostorderIterator(const PostorderIterator & it)
-	  : stack(it.stack), root(it.root), curr(it.curr), pos(it.pos)
+	  : stack(it.stack), root(it.root), curr(it.curr)
 	{
 	  // empty
 	}
@@ -888,7 +862,6 @@ namespace Designar
 	  stack = it.stack;
 	  root = it.root;
 	  curr = it.curr;
-	  pos = it.pos;
 
 	  return *this;
 	}
@@ -904,10 +877,9 @@ namespace Designar
 	  std::swap(stack, it.stack);
 	  std::swap(root, it.root);
 	  std::swap(curr, it.curr);
-	  std::swap(pos, it.pos);
 	}
 
-	void reset()
+	void reset_first()
 	{
 	  stack.clear();
 	  init();
@@ -915,14 +887,8 @@ namespace Designar
 
 	void reset_last()
 	{
-	  pos = -1;
 	  stack.clear();
 	  curr = root;
-	}
-
-	nat_t get_position() const
-	{
-	  return pos;
 	}
 
 	bool has_current() const
@@ -951,7 +917,6 @@ namespace Designar
 	  if (not has_current())
 	    throw std::overflow_error("There is not current element");
 
-	  ++pos;
 
 	  if (stack.is_empty())
 	    {
