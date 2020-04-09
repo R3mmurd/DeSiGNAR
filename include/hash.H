@@ -607,15 +607,17 @@ namespace Designar
 	std::swap(pos, it.pos);
       }
 
-      void reset()
+      void reset_first()
       {
 	pos = 0;
 	locate_next(0);
       }
 
-      lint_t get_position() const
+      void reset_last()
       {
-	return pos;
+	pos = set_ptr->N();
+	locate_end();
+	prev();
       }
 
       bool has_current() const
@@ -721,8 +723,6 @@ namespace Designar
     
     if (set_pos > 0)
       list_it = set_ptr->at(set_pos - 1).end();
-    
-    return;
   }
 
   template <typename Key, class Cmp>

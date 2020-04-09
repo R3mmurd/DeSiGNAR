@@ -52,7 +52,10 @@ template <typename It>
 string to_str(const It & it)
 {
   stringstream s;
-  s << "Iterator in position " << it.get_position();
+  if (it.has_current())
+    s << "Iterator in value " << it.get_current();
+  else
+    s << "Iterator at end";
   return s.str();
 }
 

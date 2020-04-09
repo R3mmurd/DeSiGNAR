@@ -48,6 +48,11 @@ namespace Designar
     return std::binomial_distribution<nat_t>(n, p)(rng);
   }
 
+  bool flip(rng_t & rng, real_t p)
+  {
+    return random_Bernoulli(rng, p);
+  }
+
   nat_t throw_dice(rng_t & rng, nat_t num_faces)
   {
     return random_uniform(rng, num_faces) + 1;

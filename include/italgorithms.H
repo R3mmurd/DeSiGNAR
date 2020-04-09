@@ -44,7 +44,19 @@ namespace Designar
   template <class It, class Op>
   void for_each_it(const It &, const It &, Op && op = Op());
 
-  template <class It, class ContainerRet, class Pred>
+  template <class It, class Op>
+  void enum_for_each_it(const It &, const It &, Op &);
+
+  template <class It, class Op>
+  void enum_for_each_it(const It &, const It &, Op && op = Op());
+
+  template <class It, class Op>
+  void for_each_pair_it(const It &, const It &, Op &);
+
+  template <class It, class Op>
+  void for_each_pair_it(const It &, const It &, Op && op = Op());
+
+  template <class ContainerRet, class It, class Pred>
   ContainerRet filter_it(const It &, const It &, Pred &);
 
   template <class ContainerRet, class It, class Pred>
@@ -171,12 +183,14 @@ namespace Designar
   template <typename RetT, class It>
   RetT & nth_it(const It & a, const It & b, nat_t pos)
   {
-    RetT * ret_val = nth_ptr_it<RetT, It>(a, b, pos);
+    for (It i = a; i != b; ++i)
+      {
+	if (pos == 0)
+	  return *i;
+	--pos;
+      }
 
-    if (ret_val == nullptr)
-      throw std::overflow_error("Index is to large");
-
-    return *ret_val;
+    throw std::overflow_error("Index is to large");
   }
   
   template <class It, class Op>
@@ -190,6 +204,35 @@ namespace Designar
   void for_each_it(const It & a, const It & b, Op && op)
   {
     for_each_it<It, Op>(a, b, op);
+  }
+
+  template <class It, class Op>
+  void enum_for_each_it(const It & a, const It & b, Op & op)
+  {
+    nat_t p = 0;
+    for (It i = a; i != b; ++i, ++p)
+      op(p, *i);
+  }
+
+  template <class It, class Op>
+  void enum_for_each_it(const It & a, const It & b, Op && op)
+  {
+    enum_for_each_it<It, Op>(a, b, op);
+  }
+
+  template <class It, class Op>
+  void for_each_pair_it(const It & a, const It & b, Op & op)
+  {
+    It last_i = prev_it(b);
+    for (It i = a; i != last_i; ++i)
+      for (It j = next_it(i); j != b; ++j)
+	op(*i, *j);
+  }
+
+  template <class It, class Op>
+  void for_each_pair_it(const It & a, const It & b, Op && op)
+  {
+    for_each_pair_it<It, Op>(a, b, op);
   }
 
   template <class ContainerRet, class It, class Pred>

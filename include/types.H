@@ -38,6 +38,7 @@
 # include <chrono>
 # include <random>
 # include <functional>
+# include <regex>
 # include <thread>
 # include <mutex>
 # include <condition_variable>

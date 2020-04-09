@@ -137,7 +137,7 @@ namespace Designar
     RetType<RET_CPY, T, T &> operator [] (nat_t i)
     {
       Base::me().move_to(i);
-      return Base::mes().get_current();
+      return Base::me().get_current();
     }
     
     Iterator & operator += (nat_t p)
@@ -187,6 +187,33 @@ namespace Designar
     }
   };
 
+  template <class It>
+  It next_it(const It & it)
+  {
+    It ret_val = it;
+    ret_val.next();
+    return ret_val;
+  }
+
+  template <class It>
+  It next_it_c(const It & it)
+  {
+    It ret_val = it;
+    ret_val.next();
+
+    if (not ret_val.has_current())
+      ret_val.reset_first();
+
+    return ret_val;
+  }
+
+  template <class It>
+  It prev_it(const It & it)
+  {
+    It ret_val = it;
+    ret_val.prev();
+    return ret_val;
+  }
 } // end namespace Designar
   
 # endif // DSGITERATOR_H

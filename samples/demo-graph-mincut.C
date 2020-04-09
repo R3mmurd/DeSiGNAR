@@ -43,7 +43,7 @@ int main(int argc, char * argv[])
   
   cout << "Building random graph...\n";
   now.start();
-  GT g = ps_random_graph<GT>(num_nodes, prob_arcs, seed, true);
+  GT g = er_random_graph<GT>(num_nodes, prob_arcs, seed, true);
   auto dt1 = now.elapsed();
   cout << "Done!\n";
   

@@ -43,7 +43,7 @@ int main()
   assert(count_permutations(3, 3) == 6);
 
   for (nat_t i = 0; i <= 10; ++i)
-    assert(count_permutations(i,i) == factorial(i));
+    assert(count_permutations(i, i) == factorial(i));
 
   for (nat_t i = 0; i <= 10; ++i)
     assert(count_permutations(i, nat_t(0)) == 1);

@@ -141,14 +141,14 @@ namespace Designar
       curr = std::min(p, array_ptr->size());
     }
     
-    void reset()
+    void reset_first()
     {
       curr = 0;
     }
-    
-    nat_t get_position() const
+
+    void reset_last()
     {
-      return curr;
+      curr = array_ptr->size() - 1;
     }
   };
 

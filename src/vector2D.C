@@ -84,7 +84,7 @@ namespace Designar
     y *= -1.;
   }
 
-  void Vector2D::scale(double r)
+  void Vector2D::scale(real_t r)
   {
     x *= r;
     y *= r;

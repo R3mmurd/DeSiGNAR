@@ -126,13 +126,12 @@ namespace Designar
 	// empty
       }
 
-      Iterator(const Range & _r, T current_position)
-	: r(_r), c(r.min() + current_position * r.step_size()),
-	  p(current_position)
+      Iterator(const Range & _r, nat_t pos)
+	: r(_r), c((r.max() - r.min()) * pos), p(pos)
       {
 	// empty
       }
-      
+
       bool has_current() const
       {
 	return c < r.max();
@@ -182,10 +181,15 @@ namespace Designar
 	c -= n * r.step_size();
       }
 
-      void reset()
+      void reset_first()
       {
 	c = r.min();
-	p = 0;
+      }
+
+      void reset_last()
+      {
+	p = r.size() - 1;
+	c = p * r.step();
       }
     };
 

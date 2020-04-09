@@ -93,45 +93,7 @@ int main()
   nat_t nc = 0;
   nat_t ac = 0;
 
-  string file_name = "tmp.dsgg";
-
-  GT g1 = p_random_graph<GT>(100, 0.7, false,
-			     [&nc] (auto & p)
-			     {
-			       p->get_info() = ++nc;
-			     },
-			     [&ac] (auto & a)
-			     {
-			       a->get_info() = ++ac;
-			     });
-
-  OutputGraph<GT> outg;
-  InputGraph<GT> ing;
-
-  ofstream out;
-  ifstream in;
-  
-  out.open(file_name);
-  outg.write_in_text_mode(g1, out);
-  out.close();
-  in.open(file_name);
-  assert(in);
-  GT g2 = ing.read_in_text_mode(in);
-  in.close();
-  remove(file_name.c_str());
-  assert(graph_equal(g1, g2));
-
-  out.open(file_name);
-  outg.write_in_bin_mode(g1, out);
-  out.close();
-  in.open(file_name);
-  assert(in);
-  GT g3 = ing.read_in_bin_mode(in);
-  in.close();
-  remove(file_name.c_str());
-  assert(graph_equal(g1, g3));
-
-  GT dg1 = p_random_graph<GT>(100, 0.7, false,
+  GT g1 = er_random_graph<GT>(100, 0.7, false,
 			      [&nc] (auto & p)
 			      {
 				p->get_info() = ++nc;
@@ -141,27 +103,62 @@ int main()
 				a->get_info() = ++ac;
 			      });
 
-  OutputGraph<GT> outdg;
-  InputGraph<GT> indg;
+  OutputGraph<GT> outg;
+  InputGraph<GT> ing;
+
+  ofstream out;
+  ifstream in;
   
-  out.open(file_name);
+  out.open("tmp-g1-txt.dsgg");
+  outg.write_in_text_mode(g1, out);
+  out.close();
+  in.open("tmp-g1-txt.dsgg");
+  assert(in);
+  GT g2 = ing.read_in_text_mode(in);
+  in.close();
+  assert(graph_equal(g1, g2));
+
+  out.open("tmp-g1-bin.dsgg");
+  outg.write_in_bin_mode(g1, out);
+  out.close();
+  in.open("tmp-g1-bin.dsgg");
+  assert(in);
+  GT g3 = ing.read_in_bin_mode(in);
+  in.close();
+  assert(graph_equal(g1, g3));
+
+  nc = 0;
+  ac = 0;
+
+  DGT dg1 = er_random_graph<DGT>(100, 0.7, false,
+				 [&nc] (auto & p)
+				 {
+				   p->get_info() = ++nc;
+				 },
+				 [&ac] (auto & a)
+				 {
+				   a->get_info() = ++ac;
+				 });
+  
+  OutputGraph<DGT> outdg;
+  InputGraph<DGT> indg;
+  
+  out.open("tmp-dg1-txt.dsgg");
   outdg.write_in_text_mode(dg1, out);
   out.close();
-  in.open(file_name);
+  in.open("tmp-dg1-txt.dsgg");
   assert(in);
-  GT dg2 = indg.read_in_text_mode(in);
+  DGT dg2 = indg.read_in_text_mode(in);
   in.close();
-  remove(file_name.c_str());
   assert(graph_equal(dg1, dg2));
 
-  out.open(file_name);
+  out.open("tmp-dg1-bin.dsgg");
   outdg.write_in_bin_mode(dg1, out);
   out.close();
-  in.open(file_name);
+  in.open("tmp-dg1-bin.dsgg");
   assert(in);
-  GT dg3 = indg.read_in_bin_mode(in);
+  DGT dg3 = indg.read_in_bin_mode(in);
   in.close();
-  remove(file_name.c_str());
   assert(graph_equal(dg1, dg3));
 
   cout << "Everything ok!\n";
