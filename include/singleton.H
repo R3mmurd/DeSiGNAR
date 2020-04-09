@@ -32,10 +32,10 @@ namespace Designar
 
   /** Generic Singleton.
    *
-   *  This class was designed in order to being reused for any class which 
+   *  This class was designed in order to be reused for any class which 
    *  requires only one instance.
    *
-   *  @param T Base class.
+   *  @param T Concrete singleton class.
    *
    *  Usage example:
    *
