@@ -1,4 +1,6 @@
-CXX = clang++ -std=c++14
+CXX = clang++
+
+FLAGS = -std=c++14 -fPIE
 
 AR = ar
 
@@ -35,10 +37,10 @@ library : $(OBJECTS)
 	$(AR) -cvq $(LIBDIR)/$(LOCALLIB) $(OBJECTS)
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.C
-	$(CXX) $(OPT) $(INCLUDEPATH) -c $< -o $@
+	$(CXX) $(FLAGS) $(OPT) $(INCLUDEPATH) -c $< -o $@
 
 $(BINDIR)/%: $(SAMPLESDIR)/%.C
-	$(CXX) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
+	$(CXX) $(FLAGS) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
 
 samples: library $(BIN)
 

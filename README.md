@@ -1,9 +1,9 @@
-![alt text](logo.png)
+![logo](logo.png)
 
 # DeSiGNAR (Data Structures GeNeral librARy)
 
-This is the beginning of a complete project which is expected to be
-a general library to make different kinds of models and simulation.
+This is a library that implements important generic Data Structures and
+algorithms.
 
 The structure of this library is:
 
@@ -16,24 +16,25 @@ The structure of this library is:
 | *lib* |When you compile the library, in this directory will be added the file **libDesignar.a.**|
 | *bin* |When you compile the samples, in this directory will be added the binary files to execute.|
 
-In order to compile the library you should execute 
 
-```shell
+## Getting started
 
-~$ make library
+- Build the static library
 
-```
-In order to compile the samples should execute 
+  ```shell
+    ~$ make library
+  ```
 
-```shell
+- Compile samples 
 
-~$ make samples
-
-```
+  ```shell
+  $ make samples
+  ```
 
 ## TODO:
 
 - [x] Start documentation.
 - [ ] Tarjan Algorithm for computing strong connected components to Digraph.
 - [ ] Making test for Graph and Digraph.
+
 
