@@ -22,7 +22,7 @@ The structure of this library is:
 - Build the static library
 
   ```shell
-    ~$ make library
+  $ make library
   ```
 
 - Compile samples 
