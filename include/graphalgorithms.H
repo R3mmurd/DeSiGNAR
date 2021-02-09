@@ -29,15 +29,15 @@ namespace Designar
   }
   
   template <class GT, class Op>
-  void depth_first_traverse_sufix_rec(const GT &, Node<GT> *, Op &);
+  void depth_first_traverse_suffix_rec(const GT &, Node<GT> *, Op &);
 
   template <class GT, class Op>
-  void depth_first_traverse_sufix(const GT &, Op & op);
+  void depth_first_traverse_suffix(const GT &, Op & op);
   
   template <class GT, class Op>
-  void depth_first_traverse_sufix(const GT & g, Op && op = Op())
+  void depth_first_traverse_suffix(const GT & g, Op && op = Op())
   {
-    depth_first_traverse_sufix<GT, Op>(g, op);
+    depth_first_traverse_suffix<GT, Op>(g, op);
   }
 
   template <class GT, class Op>
@@ -185,7 +185,7 @@ namespace Designar
   }
 
   template <class GT, class Op>
-  void depth_first_traverse_sufix_rec(const GT & g, Node<GT> * p, Op & op)
+  void depth_first_traverse_suffix_rec(const GT & g, Node<GT> * p, Op & op)
   {
     if (p->is_visited(GraphTag::DEPTH_FIRST))
       return;
@@ -203,7 +203,7 @@ namespace Designar
 
 	Node<GT> * q = it.get_tgt_node();
 
-	depth_first_traverse_sufix_rec(g, q, op);
+	depth_first_traverse_suffix_rec(g, q, op);
       }
 
     op(p);
@@ -324,7 +324,7 @@ namespace Designar
   }
 
   template <class GT, class Op>
-  void depth_first_traverse_sufix(const GT & g, Op & op)
+  void depth_first_traverse_suffix(const GT & g, Op & op)
   {
     g.reset_tag(GraphTag::DEPTH_FIRST);
 
@@ -335,7 +335,7 @@ namespace Designar
 	if (p->is_visited(GraphTag::DEPTH_FIRST))
 	  continue;
 
-	depth_first_traverse_sufix_rec(g, p, op);
+	depth_first_traverse_suffix_rec(g, p, op);
       }
   }
 
@@ -814,7 +814,7 @@ namespace Designar
 
     FixedArray<Node<GT> *> df(g.get_num_nodes());
     nat_t i = 0;
-    depth_first_traverse_sufix(g, [&df, &i] (Node<GT> * p)
+    depth_first_traverse_suffix(g, [&df, &i] (Node<GT> * p)
 			       {
 				 df[i++] = p;
 			       });
@@ -847,7 +847,7 @@ namespace Designar
     
     SLList<Node<GT> *> ret;
 
-    depth_first_traverse_sufix(g, [&ret] (Node<GT> * p)
+    depth_first_traverse_suffix(g, [&ret] (Node<GT> * p)
 			       {
 				 ret.insert(p);
 			       });
