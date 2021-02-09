@@ -103,9 +103,9 @@ int main()
   
   cout << endl << endl;
 
-  cout << "Depth first traverse (sufix): ";
+  cout << "Depth first traverse (suffix): ";
   
-  depth_first_traverse_sufix(i, [] (auto p)
+  depth_first_traverse_suffix(i, [] (auto p)
 	      {
 		cout << p->get_info() << " ";
 	      });
@@ -205,9 +205,9 @@ int main()
   
   cout << endl << endl;
 
-  cout << "Depth first traverse (sufix): ";
+  cout << "Depth first traverse (suffix): ";
   
-  depth_first_traverse_sufix(di, [] (auto p)
+  depth_first_traverse_suffix(di, [] (auto p)
 	       {
 		 cout << p->get_info() << " ";
 	       });

@@ -136,7 +136,7 @@ namespace Designar
 
   template <class ArrayType, typename T>
   class TArrayIterator : public ArrayIterator<TArrayIterator<ArrayType, T>,
-					      ArrayType, T, false>
+					       ArrayType, T, false>
   {
     using Base = ArrayIterator<TArrayIterator<ArrayType, T>,
 			       ArrayType, T, false>;
