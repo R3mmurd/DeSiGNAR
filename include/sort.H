@@ -157,8 +157,8 @@ namespace Designar
       }
   }
 
-  template <class ArrayType,
-	    class Cmp = std::less<typename ArrayType::DataType>> inline
+  template <class ArrayType, 
+            class Cmp = std::less<typename ArrayType::DataType>> inline
   void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp && cmp = Cmp())
   {
     insertion_sort<ArrayType, Cmp>(a, l, r, cmp);

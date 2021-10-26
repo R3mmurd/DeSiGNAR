@@ -76,7 +76,7 @@ namespace Designar
 	x->cookie() = y;
       }
   }
-
+  
   template <class SG, class TG = SG>
   void map_nodes(Node<SG> * p, Node<TG> * q)
   {
