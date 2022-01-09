@@ -162,7 +162,7 @@ namespace Designar
     void read(std::istream &);
 
     const RWProxy operator [] (nat_t) const;
-
+    
     RWProxy operator [] (nat_t);
 
     class Iterator : public ArrayIterator<Iterator, DynBitSet, bool, true>
