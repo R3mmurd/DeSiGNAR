@@ -30,6 +30,8 @@ namespace Designar
 
     Byte(int);
     
+    Byte(const Byte & b);
+    
     bool get_bit(unsigned char) const;
     
     void set_bit(unsigned char, bool);

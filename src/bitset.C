@@ -26,6 +26,12 @@ namespace Designar
   {
     set(num);
   }
+  
+  Byte::Byte(const Byte & b)
+    : b1(b.b1), b2(b.b2), b3(b.b3), b4(b.b4), b5(b.b5), b6(b.b6), b7(b.b7), b8(b.b8)
+  {
+    // Empty
+  }
 
   bool Byte::get_bit(unsigned char num_bit) const
   {
