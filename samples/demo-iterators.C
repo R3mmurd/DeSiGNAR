@@ -178,6 +178,27 @@ void demo_polygon_iterators(const Polygon & p)
   cout << *sit2 << endl;
 }
 
+template <typename T>
+class Value
+{
+  T value;
+  
+public:
+  Value(const T & v) : value{v} {};
+  
+  const T & get_value() const { return value; }
+};
+
+
+void demo_arrow_operator(const SLList<Value<int>> & l)
+{
+  for (auto it = l.begin(); it != l.end(); ++it)
+    cout << it->get_value() << ' ';
+    
+  cout << endl;
+}
+
+
 int main()
 {
   initializer_list<int> xs{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
@@ -221,6 +242,11 @@ int main()
   cout << "\nIterators for DynBitSet\n";
   demo_random_access_iterator<DynBitSet, bool>(
     {1,1,1,0,0,0,1,0,1,0,0,1,0,0,0,1,1,1});
+   
+  cout << "\nUsing operator -> on items\n";
+  SLList<Value<int>> vs;
+  for (auto x: xs) vs.append(Value<int>(x));
+  demo_arrow_operator(vs);
   
   return 0;
 }
