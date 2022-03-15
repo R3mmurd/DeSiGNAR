@@ -228,6 +228,8 @@ namespace Designar
       VertexIterator & operator = (VertexIterator && it)
       {
 	swap(it);
+
+	return *this;
       }
 
       void swap(VertexIterator & it)
