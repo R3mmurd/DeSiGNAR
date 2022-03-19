@@ -1051,9 +1051,9 @@ namespace Designar
     static constexpr Type ZERO = 0;
     static constexpr Type MAX  = std::numeric_limits<Type>::max();
 
-    Type & operator () (Arc<GT> & a)
+    Type & operator () (Arc<GT> * a)
     {
-      return a.get_info();
+      return a->get_info();
     }
     
     const Type & operator () (Arc<GT> * a) const
