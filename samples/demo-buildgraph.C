@@ -109,13 +109,23 @@ int main()
 
   i = 0;
 
-  GT square_grid = build_grid<GT>(4, 4, GridType::RECTANGULAR,
-				  [&i] (GT::Node * p, nat_t, nat_t)
+  GT triangular_grid = build_grid<GT>(4, 4, GridType::TRIANGULAR,
+				      [&i] (GT::Node * p, nat_t, nat_t)
     {
       p->get_info() = ++i;
     });
 
-  Dot().write_graph(square_grid, "square-grid.dot");
+  Dot().write_graph(triangular_grid, "triangular-grid.dot");
+
+  i = 0;
+
+  GT rectangular_grid = build_grid<GT>(4, 4, GridType::RECTANGULAR,
+				       [&i] (GT::Node * p, nat_t, nat_t)
+    {
+      p->get_info() = ++i;
+    });
+
+  Dot().write_graph(rectangular_grid, "rectangular-grid.dot");
 
   i = 0;
 
