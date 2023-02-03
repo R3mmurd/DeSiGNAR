@@ -696,7 +696,7 @@ namespace Designar
   
   template <typename T>
   DynArray<T>::DynArray(const std::initializer_list<T> & l)
-    : DynArray(l.size())
+    : DynArray(l.size() + 1)
   {
     for (const T & item : l)
       append(item);

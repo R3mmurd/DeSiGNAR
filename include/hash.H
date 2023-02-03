@@ -50,6 +50,29 @@ namespace Designar
     return super_fast_hash<First>(p.first) ^ super_fast_hash<Second>(p.second);
   }
 
+  template <typename T> 
+  void hash_combine(size_t & seed, const T & val)
+  {
+    seed ^= super_fast_hash<T>(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  }
+
+  template <typename T, typename ...Ts>
+  void hash_combine(size_t & seed, const T & val, const Ts &... args)
+  {
+    hash_combine(seed, val);
+    hash_combine(seed, args...);
+  }
+
+  void hash_combine(size_t& seed);
+
+  template <typename ...Ts>
+  size_t hash_val(const Ts&... args)
+  {
+    size_t seed{0};
+    hash_combine(seed, args...);
+    return seed;
+  }
+
   template <typename Key,
 	    class Cmp = std::equal_to<Key>>
   class LHashTable: private FixedArray<DLList<Key>>,

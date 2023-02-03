@@ -606,6 +606,13 @@ namespace Designar
       return POT<GT, Distance>(a);
     }
   };
+
+  enum class GridType
+    {
+      RECTANGULAR,
+      HEXAGONAL,
+      OCTAGONAL
+    };
   
   template <class GT>
   class DftGridNodeInit
@@ -621,7 +628,7 @@ namespace Designar
   class DftGridArcInit
   {
   public:
-    void operator () (Arc<GT> *, nat_t, nat_t)
+    void operator () (Arc<GT> *)
     {
       // empty
     }

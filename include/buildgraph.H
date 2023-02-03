@@ -8,6 +8,7 @@
 # define DSGBUILDGRAPH_H
 
 # include <graphalgorithms.H>
+# include <hash.H>
 # include <random.H>
 
 namespace Designar
@@ -31,14 +32,14 @@ namespace Designar
 		ArcInit && arc_init = ArcInit());
   
   template <class GT, class NodeInit, class ArcInit>
-  GT build_grid(nat_t width, nat_t height, NodeInit & node_init,
-		ArcInit & arc_init, bool with_diagonal = true);
+  GT build_grid(nat_t width, nat_t height, GridType type,
+		NodeInit & node_init, ArcInit & arc_init);
 
   template <class GT,
 	    class NodeInit = DftGridNodeInit<GT>,
 	    class ArcInit = DftGridArcInit<GT>>
-  GT build_grid(nat_t width, nat_t height, NodeInit && node_init = NodeInit(),
-		ArcInit && arc_init = ArcInit(), bool with_diagonal = true);
+  GT build_grid(nat_t width, nat_t height, GridType type = GridType::RECTANGULAR,
+		NodeInit && node_init = NodeInit(), ArcInit && arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
   GT random_graph(nat_t, nat_t, rng_seed_t, NodeInit &, ArcInit &);
@@ -89,16 +90,16 @@ namespace Designar
       }
 
     g.for_each_node_pair([&g, &arc_init] (Node<GT> * s, Node<GT> * t)
-			 {
-			   Arc<GT> * fa = g.insert_arc(s, t);
-			   arc_init(fa);
+    {
+      Arc<GT> * fa = g.insert_arc(s, t);
+      arc_init(fa);
 
-			   if (not g.is_digraph())
-			     return;
+      if (not g.is_digraph())
+	return;
 	  
-			   Arc<GT> * ba = g.insert_arc(t, s);
-			   arc_init(ba);
-			 });
+      Arc<GT> * ba = g.insert_arc(t, s);
+      arc_init(ba);
+    });
     return g;
   }
 
@@ -138,7 +139,7 @@ namespace Designar
 	    j = next_it_c(j);
 	  }
       }
-    
+  
     return g;
   }
 
@@ -151,14 +152,15 @@ namespace Designar
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT build_grid(nat_t width, nat_t height, NodeInit & node_init,
-		ArcInit & arc_init, bool with_diagonal)
+  GT build_grid(nat_t width, nat_t height, GridType type,
+		NodeInit & node_init, ArcInit & arc_init)
   {
     if (width < 2 or height < 2)
       throw std::length_error("The minimun size must be 2 x 2");
     
     MultiDimArray<Node<GT> *, 2> mat(height, width);
-    
+    HashSet<std::pair<Node<GT> *, Node<GT>*>> arcs_index;
+  
     GT g;
 
     for (nat_t i = 0; i < height; ++i)
@@ -166,44 +168,87 @@ namespace Designar
 	{
 	  mat(i, j) = g.insert_node();
 	  node_init(mat(i ,j), i, j);
-	  
-	  if (j > 0)
+	}
+
+    DynArray<std::pair<int, int>> neighborhood{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+
+    for (nat_t i = 0; i < height; ++i)
+      for (nat_t j = 0; j < width; ++j)
+	{
+	  Node<GT> * p = mat(i, j);
+
+	  for (auto n: neighborhood)
 	    {
-	      auto a = g.insert_arc(mat(i, j - 1), mat(i, j));
-	      arc_init(a);
-	    }
-	  
-	  if (i > 0)
-	    {
-	      auto a = g.insert_arc(mat(i - 1, j), mat(i, j));
-	      arc_init(a);
-	    }
-	  
-	  if (with_diagonal)
-	    {
-	      if (i > 0 and j > 0)
-		{
-		  auto a = g.insert_arc(mat(i - 1, j - 1), mat(i, j));
-		  arc_init(a);
-		}
-	      
-	      if (i > 0 and j + 1 < width)
-		{
-		  auto a = g.insert_arc(mat(i - 1, j + 1), mat(i, j));
-		  arc_init(a);
-		}
+	      long long n_i = i + n.first;
+	      long long n_j = j + n.second;
+
+	      if (n_i < 0 or n_i >= height or n_j < 0 or n_j >= width)
+		continue;
+
+	      Node<GT> * q = mat(n_i, n_j);
+
+	      if (arcs_index.search(std::make_pair(p, q)) != nullptr)
+		continue;
+
+	      if (not g.is_digraph()
+		  and arcs_index.search(std::make_pair(q, p)) != nullptr)
+		continue;
+
+	      Arc<GT> * arc = g.insert_arc(p, q);
+	      arc_init(arc);
+	      arcs_index.insert(std::make_pair(p, q));
 	    }
 	}
+
+    if (type == GridType::HEXAGONAL or type == GridType::OCTAGONAL)
+      {
+	neighborhood = DynArray<std::pair<int, int>>{{-1, -1}, {-1, 1}};
+
+	if (type == GridType::OCTAGONAL)
+	  {
+	    neighborhood.append(std::make_pair(1, -1));
+	    neighborhood.append(std::make_pair(1, 1));
+	  }
+	
+	for (nat_t i = 0; i < height; ++i)
+	  for (nat_t j = 1; j < width; j += 2)
+	    {
+	      Node<GT> * p = mat(i, j);
+
+	      for (auto n: neighborhood)
+		{
+		  long long n_i = i + n.first;
+		  long long n_j = j + n.second;
+
+		  if (n_i < 0 or n_i >= height or n_j < 0 or n_j >= width)
+		    continue;
+
+		  Node<GT> * q = mat(n_i, n_j);
+
+		  if (arcs_index.search(std::make_pair(p, q)) != nullptr)
+		    continue;
+
+		  if (not g.is_digraph()
+		      and arcs_index.search(std::make_pair(q, p)) != nullptr)
+		    continue;
+
+		  Arc<GT> * arc = g.insert_arc(p, q);
+		  arc_init(arc);
+		  arcs_index.insert(std::make_pair(p, q));
+		}
+	    }
+      }
+	
     
     return g;
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT build_grid(nat_t width, nat_t height, NodeInit && node_init,
-		ArcInit && arc_init, bool with_diagonal)
+  GT build_grid(nat_t width, nat_t height, GridType type,
+		NodeInit && node_init, ArcInit && arc_init)
   {
     return build_grid<GT, NodeInit, ArcInit>
-      (width, height, node_init, arc_init, with_diagonal);
+      (width, height, type, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
@@ -274,22 +319,22 @@ namespace Designar
 
     g.for_each_node_pair([&g, &arc_init, prob_arc, &rng] (Node<GT> * s,
 							  Node<GT> * t)
-			 {
-			   if (flip(rng, prob_arc))
-			     {
-			       Arc<GT> * fa = g.insert_arc(s, t);
-			       arc_init(fa);
-			     }
+    {
+      if (flip(rng, prob_arc))
+	{
+	  Arc<GT> * fa = g.insert_arc(s, t);
+	  arc_init(fa);
+	}
 			   
-			   if (not g.is_digraph())
-			     return;
+      if (not g.is_digraph())
+	return;
 
-			   if (flip(rng, prob_arc))
-			     {
-			       Arc<GT> * ba = g.insert_arc(t, s);
-			       arc_init(ba);
-			     }
-			 });
+      if (flip(rng, prob_arc))
+	{
+	  Arc<GT> * ba = g.insert_arc(t, s);
+	  arc_init(ba);
+	}
+    });
     
     if (not grant_connectivity)
       return g;

@@ -106,6 +106,38 @@ int main()
 				 });
   
   Dot().write_graph(rglpc, "random-graph-lp-c.dot");
+
+  i = 0;
+
+  GT square_grid = build_grid<GT>(4, 4, GridType::RECTANGULAR,
+				  [&i] (GT::Node * p, nat_t, nat_t)
+    {
+      p->get_info() = ++i;
+    });
+
+  Dot().write_graph(square_grid, "square-grid.dot");
+
+  i = 0;
+
+  GT hexagonal_grid = build_grid<GT>(4, 4,
+				     GridType::HEXAGONAL,
+				     [&i] (GT::Node * p, nat_t, nat_t)
+    {
+      p->get_info() = ++i;
+    });
+
+  Dot().write_graph(hexagonal_grid, "hexagonal-grid.dot");
+  
+  i = 0;
+
+  GT octagonal_grid = build_grid<GT>(4, 4,
+				     GridType::OCTAGONAL,
+				     [&i] (GT::Node * p, nat_t, nat_t)
+    {
+      p->get_info() = ++i;
+    });
+
+  Dot().write_graph(octagonal_grid, "octagonal-grid.dot");
   
   return 0;
 }
