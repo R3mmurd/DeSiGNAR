@@ -609,6 +609,7 @@ namespace Designar
 
   enum class GridType
     {
+      TRIANGULAR,
       RECTANGULAR,
       HEXAGONAL,
       OCTAGONAL

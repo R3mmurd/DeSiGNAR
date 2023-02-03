@@ -159,7 +159,7 @@ namespace Designar
       throw std::length_error("The minimun size must be 2 x 2");
     
     MultiDimArray<Node<GT> *, 2> mat(height, width);
-    HashSet<std::pair<Node<GT> *, Node<GT>*>> arcs_index;
+    HashMap<std::pair<Node<GT> *, Node<GT>*>, Arc<GT> *> arcs_index;
   
     GT g;
 
@@ -196,7 +196,7 @@ namespace Designar
 
 	      Arc<GT> * arc = g.insert_arc(p, q);
 	      arc_init(arc);
-	      arcs_index.insert(std::make_pair(p, q));
+	      arcs_index.insert(std::make_pair(p, q), arc);
 	    }
 	}
 
@@ -234,10 +234,25 @@ namespace Designar
 
 		  Arc<GT> * arc = g.insert_arc(p, q);
 		  arc_init(arc);
-		  arcs_index.insert(std::make_pair(p, q));
+		  arcs_index.insert(std::make_pair(p, q), arc);
 		}
 	    }
       }
+    else if (type == GridType::TRIANGULAR)
+      for (nat_t i = 0; i < height - 1; ++i)
+	for (nat_t j = not (i % 2); j < width; j += 2)
+	  {
+	    Node<GT> * p = mat(i, j);
+	    Node<GT> * q = mat(i + 1, j);
+	    Arc<GT> **a = arcs_index.search(std::make_pair(p, q));
+
+	    if (a == nullptr)
+	      a = arcs_index.search(std::make_pair(q, p));
+
+	    if (a != nullptr)
+	      g.remove_arc(*a);
+	  }
+    
 	
     
     return g;
