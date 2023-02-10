@@ -20,29 +20,38 @@ INCLUDEDIR  = ./include
 SRCDIR      = ./src
 OBJDIR      = ./obj
 LIBDIR      = ./lib
-SAMPLESDIR  = ./samples
-BINDIR      = ./bin
+SAMPLEDIR   = ./samples
+TESTDIR     = ./tests
 INCLUDES    = $(wildcard $(INCLUDEDIR)/*.H)
 SOURCES     = $(wildcard $(SRCDIR)/*.C)
-SAMPLES     = $(wildcard $(SAMPLESDIR)/*.C)
 OBJECTS     = $(SOURCES:$(SRCDIR)/%.C=$(OBJDIR)/%.o)
-BIN         = $(SAMPLES:$(SAMPLESDIR)/%.C=$(BINDIR)/%)
+SAMPLESRC   = $(wildcard $(SAMPLEDIR)/src/*.C)
+SAMPLEBIN   = $(SAMPLESRC:$(SAMPLEDIR)/src/%.C=$(SAMPLEDIR)/bin/%)
+TESTSRC     = $(wildcard $(TESTDIR)/src/*.C)
+TESTBIN     = $(TESTSRC:$(TESTDIR)/src/%.C=$(TESTDIR)/bin/%)
 LIBNAME     = Designar
 LOCALLIB    = lib$(LIBNAME).a
 INCLUDEPATH = -I$(INCLUDEDIR)
 LIBLINK     = -L$(LIBDIR) -l$(LIBNAME) -lpthread
 
-library : $(OBJECTS) 
+all: library tests samples
+
+tests: library $(TESTBIN)
+
+samples: library $(SAMPLEBIN)
+
+library : $(INCLUDES) $(OBJECTS) 
 	$(RM) $(LIBDIR)/$(LOCALLIB)
 	$(AR) -cvq $(LIBDIR)/$(LOCALLIB) $(OBJECTS)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.C
+$(OBJDIR)/%.o: $(SRCDIR)/%.C
 	$(CXX) $(FLAGS) $(OPT) $(INCLUDEPATH) -c $< -o $@
 
-$(BINDIR)/%: $(SAMPLESDIR)/%.C
+$(TESTDIR)/bin/%: $(TESTDIR)/src/%.C
 	$(CXX) $(FLAGS) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
 
-samples: library $(BIN)
+$(SAMPLEDIR)/bin/%: $(SAMPLEDIR)/src/%.C
+	$(CXX) $(FLAGS) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
 
 clean:
-	$(RM) *~ $(INCLUDEDIR)/*~ $(SRCDIR)/*~ $(SAMPLESDIR)/*~ $(OBJECTS) $(BIN)
+	$(RM) *~ $(INCLUDEDIR)/*~ $(SRCDIR)/*~ $(SAMPLEDIR)/src/*~ $(TESTDIR)/src/*~ $(OBJECTS) $(SAMPLEBIN) $(TESTBIN)

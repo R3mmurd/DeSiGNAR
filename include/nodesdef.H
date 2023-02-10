@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGNODESDEF_H
-# define DSGNODESDEF_H
+#pragma once
 
-# include <types.H>
-# include <iterator.H>
+#include <types.H>
+#include <iterator.H>
 
 namespace Designar
 {
@@ -1106,5 +1105,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGNODESDEF_H

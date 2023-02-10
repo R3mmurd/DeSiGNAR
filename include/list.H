@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGLIST_H
-# define DSGLIST_H
+#pragma once
 
-# include <nodesdef.H>
-# include <containeralgorithms.H>
+#include <nodesdef.H>
+#include <containeralgorithms.H>
 
 namespace Designar
 {
@@ -889,5 +888,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGLIST_H

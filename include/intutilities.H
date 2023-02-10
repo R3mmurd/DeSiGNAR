@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGINTUTILITIES_H
-# define DSGINTUTILITIES_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
@@ -88,5 +87,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGINTUTILITIES_H

@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGTYPETRAITS_H
-# define DSGTYPETRAITS_H
+#pragma once
 
-# include <type_traits>
+#include <type_traits>
 
 namespace Designar
 {
@@ -27,5 +26,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGTYPETRAITS_H

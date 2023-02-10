@@ -4,7 +4,7 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# include <graphutilities.H>
+#include <graphutilities.H>
 
 namespace Designar
 {
@@ -40,7 +40,7 @@ namespace Designar
     tag = 0;
   }
 
-  lint_t & CommonNodeArc::counter()
+  int_t & CommonNodeArc::counter()
   {
     return _counter;
   }

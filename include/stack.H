@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSTACK_H
-# define DSGSTACK_H
+#pragma once
 
-# include <array.H>
-# include <list.H>
+#include <array.H>
+#include <list.H>
 
 namespace Designar
 {
@@ -423,5 +422,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGSTACK_H

@@ -4,13 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGGRAPH_H
-# define DSGGRAPH_H
+#pragma once
 
-# include <nodesdef.H>
-# include <graphutilities.H>
-# include <italgorithms.H>
-# include <sort.H>
+#include <nodesdef.H>
+#include <graphutilities.H>
+#include <italgorithms.H>
+#include <sort.H>
 
 namespace Designar
 {
@@ -2299,5 +2298,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-    
-# endif // DSGGRAPH_H

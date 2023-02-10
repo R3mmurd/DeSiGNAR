@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGITERATOR_H
-# define DSGITERATOR_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
@@ -198,4 +197,3 @@ namespace Designar
   }
 } // end namespace Designar
   
-# endif // DSGITERATOR_H

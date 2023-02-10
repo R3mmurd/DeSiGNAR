@@ -4,15 +4,14 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGRANDOM_H
-# define DSGRANDOM_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
 
-  constexpr lint_t NUM_BITS               = 64;
+  constexpr int_t NUM_BITS               = 64;
   constexpr real_t DEFAULT_P              = 0.5;
   constexpr nat_t  DEFAULT_DICE_NUM_FACES = 6;
 
@@ -53,5 +52,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGRANDOM_H

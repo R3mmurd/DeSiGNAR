@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGPOLYGON_H
-# define DSGPOLYGON_H
+#pragma once
 
-# include <segment.H>
-# include <nodesdef.H>
-# include <italgorithms.H>
+#include <segment.H>
+#include <nodesdef.H>
+#include <italgorithms.H>
 
 namespace Designar
 {
@@ -584,5 +583,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGPOLYGON_H

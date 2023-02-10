@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGTRIANGLE_H
-# define DSGTRIANGLE_H
+#pragma once
 
-# include <segment.H>
+#include <segment.H>
 
 namespace Designar
 {
@@ -254,5 +253,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGTRIANGLE_H

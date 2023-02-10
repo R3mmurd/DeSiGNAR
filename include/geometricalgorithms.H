@@ -4,13 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGGEOMETRICALGORITHMS_H
-# define DSGGEOMETRICALGORITHMS_H
+#pragma once
 
-# include <polygon.H>
-# include <list.H>
-# include <set.H>
-# include <sort.H>
+#include <polygon.H>
+#include <list.H>
+#include <set.H>
+#include <sort.H>
 
 namespace Designar
 {
@@ -267,5 +266,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGGEOMETRICALGORITHMS_H

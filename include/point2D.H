@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGPOINT_H
-# define DSGPOINT_H
+#pragma once
 
-# include <math.H>
+#include <math.H>
 
 namespace Designar
 {
@@ -220,9 +219,9 @@ namespace Designar
     }
   };
 
-  class PointInt2D : public GenPoint2D<lint_t>
+  class PointInt2D : public GenPoint2D<int_t>
   {
-    using Base = GenPoint2D<lint_t>;
+    using Base = GenPoint2D<int_t>;
     using Base::Base;
   };
 
@@ -233,5 +232,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGPOINT_H

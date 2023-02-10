@@ -11,11 +11,10 @@ The structure of this library is:
 | :-------------: |:-------------|
 | *include*     | Contains all the header files. |
 | *src*      | Contains all the source files (implementations declared in headers.|
-| *samples* | Contains some test and demos with the usage of the differents developed abstractions.|
+| *samples* | Contains some demos with the usage of the differents developed abstractions.|
+| *tests* | Contains some tests of the differents developed abstractions.|
 | *obj* |In this directory will be created all the objects files when you compile the library.|
 | *lib* |When you compile the library, in this directory will be added the file **libDesignar.a.**|
-| *bin* |When you compile the samples, in this directory will be added the binary files to execute.|
-
 
 ## Getting started
 
@@ -31,10 +30,14 @@ The structure of this library is:
   $ make samples
   ```
 
-## TODO:
+  - Compile tests
 
-- [x] Start documentation.
-- [ ] Tarjan Algorithm for computing strong connected components to Digraph.
-- [ ] Making test for Graph and Digraph.
+  ```shell
+  $ make tests
+  ```
 
+  - Compile all of the above
 
+  ```shell
+  $ make all
+  ```
