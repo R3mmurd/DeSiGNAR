@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSINGLETON_H
-# define DSGSINGLETON_H
+#pragma once
 
-# include <memory>
+#include <memory>
 
 namespace Designar
 {
@@ -89,6 +88,4 @@ namespace Designar
     std::unique_ptr<Singleton<T>>(nullptr);
 
 } // end namespace Designar
-
-# endif // DSGSINGLETON_H
 

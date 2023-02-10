@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGMATH_H
-# define DSGMATH_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
@@ -168,5 +167,3 @@ namespace Designar
   }
  
 } // end namespace Designar
-
-# endif // DSGMATH_H

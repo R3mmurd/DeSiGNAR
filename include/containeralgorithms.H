@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGCONTAINERALGORITHMS_H
-# define DSGCONTAINERALGORITHMS_H
+#pragma once
 
-# include <italgorithms.H>
+#include <italgorithms.H>
 
 namespace Designar
 {
@@ -308,5 +307,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGCONTAINERALGORITHMS_H

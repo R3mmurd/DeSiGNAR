@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGQUEUE_H
-# define DSGQUEUE_H
+#pragma once
 
-# include <array.H>
-# include <list.H>
+#include <array.H>
+#include <list.H>
 
 namespace Designar
 {
@@ -552,5 +551,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGQUEUE_H

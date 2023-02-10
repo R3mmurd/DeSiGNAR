@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGMAP_H
-# define DSGMAP_H
+#pragma once
 
-# include <set.H>
+#include <set.H>
 
 namespace Designar
 {
@@ -624,5 +623,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGMAP_H

@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSEGMENT_H
-# define DSGSEGMENT_H
+#pragma once
 
-# include <point2D.H>
+#include <point2D.H>
 
 namespace Designar
 {
@@ -306,5 +305,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGSEGMENT_H

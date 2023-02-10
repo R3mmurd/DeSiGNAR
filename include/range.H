@@ -4,13 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGRANGE_H
-# define DSGRANGE_H
+#pragma once
 
-# include <types.H>
-# include <math.H>
-# include <iterator.H>
-# include <containeralgorithms.H>
+#include <types.H>
+#include <math.H>
+#include <iterator.H>
+#include <containeralgorithms.H>
 
 namespace Designar
 {
@@ -217,5 +216,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGRANGE__H

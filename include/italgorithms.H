@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGITALGORITHMS_H
-# define DSGITALGORITHMS_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
@@ -557,5 +556,3 @@ namespace Designar
   }
 
 } // end namespace Designar
-
-# endif // DSGITALGORITHMS_H

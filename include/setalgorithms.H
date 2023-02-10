@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSETALGORITHMS_H
-# define DSGSETALGORITHMS_H
+#pragma once
 
-# include <types.H>
-# include <typetraits.H>
+#include <types.H>
+#include <typetraits.H>
 
 namespace Designar
 {
@@ -116,5 +115,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGSETALGORITHMS_H

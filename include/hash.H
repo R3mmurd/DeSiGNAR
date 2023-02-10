@@ -4,14 +4,13 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGHASH_H
-# define DSGHASH_H
+#pragma once
 
-# include <array.H>
-# include <list.H>
-# include <containeralgorithms.H>
-# include <setalgorithms.H>
-# include <iterator.H>
+#include <array.H>
+#include <list.H>
+#include <containeralgorithms.H>
+#include <setalgorithms.H>
+#include <iterator.H>
 
 #undef get16bits
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__)	\
@@ -536,9 +535,9 @@ namespace Designar
       friend class BasicIterator<Iterator, Key>;
       
       LHashTable            * set_ptr;
-      lint_t                  set_pos;
+      int_t                  set_pos;
       typename List::Iterator list_it;
-      lint_t                  pos;
+      int_t                  pos;
 
       void locate_end();
 
@@ -547,7 +546,7 @@ namespace Designar
       void locate_next(nat_t);
 
     protected:
-      lint_t get_location() const
+      int_t get_location() const
       {
 	return pos;
       }
@@ -768,5 +767,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGHASH_H

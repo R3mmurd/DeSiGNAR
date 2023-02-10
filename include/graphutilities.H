@@ -4,15 +4,15 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef GRAPHUTILITIES_H
-# define GRAPHUTILITIES_H
+#pragma once
 
-# include <types.H>
-# include <array.H>
-# include <list.H>
-# include <queue.H>
-# include <map.H>
-# include <heap.H>
+#include <types.H>
+
+#include <array.H>
+#include <list.H>
+#include <queue.H>
+#include <map.H>
+#include <heap.H>
 
 namespace Designar
 {
@@ -36,7 +36,7 @@ namespace Designar
   class CommonNodeArc
   {
     nat_t  tag;
-    lint_t  _counter;
+    int_t  _counter;
     void * _cookie;
 
   public:
@@ -52,7 +52,7 @@ namespace Designar
 
     void reset_tag();
     
-    lint_t & counter();
+    int_t & counter();
       
     void reset();
   };
@@ -437,15 +437,15 @@ namespace Designar
 
   // For compute cut nodes and Tarjan algorithm
   template <class GT>
-  inline lint_t & df(Node<GT> * p)
+  inline int_t & df(Node<GT> * p)
   {
     return p->counter();
   }
 
   template <class GT>
-  inline lint_t & low(Node<GT> * p)
+  inline int_t & low(Node<GT> * p)
   {
-    return (lint_t &) p->cookie();
+    return (int_t &) p->cookie();
   }
 
   
@@ -786,5 +786,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // GRAPHUTILITIES_H

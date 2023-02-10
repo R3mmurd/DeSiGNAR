@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGBITSET_H
-# define DSGBITSET_H
+#pragma once
 
-# include <array.H>
+#include <array.H>
 
 namespace Designar
 {
@@ -188,5 +187,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGBITSET

@@ -4,13 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSET_H
-# define DSGSET_H
+#pragma once
 
-# include <array.H>
-# include <tree.H>
-# include <hash.H>
-# include <sort.H>
+#include <array.H>
+#include <tree.H>
+#include <hash.H>
+#include <sort.H>
 
 namespace Designar
 {
@@ -71,7 +70,7 @@ namespace Designar
     NotEqualKey<Key, Cmp> not_equal_key;
     EqualKey<Key, Cmp>    equal_key;
 
-    lint_t search(const Key & k, lint_t l, lint_t r) const
+    int_t search(const Key & k, int_t l, int_t r) const
     {
       return binary_search(array, k, l, r, cmp);
     }
@@ -90,7 +89,7 @@ namespace Designar
 
     Key * insert(const Key & item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(item);
@@ -103,7 +102,7 @@ namespace Designar
     
     Key * insert(Key && item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(std::forward<Key>(item));
@@ -116,7 +115,7 @@ namespace Designar
     
     Key * insert_dup(const Key & item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(item);
@@ -126,7 +125,7 @@ namespace Designar
     
     Key * insert_dup(Key && item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(std::forward<Key>(item));
@@ -136,7 +135,7 @@ namespace Designar
     
     Key * search_or_insert(const Key & item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(item);
@@ -149,7 +148,7 @@ namespace Designar
     
     Key * search_or_insert(Key && item)
     {
-      lint_t pos = search(item, 0, array.size() - 1);
+      int_t pos = search(item, 0, array.size() - 1);
       
       if (pos == array.size())
 	return &array.append(std::forward<Key>(item));
@@ -187,7 +186,7 @@ namespace Designar
     EqualKey<Key, Cmp>    equal_key;
     
   protected:
-    lint_t search(const Key & k, lint_t l, lint_t r) const
+    int_t search(const Key & k, int_t l, int_t r) const
     {
       return sequential_search(array, k, l, r, equal_key);
     }
@@ -206,7 +205,7 @@ namespace Designar
 
     Key * insert(const Key & item)
     {
-      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      int_t pos = search(item, 0, int_t(array.size()) - 1);
       
       if (pos < array.size())
 	return nullptr;
@@ -216,7 +215,7 @@ namespace Designar
     
     Key * insert(Key && item)
     {
-      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      int_t pos = search(item, 0, int_t(array.size()) - 1);
       
       if (pos < array.size())
 	return nullptr;
@@ -236,7 +235,7 @@ namespace Designar
 
     Key * search_or_insert(const Key & item)
     {
-      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      int_t pos = search(item, 0, int_t(array.size()) - 1);
       
       if (pos < array.size())
 	return &array[pos];
@@ -246,7 +245,7 @@ namespace Designar
     
     Key * search_or_insert(Key && item)
     {
-      lint_t pos = search(item, 0, lint_t(array.size()) - 1);
+      int_t pos = search(item, 0, int_t(array.size()) - 1);
       
       if (pos < array.size())
 	return &array[pos];
@@ -391,7 +390,7 @@ namespace Designar
     
     Key * search(const Key & item)
     {
-      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
+      int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
       
       if (pos >= this->size() or ArraySetOp::not_equal_key(item, array.at(pos)))
 	return nullptr;
@@ -401,7 +400,7 @@ namespace Designar
     
     const Key * search(const Key & item) const
     {
-      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
+      int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
       
       if (pos >= this->size() or ArraySetOp::not_equal_key(item, array.at(pos)))
 	return nullptr;
@@ -427,7 +426,7 @@ namespace Designar
 
     bool remove(const Key & item)
     {
-      lint_t pos = ArraySetOp::search(item, 0, lint_t(this->size()) - 1);
+      int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
       
       if (pos >= this->size() or ArraySetOp::not_equal_key(array.at(pos), item))
 	return false;
@@ -563,5 +562,3 @@ namespace Designar
     
 
 } // end namespace DeSIGNAR
-
-# endif // DSGSET_H

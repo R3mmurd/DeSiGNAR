@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGGRAPHALGORITHMS_H
-# define DSGGRAPHALGORITHMS_H
+#pragma once
 
-# include <relation.H>
-# include <graph.H>
-# include <random.H>
+#include <relation.H>
+#include <graph.H>
+#include <random.H>
 
 namespace Designar
 {
@@ -59,7 +58,7 @@ namespace Designar
   Path<GT> depth_first_search_path(const GT &, Node<GT> *, Node<GT> *);
 
   template <class GT>
-  bool test_cycle_rec(const GT &, Node<GT> *, bool);
+  bool test_for_cycle(const GT &, Node<GT> *, bool);
 
   template <class GT>
   bool has_cycle(const GT &, Node<GT> *);
@@ -68,13 +67,13 @@ namespace Designar
   bool has_cycle(const GT &);
 
   template <class GT>
-  bool is_graph_acyclique(const GT &, Node<GT> *);
+  bool is_acyclique(const GT &, Node<GT> *);
  
   template <class GT>
-  bool is_graph_acyclique(const GT &);
+  bool is_acyclique(const GT &);
 
   template <class GT>
-  GT invert_digraph(const GT &, bool);
+  GT invert_digraph(const GT &);
 
   template <class GT>
   void build_subgraph_rec(const GT &, Node<GT> *, const GT &);
@@ -90,22 +89,22 @@ namespace Designar
 
   template <class GT>
   void compute_cut_nodes_rec(const GT &, Node<GT> *, Arc<GT> &,
-			     SLList<Node<GT> *> &, lint_t &);
+			     SLList<Node<GT> *> &, int_t &);
 
   template <class GT>
   SLList<Node<GT> *> compute_cut_nodes(const GT &);
 
   template <class GT>
-  void paint_cut_nodes_connected_components_rec(const GT &, Node<GT> *, lint_t);
+  void paint_cut_nodes_connected_components_rec(const GT &, Node<GT> *, int_t);
 
   template <class GT>
-  void paint_from_cut_node(const GT &, Node<GT> *, lint_t &);
+  void paint_from_cut_node(const GT &, Node<GT> *, int_t &);
 
   template <class GT>
-  lint_t paint_cut_nodes_subgraphs(const GT &, const SLList<Node<GT> *> &);
+  int_t paint_cut_nodes_subgraphs(const GT &, const SLList<Node<GT> *> &);
 
   template <class GT>
-  void build_cut_nodes_subgraph_rec(const GT &, Node<GT> *, const GT &, lint_t);
+  void build_cut_nodes_subgraph_rec(const GT &, Node<GT> *, const GT &, int_t);
 
   template <class GT>
   SLList<GT> build_cut_nodes_subgraphs(const GT &);
@@ -243,7 +242,7 @@ namespace Designar
   }
 
   template <class GT>
-  bool test_cycle_rec(const GT & g, Node<GT> * p, bool has)
+  bool test_for_cycle(const GT & g, Node<GT> * p, bool has)
   {
     if (p->is_visited(GraphTag::DEPTH_FIRST))
       return has;
@@ -261,9 +260,11 @@ namespace Designar
 
 	Node<GT> * q = it.get_tgt_node();
 
-	if (test_cycle_rec(g, q, has) == has)
+	if (test_for_cycle(g, q, has) == has)
 	  return has;
       }
+
+    p->unvisit(GraphTag::DEPTH_FIRST);
 
     return not has;
   }
@@ -272,13 +273,13 @@ namespace Designar
   bool has_cycle(const GT & g, Node<GT> * start)
   {
     g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_cycle_rec(g, start, true);
+    return test_for_cycle(g, start, true);
   }
 
   template <class GT>
   bool has_cycle(const GT & g)
   {
-    if (g.get_num_arcs() >= g.get_num_nodes())
+    if (not g.is_digraph() and g.get_num_arcs() >= g.get_num_nodes())
       return true;
     
     return g.exists_node([&g] (Node<GT> * p)
@@ -292,13 +293,13 @@ namespace Designar
   bool is_acyclique(const GT & g, Node<GT> * start)
   {
     g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_cycle_rec(g, start, false);
+    return test_for_cycle(g, start, false);
   }
 
   template <class GT>
   bool is_acyclique(const GT & g)
   {
-    if (g.get_num_arcs() >= g.get_num_nodes())
+    if (not g.is_digraph() and g.get_num_arcs() >= g.get_num_nodes())
       return false;
     
     return g.all_nodes([&g] (Node<GT> * p)
@@ -504,7 +505,7 @@ namespace Designar
 
   template <class GT>
   void compute_cut_nodes_rec(const GT & g, Node<GT> * p, Arc<GT> * a,
-			     SLList<Node<GT> *> & l, lint_t & cdf)
+			     SLList<Node<GT> *> & l, int_t & cdf)
   {
     p->visit(GraphTag::DEPTH_FIRST);
     low<GT>(p) = df<GT>(p) = cdf++;
@@ -560,7 +561,7 @@ namespace Designar
     g.reset_arcs();
 
     nat_t call_counter = 0;
-    lint_t current_df   = 0;
+    int_t current_df   = 0;
 
     Node<GT> * start = g.get_first_node();
     start->visit(GraphTag::DEPTH_FIRST);
@@ -597,7 +598,7 @@ namespace Designar
 
   template <class GT>
   void paint_cut_nodes_connected_components_rec(const GT & g, Node<GT> * p,
-						lint_t c)
+						int_t c)
   {
     if (p->counter() > 0)
       return;
@@ -623,7 +624,7 @@ namespace Designar
   }
   
   template <class GT>
-  void paint_from_cut_node(const GT & g, Node<GT> * p, lint_t & color)
+  void paint_from_cut_node(const GT & g, Node<GT> * p, int_t & color)
   {
     for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
       {
@@ -649,11 +650,11 @@ namespace Designar
   }
 
   template <class GT>
-  lint_t paint_cut_nodes_subgraphs(const GT & g, const SLList<Node<GT> *> & l)
+  int_t paint_cut_nodes_subgraphs(const GT & g, const SLList<Node<GT> *> & l)
   {
     g.reset_counters();
 
-    lint_t color = 1;
+    int_t color = 1;
 
     l.for_each([&g, &color] (Node<GT> * curr)
 	       {
@@ -665,7 +666,7 @@ namespace Designar
 
   template <class GT>
   void build_cut_nodes_subgraph_rec(const GT & g, Node<GT> * p, GT & t,
-				    lint_t color)
+				    int_t color)
   {
     Node<GT> * pp = mapped_node<GT>(p);
 
@@ -2660,5 +2661,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGGRAPHALGORITHMS_H

@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGRELATION_H
-# define DSGRELATION_H
+#pragma once
 
-# include <map.H>
+#include <map.H>
 
 namespace Designar
 {
@@ -120,5 +119,3 @@ namespace Designar
   }
     
 } // end namespace Designar
-
-# endif // DSGRELATION_H

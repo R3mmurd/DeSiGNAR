@@ -4,14 +4,13 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGTREE_H
-# define DSGTREE_H
+#pragma once
 
-# include <nodesdef.H>
-# include <containeralgorithms.H>
-# include <setalgorithms.H>
-# include <stack.H>
-# include <iterator.H>
+#include <nodesdef.H>
+#include <containeralgorithms.H>
+#include <setalgorithms.H>
+#include <stack.H>
+#include <iterator.H>
 
 namespace Designar
 {
@@ -140,7 +139,7 @@ namespace Designar
       
       static Node * select(Node *, nat_t);
       
-      static lint_t position(Node *, const Key &, Cmp &);
+      static int_t position(Node *, const Key &, Cmp &);
       
       static Node * min(Node *);
       
@@ -491,7 +490,7 @@ namespace Designar
 	return KEY(select(root, i));
       }
 
-      lint_t position(const Key & k) const
+      int_t position(const Key & k) const
       {
 	return position(root, k, cmp);
       }
@@ -1401,7 +1400,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  lint_t RankedTreap<Key, Cmp>::position(Node * r, const Key & k, Cmp & cmp)
+  int_t RankedTreap<Key, Cmp>::position(Node * r, const Key & k, Cmp & cmp)
   {
     if (r == Node::null)
       return -1;
@@ -1410,7 +1409,7 @@ namespace Designar
       return position(L(r), k, cmp);
     else if (cmp(KEY(r), k))
       {
-	lint_t p = position(R(r), k, cmp);
+	int_t p = position(R(r), k, cmp);
 
 	if (p == -1)
 	  return p;
@@ -1538,5 +1537,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGBINTREE_H

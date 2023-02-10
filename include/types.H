@@ -4,33 +4,32 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGTYPES_H
-# define DSGTYPES_H
+#pragma once
 
-# include <cmath>
-# include <cstring>
-# include <cassert>
-# include <iostream>
-# include <string>
-# include <sstream>
-# include <fstream>
-# include <tuple>
-# include <stdexcept>
-# include <limits>
-# include <chrono>
-# include <random>
-# include <functional>
-# include <regex>
-# include <thread>
-# include <mutex>
-# include <condition_variable>
-
-# include <typetraits.H>
+#include <cassert>
+#include <cmath>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <fstream>
+#include <tuple>
+#include <stdexcept>
+#include <limits>
+#include <chrono>
+#include <random>
+#include <functional>
+#include <regex>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <typetraits.H>
 
 namespace Designar
 {
-  using lint_t       = long long;
-  using nat_t        = unsigned long int;
+  using int_t        = int64_t;
+  using nat_t        = uint64_t;
   using real_t       = double;
   using rng_t        = std::mt19937_64;
   using rng_seed_t   = rng_t::result_type;
@@ -38,7 +37,7 @@ namespace Designar
   using time_point_t = clock_t::time_point;
   using duration_t   = clock_t::duration;
 
-  constexpr lint_t QuicksortThreshold = 40;
+  constexpr int_t QuicksortThreshold = 40;
 
   class EmptyClass
   {
@@ -79,5 +78,3 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGTYPES_H

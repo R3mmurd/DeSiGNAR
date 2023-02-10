@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGNOW_H
-# define DSGNOW_H
+#pragma once
 
-# include <types.H>
+#include <types.H>
 
 namespace Designar
 {
@@ -211,4 +210,3 @@ namespace Designar
   
 } // End namespace Designar
   
-# endif // DSGNOW_H

@@ -4,11 +4,10 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGSORT_H
-# define DSGSORT_H
+#pragma once
 
-# include <array.H>
-# include <list.H>
+#include <array.H>
+#include <list.H>
 
 namespace Designar
 {
@@ -16,23 +15,23 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  lint_t binary_search(const ArrayType<T> &, const T &,
-		       lint_t, lint_t, Cmp &);
+  int_t binary_search(const ArrayType<T> &, const T &,
+		       int_t, int_t, Cmp &);
 
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  lint_t sequential_search(const ArrayType<T> &, const T &,
-			   lint_t, lint_t, Cmp &);
+  int_t sequential_search(const ArrayType<T> &, const T &,
+			   int_t, int_t, Cmp &);
 
   template <class ArrayType, class Cmp>
-  void insertion_sort(ArrayType &, lint_t, lint_t, Cmp &);
+  void insertion_sort(ArrayType &, int_t, int_t, Cmp &);
 
   template <typename ArrayType, class Cmp>
-  lint_t partition(ArrayType &, lint_t, lint_t, Cmp &);
+  int_t partition(ArrayType &, int_t, int_t, Cmp &);
 
   template <typename ArrayType, class Cmp>
-  void quicksort(ArrayType &, lint_t, lint_t, Cmp &);
+  void quicksort(ArrayType &, int_t, int_t, Cmp &);
 
   template <typename T, class Cmp>
   void sift_up(T *, nat_t, nat_t, Cmp &);
@@ -60,13 +59,13 @@ namespace Designar
   TGTL reverse(const SRCL &);
 
   template <typename T, template <typename> class ArrayType, class Cmp>
-  lint_t binary_search(const ArrayType<T> & a, const T & k,
-		       lint_t l, lint_t r, Cmp & cmp)
+  int_t binary_search(const ArrayType<T> & a, const T & k,
+		       int_t l, int_t r, Cmp & cmp)
   {
     if (l > r)
       return l;
     
-    lint_t m = (l + r) / 2;
+    int_t m = (l + r) / 2;
     
     if (cmp(k, a.at(m)))
       return binary_search(a, k, l, m - 1, cmp);
@@ -79,8 +78,8 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  inline lint_t binary_search(const ArrayType<T> & a, T & k,
-			      lint_t l, lint_t r, Cmp && cmp = Cmp())
+  inline int_t binary_search(const ArrayType<T> & a, T & k,
+			      int_t l, int_t r, Cmp && cmp = Cmp())
   {
     return binary_search<T, ArrayType, Cmp>(a, k, l, r, cmp);
   }
@@ -88,7 +87,7 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  inline lint_t binary_search(const ArrayType<T> & a, const T & k,
+  inline int_t binary_search(const ArrayType<T> & a, const T & k,
 			      Cmp & cmp)
   {
     return binary_search<T, ArrayType, Cmp>(a, k, 0, a.size() - 1, cmp);
@@ -97,17 +96,17 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  inline lint_t binary_search(const ArrayType<T> & a, const T & k,
+  inline int_t binary_search(const ArrayType<T> & a, const T & k,
 			      Cmp && cmp = Cmp())
   {
     return binary_search<T, ArrayType, Cmp>(a, k, cmp);
   }
 
   template <typename T, template <typename> class ArrayType, class Cmp>
-  lint_t sequential_search(const ArrayType<T> & a, const T & k,
-			   lint_t l, lint_t r, Cmp & cmp)
+  int_t sequential_search(const ArrayType<T> & a, const T & k,
+			   int_t l, int_t r, Cmp & cmp)
   {
-    lint_t i = l;
+    int_t i = l;
     
     while (i <= r and not cmp(k, a.at(i)))
       ++i;
@@ -118,8 +117,8 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  lint_t sequential_search(const ArrayType<T> & a, const T & k,
-			   lint_t l, lint_t r, Cmp && cmp = Cmp())
+  int_t sequential_search(const ArrayType<T> & a, const T & k,
+			   int_t l, int_t r, Cmp && cmp = Cmp())
   {
     return sequential_search<T, ArrayType, Cmp>(a, k, l, r, cmp);
   }
@@ -127,7 +126,7 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  lint_t sequential_search(const ArrayType<T> & a, const T & k, Cmp & cmp)
+  int_t sequential_search(const ArrayType<T> & a, const T & k, Cmp & cmp)
   {
     return sequential_search<T, ArrayType, Cmp>(a, k, 0, a.size() - 1, cmp);
   }
@@ -135,20 +134,20 @@ namespace Designar
   template <typename T,
 	    template <typename> class ArrayType,
 	    class Cmp = std::less<T>>
-  lint_t sequential_search(const ArrayType<T> & a, const T & k,
+  int_t sequential_search(const ArrayType<T> & a, const T & k,
 			   Cmp && cmp = Cmp())
   {
     return sequential_search<T, ArrayType, Cmp>(a, k, cmp);
   }
    
   template <class ArrayType, class Cmp>
-  void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  void insertion_sort(ArrayType & a, int_t l, int_t r, Cmp & cmp)
   {
-    for (lint_t i = l + 1; i <= r; ++i)
+    for (int_t i = l + 1; i <= r; ++i)
       {
 	typename ArrayType::DataType data = std::move(a[i]);
 
-	lint_t j = i;
+	int_t j = i;
 
 	for ( ; j > l and cmp(data, a[j - 1]); --j)
 	  a[j] = std::move(a[j - 1]);
@@ -159,20 +158,20 @@ namespace Designar
 
   template <class ArrayType, 
             class Cmp = std::less<typename ArrayType::DataType>> inline
-  void insertion_sort(ArrayType & a, lint_t l, lint_t r, Cmp && cmp = Cmp())
+  void insertion_sort(ArrayType & a, int_t l, int_t r, Cmp && cmp = Cmp())
   {
     insertion_sort<ArrayType, Cmp>(a, l, r, cmp);
   }
 
   template <class ArrayType, class Cmp>
-  inline void insertion_sort(ArrayType & a, lint_t size, Cmp & cmp)
+  inline void insertion_sort(ArrayType & a, int_t size, Cmp & cmp)
   {
     insertion_sort(a, 0, size - 1, cmp);
   }
 
   template <class ArrayType,
 	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void insertion_sort(ArrayType & a, lint_t size, Cmp && cmp = Cmp())
+  inline void insertion_sort(ArrayType & a, int_t size, Cmp && cmp = Cmp())
   {
     insertion_sort<ArrayType, Cmp>(a, size, cmp);
   }
@@ -191,26 +190,26 @@ namespace Designar
   }
   
   template <typename ArrayType, class Cmp>
-  inline lint_t select_pivot(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  inline int_t select_pivot(ArrayType & a, int_t l, int_t r, Cmp & cmp)
   {
     assert(l <= r);
     
-    lint_t m = (l + r) / 2;
+    int_t m = (l + r) / 2;
 
-    lint_t partial_min = cmp(a[l], a[m]) ? l : m;
+    int_t partial_min = cmp(a[l], a[m]) ? l : m;
 
     return cmp(a[partial_min], a[r]) ? partial_min : r;    
   }
 
   template <typename ArrayType, class Cmp>
-  lint_t partition(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  int_t partition(ArrayType & a, int_t l, int_t r, Cmp & cmp)
   {
     int pivot = select_pivot(a, l, r, cmp);
     
     std::swap(a[pivot], a[r]);
     
-    lint_t i = l - 1;
-    lint_t j = r;
+    int_t i = l - 1;
+    int_t j = r;
 
     while (i <= j)
       {
@@ -232,7 +231,7 @@ namespace Designar
   }
 
   template <typename ArrayType, class Cmp>
-  void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp & cmp)
+  void quicksort(ArrayType & a, int_t l, int_t r, Cmp & cmp)
   {
     if (l >= r)
       return;
@@ -243,7 +242,7 @@ namespace Designar
 	return;
       }
 
-    lint_t pivot = partition(a, l, r, cmp);
+    int_t pivot = partition(a, l, r, cmp);
 
     if (pivot - l < r - pivot)
       {
@@ -259,20 +258,20 @@ namespace Designar
 
   template <class ArrayType,
 	    class Cmp = std::less<typename ArrayType::DataType>> inline
-  void quicksort(ArrayType & a, lint_t l, lint_t r, Cmp && cmp = Cmp())
+  void quicksort(ArrayType & a, int_t l, int_t r, Cmp && cmp = Cmp())
   {
     quicksort<ArrayType, Cmp>(a, l, r, cmp);
   }
 
   template <class ArrayType, class Cmp>
-  inline void quicksort(ArrayType & a, lint_t size, Cmp & cmp)
+  inline void quicksort(ArrayType & a, int_t size, Cmp & cmp)
   {
     quicksort(a, 0, size - 1, cmp);
   }
 
   template <class ArrayType,
 	    class Cmp = std::less<typename ArrayType::DataType>>
-  inline void quicksort(ArrayType & a, lint_t size, Cmp && cmp = Cmp())
+  inline void quicksort(ArrayType & a, int_t size, Cmp && cmp = Cmp())
   {
     quicksort<ArrayType, Cmp>(a, size, cmp);
   }
@@ -594,5 +593,3 @@ namespace Designar
   }
 
 } // end namespace Designar
-
-# endif // DSGSORT_H

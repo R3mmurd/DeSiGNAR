@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGARRAY_H
-# define DSGARRAY_H
+#pragma once
 
-# include <setalgorithms.H>
-# include <containeralgorithms.H>
-# include <iterator.H>
+#include <setalgorithms.H>
+#include <containeralgorithms.H>
+#include <iterator.H>
 
 namespace Designar
 {
@@ -1002,5 +1001,3 @@ namespace Designar
     return ret;
   }    
 } // end namespace Designar
-
-# endif // DSGARRAY_H

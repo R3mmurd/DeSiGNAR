@@ -4,13 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGHEAP_H
-# define DSGHEAP_H
+#pragma once
 
-# include <array.H>
-# include <queue.H>
-# include <nodesdef.H>
-# include <sort.H>
+#include <array.H>
+#include <queue.H>
+#include <nodesdef.H>
+#include <sort.H>
 
 namespace Designar
 {
@@ -990,5 +989,3 @@ namespace Designar
   }
   
 } // end namespace Designar
-
-# endif // DSGHEAP_H

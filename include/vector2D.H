@@ -4,10 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGVECTOR2D_H
-# define DSGVECTOR2D_H
+#pragma once
 
-# include <point2D.H>
+#include <point2D.H>
 
 namespace Designar
 {
@@ -95,6 +94,4 @@ namespace Designar
   };
   
 } // end namespace Designar
-
-# endif // DSGVECTOR_2D_H
 

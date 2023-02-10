@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-# ifndef DSGBUILDGRAPH_H
-# define DSGBUILDGRAPH_H
+#pragma once
 
-# include <graphalgorithms.H>
-# include <hash.H>
-# include <random.H>
+#include <graphalgorithms.H>
+#include <hash.H>
+#include <random.H>
 
 namespace Designar
 {
@@ -159,8 +158,7 @@ namespace Designar
       throw std::length_error("The minimun size must be 2 x 2");
     
     MultiDimArray<Node<GT> *, 2> mat(height, width);
-    HashMap<std::pair<Node<GT> *, Node<GT>*>, Arc<GT> *> arcs_index;
-  
+    
     GT g;
 
     for (nat_t i = 0; i < height; ++i)
@@ -170,7 +168,7 @@ namespace Designar
 	  node_init(mat(i ,j), i, j);
 	}
 
-    DynArray<std::pair<int, int>> neighborhood{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+    DynArray<std::pair<int_t, int_t>> neighborhood{{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
     for (nat_t i = 0; i < height; ++i)
       for (nat_t j = 0; j < width; ++j)
@@ -179,30 +177,25 @@ namespace Designar
 
 	  for (auto n: neighborhood)
 	    {
-	      long long n_i = i + n.first;
-	      long long n_j = j + n.second;
+	      int_t n_i = i + n.first;
+	      int_t n_j = j + n.second;
 
 	      if (n_i < 0 or n_i >= height or n_j < 0 or n_j >= width)
 		continue;
 
 	      Node<GT> * q = mat(n_i, n_j);
 
-	      if (arcs_index.search(std::make_pair(p, q)) != nullptr)
-		continue;
-
-	      if (not g.is_digraph()
-		  and arcs_index.search(std::make_pair(q, p)) != nullptr)
+	      if (g.search_arc(p, q) != nullptr)
 		continue;
 
 	      Arc<GT> * arc = g.insert_arc(p, q);
 	      arc_init(arc);
-	      arcs_index.insert(std::make_pair(p, q), arc);
 	    }
 	}
 
     if (type == GridType::HEXAGONAL or type == GridType::OCTAGONAL)
       {
-	neighborhood = DynArray<std::pair<int, int>>{{-1, -1}, {-1, 1}};
+	neighborhood = DynArray<std::pair<int_t, int_t>>{{-1, -1}, {-1, 1}};
 
 	if (type == GridType::OCTAGONAL)
 	  {
@@ -217,24 +210,19 @@ namespace Designar
 
 	      for (auto n: neighborhood)
 		{
-		  long long n_i = i + n.first;
-		  long long n_j = j + n.second;
+		  int_t n_i = i + n.first;
+		  int_t n_j = j + n.second;
 
 		  if (n_i < 0 or n_i >= height or n_j < 0 or n_j >= width)
 		    continue;
 
 		  Node<GT> * q = mat(n_i, n_j);
 
-		  if (arcs_index.search(std::make_pair(p, q)) != nullptr)
-		    continue;
-
-		  if (not g.is_digraph()
-		      and arcs_index.search(std::make_pair(q, p)) != nullptr)
+		  if (g.search_arc(p, q) != nullptr)
 		    continue;
 
 		  Arc<GT> * arc = g.insert_arc(p, q);
 		  arc_init(arc);
-		  arcs_index.insert(std::make_pair(p, q), arc);
 		}
 	    }
       }
@@ -244,16 +232,11 @@ namespace Designar
 	  {
 	    Node<GT> * p = mat(i, j);
 	    Node<GT> * q = mat(i + 1, j);
-	    Arc<GT> **a = arcs_index.search(std::make_pair(p, q));
-
-	    if (a == nullptr)
-	      a = arcs_index.search(std::make_pair(q, p));
+	    Arc<GT> *a = g.search_arc(p, q);
 
 	    if (a != nullptr)
-	      g.remove_arc(*a);
+	      g.remove_arc(a);
 	  }
-    
-	
     
     return g;
   }
@@ -401,5 +384,3 @@ namespace Designar
       (num_nodes, prob_arc, grant_connectivity, node_init, arc_init);
   }
 } // end namespace Designar
-
-# endif // DSGBUILDGRAPH_H
