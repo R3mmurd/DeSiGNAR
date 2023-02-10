@@ -30,13 +30,13 @@ The structure of this library is:
   $ make samples
   ```
 
-  - Compile tests
+- Compile tests
 
   ```shell
   $ make tests
   ```
 
-  - Compile all of the above
+- Compile all of the above
 
   ```shell
   $ make all
