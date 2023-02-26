@@ -1,6 +1,6 @@
 CXX = clang++
 
-FLAGS = -std=c++14 -fPIE
+FLAGS = -std=c++20 -fPIE
 
 AR = ar
 
