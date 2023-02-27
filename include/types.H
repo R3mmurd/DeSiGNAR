@@ -21,6 +21,7 @@
 #include <random>
 #include <functional>
 #include <regex>
+#include <concepts>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
@@ -28,6 +29,9 @@
 
 namespace Designar
 {
+  template<typename T>
+  concept arithmetic = std::integral<T> || std::floating_point<T>;
+
   using int_t        = int64_t;
   using nat_t        = uint64_t;
   using real_t       = double;

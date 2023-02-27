@@ -12,11 +12,9 @@ namespace Designar
 {
 
   template <typename NumT>
+  requires arithmetic<NumT>
   class GenPoint2D
   {
-    static_assert(std::is_arithmetic<NumT>::value,
-		  "Template argument must be an arithmetic type");
-
   protected:
     NumT x;
     NumT y;

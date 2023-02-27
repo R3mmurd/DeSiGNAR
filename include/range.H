@@ -15,11 +15,9 @@ namespace Designar
 {
 
   template <typename T>
+  requires arithmetic<T>
   class Range : public ContainerAlgorithms<Range<T>, T>
   {
-    static_assert(std::is_arithmetic<T>::value,
-		  "Template argument must be an arithmetic type");
-    
   public:
     using ItemType  = T;
     using KeyType   = T;

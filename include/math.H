@@ -61,26 +61,23 @@ namespace Designar
   BT pow(BT, ET);
 
   template <typename T>
+  requires std::floating_point<T>
   T abs(T x)
   {
-    static_assert(std::is_floating_point<T>::value,
-		  "Template argument must be a floating point type");
     return (x < T(0) ? -x : x);
   }
 
   template <typename T>
+  requires std::floating_point<T>
   bool real_equal(T a, T b)
   {
-    static_assert(std::is_floating_point<T>::value,
-		  "Template argument must be a floating point type");
     return abs(a-b) <= EPSILON;
   }
 
   template <typename T>
+  requires std::integral<T>
   bool num_equal(T a, T b)
   {
-    static_assert(std::is_integral<T>::value,
-		  "Template argument must be an integral type");
     return a == b;
   }
 
@@ -116,13 +113,9 @@ namespace Designar
   }
   
   template <typename BT, typename ET>
+  requires std::integral<BT> && std::unsigned_integral<ET>
   BT fast_integral_pow(BT base, ET exp)
   {
-    static_assert(std::is_integral<BT>::value and std::is_integral<ET>::value,
-    		  "Arguments must be integral types");
-    static_assert(std::is_unsigned<ET>::value,
-    		  "Exponent must be an unsigned type");
-    
     BT ret_val = BT(1);
     
     while (exp > ET(0))

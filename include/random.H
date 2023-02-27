@@ -34,20 +34,16 @@ namespace Designar
   nat_t throw_dice(rng_t &, nat_t num_faces = DEFAULT_DICE_NUM_FACES);
 
   template <typename T>
+  requires arithmetic<T>
   T random_uniform(rng_t & rng, T max)
   {
-    static_assert(std::is_arithmetic<T>::value,
-		  "Template argument must be an arithmetic type");
-
     return random(rng) * max;
   }
 
   template <typename T>
+  requires arithmetic<T>
   T random_uniform(rng_t & rng, T l, T r)
   {
-    static_assert(std::is_arithmetic<T>::value,
-		  "Template argument must be an arithmetic type");
-    
     return random_uniform<T>(rng, r - l) + l;
   }
   

@@ -26,11 +26,9 @@ namespace Designar
   T count_combinations(T, T);
 
   template <typename T>
+  requires std::integral<T>
   T forward_prod(T a, T b)
   {
-    static_assert(std::is_integral<T>::value,
-		  "Argument must be an integral type");
-    
     T ret_val = 1;
 
     while (a <= b)
@@ -40,11 +38,9 @@ namespace Designar
   }
 
   template <typename T>
+  requires std::integral<T>
   T backward_prod(T a, T b)
   {
-    static_assert(std::is_integral<T>::value,
-		  "Argument must be an integral type");
-    
     T ret_val = 1;
 
     while (a >= b)
