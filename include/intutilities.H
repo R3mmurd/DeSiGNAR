@@ -11,21 +11,6 @@
 namespace Designar
 {
   template <typename T>
-  T forward_prod(T, T);
-
-  template <typename T>
-  T backward_prod(T, T);
-  
-  template <typename T>
-  T factorial(T);
-
-  template <typename T>
-  T count_permutations(T, T);
-
-  template <typename T>
-  T count_combinations(T, T);
-
-  template <typename T>
   requires std::integral<T>
   T forward_prod(T a, T b)
   {
@@ -50,6 +35,7 @@ namespace Designar
   }
 
   template <typename T>
+  requires std::integral<T>
   T factorial(T n)
   {
     if (n < 0)
@@ -59,6 +45,7 @@ namespace Designar
   }
 
   template <typename T>
+  requires std::integral<T>
   T count_permutations(T n, T r)
   {
     if (n < 0 or r < 0)
@@ -71,6 +58,7 @@ namespace Designar
   }
 
   template <typename T>
+  requires std::integral<T>
   T count_combinations(T n, T r)
   {
     if (n < 0 or r < 0)
