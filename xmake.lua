@@ -8,7 +8,7 @@ target("library")
     set_kind("static")
     add_includedirs("include")
     set_targetdir("lib")
-    add_files("src/*.C", {sourcekind = "cxx"})
+    add_files("src/*.mpp", "src/*.C", {sourcekind = "cxx"})
     set_basename("Designar")
 target_end()
 

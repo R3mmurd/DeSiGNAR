@@ -4,11 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#pragma once
+export module Singleton;
 
-#include <memory>
+import <memory>;
 
-namespace Designar
+export namespace Designar
 {
 
   /** Generic Singleton.
