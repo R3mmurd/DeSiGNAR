@@ -12,7 +12,6 @@ namespace Designar
 {
 
   template <typename NumT>
-  requires arithmetic<NumT>
   class GenPoint2D
   {
   protected:
