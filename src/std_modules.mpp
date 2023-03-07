@@ -1,0 +1,47 @@
+/*
+  This file is part of Designar.
+  
+  Author: 
+    - Alejandro Mujica (aledrums@gmail.com)
+    - Antonio Berti (tplaza15@gmail.com)
+*/
+
+/* 
+The purpose of this module file is expose std shared headers
+to other modules. The headers without macros will work correctly
+at the exporting process, but others like some C headers need to be 
+imported explicitly by the Developer in the module that need use
+part of his content, because the macro definitions on some std
+headers are not exported in modules.
+
+In the case of need use macro definitions a simple instruction like
+  import <std header> 
+
+Example <cassert> header will not export assert macro to other modules
+
+Will make available the macro definitions of header in order to be 
+used
+*/
+
+export module StdModules;
+
+export import <cmath>;
+export import <utility>;
+export import <concepts>;
+export import <random>;
+export import <chrono>;
+export import <cstdint>;
+export import <limits>;
+export import <stdexcept>;
+export import <cstring>;
+export import <regex>;
+export import <condition_variable>;
+export import <iostream>;
+export import <fstream>;
+export import <sstream>;
+export import <string>;
+export import <tuple>;
+export import <thread>;
+export import <mutex>;
+export import <functional>;
+export import <initializer_list>;
