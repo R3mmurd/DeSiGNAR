@@ -4,7 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <graphalgorithms.H>
+import Types;
+import GraphAlgorithms;
+import Graph;
+import GraphUtilities;
+
+import <cassert>;
 
 using namespace std;
 using namespace Designar;

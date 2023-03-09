@@ -7,6 +7,7 @@ add_syslinks("pthread")
 target("library")
     set_kind("static")
     set_targetdir("lib")
+    set_objectdir("obj")
     add_files("./src/*.mpp")
     set_basename("Designar")
     set_targetdir("./lib")
@@ -20,6 +21,17 @@ for _, filepath in ipairs(os.files("tests/src/*.cpp")) do
     add_files(filepath, {sourcekind = "cxx"})
     set_targetdir("tests/bin")
     set_group("tests")
+  target_end()
+end
+
+for _, filepath in ipairs(os.files("samples/src/*.cpp")) do
+  local filename = path.basename(filepath)
+  target("sample_" .. filename)
+    set_kind("binary")
+    add_deps("library")
+    add_files(filepath, {sourcekind = "cxx"})
+    set_targetdir("samples/bin")
+    set_group("samples")
   target_end()
 end
 --

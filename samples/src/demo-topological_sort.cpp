@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <iostream>
+import Types;
+import Graph;
+import GraphAlgorithms;
 
 using namespace std;
-
-#include <graphalgorithms.H>
-
 using namespace Designar;
 
 using DGT = Digraph<string>;

@@ -4,8 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <graph.H>
-#include <buildgraph.H>
+import Types;
+import Graph;
+import BuildGraph;
+import GraphAlgorithms;
+import GraphUtilities;
 
 using namespace Designar;
 

@@ -4,12 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <iostream>
+
+
+import Types;
+import Range;
 
 using namespace std;
-
-#include <range.H>
-
 using namespace Designar;
 
 int main()

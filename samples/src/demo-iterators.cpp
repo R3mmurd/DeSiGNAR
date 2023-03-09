@@ -4,10 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <bitset.H>
-#include <list.H>
-#include <set.H>
-#include <polygon.H>
+import Types;
+import Array;
+import BitSet;
+import List;
+import Set;
+import Polygon;
 
 using namespace std;
 using namespace Designar;

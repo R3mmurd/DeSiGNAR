@@ -4,12 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <iostream>
+
+import Types;
+import Queue;
 
 using namespace std;
-
-#include <queue.H>
-
 using namespace Designar;
 
 void send(ConcurrentQueue<string> & q, nat_t num_msgs, nat_t ms)

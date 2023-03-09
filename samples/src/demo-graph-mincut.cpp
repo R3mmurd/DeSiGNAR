@@ -4,13 +4,14 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <iostream>
+
+import Types;
+import Graph;
+import GraphAlgorithms;
+import BuildGraph;
+import Now;
 
 using namespace std;
-
-#include <buildgraph.H>
-#include <now.H>
-
 using namespace Designar;
 
 using GT = Graph<nat_t>;

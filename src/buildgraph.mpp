@@ -12,6 +12,7 @@ import GraphAlgorithms;
 import Hash;
 import Random;
 import Array;
+import Iterator;
 
 export namespace Designar
 {
