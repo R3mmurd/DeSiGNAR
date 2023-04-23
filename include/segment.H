@@ -283,7 +283,8 @@ namespace Designar
 
     bool operator == (const GenSegment & s) const
     {
-      return src_point == s.src_point and tgt_point == s.tgt_point;
+      return (src_point == s.src_point and tgt_point == s.tgt_point)
+	or (src_point == s.tgt_point and tgt_point == s.src_point);
     }
 
     bool operator != (const GenSegment & s) const
