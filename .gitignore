@@ -1,7 +1,10 @@
 .vscode
+.vs
 doc
 doxyfile
 *~
+samples/bin/*
+tests/bin/*
 bin/*
 include/*~
 lib/*.a
