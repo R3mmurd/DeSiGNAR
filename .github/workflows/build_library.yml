@@ -1,10 +1,6 @@
 name: C/C++ CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -15,7 +11,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Clean binaries
       run: make clean
-    - name: Build Designar
+    - name: Build DeSiGNAR
       run: make library
     - name: Build Samples
       run: make samples
