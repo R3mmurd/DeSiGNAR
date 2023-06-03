@@ -17,3 +17,5 @@ jobs:
       run: make samples
     - name: Build Tests
       run: make tests
+    - name: Running Tests
+      run: sh run_tests.sh
