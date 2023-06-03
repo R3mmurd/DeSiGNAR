@@ -22,13 +22,13 @@ OBJDIR      = ./obj
 LIBDIR      = ./lib
 SAMPLEDIR   = ./samples
 TESTDIR     = ./tests
-INCLUDES    = $(wildcard $(INCLUDEDIR)/*.H)
-SOURCES     = $(wildcard $(SRCDIR)/*.C)
-OBJECTS     = $(SOURCES:$(SRCDIR)/%.C=$(OBJDIR)/%.o)
-SAMPLESRC   = $(wildcard $(SAMPLEDIR)/src/*.C)
-SAMPLEBIN   = $(SAMPLESRC:$(SAMPLEDIR)/src/%.C=$(SAMPLEDIR)/bin/%)
-TESTSRC     = $(wildcard $(TESTDIR)/src/*.C)
-TESTBIN     = $(TESTSRC:$(TESTDIR)/src/%.C=$(TESTDIR)/bin/%)
+INCLUDES    = $(wildcard $(INCLUDEDIR)/*.hpp)
+SOURCES     = $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS     = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+SAMPLESRC   = $(wildcard $(SAMPLEDIR)/src/*.cpp)
+SAMPLEBIN   = $(SAMPLESRC:$(SAMPLEDIR)/src/%.cpp=$(SAMPLEDIR)/bin/%)
+TESTSRC     = $(wildcard $(TESTDIR)/src/*.cpp)
+TESTBIN     = $(TESTSRC:$(TESTDIR)/src/%.cpp=$(TESTDIR)/bin/%)
 LIBNAME     = Designar
 LOCALLIB    = lib$(LIBNAME).a
 INCLUDEPATH = -I$(INCLUDEDIR)
@@ -44,13 +44,13 @@ library : $(INCLUDES) $(OBJECTS)
 	$(RM) $(LIBDIR)/$(LOCALLIB)
 	$(AR) -cvq $(LIBDIR)/$(LOCALLIB) $(OBJECTS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.C
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(FLAGS) $(OPT) $(INCLUDEPATH) -c $< -o $@
 
-$(TESTDIR)/bin/%: $(TESTDIR)/src/%.C
+$(TESTDIR)/bin/%: $(TESTDIR)/src/%.cpp
 	$(CXX) $(FLAGS) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
 
-$(SAMPLEDIR)/bin/%: $(SAMPLEDIR)/src/%.C
+$(SAMPLEDIR)/bin/%: $(SAMPLEDIR)/src/%.cpp
 	$(CXX) $(FLAGS) $(DEBUG) $(INCLUDEPATH) $< -o $@ $(LIBLINK)
 
 clean:
