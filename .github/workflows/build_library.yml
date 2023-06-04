@@ -12,6 +12,6 @@ jobs:
       run: 
         mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
     - name: Build Library
-      run: pwd && cd build && make all
+      run: cd build && make all
     - name: Run tests
-      run: make test
+      run: cd build && make test
