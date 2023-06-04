@@ -21,7 +21,11 @@ include(CheckPlatform)
 file(GLOB DESIGNAR_SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 add_library(Designar STATIC ${DESIGNAR_SOURCES})
 target_include_directories(Designar PUBLIC "${PROJECT_SOURCE_DIR}/include")
-target_link_libraries(Designar PUBLIC designar-warning-interface)
+target_link_libraries(Designar 
+  PUBLIC 
+    designar-warning-interface
+    designar-compile-option-interface
+)
 
 find_package(Threads REQUIRED)
 
