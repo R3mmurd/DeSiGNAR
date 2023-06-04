@@ -3,19 +3,13 @@ name: C/C++ CI
 on: [push, pull_request]
 
 jobs:
-  build:
-
+  build_with_clang:
+    name: Build with Clang
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
-    - name: Clean binaries
-      run: make clean
-    - name: Build DeSiGNAR
-      run: make library
-    - name: Build Samples
-      run: make samples
-    - name: Build Tests
-      run: make tests
-    - name: Running Tests
-      run: sh run_tests.sh
+    - name: Run Cmake
+      run: 
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
+    - name: Build Library
+      run: pwd && cd build && make Designar
