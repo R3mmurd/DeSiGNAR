@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
-project(Designar VERSION 2.0.0)
+project(DeSiGNAR VERSION 2.0.0)
 
 # Set C++ Required version
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Use -std=c++XX instead of -std=gnu++XX
