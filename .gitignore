@@ -2,6 +2,7 @@
 .vs
 doc
 doxyfile
+build/
 *~
 samples/bin/*
 tests/bin/*
