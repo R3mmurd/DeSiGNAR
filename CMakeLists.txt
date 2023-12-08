@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Designar VERSION 2.0.0)
 
 # Set C++ Required version
-SET(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED true)
 
 # Use -std=c++XX instead of -std=gnu++XX
@@ -26,6 +26,10 @@ target_link_libraries(Designar
     designar-warning-interface
     designar-compile-option-interface
 )
+install(
+  TARGETS Designar
+  DESTINATION ${PROJECT_SOURCE_DIR}/lib
+)
 
 find_package(Threads REQUIRED)
 
@@ -39,6 +43,10 @@ foreach(samplefile ${DESIGNAR_SAMPLES_SOURCES})
       Designar
       Threads::Threads
   )
+  install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${samplename}
+    DESTINATION ${PROJECT_SOURCE_DIR}/samples/bin
+  )
 endforeach(samplefile ${DESIGNAR_SAMPLES_SOURCES})
 
 # Designar Tests
@@ -50,6 +58,10 @@ foreach(testfile ${DESIGNAR_TESTS_SOURCES})
     PUBLIC
       Designar
       Threads::Threads
+  )
+  install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${testname}
+    DESTINATION ${PROJECT_SOURCE_DIR}/tests/bin
   )
   add_test(
     NAME
