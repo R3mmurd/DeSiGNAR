@@ -18,26 +18,23 @@ The structure of this library is:
 
 ## Getting started
 
-- Build the static library
+- Requirements
+  - cmake
+
+- Compiling and installing the library
 
   ```shell
-  $ make library
+  $ mkdir build
+  $ cd build
+  $ cmake ..
+  $ make
+  $ make install
   ```
-
-- Compile samples 
-
+- Running tests
   ```shell
-  $ make samples
+  $ make test
   ```
 
-- Compile tests
-
-  ```shell
-  $ make tests
-  ```
-
-- Compile all of the above
-
-  ```shell
-  $ make all
-  ```
+After this, the static library `libDesignar.a` is located in the directory `lib`,
+the executable samples are located in the directory `samples/bin`, and the
+executable tests are located in the directory `tests/bin`.

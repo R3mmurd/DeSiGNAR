@@ -1,0 +1,17 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build_with_clang:
+    name: Build with Clang
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run: 
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
+    - name: Build Library
+      run: cd build && make all
+    - name: Run tests
+      run: cd build && make test
