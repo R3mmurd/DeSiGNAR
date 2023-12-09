@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -14,38 +14,38 @@ using namespace Designar;
 
 using DGT = Digraph<string>;
 
-void write_graph(DGT & g, const char * name)
+void write_graph(DGT &g, const char *name)
 {
   cout << "digraph " << name << "\n";
   cout << g.get_num_nodes() << " nodes, " << g.get_num_arcs()
        << " arcs\n\n";
 
   cout << "Node set of " << name << "\n";
-  g.for_each_node([&] (auto n) { cout << n->get_info() << endl; });
+  g.for_each_node([&](auto n)
+                  { cout << n->get_info() << endl; });
 
   cout << "\nArc set of " << name << "\n";
-  g.for_each_arc([&] (auto a)
-		 {
+  g.for_each_arc([&](auto a)
+                 {
 		   const string & s = a->get_src_node()->get_info();
 		   const string & t = a->get_tgt_node()->get_info();
-		   cout << s << " -> " << t  << endl;
-		 });
+		   cout << s << " -> " << t  << endl; });
 
-		 cout << "\n\n";
+  cout << "\n\n";
 }
 
 int main()
 {
   DGT dag;
-  DGT::Node * a = dag.insert_node("Medias");
-  DGT::Node * b = dag.insert_node("Interiores");
-  DGT::Node * c = dag.insert_node("Camisa");
-  DGT::Node * d = dag.insert_node("Pantalón");
-  DGT::Node * e = dag.insert_node("Corbata");
-  DGT::Node * f = dag.insert_node("Zapatos");
-  DGT::Node * g = dag.insert_node("Correa");
-  DGT::Node * h = dag.insert_node("Chaleco");
-  DGT::Node * i = dag.insert_node("Paltó");
+  DGT::Node *a = dag.insert_node("Medias");
+  DGT::Node *b = dag.insert_node("Interiores");
+  DGT::Node *c = dag.insert_node("Camisa");
+  DGT::Node *d = dag.insert_node("Pantalón");
+  DGT::Node *e = dag.insert_node("Corbata");
+  DGT::Node *f = dag.insert_node("Zapatos");
+  DGT::Node *g = dag.insert_node("Correa");
+  DGT::Node *h = dag.insert_node("Chaleco");
+  DGT::Node *i = dag.insert_node("Paltó");
 
   dag.insert_arc(a, f);
   dag.insert_arc(b, d);
@@ -64,7 +64,8 @@ int main()
 
   cout << "Df topological sort: ";
 
-  dfts.for_each([] (auto p) { cout << p->get_info() << ' '; });
+  dfts.for_each([](auto p)
+                { cout << p->get_info() << ' '; });
 
   cout << endl;
 
@@ -72,7 +73,8 @@ int main()
 
   cout << "Bf topological sort: ";
 
-  bfts.for_each([] (auto p) { cout << p->get_info() << ' '; });
+  bfts.for_each([](auto p)
+                { cout << p->get_info() << ' '; });
 
   cout << endl;
 
@@ -81,15 +83,15 @@ int main()
   cout << "Topological ranks\n";
 
   nat_t r = 0;
-  for (auto & l : tr)
-    {
-      cout << "Rank " << ++r << ": ";
-      
-      for (auto p : l)
-	cout << p->get_info() << ' ';
+  for (auto &l : tr)
+  {
+    cout << "Rank " << ++r << ": ";
 
-      cout << endl;
-    }
-  
+    for (auto p : l)
+      cout << p->get_info() << ' ';
+
+    cout << endl;
+  }
+
   return 0;
 }

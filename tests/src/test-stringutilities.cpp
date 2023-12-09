@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -42,11 +42,11 @@ int main()
   cout << "Testing split_string_re(" << dq(snd_str) << ", "
        << dq(s_pattern) << ")\n";
   DLList<string> snd_split_res =
-    split_string_re<DLList<string>>(snd_str, pattern);
+      split_string_re<DLList<string>>(snd_str, pattern);
   assert(snd_split_res.equal({"foo", "faa", "bar", "boo"}));
 
   assert(split_string<DLList<string>>(fst_str, " xxx ").equal({fst_str}));
-  
+
   cout << "Everything ok!\n";
   return 0;
 }

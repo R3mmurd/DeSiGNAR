@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -18,11 +18,11 @@ int main()
 
   bs.append(true);
   assert(bs.size() == 1);
-  assert(not bs.is_empty());
+  assert(!bs.is_empty());
 
   assert(bs[0]);
   bs[0] = false;
-  assert(not bs[0]);
+  assert(!bs[0]);
 
   bs.remove_last();
   assert(bs.is_empty());
@@ -31,14 +31,14 @@ int main()
   DynBitSet bs1(64);
   assert(bs1.size() == 64);
   for (auto i = 0; i < 64; ++i)
-    assert(not bs1[i]);
+    assert(!bs1[i]);
 
   DynBitSet bs2(64, true);
   assert(bs2.size() == 64);
   for (auto i = 0; i < 64; ++i)
     assert(bs2[i]);
 
-  DynBitSet bs3{0,1,1,1,0,0};
+  DynBitSet bs3{0, 1, 1, 1, 0, 0};
   assert(bs3.size() == 6);
   assert(bs3[0] == 0);
   assert(bs3[1] == 0);
@@ -52,5 +52,3 @@ int main()
   cout << "Everything ok!\n";
   return 0;
 }
-
-

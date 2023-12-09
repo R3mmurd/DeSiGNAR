@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -9,59 +9,58 @@
 using namespace std;
 using namespace Designar;
 
-using GT  = Graph<string, int_t>;
+using GT = Graph<string, int_t>;
 using DGT = Digraph<string, int_t>;
 
 template <class Graph>
-void write_graph(Graph & g, const char & name)
+void write_graph(Graph &g, const char &name)
 {
   string connector = "--";
-  
+
   if (g.is_digraph())
-    {
-      cout << "di";
-      connector = "->";
-    }
+  {
+    cout << "di";
+    connector = "->";
+  }
   cout << "graph " << name << "\n";
   cout << g.get_num_nodes() << " nodes, " << g.get_num_arcs()
        << " arcs\n\n";
 
   cout << "Node set of " << name << "\n";
-  g.for_each_node([&](auto n) { cout << n->get_info() << endl; });
+  g.for_each_node([&](auto n)
+                  { cout << n->get_info() << endl; });
 
   cout << "\nArc set of " << name << "\n";
   g.for_each_arc([&](auto a)
-		 {
+                 {
 		   const string & s = a->get_src_node()->get_info();
 		   const string & t = a->get_tgt_node()->get_info();
 		   cout << s << connector << t << "(" << a->get_info()
-			<< ")" << endl;
-		 });
+			<< ")" << endl; });
 
-		 cout << "\n\n";
+  cout << "\n\n";
 }
 
 template <class Graph>
-void write_node(Graph & g, typename Graph::Node * p)
+void write_node(Graph &g, typename Graph::Node *p)
 {
   string connector = g.is_digraph() ? "->" : "--";
-  
-  g.for_each_adjacent_arc(p, [&] (auto a)
-			  {
+
+  g.for_each_adjacent_arc(p, [&](auto a)
+                          {
 			    const string c =
 			      a->get_connected_node(p)->get_info();
 			    cout << p->get_info() << connector << c
-				 << "(" << a->get_info() << ")" << endl;
-			  });
+				 << "(" << a->get_info() << ")" << endl; });
 }
 
-using Dot  = DotGraph<GT>;
+using Dot = DotGraph<GT>;
 using DDot = DotGraph<DGT>;
 
 int main()
 {
   GT g, h, i;
-  
+
   auto n1 = g.insert_node("Lara");
   auto n2 = g.insert_node("Portuguesa");
   auto n3 = g.insert_node("Barinas");
@@ -75,7 +74,7 @@ int main()
   g.insert_arc(n4, n5, 180);
   g.insert_arc(n5, n6, 200);
   g.insert_arc(n1, n5, 300);
-  
+
   write_node(g, n4);
 
   write_graph(g, 'g');
@@ -93,66 +92,62 @@ int main()
   write_graph(g, 'g');
   write_graph(h, 'h');
   write_graph(i, 'i');
-  
+
   cout << "Depth first traverse (prefix): ";
-  
-  depth_first_traverse(i, [] (auto p)
-	      {
-		cout << p->get_info() << " ";
-	      });
-  
-  cout << endl << endl;
+
+  depth_first_traverse(i, [](auto p)
+                       { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   cout << "Depth first traverse (suffix): ";
-  
-  depth_first_traverse_suffix(i, [] (auto p)
-	      {
-		cout << p->get_info() << " ";
-	      });
-  
-  cout << endl << endl;
+
+  depth_first_traverse_suffix(i, [](auto p)
+                              { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   Path<GT> path = depth_first_search_path(i, n1, n4);
 
-  cout << "Path between " << n1->get_info() << " and " << n4->get_info() << ": ";
+  cout << "Path between " << n1->get_info() << " && " << n4->get_info() << ": ";
 
-  path.for_each([] (auto c, auto r)
-		{
+  path.for_each([](auto c, auto r)
+                {
 		  cout << c->get_info() << " ";
 
 		  if (r != nullptr)
-		    cout << r->get_info() << " ";
-		});
+		    cout << r->get_info() << " "; });
 
-  cout << endl << endl;
-  
+  cout << endl
+       << endl;
+
   cout << "Breadth first traverse: ";
-  
-  breadth_first_traverse(i, [] (auto p)
-			 {
-			   cout << p->get_info() << " ";
-			 });
-  
-  cout << endl << endl;
+
+  breadth_first_traverse(i, [](auto p)
+                         { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   path.clear();
 
   path = breadth_first_search_path(i, n1, n4);
 
-  cout << "Path between " << n1->get_info() << " and " << n4->get_info() << ": ";
+  cout << "Path between " << n1->get_info() << " && " << n4->get_info() << ": ";
 
-  path.for_each([] (auto c, auto r)
-		{
+  path.for_each([](auto c, auto r)
+                {
 		  cout << c->get_info() << " ";
 
 		  if (r != nullptr)
-		    cout << r->get_info() << " ";
-		});
+		    cout << r->get_info() << " "; });
 
   cout << endl;
-   
+
   Dot().write_graph(i, "graph.dot");
-  
+
   GT Kruskal_tree = Kruskal<GT>().build_min_spanning_tree(i);
   Dot().write_graph(Kruskal_tree, "Kruskal.dot");
 
@@ -161,7 +156,7 @@ int main()
 
   GT Dijkstra_tree = Dijkstra<GT>().build_min_path_tree(i, n1);
   Dot().write_graph(Dijkstra_tree, "Dijkstra.dot");
-  
+
   DGT dg, dh, di;
 
   auto dn1 = dg.insert_node("Lara");
@@ -179,92 +174,88 @@ int main()
   dg.insert_arc(dn1, dn5, 300);
 
   write_node(dg, dn4);
-  
+
   write_graph(dg, 'g');
   write_graph(dh, 'h');
   write_graph(di, 'i');
-  
+
   dh = dg;
-  
+
   write_graph(dg, 'g');
   write_graph(dh, 'h');
   write_graph(di, 'i');
-  
+
   di = move(dg);
-  
+
   write_graph(dg, 'g');
   write_graph(dh, 'h');
   write_graph(di, 'i');
-  
-  cout << "Depth first traverse (prefix): "; 
-  
-  depth_first_traverse(di, [] (auto p)
-	       {
-		 cout << p->get_info() << " ";
-	       });
-  
-  cout << endl << endl;
+
+  cout << "Depth first traverse (prefix): ";
+
+  depth_first_traverse(di, [](auto p)
+                       { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   cout << "Depth first traverse (suffix): ";
-  
-  depth_first_traverse_suffix(di, [] (auto p)
-	       {
-		 cout << p->get_info() << " ";
-	       });
-  
-  cout << endl << endl;
+
+  depth_first_traverse_suffix(di, [](auto p)
+                              { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   Path<DGT> dpath = depth_first_search_path(di, dn1, dn4);
 
-  cout << "Path between " << dn1->get_info() << " and "
+  cout << "Path between " << dn1->get_info() << " && "
        << dn4->get_info() << ": ";
 
-  dpath.for_each([] (auto c, auto r)
-		 {
+  dpath.for_each([](auto c, auto r)
+                 {
 		   cout << c->get_info() << " ";
 		   
 		   if (r != nullptr)
-		     cout << r->get_info() << " ";
-		 });
+		     cout << r->get_info() << " "; });
 
-  cout << endl << endl;
-  
+  cout << endl
+       << endl;
+
   cout << "Breadth first traverse: ";
-  
-  breadth_first_traverse(di, [] (auto p)
-			 {
-			   cout << p->get_info() << " ";
-			 });
 
-  cout << endl << endl;
+  breadth_first_traverse(di, [](auto p)
+                         { cout << p->get_info() << " "; });
+
+  cout << endl
+       << endl;
 
   dpath.clear();
 
   dpath = breadth_first_search_path(di, dn1, dn4);
 
-  cout << "Path between " << dn1->get_info() << " and "
+  cout << "Path between " << dn1->get_info() << " && "
        << dn4->get_info() << ": ";
-  
-  dpath.for_each([] (auto c, auto r)
-		 {
+
+  dpath.for_each([](auto c, auto r)
+                 {
 		   cout << c->get_info() << " ";
 		   
 		   if (r != nullptr)
-		     cout << r->get_info() << " ";
-		 });
-  
+		     cout << r->get_info() << " "; });
+
   cout << endl;
 
   assert(di.is_digraph());
-  
+
   DDot().write_graph(di, "digraph.dot");
-  
+
   auto bfres = BellmanFord<DGT>().build_min_path_tree(di, dn1);
 
   if (get<0>(bfres))
     DDot().write_graph(get<1>(bfres), "BellmanFord.dot");
- 
+
   cout << "Everything ok\n";
-  
+
   return 0;
 }

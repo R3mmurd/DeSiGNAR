@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -12,17 +12,17 @@ namespace Designar
 {
   template <bool B, typename T, typename F>
   using RetType = typename std::conditional<B, T, F>::type;
-  
+
   template <class Iterator, typename T, bool RET_CPY = false>
   class BasicIterator
   {
   protected:
-    Iterator & me()
+    Iterator &me()
     {
       return *static_cast<Iterator *>(this);
     }
-  
-    const Iterator & const_me() const
+
+    const Iterator &const_me() const
     {
       return *static_cast<const Iterator *>(this);
     }
@@ -32,7 +32,7 @@ namespace Designar
     {
       return const_me().has_current();
     }
-    
+
     RetType<RET_CPY, T, T &> get_curr()
     {
       return me().get_current();
@@ -42,28 +42,28 @@ namespace Designar
     {
       return const_me().get_current();
     }
-    
-    RetType<RET_CPY, T, T &> operator * ()
+
+    RetType<RET_CPY, T, T &> operator*()
     {
       return me().get_current();
     }
 
-    RetType<RET_CPY, T, const T &> operator * () const
+    RetType<RET_CPY, T, const T &> operator*() const
     {
       return const_me().get_current();
     }
 
-    T * operator -> ()
+    T *operator->()
     {
       return &me().get_current();
     }
-  
-    bool operator == (const Iterator & it) const
+
+    bool operator==(const Iterator &it) const
     {
       return const_me().get_location() == it.get_location();
     }
 
-    bool operator != (const Iterator & it) const
+    bool operator!=(const Iterator &it) const
     {
       return const_me().get_location() != it.get_location();
     }
@@ -73,15 +73,15 @@ namespace Designar
   class ForwardIterator : public BasicIterator<Iterator, T, RET_CPY>
   {
     using Base = BasicIterator<Iterator, T, RET_CPY>;
-    
+
   public:
-    Iterator & operator ++ ()
+    Iterator &operator++()
     {
       Base::me().next();
       return Base::me();
     }
 
-    Iterator operator ++ (int)
+    Iterator operator++(int)
     {
       Iterator ret_val = Base::me();
       Base::me().next();
@@ -95,13 +95,13 @@ namespace Designar
     using Base = ForwardIterator<Iterator, T, RET_CPY>;
 
   public:
-    Iterator & operator -- ()
+    Iterator &operator--()
     {
       Base::me().prev();
       return Base::me();
     }
 
-    Iterator operator -- (int)
+    Iterator operator--(int)
     {
       Iterator ret_val = Base::me();
       Base::me().prev();
@@ -115,61 +115,61 @@ namespace Designar
     using Base = BidirectionalIterator<Iterator, T, RET_CPY>;
 
   public:
-    RetType<RET_CPY, T, T &> operator [] (nat_t i)
+    RetType<RET_CPY, T, T &> operator[](nat_t i)
     {
       Base::me().move_to(i);
       return Base::me().get_current();
     }
-    
-    Iterator & operator += (nat_t p)
+
+    Iterator &operator+=(nat_t p)
     {
       Base::me().next_n(p);
       return Base::me();
     }
 
-    Iterator operator + (nat_t p)
+    Iterator operator+(nat_t p)
     {
       Iterator it = Base::me();
       it += p;
       return it;
     }
 
-    Iterator & operator -= (nat_t p)
+    Iterator &operator-=(nat_t p)
     {
       Base::me().prev_n(p);
       return Base::me();
     }
 
-    Iterator operator - (nat_t p)
+    Iterator operator-(nat_t p)
     {
       Iterator it = Base::me();
       it -= p;
       return it;
     }
 
-    bool operator < (const Iterator & it) const
+    bool operator<(const Iterator &it) const
     {
       return Base::const_me().get_location() < it.get_location();
     }
-    
-    bool operator <= (const Iterator & it) const
+
+    bool operator<=(const Iterator &it) const
     {
       return Base::const_me().get_location() <= it.get_location();
     }
-    
-    bool operator > (const Iterator & it) const
+
+    bool operator>(const Iterator &it) const
     {
       return Base::const_me().get_location() > it.get_location();
     }
-    
-    bool operator >= (const Iterator & it) const
+
+    bool operator>=(const Iterator &it) const
     {
       return Base::const_me().get_location() >= it.get_location();
     }
   };
 
   template <class It>
-  It next_it(const It & it)
+  It next_it(const It &it)
   {
     It ret_val = it;
     ret_val.next();
@@ -177,23 +177,22 @@ namespace Designar
   }
 
   template <class It>
-  It next_it_c(const It & it)
+  It next_it_c(const It &it)
   {
     It ret_val = it;
     ret_val.next();
 
-    if (not ret_val.has_current())
+    if (!ret_val.has_current())
       ret_val.reset_first();
 
     return ret_val;
   }
 
   template <class It>
-  It prev_it(const It & it)
+  It prev_it(const It &it)
   {
     It ret_val = it;
     ret_val.prev();
     return ret_val;
   }
 } // end namespace Designar
-  

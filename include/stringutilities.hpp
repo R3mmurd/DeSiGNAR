@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -10,23 +10,24 @@
 
 namespace Designar
 {
-  template <typename T> class DynArray;
+  template <typename T>
+  class DynArray;
 
-  std::string q(const std::string & s, const std::string & b)
+  std::string q(const std::string &s, const std::string &b)
   {
     return b + s + b;
   }
 
-  std::string sq(const std::string & s)
+  std::string sq(const std::string &s)
   {
     return q(s, "'");
   }
 
-  std::string dq(const std::string & s)
+  std::string dq(const std::string &s)
   {
     return q(s, "\"");
   }
-  
+
   template <typename ContainerType = DynArray<std::string>>
   ContainerType split_string(const std::string &, const std::string &);
 
@@ -35,9 +36,9 @@ namespace Designar
 
   template <typename ContainerType = DynArray<std::string>>
   std::string join_string(const std::string &, const ContainerType &);
-  
+
   template <typename ContainerType>
-  ContainerType split_string(const std::string & str, const std::string & sep)
+  ContainerType split_string(const std::string &str, const std::string &sep)
   {
     ContainerType ss;
 
@@ -50,11 +51,11 @@ namespace Designar
     size_t end = str.find(sep);
 
     while (end != std::string::npos)
-      {
-	ss.append(str.substr(beg, end - beg));
-	beg = end + sep_sz;
-	end = str.find(sep, beg);
-      }
+    {
+      ss.append(str.substr(beg, end - beg));
+      beg = end + sep_sz;
+      end = str.find(sep, beg);
+    }
 
     ss.append(str.substr(beg, str.size() - beg));
 
@@ -62,8 +63,8 @@ namespace Designar
   }
 
   template <typename ContainerType>
-  ContainerType split_string_re(const std::string & str,
-				const std::regex & pattern)
+  ContainerType split_string_re(const std::string &str,
+                                const std::regex &pattern)
   {
     ContainerType ss;
 
@@ -72,23 +73,23 @@ namespace Designar
 
     std::string s = str;
     std::smatch m;
-    
+
     while (regex_search(s, m, pattern))
-      {
-	ss.append(m.prefix().str());
-	s = m.suffix().str();
-      }
+    {
+      ss.append(m.prefix().str());
+      s = m.suffix().str();
+    }
 
     ss.append(s);
-    
+
     return ss;
   }
-    
+
   template <typename ContainerType>
-  std::string join_string(const std::string & sep, const ContainerType & ss)
+  std::string join_string(const std::string &sep, const ContainerType &ss)
   {
     std::string ret_val = "";
-    
+
     if (ss.is_empty())
       return ret_val;
 
@@ -96,10 +97,10 @@ namespace Designar
     ret_val = it.get_current();
     it.next();
 
-    for ( ; it != ss.end(); ++it)
+    for (; it != ss.end(); ++it)
       ret_val += sep + *it;
 
     return ret_val;
   }
-  
+
 } // end namespace Designar

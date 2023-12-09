@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -49,6 +49,6 @@ int main()
   cout << "RealRange(1, 2, 0.05)\n";
   for (real_t item : range(1., 2., 0.05))
     cout << item << endl;
-  
+
   return 0;
 }

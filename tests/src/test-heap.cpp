@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -17,7 +17,7 @@ int main()
   int_t min_int = 0;
 
   assert(fixed_heap.is_empty());
-  assert(not fixed_heap.is_full());
+  assert(!fixed_heap.is_full());
   assert(fixed_heap.get_capacity() == 100);
 
   fixed_heap.insert(3);
@@ -31,13 +31,13 @@ int main()
   fixed_heap.insert(0);
 
   min_int = std::numeric_limits<int_t>::min();
-  
-  while (not fixed_heap.is_empty())
-    {
-      int_t item = fixed_heap.get();
-      assert(min_int <= item);
-      min_int = item;
-    }
+
+  while (!fixed_heap.is_empty())
+  {
+    int_t item = fixed_heap.get();
+    assert(min_int <= item);
+    min_int = item;
+  }
 
   DynHeap<int_t> array_heap;
 
@@ -54,13 +54,13 @@ int main()
   array_heap.insert(0);
 
   min_int = std::numeric_limits<int_t>::min();
-  
-  while (not array_heap.is_empty())
-    {
-      int_t item = array_heap.get();
-      assert(min_int <= item);
-      min_int = item;
-    }
+
+  while (!array_heap.is_empty())
+  {
+    int_t item = array_heap.get();
+    assert(min_int <= item);
+    min_int = item;
+  }
 
   for (int_t i = 0; i < 10000; ++i)
     array_heap.insert(i);
@@ -69,7 +69,7 @@ int main()
     assert(array_heap.get() == i);
 
   LHeap<int_t> lheap;
-  
+
   lheap.insert(3);
   lheap.insert(22);
   lheap.insert(18);
@@ -81,13 +81,13 @@ int main()
   lheap.insert(0);
 
   min_int = std::numeric_limits<int_t>::min();
-  
-  while (not lheap.is_empty())
-    {
-      int_t item = lheap.get();
-      assert(min_int <= item);
-      min_int = item;
-    }
+
+  while (!lheap.is_empty())
+  {
+    int_t item = lheap.get();
+    assert(min_int <= item);
+    min_int = item;
+  }
 
   constexpr nat_t max_num_items_to_remove = 100;
   nat_t current_item = 0;
@@ -95,27 +95,27 @@ int main()
   FixedArray<int_t *> to_remove(max_num_items_to_remove);
 
   rng_t rng(time(nullptr));
-  
+
   for (int_t i = 0; i < 100000; ++i)
-    {
-      auto & item = lheap.insert(i);
+  {
+    auto &item = lheap.insert(i);
 
-      if (current_item == max_num_items_to_remove)
-	continue;
-      
-      auto r = random(rng);
+    if (current_item == max_num_items_to_remove)
+      continue;
 
-      if (r > 0.5)
-	to_remove[current_item++] = &const_cast<int_t &>(item);
-    }
+    auto r = random(rng);
+
+    if (r > 0.5)
+      to_remove[current_item++] = &const_cast<int_t &>(item);
+  }
 
   for (nat_t i = 0; i < current_item; ++i)
     lheap.remove(*to_remove[i]);
-  
+
   for (int_t i = 0; i < 100000 - current_item; ++i)
     lheap.get();
-  
+
   cout << "Everything ok!\n";
-  
+
   return 0;
 }

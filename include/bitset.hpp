@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -28,83 +28,83 @@ namespace Designar
     Byte(bool, bool, bool, bool, bool, bool, bool, bool);
 
     Byte(int);
-    
-    Byte(const Byte & b);
-    
+
+    Byte(const Byte &b);
+
     bool get_bit(unsigned char) const;
-    
+
     void set_bit(unsigned char, bool);
-    
+
     void flip();
 
     void set(int);
 
     int to_num() const;
-    
+
     operator int() const;
 
     std::string to_string() const;
-    
+
     operator std::string() const;
 
-    Byte & operator = (const Byte &);
-    
-    Byte & operator = (int);
+    Byte &operator=(const Byte &);
 
-    Byte operator << (nat_t);
-    
-    void operator <<= (nat_t);
-    
-    Byte operator >> (nat_t);
+    Byte &operator=(int);
 
-    void operator >>= (nat_t);
+    Byte operator<<(nat_t);
 
-    Byte operator & (nat_t);
-    
-    void operator &= (nat_t);
+    void operator<<=(nat_t);
 
-    Byte operator | (nat_t);
+    Byte operator>>(nat_t);
 
-    void operator |= (nat_t);
+    void operator>>=(nat_t);
 
-    Byte operator ~ ();
+    Byte operator&(nat_t);
 
-    bool operator == (int) const;
-    
-    bool operator != (int) const;
+    void operator&=(nat_t);
 
-    bool operator < (int) const;
+    Byte operator|(nat_t);
 
-    bool operator <= (int) const;
+    void operator|=(nat_t);
 
-    bool operator > (int) const;
+    Byte operator~();
 
-    bool operator >= (int) const;
+    bool operator==(int) const;
+
+    bool operator!=(int) const;
+
+    bool operator<(int) const;
+
+    bool operator<=(int) const;
+
+    bool operator>(int) const;
+
+    bool operator>=(int) const;
   };
 
   class DynBitSet
   {
   public:
     using ItemType = bool;
-    
+
     class RWProxy
     {
-      DynBitSet & dbs;
-      nat_t       i;
+      DynBitSet &dbs;
+      nat_t i;
 
     public:
       RWProxy(DynBitSet &, nat_t);
-      
+
       operator bool() const;
 
-      bool operator = (bool);
+      bool operator=(bool);
     };
-    
+
   private:
     static constexpr unsigned char BIT_SIZE = 8;
-    
-    nat_t           num_bits;
-    DynArray<Byte>  bit_array;
+
+    nat_t num_bits;
+    DynArray<Byte> bit_array;
 
     static nat_t which_byte(nat_t num_bit)
     {
@@ -136,12 +136,12 @@ namespace Designar
 
     ~DynBitSet() = default;
 
-    DynBitSet & operator = (const DynBitSet &);
+    DynBitSet &operator=(const DynBitSet &);
 
-    DynBitSet & operator = (DynBitSet &&);
-    
+    DynBitSet &operator=(DynBitSet &&);
+
     void swap(DynBitSet &);
-    
+
     bool is_empty() const;
 
     void clear();
@@ -162,15 +162,15 @@ namespace Designar
 
     void read(std::istream &);
 
-    const RWProxy operator [] (nat_t) const;
-    
-    RWProxy operator [] (nat_t);
+    const RWProxy operator[](nat_t) const;
+
+    RWProxy operator[](nat_t);
 
     class Iterator : public ArrayIterator<Iterator, DynBitSet, bool, true>
     {
       using Base = ArrayIterator<Iterator, DynBitSet, bool, true>;
       using Base::Base;
-      
+
     public:
       RWProxy get_current();
 
@@ -185,5 +185,5 @@ namespace Designar
 
     Iterator end() const;
   };
-  
+
 } // end namespace Designar

@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -21,15 +21,24 @@ int main()
   assert(r1.max() == 5);
   assert(r1.step_size() == 1);
   assert(r1.size() == 5);
-  assert(r1.filter([](auto item){ return item % 2 == 0; }).equal({0,2,4}));
-  assert(r1.map([](auto item){ return item * 2; }).equal({0,2,4,6,8}));
-  assert(r1.fold(0, [](auto item, auto acc){ return item + acc; }) == 10);
-  assert(r1.fold(1, [](auto item, auto acc){ return item * acc; }) == 0);
-  assert(r1.all([] (auto item) { return item < 10; }));
-  assert(r1.exists([] (auto item) { return not (item & 1); }));
-  assert(r1.none([] (auto item) { return item >= 10; }));
-  assert(r1.to_list().equal({0,1,2,3,4}));
-  
+  assert(r1.filter([](auto item)
+                   { return item % 2 == 0; })
+             .equal({0, 2, 4}));
+  assert(r1.map([](auto item)
+                { return item * 2; })
+             .equal({0, 2, 4, 6, 8}));
+  assert(r1.fold(0, [](auto item, auto acc)
+                 { return item + acc; }) == 10);
+  assert(r1.fold(1, [](auto item, auto acc)
+                 { return item * acc; }) == 0);
+  assert(r1.all([](auto item)
+                { return item < 10; }));
+  assert(r1.exists([](auto item)
+                   { return !(item & 1); }));
+  assert(r1.none([](auto item)
+                 { return item >= 10; }));
+  assert(r1.to_list().equal({0, 1, 2, 3, 4}));
+
   Range<int> r2(-5, 5);
   assert(r2.min() == -5);
   assert(r2.max() == 5);
@@ -41,14 +50,23 @@ int main()
   assert(r3.max() == 10);
   assert(r3.step_size() == 2);
   assert(r3.size() == 5);
-  assert(r3.filter([](auto item){ return item % 2 == 0; }).equal({0,2,4,6,8}));
-  assert(r3.map([](auto item){ return item * 2; }).equal({0,4,8,12,16}));
-  assert(r3.fold(0, [](auto item, auto acc){ return item + acc; }) == 20);
-  assert(r3.fold(1, [](auto item, auto acc){ return item * acc; }) == 0);
-  assert(r3.all([] (auto item) { return not (item & 1); }));
-  assert(r3.exists([] (auto item) { return not (item & 1); }));
-  assert(r3.none([] (auto item) { return item & 1; }));
-  assert(r3.to_list().equal({0,2,4,6,8}));
+  assert(r3.filter([](auto item)
+                   { return item % 2 == 0; })
+             .equal({0, 2, 4, 6, 8}));
+  assert(r3.map([](auto item)
+                { return item * 2; })
+             .equal({0, 4, 8, 12, 16}));
+  assert(r3.fold(0, [](auto item, auto acc)
+                 { return item + acc; }) == 20);
+  assert(r3.fold(1, [](auto item, auto acc)
+                 { return item * acc; }) == 0);
+  assert(r3.all([](auto item)
+                { return not(item & 1); }));
+  assert(r3.exists([](auto item)
+                   { return not(item & 1); }));
+  assert(r3.none([](auto item)
+                 { return item & 1; }));
+  assert(r3.to_list().equal({0, 2, 4, 6, 8}));
 
   Range<int> r4(-5, 5, 3);
   assert(r4.min() == -5);
@@ -79,7 +97,6 @@ int main()
   assert(r8.max() == 5);
   assert(r8.step_size() == 1);
   assert(r8.size() == 0);
-  
 
   Range<double> r9(0, 10., 0.1);
   assert(num_equal(r9.min(), 0.));
@@ -98,7 +115,7 @@ int main()
   assert(num_equal(r11.max(), 5.));
   assert(num_equal(r11.step_size(), 0.02));
   assert(r11.size() == 500);
-  
+
   cout << "Everything ok!\n";
   return 0;
 }

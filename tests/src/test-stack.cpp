@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -14,7 +14,7 @@ int main()
   FixedStack<int_t, 10> fixed_stack;
 
   assert(fixed_stack.is_empty());
-  assert(not fixed_stack.is_full());
+  assert(!fixed_stack.is_full());
   assert(fixed_stack.size() == 0);
   assert(fixed_stack.get_capacity() == 10);
 
@@ -22,8 +22,8 @@ int main()
 
   assert(fixed_stack.top() == 1);
   assert(fixed_stack.size() == 1);
-  assert(not fixed_stack.is_empty());
-  assert(not fixed_stack.is_full());
+  assert(!fixed_stack.is_empty());
+  assert(!fixed_stack.is_full());
 
   fixed_stack.push(5);
 
@@ -49,19 +49,18 @@ int main()
   assert(fixed_stack.is_full());
 
   try
-    {
-      fixed_stack.push(11);
-      assert(false);
-    }
-  catch(overflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
-
+  {
+    fixed_stack.push(11);
+    assert(false);
+  }
+  catch (overflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
 
   fixed_stack.popn(4);
 
@@ -69,7 +68,7 @@ int main()
   assert(fixed_stack.size() == 6);
 
   FixedStack<int_t, 10> fixed_stack_cpy = fixed_stack;
-  
+
   assert(fixed_stack_cpy.top() == 6);
   assert(fixed_stack_cpy.size() == 6);
 
@@ -84,35 +83,35 @@ int main()
   assert(fixed_stack.is_empty());
 
   try
-    {
-      fixed_stack.top();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
-  
+  {
+    fixed_stack.top();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
+
   try
-    {
-      fixed_stack.pop();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
+  {
+    fixed_stack.pop();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
 
   DynStack<int_t> array_stack;
-  
+
   assert(array_stack.is_empty());
   assert(array_stack.size() == 0);
 
@@ -120,7 +119,7 @@ int main()
 
   assert(array_stack.top() == 1);
   assert(array_stack.size() == 1);
-  assert(not array_stack.is_empty());
+  assert(!array_stack.is_empty());
 
   array_stack.push(5);
 
@@ -145,55 +144,55 @@ int main()
   array_stack.push(11);
 
   assert(array_stack.size() == 11);
-  
+
   array_stack.popn(4);
 
   assert(array_stack.top() == 7);
   assert(array_stack.size() == 7);
-  
+
   DynStack<int_t> array_stack_cpy = array_stack;
-   
+
   assert(array_stack_cpy.top() == 7);
   assert(array_stack_cpy.size() == 7);
-  
+
   DynStack<int_t> array_stack_mv = move(array_stack_cpy);
-  
+
   assert(array_stack_mv.top() == 7);
   assert(array_stack_mv.size() == 7);
   assert(array_stack_cpy.is_empty());
-  
+
   array_stack.popn(7);
 
   assert(array_stack.is_empty());
-  
+
   try
-    {
-      array_stack.top();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
-  
+  {
+    array_stack.top();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
+
   try
-    {
-      array_stack.pop();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
-  
+  {
+    array_stack.pop();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
+
   DynStack<int_t> arr_stack;
 
   for (int_t i = 0; i < 10000; ++i)
@@ -201,9 +200,9 @@ int main()
 
   for (int_t i = 0; i < 10000; ++i)
     assert(arr_stack.pop() == 10000 - i);
-  
+
   ListStack<int_t> list_stack;
-  
+
   assert(list_stack.is_empty());
   assert(list_stack.size() == 0);
 
@@ -211,7 +210,7 @@ int main()
 
   assert(list_stack.top() == 1);
   assert(list_stack.size() == 1);
-  assert(not list_stack.is_empty());
+  assert(!list_stack.is_empty());
 
   list_stack.push(5);
 
@@ -236,55 +235,55 @@ int main()
   list_stack.push(11);
 
   assert(list_stack.size() == 11);
-  
+
   list_stack.popn(4);
 
   assert(list_stack.top() == 7);
   assert(list_stack.size() == 7);
-  
+
   ListStack<int_t> list_stack_cpy = list_stack;
-   
+
   assert(list_stack_cpy.top() == 7);
   assert(list_stack_cpy.size() == 7);
-  
+
   ListStack<int_t> list_stack_mv = move(list_stack_cpy);
 
   assert(list_stack_mv.top() == 7);
   assert(list_stack_mv.size() == 7);
   assert(list_stack_cpy.is_empty());
-  
+
   list_stack.popn(7);
 
   assert(list_stack.is_empty());
 
   try
-    {
-      list_stack.top();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
+  {
+    list_stack.top();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
 
-    try
-    {
-      list_stack.pop();
-      assert(false);
-    }
-  catch(underflow_error)
-    {
-      assert(true);
-    }
-  catch(...)
-    {
-      assert(false);
-    }
-    
+  try
+  {
+    list_stack.pop();
+    assert(false);
+  }
+  catch (underflow_error)
+  {
+    assert(true);
+  }
+  catch (...)
+  {
+    assert(false);
+  }
+
   cout << "Everything ok!\n";
   return 0;
 }

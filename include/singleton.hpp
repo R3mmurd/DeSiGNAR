@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -13,7 +13,7 @@ namespace Designar
 
   /** Generic Singleton.
    *
-   *  This class was designed in order to be reused for any class which 
+   *  This class was designed in order to be reused for any class which
    *  requires only one instance.
    *
    *  @param T Concrete singleton class.
@@ -38,7 +38,7 @@ namespace Designar
    *  \endcode
    *
    *  @author: Alejandro J. Mujica
-   */         
+   */
   template <typename T>
   class Singleton
   {
@@ -52,10 +52,9 @@ namespace Designar
 
     Singleton(const Singleton<T> &) = delete;
 
-    Singleton & operator = (const Singleton<T> &) = delete;
+    Singleton &operator=(const Singleton<T> &) = delete;
 
   public:
-
     virtual ~Singleton()
     {
       // Empty
@@ -65,10 +64,10 @@ namespace Designar
      *
      *  @return A pointer to instance.
      */
-    static T * get_ptr_instance()
+    static T *get_ptr_instance()
     {
       if (instance.get() == nullptr)
-	instance = std::unique_ptr<Singleton<T>>(new T());
+        instance = std::unique_ptr<Singleton<T>>(new T());
 
       return static_cast<T *>(instance.get());
     }
@@ -77,7 +76,7 @@ namespace Designar
      *
      *  @return A reference to instance.
      */
-    static T & get_instance()
+    static T &get_instance()
     {
       return *get_ptr_instance();
     }
@@ -85,7 +84,6 @@ namespace Designar
 
   template <typename T>
   std::unique_ptr<Singleton<T>> Singleton<T>::instance =
-    std::unique_ptr<Singleton<T>>(nullptr);
+      std::unique_ptr<Singleton<T>>(nullptr);
 
 } // end namespace Designar
-

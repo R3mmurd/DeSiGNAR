@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -12,8 +12,7 @@ using namespace Designar;
 
 int main()
 {
-  ArrayMap<string, int_t> array_map = {{"One",1},{"Two",2},
-					{"Three",3},{"Four",4}};
+  ArrayMap<string, int_t> array_map = {{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}};
 
   assert(array_map.size() == 4);
   assert(array_map["One"] == 1);
@@ -33,31 +32,25 @@ int main()
 
   assert(array_map["Six"] == 6);
 
-  assert(array_map.equal({{"One",1},{"Two",2},{"Three",3},{"Four",4},{"Five",5},{"Six",6}}));
+  assert(array_map.equal({{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}, {"Five", 5}, {"Six", 6}}));
 
-  
-  auto sum = array_map.fold(map_item(string(""), 0), [] (const auto & p,
-							 const auto & acc)
-			    {
-			      return map_item(key(acc)+key(p)+"+",
-					      value(acc)+value(p));
-			    });
+  auto sum = array_map.fold(map_item(string(""), 0), [](const auto &p,
+                                                        const auto &acc)
+                            { return map_item(key(acc) + key(p) + "+",
+                                              value(acc) + value(p)); });
 
   key(sum).pop_back();
-  assert(key(sum) == "One+Two+Three+Four+Five+Six" and value(sum) == 21);
+  assert(key(sum) == "One+Two+Three+Four+Five+Six" && value(sum) == 21);
 
-  auto prod = array_map.fold(map_item(string(""), 1), [] (const auto & p,
-							  const auto & acc)
-			     {
-			       return map_item(key(acc)+key(p)+"*",
-					       value(acc)*value(p));
-			     });
-  
+  auto prod = array_map.fold(map_item(string(""), 1), [](const auto &p,
+                                                         const auto &acc)
+                             { return map_item(key(acc) + key(p) + "*",
+                                               value(acc) * value(p)); });
+
   key(prod).pop_back();
-  assert(key(prod) == "One*Two*Three*Four*Five*Six" and value(prod) == 720);
+  assert(key(prod) == "One*Two*Three*Four*Five*Six" && value(prod) == 720);
 
-  TreeMap<string, int_t> tree_map = {{"One",1},{"Two",2},
-				      {"Three",3},{"Four",4}};
+  TreeMap<string, int_t> tree_map = {{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}};
 
   assert(tree_map.size() == 4);
   assert(tree_map["One"] == 1);
@@ -76,40 +69,32 @@ int main()
   assert(tree_map.size() == 6);
 
   assert(tree_map["Six"] == 6);
-  
-  assert(tree_map.equal({{"One",1},{"Two",2},{"Three",3},{"Four",4},{"Five",5},{"Six",6}}));
+
+  assert(tree_map.equal({{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}, {"Five", 5}, {"Six", 6}}));
 
   key(sum).clear();
   value(sum) = 0;
-  
-  sum = tree_map.fold(map_item(string(""), 0), [] (const auto & p,
-						   const auto & acc)
-		      {
-			return map_item(key(acc)+key(p)+"+",
-					value(acc)+value(p));
-		      });
 
+  sum = tree_map.fold(map_item(string(""), 0), [](const auto &p,
+                                                  const auto &acc)
+                      { return map_item(key(acc) + key(p) + "+",
+                                        value(acc) + value(p)); });
 
-
-  
   key(sum).pop_back();
-  assert(key(sum) == "Five+Four+One+Six+Three+Two" and value(sum) == 21);
+  assert(key(sum) == "Five+Four+One+Six+Three+Two" && value(sum) == 21);
 
   key(prod).clear();
   value(prod) = 0;
-  
-  prod = tree_map.fold(map_item(string(""), 1), [] (const auto & p,
-						    const auto & acc)
-		       {
-			 return map_item(key(acc)+key(p)+"*",
-					 value(acc)*value(p));
-		       });
-  
+
+  prod = tree_map.fold(map_item(string(""), 1), [](const auto &p,
+                                                   const auto &acc)
+                       { return map_item(key(acc) + key(p) + "*",
+                                         value(acc) * value(p)); });
+
   key(prod).pop_back();
-  assert(key(prod) == "Five*Four*One*Six*Three*Two" and value(prod) == 720);
-  
-  HashMap<string, int_t> hash_map = {{"One",1},{"Two",2},
-				      {"Three",3},{"Four",4}};
+  assert(key(prod) == "Five*Four*One*Six*Three*Two" && value(prod) == 720);
+
+  HashMap<string, int_t> hash_map = {{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}};
 
   assert(hash_map.size() == 4);
   assert(hash_map["One"] == 1);
@@ -128,38 +113,30 @@ int main()
   assert(hash_map.size() == 6);
 
   assert(hash_map["Six"] == 6);
-  
-  
+
   key(sum).clear();
   value(sum) = 0;
-  
-  sum = hash_map.fold(map_item(string(""), 0), [] (const auto & p,
-						   const auto & acc)
-		      {
-			return map_item(key(acc)+key(p)+"+",
-					value(acc)+value(p));
-		      });
 
+  sum = hash_map.fold(map_item(string(""), 0), [](const auto &p,
+                                                  const auto &acc)
+                      { return map_item(key(acc) + key(p) + "+",
+                                        value(acc) + value(p)); });
 
-
-  
   key(sum).pop_back();
   assert(value(sum) == 21);
 
   key(prod).clear();
   value(prod) = 0;
-  
-  prod = hash_map.fold(map_item(string(""), 1), [] (const auto & p,
-						     const auto & acc)
-			{
-			  return map_item(key(acc)+key(p)+"*",
-					  value(acc)*value(p));
-			});
-  
+
+  prod = hash_map.fold(map_item(string(""), 1), [](const auto &p,
+                                                   const auto &acc)
+                       { return map_item(key(acc) + key(p) + "*",
+                                         value(acc) * value(p)); });
+
   key(prod).pop_back();
   assert(value(prod) == 720);
-  
+
   cout << "Everything ok!\n";
-  
+
   return 0;
 }

@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -10,7 +10,7 @@ namespace Designar
 {
 
   CommonNodeArc::CommonNodeArc()
-    : tag(0), _counter(0), _cookie(nullptr)
+      : tag(0), _counter(0), _cookie(nullptr)
   {
     // empty
   }
@@ -30,7 +30,7 @@ namespace Designar
     return (tag & nat_t(graph_tag)) == nat_t(graph_tag);
   }
 
-  void *& CommonNodeArc::cookie()
+  void *&CommonNodeArc::cookie()
   {
     return _cookie;
   }
@@ -40,16 +40,16 @@ namespace Designar
     tag = 0;
   }
 
-  int_t & CommonNodeArc::counter()
+  int_t &CommonNodeArc::counter()
   {
     return _counter;
   }
 
   void CommonNodeArc::reset()
   {
-    tag      = 0;
+    tag = 0;
     _counter = 0;
-    _cookie  = nullptr;
+    _cookie = nullptr;
   }
 
 } // end namespace Designar

@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -11,18 +11,18 @@
 namespace Designar
 {
 
-  template <typename To, typename FromHead, typename ...FromTail>
+  template <typename To, typename FromHead, typename... FromTail>
   struct AllAreConvertible
   {
     static constexpr bool value =
-      std::is_convertible<FromHead, To>::value and
-      AllAreConvertible<To, FromTail...>::value;
+        std::is_convertible<FromHead, To>::value and
+        AllAreConvertible<To, FromTail...>::value;
   };
-  
+
   template <typename To, typename From>
   struct AllAreConvertible<To, From>
   {
     static constexpr bool value = std::is_convertible<From, To>::value;
   };
-  
+
 } // end namespace Designar

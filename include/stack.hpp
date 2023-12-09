@@ -1,6 +1,6 @@
 /*
   This file is part of Designar.
-  
+
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
@@ -15,54 +15,54 @@ namespace Designar
   template <typename T, nat_t CAP = 100>
   class FixedStack
   {
-    T     array[CAP];
+    T array[CAP];
     nat_t num_items;
 
     void copy_stack(const FixedStack &);
 
-    void swap(FixedStack & s)
+    void swap(FixedStack &s)
     {
       std::swap(array, s.array);
       std::swap(num_items, s.num_items);
     }
 
   public:
-    using ItemType  = T;
-    using KeyType   = T;
-    using DataType  = T;
+    using ItemType = T;
+    using KeyType = T;
+    using DataType = T;
     using ValueType = T;
-    using SizeType  = nat_t;
-    
+    using SizeType = nat_t;
+
     FixedStack()
-      : num_items(0)
+        : num_items(0)
     {
       // empty
     }
 
-    FixedStack(const FixedStack & s)
-      : num_items(s.num_items)
+    FixedStack(const FixedStack &s)
+        : num_items(s.num_items)
     {
       copy_stack(s);
     }
 
-    FixedStack(FixedStack && s)
-      : FixedStack()
+    FixedStack(FixedStack &&s)
+        : FixedStack()
     {
       swap(s);
     }
 
-    FixedStack & operator = (const FixedStack & s)
+    FixedStack &operator=(const FixedStack &s)
     {
       if (this == &s)
-	return *this;
-      
+        return *this;
+
       num_items = s.num_items;
       copy_stack(s);
 
       return *this;
     }
 
-    FixedStack & operator = (FixedStack && s)
+    FixedStack &operator=(FixedStack &&s)
     {
       swap(s);
       return *this;
@@ -93,60 +93,60 @@ namespace Designar
       return CAP;
     }
 
-    T & push(const T & item)
+    T &push(const T &item)
     {
       if (is_full())
-	throw std::overflow_error("Stack is full");
-      
+        throw std::overflow_error("Stack is full");
+
       array[num_items++] = item;
       return array[num_items - 1];
     }
 
-    T & push(T && item)
+    T &push(T &&item)
     {
       if (is_full())
-	throw std::overflow_error("Stack is full");
-      
+        throw std::overflow_error("Stack is full");
+
       array[num_items++] = std::move(item);
       return array[num_items - 1];
     }
 
-    T & top()
+    T &top()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return array[num_items - 1];
     }
 
-    const T & top() const
+    const T &top() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return array[num_items - 1];
     }
 
-    T & base()
+    T &base()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return array[0];
     }
-    
-    const T & base() const
+
+    const T &base() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return array[0];
     }
 
     T pop()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
+        throw std::underflow_error("Stack is empty");
 
       return std::move(array[--num_items]);
     }
@@ -154,14 +154,14 @@ namespace Designar
     void popn(nat_t n)
     {
       if (n > num_items)
-	throw std::underflow_error("n is to large");
+        throw std::underflow_error("n is to large");
 
       num_items -= n;
     }
   };
 
   template <typename T, nat_t CAP>
-  void FixedStack<T, CAP>::copy_stack(const FixedStack & s)
+  void FixedStack<T, CAP>::copy_stack(const FixedStack &s)
   {
     for (nat_t i = 0; i < num_items; ++i)
       array[i] = s.array[i];
@@ -173,56 +173,56 @@ namespace Designar
     using BaseArray = DynArray<T>;
 
   public:
-    using ItemType  = T;
-    using KeyType   = T;
-    using DataType  = T;
+    using ItemType = T;
+    using KeyType = T;
+    using DataType = T;
     using ValueType = T;
-    using SizeType  = nat_t;
-    
+    using SizeType = nat_t;
+
     DynStack()
-      : BaseArray()
+        : BaseArray()
     {
       // empty
     }
 
     DynStack(nat_t cap)
-      : BaseArray(cap)
-    {
-      // empty
-    }
-    
-    DynStack(const DynStack & s)
-      : BaseArray(s)
+        : BaseArray(cap)
     {
       // empty
     }
 
-    DynStack(DynStack && s)
-      : BaseArray(std::forward<DynStack<T>>(s))
+    DynStack(const DynStack &s)
+        : BaseArray(s)
     {
       // empty
     }
 
-    DynStack & operator = (const DynStack & s)
+    DynStack(DynStack &&s)
+        : BaseArray(std::forward<DynStack<T>>(s))
+    {
+      // empty
+    }
+
+    DynStack &operator=(const DynStack &s)
     {
       if (this == &s)
-	return *this;
-      
-      (BaseArray &) *this = s;
+        return *this;
+
+      (BaseArray &)*this = s;
       return *this;
     }
 
-    DynStack & operator = (DynStack && s)
+    DynStack &operator=(DynStack &&s)
     {
       BaseArray::swap(s);
       return *this;
     }
-    
+
     bool is_empty() const
     {
       return BaseArray::is_empty();
     }
-    
+
     void clear()
     {
       BaseArray::clear();
@@ -233,58 +233,58 @@ namespace Designar
       return BaseArray::size();
     }
 
-    T & push(const T & item)
+    T &push(const T &item)
     {
       BaseArray::append(item);
       return BaseArray::get_last();
     }
 
-    T & push(T && item)
+    T &push(T &&item)
     {
       BaseArray::append(std::forward<T>(item));
       return BaseArray::get_last();
     }
 
-    T & top()
+    T &top()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseArray::get_last();
     }
 
-    const T & top() const
+    const T &top() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseArray::get_last();
     }
 
-    T & base()
+    T &base()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseArray::get_first();
     }
 
-    const T & base() const
+    const T &base() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseArray::get_first();
     }
-    
+
     T pop()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseArray::remove_last();
     }
-    
+
     void popn(nat_t);
   };
 
@@ -302,52 +302,52 @@ namespace Designar
   class ListStack : private SLList<T>
   {
     using BaseList = SLList<T>;
-    
+
   public:
-    using ItemType  = T;
-    using KeyType   = T;
-    using DataType  = T;
+    using ItemType = T;
+    using KeyType = T;
+    using DataType = T;
     using ValueType = T;
-    using SizeType  = nat_t;
-    
+    using SizeType = nat_t;
+
     ListStack()
-      : BaseList()
+        : BaseList()
     {
       // empty
     }
 
-    ListStack(const ListStack & s)
-      : BaseList(s)
+    ListStack(const ListStack &s)
+        : BaseList(s)
     {
       // empty
     }
 
-    ListStack(ListStack && s)
-      : BaseList(std::forward<ListStack<T>>(s))
+    ListStack(ListStack &&s)
+        : BaseList(std::forward<ListStack<T>>(s))
     {
       // empty
     }
 
-    ListStack & operator = (const ListStack & s)
+    ListStack &operator=(const ListStack &s)
     {
       if (this == &s)
-	return *this;
-      
-      (BaseList &) *this = s;
+        return *this;
+
+      (BaseList &)*this = s;
       return *this;
     }
 
-    ListStack & operator = (ListStack && s)
+    ListStack &operator=(ListStack &&s)
     {
       BaseList::swap(s);
       return *this;
     }
-    
+
     bool is_empty() const
     {
       return BaseList::is_empty();
     }
-    
+
     void clear()
     {
       BaseList::clear();
@@ -358,56 +358,56 @@ namespace Designar
       return BaseList::size();
     }
 
-    T & push(const T & item)
+    T &push(const T &item)
     {
       return BaseList::insert(item);
     }
 
-    T & push(T && item)
+    T &push(T &&item)
     {
       return BaseList::insert(std::forward<T>(item));
     }
 
-    T & top()
+    T &top()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseList::get_first();
     }
 
-    const T & top() const
+    const T &top() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseList::get_first();
     }
 
-    T & base()
+    T &base()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseList::get_last();
     }
 
-    const T & base() const
+    const T &base() const
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseList::get_last();
     }
-    
+
     T pop()
     {
       if (is_empty())
-	throw std::underflow_error("Stack is empty");
-      
+        throw std::underflow_error("Stack is empty");
+
       return BaseList::remove_first();
     }
-    
+
     void popn(nat_t);
   };
 
@@ -420,5 +420,5 @@ namespace Designar
     while (n-- > 0)
       pop();
   }
-  
+
 } // end namespace Designar
