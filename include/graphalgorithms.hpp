@@ -1607,7 +1607,7 @@ namespace Designar
     g.reset_tag(TAG);
     g.reset_cookies();
 
-    const_cast<GT&>(g).template sort_arcs(cmp);
+    const_cast<GT&>(g).sort_arcs(cmp);
 
     GT tree;
 
