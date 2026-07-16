@@ -181,6 +181,92 @@ int main()
   assert(reverse(ll).is_sorted([](auto x, auto y)
                                { return x > y; }));
 
+  // NodeSLList::split(): round-robin distributes `this`'s nodes between
+  // `l` and `r` (l gets the odd one out on odd-length lists). This is a
+  // NodeSLList-level operation (like insert(Node*)/append(Node*)/
+  // remove_first()), so it is exercised directly on NodeSLList here
+  // rather than through SLList, whose own num_items bookkeeping split()
+  // does not update.
+  {
+    auto collect = [](NodeSLList<int_t>& l)
+    {
+      DynArray<int_t> items;
+      for (SLNode<int_t>* n = l.get_first(); n != nullptr; n = n->get_next())
+      {
+        items.append(n->get_item());
+      }
+      return items;
+    };
+
+    // Even length: splits evenly, nothing left over.
+    {
+      NodeSLList<int_t> src, l, r;
+      for (int_t v : {1, 2, 3, 4})
+      {
+        src.append(new SLNode<int_t>(v));
+      }
+
+      src.split(l, r);
+
+      assert(src.is_empty());
+      assert(collect(l).equal({1, 3}));
+      assert(collect(r).equal({2, 4}));
+
+      // Regression: append(this->remove_first()) on the second half of
+      // each pair used to run unconditionally, so on the last pair of an
+      // odd-length list it appended a null node, corrupting `r`'s tail
+      // (leaving it null while its head still pointed at a real node)
+      // and crashing the next real append. Appending one more real node
+      // to each after split() must still work.
+      l.append(new SLNode<int_t>(100));
+      r.append(new SLNode<int_t>(200));
+      assert(collect(l).equal({1, 3, 100}));
+      assert(collect(r).equal({2, 4, 200}));
+
+      while (!l.is_empty())
+      {
+        delete l.remove_first();
+      }
+
+      while (!r.is_empty())
+      {
+        delete r.remove_first();
+      }
+    }
+
+    // Odd length: the odd node out goes to `l`, not `r`.
+    {
+      NodeSLList<int_t> src, l, r;
+      for (int_t v : {1, 2, 3, 4, 5})
+      {
+        src.append(new SLNode<int_t>(v));
+      }
+
+      src.split(l, r);
+
+      assert(src.is_empty());
+      assert(collect(l).equal({1, 3, 5}));
+      assert(collect(r).equal({2, 4}));
+
+      // Same post-split corruption check as above, on the odd-length
+      // case that used to trigger append(nullptr) on `r`.
+      r.append(new SLNode<int_t>(200));
+      assert(collect(r).equal({2, 4, 200}));
+
+      while (!l.is_empty())
+      {
+        delete l.remove_first();
+      }
+
+      while (!r.is_empty())
+      {
+        delete r.remove_first();
+      }
+    }
+
+    cout << "NodeSLList::split(): Everything ok!\n";
+  }
+
   cout << "Everything ok!\n";
 
   return 0;

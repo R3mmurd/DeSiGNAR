@@ -175,11 +175,17 @@ namespace Designar
 
     while (!this->is_empty())
     {
-      l->append(this->remove_first());
+      l.append(this->remove_first());
 
-      if (!l->is_empty())
+      // `l` is never empty right after the append above, so checking it
+      // would be a no-op test; what actually needs checking is whether
+      // `this` still has a node left to hand to `r` — remove_first() on
+      // an already-empty list returns nullptr, and append(nullptr) would
+      // corrupt `r` (its tail would be set to null while its head still
+      // points at a real node).
+      if (!this->is_empty())
       {
-        r->append(this->remove_first());
+        r.append(this->remove_first());
       }
     }
   }

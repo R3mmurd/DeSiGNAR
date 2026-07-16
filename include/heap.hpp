@@ -146,7 +146,7 @@ namespace Designar
 
       array[num_items] = item;
       ++num_items;
-      sift_up(array - 1, 1, num_items, cmp);
+      sift_up(array, 1, num_items, cmp);
     }
 
     void insert(Key&& item)
@@ -158,7 +158,7 @@ namespace Designar
 
       array[num_items] = std::move(item);
       ++num_items;
-      sift_up(array - 1, 1, num_items, cmp);
+      sift_up(array, 1, num_items, cmp);
     }
 
     const Key& top() const
@@ -181,7 +181,7 @@ namespace Designar
       Key ret_val = std::move(array[0]);
       array[0] = std::move(array[num_items - 1]);
       --num_items;
-      sift_down(array - 1, 1, num_items, cmp);
+      sift_down(array, 1, num_items, cmp);
       return ret_val;
     }
   };

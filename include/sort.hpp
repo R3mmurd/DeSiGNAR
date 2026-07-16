@@ -335,6 +335,18 @@ namespace Designar
     quicksort<T, Cmp>(a, cmp);
   }
 
+  /** `l`/`r` are 1-based (matching the classic heap formulas
+      parent(i)=i/2, child(i)=i*2, which only stay this clean with
+      1-based indices), but `a` itself is an ordinary 0-based array —
+      every access below is `a[x - 1]`, not `a[x]`. An earlier version
+      of this function took 1-based indices literally by having callers
+      pass `array - 1` as the base pointer instead; forming a pointer to
+      the element *before* the start of an array is undefined behavior
+      in C++ (only "one past the end" is well-defined) regardless of
+      whether it is ever dereferenced, and UBSan's bounds instrumentation
+      correctly flagged it. Indexing with the `- 1` here instead keeps
+      the exact same 1-based formulas without ever forming an
+      out-of-bounds pointer. */
   template <typename T, class Cmp>
   void sift_up(T* a, nat_t l, nat_t r, Cmp& cmp)
   {
@@ -342,9 +354,9 @@ namespace Designar
 
     nat_t u = i / 2;
 
-    while (u >= l && cmp(a[i], a[u]))
+    while (u >= l && cmp(a[i - 1], a[u - 1]))
     {
-      std::swap(a[i], a[u]);
+      std::swap(a[i - 1], a[u - 1]);
       i = u;
       u = i / 2;
     }
@@ -356,6 +368,8 @@ namespace Designar
     return sift_up<T, Cmp>(a, l, r, cmp);
   }
 
+  /** @see sift_up() above for why every access is `a[x - 1]` rather
+      than `a[x]`. */
   template <typename T, class Cmp>
   void sift_down(T* a, nat_t l, nat_t r, Cmp& cmp)
   {
@@ -367,18 +381,18 @@ namespace Designar
     {
       if (c < r)
       {
-        if (cmp(a[c + 1], a[c]))
+        if (cmp(a[c], a[c - 1]))
         {
           ++c;
         }
       }
 
-      if (!cmp(a[c], a[i]))
+      if (!cmp(a[c - 1], a[i - 1]))
       {
         break;
       }
 
-      std::swap(a[c], a[i]);
+      std::swap(a[c - 1], a[i - 1]);
       i = c;
       c = i * 2;
     }

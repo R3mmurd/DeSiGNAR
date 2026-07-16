@@ -53,7 +53,10 @@ namespace Designar
     static_assert(std::is_arithmetic<T>::value,
                   "Template argument must be an arithmetic type");
 
-    return random(rng) * max;
+    // random(rng) is a real_t in [0, 1); scaling by `max` and truncating
+    // back down to T is the whole point here (that's what turns a
+    // uniform real into a uniform T), so the narrowing is deliberate.
+    return static_cast<T>(random(rng) * max);
   }
 
   template <typename T>

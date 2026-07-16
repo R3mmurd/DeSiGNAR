@@ -93,7 +93,7 @@ namespace Designar
 
     for (int i = 7; i >= 0; --i)
     {
-      str += get_bit(i) ? '1' : '0';
+      str += get_bit(static_cast<unsigned char>(i)) ? '1' : '0';
     }
 
     return str;
@@ -313,7 +313,11 @@ namespace Designar
     nat_t byte_num = which_byte(num_bits);
 
     Byte& byte = byte_num < bit_array.size() ? bit_array[byte_num] : bit_array.append(Byte());
-    byte.set_bit(which_bit_in_byte(num_bits), value);
+    // which_bit_in_byte() is num_bit % 8, always in [0, 7]; Byte::set_bit
+    // takes unsigned char (a bit position within one byte can never need
+    // more range than that) rather than nat_t, so the narrowing here is
+    // deliberate and always value-preserving.
+    byte.set_bit(static_cast<unsigned char>(which_bit_in_byte(num_bits)), value);
     ++num_bits;
   }
 
@@ -326,7 +330,7 @@ namespace Designar
 
     nat_t byte_num = which_byte(num_bits - 1);
     Byte& byte = bit_array[byte_num];
-    bool ret_val = byte.get_bit(which_bit_in_byte(num_bits - 1));
+    bool ret_val = byte.get_bit(static_cast<unsigned char>(which_bit_in_byte(num_bits - 1)));
     --num_bits;
     return ret_val;
   }
@@ -339,7 +343,7 @@ namespace Designar
     }
 
     Byte& byte = bit_array[which_byte(i)];
-    byte.set_bit(which_bit_in_byte(i), value);
+    byte.set_bit(static_cast<unsigned char>(which_bit_in_byte(i)), value);
   }
 
   bool DynBitSet::get_bit(nat_t i) const
@@ -350,7 +354,7 @@ namespace Designar
     }
 
     const Byte& byte = bit_array[which_byte(i)];
-    return byte.get_bit(which_bit_in_byte(i));
+    return byte.get_bit(static_cast<unsigned char>(which_bit_in_byte(i)));
   }
 
   std::string DynBitSet::to_string() const
