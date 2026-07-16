@@ -2807,6 +2807,12 @@ namespace Designar
 
     void write_in_text_mode(const GT&, std::ostream&);
 
+    /** Writes raw struct bytes (ofstream::write on POD data), so `out`
+        must have been opened with `std::ios::binary` — without it,
+        Windows' text-mode translation rewrites embedded 0x0A bytes to
+        0x0D 0x0A on write (and the matching read_in_bin_mode() would
+        then treat an embedded 0x1A byte as an early EOF), corrupting
+        the byte layout the reader expects. */
     void write_in_bin_mode(const GT&, std::ofstream&);
 
     void operator()(const GT& g, std::ostream& out)
@@ -2913,6 +2919,8 @@ namespace Designar
 
     GT read_in_text_mode(std::istream&);
 
+    /** @see OutputGraph::write_in_bin_mode() — `in` must likewise have
+        been opened with `std::ios::binary`. */
     GT read_in_bin_mode(std::ifstream&);
 
     GT operator()(std::istream& in)

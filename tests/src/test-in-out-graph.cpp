@@ -95,10 +95,17 @@ int main()
   remove("tmp-g1-txt.dsgg");
   assert(graph_equal(g1, g2));
 
-  out.open("tmp-g1-bin.dsgg");
+  // write_in_bin_mode()/read_in_bin_mode() write/read raw struct bytes
+  // (ofstream::write/ifstream::read on POD data), so the stream must be
+  // opened with ios::binary: without it, Windows' text-mode translation
+  // rewrites embedded 0x0A bytes to 0x0D 0x0A on write (corrupting the
+  // byte stream) and treats an embedded 0x1A byte as an early EOF on
+  // read — either of which can desync the reader from the writer's byte
+  // layout badly enough to hang rather than just fail an assert.
+  out.open("tmp-g1-bin.dsgg", ios::binary);
   outg.write_in_bin_mode(g1, out);
   out.close();
-  in.open("tmp-g1-bin.dsgg");
+  in.open("tmp-g1-bin.dsgg", ios::binary);
   assert(in);
 
   GT g3 = ing.read_in_bin_mode(in);
@@ -134,10 +141,11 @@ int main()
   remove("tmp-dg1-txt.dsgg");
   assert(graph_equal(dg1, dg2));
 
-  out.open("tmp-dg1-bin.dsgg");
+  // @see the ios::binary note above the first write_in_bin_mode() call.
+  out.open("tmp-dg1-bin.dsgg", ios::binary);
   outdg.write_in_bin_mode(dg1, out);
   out.close();
-  in.open("tmp-dg1-bin.dsgg");
+  in.open("tmp-dg1-bin.dsgg", ios::binary);
   assert(in);
 
   DGT dg3 = indg.read_in_bin_mode(in);
