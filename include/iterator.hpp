@@ -39,6 +39,28 @@ namespace Designar
       return *static_cast<const Iterator*>(this);
     }
 
+    /** Whether *this (the iterator object) is const-qualified is a
+        completely different question from whether what it points to is
+        mutable — every mutable STL iterator (std::vector<T>::iterator
+        included) keeps operator*()/operator->()/operator+ etc. as const
+        member functions precisely so a `const Iterator` local variable,
+        or a `const Iterator&` parameter (both idioms <algorithm>
+        implementations use routinely, e.g. libc++/MSVC STL's sort()) can
+        still dereference-and-write through it. get_current() itself is
+        genuinely overloaded on constness (returning T& vs const T&) for
+        when *this legitimately is a const *container*'s begin()/end()
+        result — but that path already returns a plain (non-const)
+        Iterator by value, never a const-qualified Iterator object, so
+        stripping the qualification here to reach the mutable overload of
+        get_current() from a const member function is safe: nothing about
+        this class's actual state is being violated, only the two
+        distinct meanings of "const" that C++ layers onto the same
+        keyword. */
+    Iterator& mutable_me() const
+    {
+      return const_cast<Iterator&>(const_me());
+    }
+
   public:
     using iterator_category = std::input_iterator_tag;
     using value_type = T;
@@ -51,29 +73,19 @@ namespace Designar
       return const_me().has_current();
     }
 
-    RetType<RET_CPY, T, T&> get_curr()
+    RetType<RET_CPY, T, T&> get_curr() const
     {
-      return me().get_current();
+      return mutable_me().get_current();
     }
 
-    RetType<RET_CPY, T, const T&> get_curr() const
+    RetType<RET_CPY, T, T&> operator*() const
     {
-      return const_me().get_current();
+      return mutable_me().get_current();
     }
 
-    RetType<RET_CPY, T, T&> operator*()
+    T* operator->() const
     {
-      return me().get_current();
-    }
-
-    RetType<RET_CPY, T, const T&> operator*() const
-    {
-      return const_me().get_current();
-    }
-
-    T* operator->()
-    {
-      return &me().get_current();
+      return &mutable_me().get_current();
     }
 
     bool operator==(const Iterator& it) const
@@ -140,10 +152,15 @@ namespace Designar
     using iterator_category = std::random_access_iterator_tag;
     using difference_type = typename Base::difference_type;
 
-    RetType<RET_CPY, T, T&> operator[](nat_t i)
+    /** `a[n]` must be equivalent to `*(a + n)` — it must not move `a`
+        itself — so this works on a throwaway copy rather than moving
+        *this via move_to(), the way an earlier version of this operator
+        did. */
+    RetType<RET_CPY, T, T&> operator[](nat_t i) const
     {
-      Base::me().move_to(i);
-      return Base::me().get_current();
+      Iterator it = Base::const_me();
+      it.move_to(i);
+      return it.get_current();
     }
 
     Iterator& operator+=(nat_t p)
@@ -152,9 +169,12 @@ namespace Designar
       return Base::me();
     }
 
-    Iterator operator+(nat_t p)
+    /** const: makes a copy of *this and advances the copy, so — unlike
+        operator+=() above, which genuinely must mutate *this and so
+        must stay non-const — this never needs *this to be non-const. */
+    Iterator operator+(nat_t p) const
     {
-      Iterator it = Base::me();
+      Iterator it = Base::const_me();
       it += p;
       return it;
     }
@@ -165,9 +185,10 @@ namespace Designar
       return Base::me();
     }
 
-    Iterator operator-(nat_t p)
+    /** @see operator+() above — same reasoning for why this is const. */
+    Iterator operator-(nat_t p) const
     {
-      Iterator it = Base::me();
+      Iterator it = Base::const_me();
       it -= p;
       return it;
     }

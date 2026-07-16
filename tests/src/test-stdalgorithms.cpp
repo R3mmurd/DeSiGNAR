@@ -49,6 +49,30 @@ int main()
              { ++visited; });
     assert(visited == arr.size());
 
+    // Regression: RandomAccessIterator::operator[](i) used to move_to(i)
+    // on *this before reading, i.e. it[i] silently relocated `it` itself
+    // instead of behaving like *(it + i) — exactly the kind of thing
+    // std::sort's internal use of iterator indexing would have exercised
+    // (and corrupted) had it compiled to begin with. it[i] must leave it
+    // pointing at the same element as before.
+    {
+      auto it = arr.begin();
+      int_t at_1 = it[1];
+      assert(at_1 == arr[1]);
+      assert(*it == arr[0]);
+    }
+
+    // Regression: operator+()/operator-()/operator*() used to be
+    // non-const member functions, which fails to compile against
+    // standard <algorithm> implementations (libc++, MSVC STL) that hold
+    // iterators in const-qualified locals/parameters internally.
+    {
+      const auto first = arr.begin();
+      const auto shifted = first + 2;
+      assert(*shifted == arr[2]);
+      assert(shifted - first == 2);
+    }
+
     cout << "std:: algorithms on DynArray: Everything ok!\n";
   }
 
