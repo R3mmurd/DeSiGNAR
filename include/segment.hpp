@@ -26,46 +26,48 @@ namespace Designar
       // empty
     }
 
-    GenSegment(const PointT &sp, const PointT &tp)
+    GenSegment(const PointT& sp, const PointT& tp)
         : src_point(sp), tgt_point(tp)
     {
       // empty
     }
 
-    GenSegment(const PointT &sp, PointT &&tp)
+    GenSegment(const PointT& sp, PointT&& tp)
         : src_point(sp), tgt_point(std::forward<PointT>(tp))
     {
       // empty
     }
 
-    GenSegment(PointT &&sp, const PointT &tp)
+    GenSegment(PointT&& sp, const PointT& tp)
         : src_point(std::forward<PointT>(sp)), tgt_point(tp)
     {
       // empty
     }
 
-    GenSegment(PointT &&sp, PointT &&tp)
+    GenSegment(PointT&& sp, PointT&& tp)
         : src_point(std::forward<PointT>(sp)), tgt_point(std::forward<PointT>(tp))
     {
       // empty
     }
 
-    GenSegment(const GenSegment &s)
+    GenSegment(const GenSegment& s)
         : src_point(s.src_point), tgt_point(s.tgt_point)
     {
       // empty
     }
 
-    GenSegment(GenSegment &&s)
+    GenSegment(GenSegment&& s)
         : GenSegment()
     {
       swap(s);
     }
 
-    GenSegment &operator=(const GenSegment &s)
+    GenSegment& operator=(const GenSegment& s)
     {
       if (this == &s)
+      {
         return *this;
+      }
 
       src_point = s.src_point;
       tgt_point = s.tgt_point;
@@ -73,44 +75,44 @@ namespace Designar
       return *this;
     }
 
-    GenSegment &operator=(GenSegment &&s)
+    GenSegment& operator=(GenSegment&& s)
     {
       swap(s);
       return *this;
     }
 
-    void swap(GenSegment &s)
+    void swap(GenSegment& s)
     {
       std::swap(src_point, s.src_point);
       std::swap(tgt_point, s.tgt_point);
     }
 
-    const PointT &get_src_point() const
+    const PointT& get_src_point() const
     {
       return src_point;
     }
 
-    const PointT &get_tgt_point() const
+    const PointT& get_tgt_point() const
     {
       return tgt_point;
     }
 
-    void set_src_point(const PointT &sp)
+    void set_src_point(const PointT& sp)
     {
       src_point = sp;
     }
 
-    void set_src_point(PointT &&sp)
+    void set_src_point(PointT&& sp)
     {
       src_point = std::move(sp);
     }
 
-    void set_tgt_point(const PointT &tp)
+    void set_tgt_point(const PointT& tp)
     {
       tgt_point = tp;
     }
 
-    void set_tgt_point(PointT &&tp)
+    void set_tgt_point(PointT&& tp)
     {
       tgt_point = std::move(tp);
     }
@@ -120,46 +122,48 @@ namespace Designar
       return src_point.distance_with(tgt_point);
     }
 
-    bool is_to_left_from(const PointT &p) const
+    bool is_to_left_from(const PointT& p) const
     {
       return p.is_to_right_from(src_point, tgt_point);
     }
 
-    bool is_to_left_on_from(const PointT &p) const
+    bool is_to_left_on_from(const PointT& p) const
     {
       return p.is_to_right_on_from(src_point, tgt_point);
     }
 
-    bool is_to_right_from(const PointT &p) const
+    bool is_to_right_from(const PointT& p) const
     {
       return p.is_to_left_from(src_point, tgt_point);
     }
 
-    bool is_to_right_on_from(const PointT &p) const
+    bool is_to_right_on_from(const PointT& p) const
     {
       return p.is_to_left_on_from(src_point, tgt_point);
     }
 
-    bool is_collinear_with(const PointT &p) const
+    bool is_collinear_with(const PointT& p) const
     {
       return p.is_collinear_with(src_point, tgt_point);
     }
 
-    bool contains_to(const PointT &p) const
+    bool contains_to(const PointT& p) const
     {
       return p.is_between(src_point, tgt_point);
     }
 
-    bool contains_to(const GenSegment &s) const
+    bool contains_to(const GenSegment& s) const
     {
       return contains_to(s.src_point) && contains_to(s.tgt_point);
     }
 
-    bool intersects_properly_with(const GenSegment &s) const
+    bool intersects_properly_with(const GenSegment& s) const
     {
       if (s.is_collinear_with(src_point) || s.is_collinear_with(tgt_point) or
           is_collinear_with(s.src_point) || is_collinear_with(s.tgt_point))
+      {
         return false;
+      }
 
       return (s.is_to_right_from(src_point) xor
               s.is_to_right_from(tgt_point)) and
@@ -167,10 +171,12 @@ namespace Designar
               is_to_right_from(s.tgt_point));
     }
 
-    bool intersects_with(const GenSegment &s) const
+    bool intersects_with(const GenSegment& s) const
     {
       if (intersects_properly_with(s))
+      {
         return true;
+      }
 
       return contains_to(s.src_point) || contains_to(s.tgt_point) or
              s.contains_to(src_point) || s.contains_to(tgt_point);
@@ -178,24 +184,49 @@ namespace Designar
 
     real_t slope() const
     {
-      if (tgt_point.get_x() == src_point.get_x())
+      if (num_equal(tgt_point.get_x(), src_point.get_x()))
       {
         if (src_point.get_y() < tgt_point.get_y())
+        {
           return INF;
+        }
         else
+        {
           return -INF;
+        }
       }
 
       return real_t(tgt_point.get_y() - src_point.get_y()) /
              real_t(tgt_point.get_x() - src_point.get_x());
     }
 
-    bool is_parallel_with(const GenSegment &s) const
+    /** Two segments are parallel if their slopes are equal. Slopes are
+        computed from subtracted floating-point coordinates, so two
+        segments that are mathematically parallel (e.g. one derived from
+        the other via get_perpendicular()/get_opposite() or other
+        transformations) can end up with slopes that differ by a
+        rounding ulp; comparing them with exact `==` would then wrongly
+        report them as non-parallel, and intersection_with() would go on
+        to divide by an (almost) zero `m1 - m2`, returning a huge/garbage
+        point instead of throwing. real_equal() tolerates that rounding
+        noise. Vertical segments are handled separately because slope()
+        returns +-INF for them, and `INF - INF` is NaN, so real_equal()
+        (which subtracts) can never treat two verticals as equal even
+        though they always are. */
+    bool is_parallel_with(const GenSegment& s) const
     {
-      return slope() == s.slope();
+      real_t m1 = slope();
+      real_t m2 = s.slope();
+
+      if (std::isinf(m1) || std::isinf(m2))
+      {
+        return std::isinf(m1) && std::isinf(m2);
+      }
+
+      return real_equal(m1, m2);
     }
 
-    bool is_perpendicular_with(const GenSegment &s) const
+    bool is_perpendicular_with(const GenSegment& s) const
     {
       real_t ts = slope();
       real_t ss = s.slope();
@@ -206,21 +237,51 @@ namespace Designar
       }
 
       if (real_equal(ts, INF) || real_equal(ts, -INF))
+      {
         return real_equal(ss, 0.);
+      }
 
       return real_equal(ts, -1. / ss);
     }
 
-    GenSegment get_perpendicular(const PointT &p) const
+    /** Builds the segment through `p` perpendicular to this one. Computing
+        the perpendicular slope as `-1/m1` and then a general line
+        intersection is only valid when this segment is neither
+        horizontal (m1 == 0, which would make -1/m1 infinite) nor
+        vertical (m1 == +-INF, since slope() itself already divides by
+        zero to produce that value). Both degenerate cases previously
+        flowed straight into the division below, mixing zeros and
+        infinities and producing a NaN/garbage point instead of the
+        actual (trivial) perpendicular line. */
+    GenSegment get_perpendicular(const PointT& p) const
     {
       real_t m1 = slope();
+
+      const typename PointT::NumberType& x2 = p.get_x();
+      const typename PointT::NumberType& y2 = p.get_y();
+
+      using Num = typename PointT::NumberType;
+
+      if (real_equal(m1, 0.))
+      {
+        // Perpendicular to a horizontal segment is a vertical line
+        // through p.
+        PointT q(x2, y2 + Num(1));
+        return GenSegment(p, q);
+      }
+
+      if (std::isinf(m1))
+      {
+        // Perpendicular to a vertical segment is a horizontal line
+        // through p.
+        PointT q(x2 + Num(1), y2);
+        return GenSegment(p, q);
+      }
+
       real_t m2 = -1. / m1;
 
-      const typename PointT::NumberType &x1 = src_point.get_x();
-      const typename PointT::NumberType &y1 = src_point.get_y();
-
-      const typename PointT::NumberType &x2 = p.get_x();
-      const typename PointT::NumberType &y2 = p.get_y();
+      const typename PointT::NumberType& x1 = src_point.get_x();
+      const typename PointT::NumberType& y1 = src_point.get_y();
 
       const typename PointT::NumberType x =
           real_t(y2 - y1 + m1 * x1 - m2 * x2) / real_t(m1 - m2);
@@ -231,7 +292,7 @@ namespace Designar
       return GenSegment(p, q);
     }
 
-    double counterclockwise_angle_with(const GenSegment &s)
+    double counterclockwise_angle_with(const GenSegment& s)
     {
       auto dxt = tgt_point.get_x() - src_point.get_x();
       auto dyt = tgt_point.get_y() - src_point.get_y();
@@ -249,19 +310,21 @@ namespace Designar
       return GenSegment(tgt_point, src_point);
     }
 
-    PointT intersection_with(const GenSegment &s) const
+    PointT intersection_with(const GenSegment& s) const
     {
       if (is_parallel_with(s))
+      {
         throw std::domain_error("Segments are parallels");
+      }
 
-      const typename PointT::NumberType &x1 = src_point.get_x();
-      const typename PointT::NumberType &y1 = src_point.get_y();
+      const typename PointT::NumberType& x1 = src_point.get_x();
+      const typename PointT::NumberType& y1 = src_point.get_y();
 
-      const typename PointT::NumberType &x2 = s.src_point.get_x();
-      const typename PointT::NumberType &y2 = s.src_point.get_y();
+      const typename PointT::NumberType& x2 = s.src_point.get_x();
+      const typename PointT::NumberType& y2 = s.src_point.get_y();
 
-      const real_t &m1 = slope();
-      const real_t &m2 = s.slope();
+      const real_t& m1 = slope();
+      const real_t& m2 = s.slope();
 
       const typename PointT::NumberType x =
           real_t(y2 - y1 + m1 * x1 - m2 * x2) / real_t(m1 - m2);
@@ -281,12 +344,12 @@ namespace Designar
       return is_null();
     }
 
-    bool operator==(const GenSegment &s) const
+    bool operator==(const GenSegment& s) const
     {
       return (src_point == s.src_point && tgt_point == s.tgt_point) or (src_point == s.tgt_point && tgt_point == s.src_point);
     }
 
-    bool operator!=(const GenSegment &s) const
+    bool operator!=(const GenSegment& s) const
     {
       return !(*this == s);
     }

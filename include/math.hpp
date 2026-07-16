@@ -56,9 +56,9 @@ namespace Designar
   class GenPoint2D;
 
   template <typename NumberType>
-  real_t area_of_parallelogram(const GenPoint2D<NumberType> &,
-                               const GenPoint2D<NumberType> &,
-                               const GenPoint2D<NumberType> &);
+  real_t area_of_parallelogram(const GenPoint2D<NumberType>&,
+                               const GenPoint2D<NumberType>&,
+                               const GenPoint2D<NumberType>&);
 
   template <typename BT, typename ET>
   BT fast_integral_pow(BT, ET);
@@ -94,9 +94,13 @@ namespace Designar
   Sign sign(T n)
   {
     if (n < T(0))
+    {
       return Sign::NEGATIVE;
+    }
     else if (n > T(0))
+    {
       return Sign::POSITIVE;
+    }
     return Sign::ZERO;
   }
 
@@ -113,9 +117,9 @@ namespace Designar
   }
 
   template <typename NumberType>
-  real_t area_of_parallelogram(const GenPoint2D<NumberType> &a,
-                               const GenPoint2D<NumberType> &b,
-                               const GenPoint2D<NumberType> &c)
+  real_t area_of_parallelogram(const GenPoint2D<NumberType>& a,
+                               const GenPoint2D<NumberType>& b,
+                               const GenPoint2D<NumberType>& c)
   {
     return (b.get_x() - a.get_x()) * (c.get_y() - a.get_y()) -
            (c.get_x() - a.get_x()) * (b.get_y() - a.get_y());
@@ -134,7 +138,9 @@ namespace Designar
     while (exp > ET(0))
     {
       if (exp & ET(1))
+      {
         ret_val *= base;
+      }
 
       exp >>= 1;
       base *= base;

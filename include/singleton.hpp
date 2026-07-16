@@ -6,8 +6,6 @@
 
 #pragma once
 
-#include <memory>
-
 namespace Designar
 {
 
@@ -42,17 +40,15 @@ namespace Designar
   template <typename T>
   class Singleton
   {
-    static std::unique_ptr<Singleton<T>> instance;
-
   protected:
     Singleton()
     {
       // Empty
     }
 
-    Singleton(const Singleton<T> &) = delete;
+    Singleton(const Singleton<T>&) = delete;
 
-    Singleton &operator=(const Singleton<T> &) = delete;
+    Singleton& operator=(const Singleton<T>&) = delete;
 
   public:
     virtual ~Singleton()
@@ -60,30 +56,41 @@ namespace Designar
       // Empty
     }
 
+    /** Get a reference to instance.
+     *
+     *  Lazily constructs the single `T` instance on first call and
+     *  returns the same instance on every subsequent call.
+     *
+     *  Thread-safety: this relies on C++11 "magic statics" — the
+     *  standard guarantees that initialization of a function-local
+     *  `static` is thread-safe, so concurrent first calls from multiple
+     *  threads cannot race and cannot observe a partially-constructed
+     *  `T`. An earlier version implemented this lazily with a hand-rolled
+     *  `if (instance == nullptr) instance = new T();` check on a
+     *  `std::unique_ptr` member; that is a classic unsynchronized
+     *  check-then-act race — two threads could both see `nullptr`, both
+     *  construct a `T`, and the second assignment would silently replace
+     *  (and leak) the first instance, leaving any raw pointer obtained
+     *  from the first instance dangling. Delegating construction to a
+     *  function-local static removes the race entirely instead of adding
+     *  a mutex around it.
+     *
+     *  @return A reference to instance.
+     */
+    static T& get_instance()
+    {
+      static T instance;
+      return instance;
+    }
+
     /** Get a pointer to instance.
      *
      *  @return A pointer to instance.
      */
-    static T *get_ptr_instance()
+    static T* get_ptr_instance()
     {
-      if (instance.get() == nullptr)
-        instance = std::unique_ptr<Singleton<T>>(new T());
-
-      return static_cast<T *>(instance.get());
-    }
-
-    /** Get a reference to instance.
-     *
-     *  @return A reference to instance.
-     */
-    static T &get_instance()
-    {
-      return *get_ptr_instance();
+      return &get_instance();
     }
   };
-
-  template <typename T>
-  std::unique_ptr<Singleton<T>> Singleton<T>::instance =
-      std::unique_ptr<Singleton<T>>(nullptr);
 
 } // end namespace Designar

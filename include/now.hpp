@@ -75,9 +75,9 @@ namespace Designar
      * @return The time calculated.
      * @see Precision
      */
-    static double compute_time_diff(const time_point_t &rtp,
-                                    const time_point_t &ltp,
-                                    const Precision &precision)
+    static double compute_time_diff(const time_point_t& rtp,
+                                    const time_point_t& ltp,
+                                    const Precision& precision)
     {
       duration_t et = std::chrono::duration_cast<std::chrono::nanoseconds>(rtp - ltp);
       return et.count() * precision_values[to_int(precision)];
@@ -99,7 +99,9 @@ namespace Designar
         : tp(), precision(Precision::MILLISECONDS)
     {
       if (start_now)
+      {
         start();
+      }
     }
 
     /** \brief Builds a new object with parametric precision time.
@@ -114,18 +116,20 @@ namespace Designar
      *
      *  @see Precision
      */
-    Now(const Precision &_precision, bool start_now = false)
+    Now(const Precision& _precision, bool start_now = false)
         : tp(), precision(_precision)
     {
       if (start_now)
+      {
         start();
+      }
     }
 
     /** Gets the type of precision.
      *
      *  @see Precision
      */
-    const Precision &get_precision() const
+    const Precision& get_precision() const
     {
       return precision;
     }
@@ -134,7 +138,7 @@ namespace Designar
      *
      *  @see Precision
      */
-    void set_precision(const Precision &_precision)
+    void set_precision(const Precision& _precision)
     {
       precision = _precision;
     }
@@ -188,8 +192,8 @@ namespace Designar
      *  @return The time calculated.
      *  @see Precision
      */
-    static double elapsed(const time_point_t &tp,
-                          const Precision &precision = Precision::MILLISECONDS)
+    static double elapsed(const time_point_t& tp,
+                          const Precision& precision = Precision::MILLISECONDS)
     {
       return compute_time_diff(current_time_point(), tp, precision);
     }
@@ -200,8 +204,8 @@ namespace Designar
      *  @see elapsed(const time_point_t & tp,
      *               const Precision & precision = MILLISECONDS)
      */
-    static double delta(const time_point_t &tp,
-                        const Precision &precision = Precision::MILLISECONDS)
+    static double delta(const time_point_t& tp,
+                        const Precision& precision = Precision::MILLISECONDS)
     {
       return elapsed(tp, precision);
     }

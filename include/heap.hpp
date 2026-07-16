@@ -10,24 +10,40 @@
 #include <queue.hpp>
 #include <nodesdef.hpp>
 #include <sort.hpp>
+#include <typetraits.hpp>
 
 namespace Designar
 {
 
+  /** @see DefaultCmpHolder for why this class privately derives from
+      `DefaultCmpHolder<Cmp>`. */
   template <typename Key, class Cmp = std::less<Key>, nat_t cap = 100>
-  class FixedHeap
+  class FixedHeap : private DefaultCmpHolder<Cmp>
   {
     nat_t num_items;
     Key array[cap];
-    Cmp &cmp;
+    Cmp& cmp;
 
-    void copy(const FixedHeap &);
+    void copy(const FixedHeap&);
 
-    void swap(FixedHeap &h)
+    void swap(FixedHeap& h)
     {
       std::swap(num_items, h.num_items);
       std::swap(array, h.array);
       std::swap(cmp, h.cmp);
+    }
+
+    /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
+        logic and the same reason it is needed. */
+    static Cmp& cmp_for_copy(FixedHeap& self, const FixedHeap& h)
+    {
+      if (&h.cmp == &h.default_cmp)
+      {
+        self.default_cmp = h.default_cmp;
+        return self.default_cmp;
+      }
+
+      return h.cmp;
     }
 
   public:
@@ -38,34 +54,41 @@ namespace Designar
     using SizeType = nat_t;
     using CmpType = Cmp;
 
-    FixedHeap(Cmp &_cmp)
+    FixedHeap(Cmp& _cmp)
         : num_items(0), cmp(_cmp)
     {
       // empty
     }
 
-    FixedHeap(Cmp &&_cmp = Cmp())
-        : FixedHeap(_cmp)
+    /** See GenArraySet's matching constructor for why this cannot simply
+        delegate to `FixedHeap(_cmp)` (that would just bind `cmp` to this
+        constructor's own temporary/default-argument parameter, which is
+        destroyed at the end of the call) and why copy-assignment is used
+        instead of a move. */
+    FixedHeap(Cmp&& _cmp = Cmp())
+        : num_items(0), cmp(this->default_cmp)
     {
-      // empty
+      this->default_cmp = _cmp;
     }
 
-    FixedHeap(const FixedHeap &h)
-        : num_items(h.num_items), cmp(h.cmp)
+    FixedHeap(const FixedHeap& h)
+        : num_items(h.num_items), cmp(cmp_for_copy(*this, h))
     {
       copy(h);
     }
 
-    FixedHeap(FixedHeap &&h)
+    FixedHeap(FixedHeap&& h)
         : FixedHeap()
     {
       swap(h);
     }
 
-    FixedHeap &operator=(const FixedHeap &h)
+    FixedHeap& operator=(const FixedHeap& h)
     {
       if (this == &h)
+      {
         return *this;
+      }
 
       num_items = h.num_items;
       cmp = h.cmp;
@@ -73,18 +96,18 @@ namespace Designar
       return *this;
     }
 
-    FixedHeap &operator=(FixedHeap &&h)
+    FixedHeap& operator=(FixedHeap&& h)
     {
       swap(h);
       return *this;
     }
 
-    Cmp &get_cmp()
+    Cmp& get_cmp()
     {
       return cmp;
     }
 
-    const Cmp &get_cmp() const
+    const Cmp& get_cmp() const
     {
       return cmp;
     }
@@ -114,30 +137,36 @@ namespace Designar
       return cap;
     }
 
-    void insert(const Key &item)
+    void insert(const Key& item)
     {
       if (is_full())
+      {
         throw std::overflow_error("Heap is full");
+      }
 
       array[num_items] = item;
       ++num_items;
       sift_up(array - 1, 1, num_items, cmp);
     }
 
-    void insert(Key &&item)
+    void insert(Key&& item)
     {
       if (is_full())
+      {
         throw std::overflow_error("Heap is full");
+      }
 
       array[num_items] = std::move(item);
       ++num_items;
       sift_up(array - 1, 1, num_items, cmp);
     }
 
-    const Key &top() const
+    const Key& top() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       return array[0];
     }
@@ -145,7 +174,9 @@ namespace Designar
     Key get()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       Key ret_val = std::move(array[0]);
       array[0] = std::move(array[num_items - 1]);
@@ -156,27 +187,44 @@ namespace Designar
   };
 
   template <typename Key, class Cmp, nat_t cap>
-  void FixedHeap<Key, Cmp, cap>::copy(const FixedHeap &h)
+  void FixedHeap<Key, Cmp, cap>::copy(const FixedHeap& h)
   {
     for (nat_t i = 1; i <= cap; ++i)
+    {
       array[i] = h.array[i];
+    }
   }
 
+  /** @see DefaultCmpHolder for why this class privately derives from
+      `DefaultCmpHolder<Cmp>`. */
   template <typename Key, class Cmp = std::less<Key>>
-  class DynHeap : private DynArray<Key>
+  class DynHeap : private DefaultCmpHolder<Cmp>, private DynArray<Key>
   {
     using BaseArray = DynArray<Key>;
 
-    static void sift_up(BaseArray &, nat_t, nat_t, Cmp &);
+    static void sift_up(BaseArray&, nat_t, nat_t, Cmp&);
 
-    static void sift_down(BaseArray &, nat_t, nat_t, Cmp &);
+    static void sift_down(BaseArray&, nat_t, nat_t, Cmp&);
 
-    Cmp &cmp;
+    Cmp& cmp;
 
-    void swap(DynHeap &h)
+    void swap(DynHeap& h)
     {
       BaseArray::swap(h);
       std::swap(cmp, h.cmp);
+    }
+
+    /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
+        logic and the same reason it is needed. */
+    static Cmp& cmp_for_copy(DynHeap& self, const DynHeap& h)
+    {
+      if (&h.cmp == &h.default_cmp)
+      {
+        self.default_cmp = h.default_cmp;
+        return self.default_cmp;
+      }
+
+      return h.cmp;
     }
 
   public:
@@ -187,52 +235,57 @@ namespace Designar
     using SizeType = nat_t;
     using CmpType = Cmp;
 
-    DynHeap(Cmp &_cmp)
+    DynHeap(Cmp& _cmp)
         : BaseArray(), cmp(_cmp)
     {
       // empty
     }
 
-    DynHeap(Cmp &&_cmp = Cmp())
-        : DynHeap(_cmp)
+    /** See GenArraySet's matching constructor for why this cannot simply
+        delegate to `DynHeap(_cmp)` and why copy-assignment is used
+        instead of a move. */
+    DynHeap(Cmp&& _cmp = Cmp())
+        : BaseArray(), cmp(this->default_cmp)
+    {
+      this->default_cmp = _cmp;
+    }
+
+    DynHeap(const DynHeap& h)
+        : BaseArray(h), cmp(cmp_for_copy(*this, h))
     {
       // empty
     }
 
-    DynHeap(const DynHeap &h)
-        : BaseArray(h), cmp(h.cmp)
-    {
-      // empty
-    }
-
-    DynHeap(DynHeap &&h)
+    DynHeap(DynHeap&& h)
         : DynHeap()
     {
       swap(h);
     }
 
-    DynHeap &operator=(const DynHeap &h)
+    DynHeap& operator=(const DynHeap& h)
     {
       if (this == &h)
+      {
         return *this;
+      }
 
-      (BaseArray &)*this = h;
+      (BaseArray&)* this = h;
       cmp = h.cmp;
       return *this;
     }
 
-    DynHeap &operator=(DynHeap &&h)
+    DynHeap& operator=(DynHeap&& h)
     {
       swap(h);
       return *this;
     }
 
-    Cmp &get_cmp()
+    Cmp& get_cmp()
     {
       return cmp;
     }
 
-    const Cmp &get_cmp() const
+    const Cmp& get_cmp() const
     {
       return cmp;
     }
@@ -252,22 +305,24 @@ namespace Designar
       return BaseArray::size();
     }
 
-    void insert(const Key &item)
+    void insert(const Key& item)
     {
       BaseArray::append(item);
       sift_up(*this, 1, size(), cmp);
     }
 
-    void insert(Key &&item)
+    void insert(Key&& item)
     {
       BaseArray::append(std::forward<Key>(item));
       sift_up(*this, 1, size(), cmp);
     }
 
-    const Key &top() const
+    const Key& top() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       return BaseArray::get_first();
     }
@@ -275,7 +330,9 @@ namespace Designar
     Key get()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       Key ret_val = std::move((*this)[0]);
       (*this)[0] = std::move(BaseArray::get_last());
@@ -286,7 +343,7 @@ namespace Designar
   };
 
   template <typename Key, class Cmp>
-  void DynHeap<Key, Cmp>::sift_up(BaseArray &a, nat_t l, nat_t r, Cmp &cmp)
+  void DynHeap<Key, Cmp>::sift_up(BaseArray& a, nat_t l, nat_t r, Cmp& cmp)
   {
     nat_t i = r;
 
@@ -301,7 +358,7 @@ namespace Designar
   }
 
   template <typename Key, class Cmp>
-  void DynHeap<Key, Cmp>::sift_down(BaseArray &a, nat_t l, nat_t r, Cmp &cmp)
+  void DynHeap<Key, Cmp>::sift_down(BaseArray& a, nat_t l, nat_t r, Cmp& cmp)
   {
     nat_t i = l;
 
@@ -310,11 +367,17 @@ namespace Designar
     while (c <= r)
     {
       if (c < r)
+      {
         if (cmp(a[c], a[c - 1]))
+        {
           ++c;
+        }
+      }
 
       if (!cmp(a[c - 1], a[i - 1]))
+      {
         break;
+      }
 
       std::swap(a[c - 1], a[i - 1]);
       i = c;
@@ -340,7 +403,7 @@ namespace Designar
       }
     };
 
-    HeapNode *parent = nullptr;
+    HeapNode* parent = nullptr;
     HeapNodeBits bits;
 
   public:
@@ -350,13 +413,13 @@ namespace Designar
       // empty
     }
 
-    HeapNode(const Key &k)
+    HeapNode(const Key& k)
         : BaseNode(k)
     {
       // empty
     }
 
-    HeapNode(Key &&k)
+    HeapNode(Key&& k)
         : BaseNode(std::forward<Key>(k))
     {
       // empty
@@ -368,12 +431,12 @@ namespace Designar
       // empty
     }
 
-    HeapNode *&get_parent()
+    HeapNode*& get_parent()
     {
       return parent;
     }
 
-    HeapNodeBits &get_bits()
+    HeapNodeBits& get_bits()
     {
       return bits;
     }
@@ -406,45 +469,82 @@ namespace Designar
   };
 
   template <class HeapNode>
-  inline HeapNode *&U(HeapNode *p)
+  inline HeapNode*& U(HeapNode* p)
   {
     return p->get_parent();
   }
 
+  /** @see DefaultCmpHolder for why this class privately derives from
+      `DefaultCmpHolder<Cmp>`. */
   template <typename Key, class Cmp = std::less<Key>>
-  class LHeap
+  class LHeap : private DefaultCmpHolder<Cmp>
   {
     using Node = HeapNode<Key>;
 
-    static Node *key_to_node(Key &k)
+    /** Computes the byte offset of a Node's `key` member exactly once
+        (the offset is the same for every Node, cached in a function-
+        local static — thread-safe to initialize per C++11's "magic
+        statics") by actually constructing a real, live Node on the
+        stack and measuring the distance between its address and its
+        key's address.
+
+        The previous implementation computed this same offset via
+        `(size_t)&(KEY((Node *)0))` — reading a member's address through
+        a *null* Node pointer. That never actually dereferences memory
+        (the compiler only ever computes an address, `this + offset`,
+        never loads through it), so it happens to work on every
+        mainstream compiler, but it is undefined behavior in the
+        standard's abstract machine (forming a reference to a member of
+        a null object), and UndefinedBehaviorSanitizer correctly flags
+        it as "member access within null pointer" on every single call
+        to remove(Key&) — which would make this library's own test
+        suite fail immediately under UBSan, exactly backwards from the
+        point of adding sanitizer coverage. Measuring the offset from a
+        genuinely alive object sidesteps the null-object question
+        entirely, for the one-time cost of constructing and destroying
+        a throwaway Node the first time key_to_node() is ever called. */
+    static nat_t key_offset()
     {
-      Node *node_zero = 0;
-      size_t offset = (size_t) & (KEY(node_zero));
-      unsigned long addr = (unsigned long)(&k);
-      return (Node *)(addr - offset);
+      alignas(Node) unsigned char storage[sizeof(Node)];
+      Node* p = ::new (static_cast<void*>(storage)) Node();
+
+      nat_t offset = reinterpret_cast<unsigned char*>(&KEY(p)) -
+                     reinterpret_cast<unsigned char*>(p);
+
+      p->~Node();
+      return offset;
     }
 
-    static bool is_in_list(Node *p)
+    static Node* key_to_node(Key& k)
+    {
+      static const nat_t offset = key_offset();
+
+      return reinterpret_cast<Node*>(reinterpret_cast<unsigned char*>(&k) - offset);
+    }
+
+    static bool is_in_list(Node* p)
     {
       if (p->is_leaf())
+      {
         return true;
+      }
 
       return U(L(p)) == R(L(p));
     }
 
-    static bool has_sibling(Node *p)
+    static bool has_sibling(Node* p)
     {
       return U(p) != R(p);
     }
 
-    static void destroy_rec(Node *, Node *);
+    static void destroy_rec(Node*, Node*);
 
-    void swap_with_parent(Node *p)
+    void swap_with_parent(Node* p)
     {
       assert(num_items >= 2);
       assert(p != root);
 
-      Node *pp = U(p);
+      Node* pp = U(p);
 
       const bool p_has_sibling = has_sibling(p);
       const bool p_is_in_list = is_in_list(p);
@@ -454,19 +554,25 @@ namespace Designar
       std::swap(pp->get_bits(), p->get_bits());
 
       if (pp == root)
+      {
         root = p;
+      }
 
-      Node *ppp = U(pp);
+      Node* ppp = U(pp);
 
       U(pp) = p;
       U(p) = ppp;
 
       if (L(ppp) == pp)
+      {
         L(ppp) = p;
+      }
       else
+      {
         R(ppp) = p;
+      }
 
-      Node *sp = nullptr;
+      Node* sp = nullptr;
 
       if (p_has_sibling)
       {
@@ -476,13 +582,17 @@ namespace Designar
       }
 
       if (p == last)
+      {
         last = pp;
+      }
 
       if (num_items == 2)
+      {
         return;
+      }
 
-      Node *lcp = L(p);
-      Node *rcp = R(p);
+      Node* lcp = L(p);
+      Node* rcp = R(p);
 
       if (num_items == 3)
       {
@@ -528,7 +638,9 @@ namespace Designar
       if (!pp_is_in_list)
       {
         if (p_has_child)
+        {
           U(L(p)) = pp;
+        }
 
         R(lcp) = L(rcp) = pp;
 
@@ -568,19 +680,25 @@ namespace Designar
 
       if (num_items > 3)
       {
-        Node *lRoot = L(root);
-        Node *rRoot = R(root);
-        Node *f_last = U(last);
-        Node *prev_last = L(last);
-        Node *next_last = R(last);
+        Node* lRoot = L(root);
+        Node* rRoot = R(root);
+        Node* f_last = U(last);
+        Node* prev_last = L(last);
+        Node* next_last = R(last);
 
         if (L(f_last) == last)
+        {
           L(f_last) = root;
+        }
         else
+        {
           R(f_last) = root;
+        }
 
         if (R(root) != last)
+        {
           std::swap(U(root), U(last));
+        }
         else
         {
           U(root) = last;
@@ -608,7 +726,7 @@ namespace Designar
         U(last) = U(root);
         U(root) = last;
 
-        Node *s_last = L(last);
+        Node* s_last = L(last);
         U(s_last) = last;
 
         L(last) = s_last;
@@ -631,14 +749,14 @@ namespace Designar
       std::swap(root, last);
     }
 
-    void replace_node(Node *node, Node *new_node)
+    void replace_node(Node* node, Node* new_node)
     {
       assert(node != new_node);
       assert(node != last);
 
-      Node *parent = U(node);
-      Node *left_child = L(node);
-      Node *right_child = R(node);
+      Node* parent = U(node);
+      Node* left_child = L(node);
+      Node* right_child = R(node);
 
       U(new_node) = parent;
       L(new_node) = left_child;
@@ -665,7 +783,9 @@ namespace Designar
         U(left_child) = new_node;
 
         if (U(right_child) == node) // node pudiera tener sólo un hijo
+        {
           U(right_child) = new_node;
+        }
         else
         {
           assert(left_child == last);
@@ -677,7 +797,7 @@ namespace Designar
       new_node->get_bits() = node->get_bits();
     }
 
-    Node *insert_node(Node *p)
+    Node* insert_node(Node* p)
     {
       assert(p->is_leaf());
 
@@ -695,7 +815,7 @@ namespace Designar
         return p;
       }
 
-      Node *pp = R(last);
+      Node* pp = R(last);
       L(p) = last;
       U(p) = pp;
 
@@ -723,12 +843,14 @@ namespace Designar
       return p;
     }
 
-    Node *remove_top()
+    Node* remove_top()
     {
       if (root == nullptr)
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
-      Node *p = root;
+      Node* p = root;
 
       if (num_items == 1)
       {
@@ -746,14 +868,14 @@ namespace Designar
       return p;
     }
 
-    Node *remove_last()
+    Node* remove_last()
     {
       assert(last != root && num_items > 0);
       assert(last->is_leaf());
 
-      Node *ret_val = last;
-      Node *pp = U(last);
-      Node *new_last = L(last);
+      Node* ret_val = last;
+      Node* pp = U(last);
+      Node* new_last = L(last);
 
       if (last->is_left())
       {
@@ -774,18 +896,24 @@ namespace Designar
       return ret_val;
     }
 
-    Node *remove(Node *p)
+    Node* remove(Node* p)
     {
       if (root == nullptr)
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       if (p == root)
+      {
         return remove_top();
+      }
 
       if (p == last)
+      {
         return remove_last();
+      }
 
-      Node *q = remove_last();
+      Node* q = remove_last();
 
       if (p == last)
       {
@@ -802,22 +930,22 @@ namespace Designar
       return p;
     }
 
-    void sift_up(Node *);
+    void sift_up(Node*);
 
-    void sift_down(Node *);
+    void sift_down(Node*);
 
-    void update(Node *p)
+    void update(Node* p)
     {
       sift_down(p);
       sift_up(p);
     }
 
     Node head_node;
-    Node *head;
-    Node *&root;
-    Node *last;
+    Node* head;
+    Node*& root;
+    Node* last;
     nat_t num_items;
-    Cmp &cmp;
+    Cmp& cmp;
 
   public:
     using ItemType = Key;
@@ -827,19 +955,23 @@ namespace Designar
     using SizeType = nat_t;
     using CmpType = Cmp;
 
-    LHeap(Cmp &_cmp)
+    LHeap(Cmp& _cmp)
         : head(&head_node), root(R(head)), last(nullptr), num_items(0), cmp(_cmp)
     {
       // empty
     }
 
-    LHeap(Cmp &&_cmp = Cmp())
-        : LHeap(_cmp)
+    /** See GenArraySet's matching constructor for why this cannot simply
+        delegate to `LHeap(_cmp)` and why copy-assignment is used instead
+        of a move. */
+    LHeap(Cmp&& _cmp = Cmp())
+        : head(&head_node), root(R(head)), last(nullptr), num_items(0),
+          cmp(this->default_cmp)
     {
-      // empty
+      this->default_cmp = _cmp;
     }
 
-    LHeap(LHeap &&h)
+    LHeap(LHeap&& h)
         : LHeap()
     {
       swap(h);
@@ -850,13 +982,13 @@ namespace Designar
       clear();
     }
 
-    LHeap &operator=(LHeap &&h)
+    LHeap& operator=(LHeap&& h)
     {
       swap(h);
       return *this;
     }
 
-    void swap(LHeap &h)
+    void swap(LHeap& h)
     {
       std::swap(root, h.root);
       std::swap(last, h.last);
@@ -864,12 +996,12 @@ namespace Designar
       std::swap(cmp, h.cmp);
     }
 
-    Cmp &get_cmp()
+    Cmp& get_cmp()
     {
       return cmp;
     }
 
-    const Cmp &get_cmp() const
+    const Cmp& get_cmp() const
     {
       return cmp;
     }
@@ -886,43 +1018,45 @@ namespace Designar
       return num_items == 0;
     }
 
-    const Key &insert(const Key &k)
+    const Key& insert(const Key& k)
     {
-      Node *p = new Node(k);
+      Node* p = new Node(k);
       return KEY(insert_node(p));
     }
 
-    const Key &insert(Key &&k)
+    const Key& insert(Key&& k)
     {
-      Node *p = new Node(std::forward<Key>(k));
+      Node* p = new Node(std::forward<Key>(k));
       return KEY(insert_node(p));
     }
 
-    const Key &top() const
+    const Key& top() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Heap is empty");
+      }
 
       return KEY(root);
     }
 
     Key get()
     {
-      Node *p = remove_top();
+      Node* p = remove_top();
       Key ret_val = std::move(KEY(p));
       delete p;
       return ret_val;
     }
 
-    void remove(Key &item)
+    void remove(Key& item)
     {
-      Node *p = remove(key_to_node(item));
+      Node* p = remove(key_to_node(item));
       delete p;
     }
   };
 
   template <typename Key, class Cmp>
-  void LHeap<Key, Cmp>::destroy_rec(Node *p, Node *n)
+  void LHeap<Key, Cmp>::destroy_rec(Node* p, Node* n)
   {
     if (p->is_leaf())
     {
@@ -933,31 +1067,41 @@ namespace Designar
     destroy_rec(L(p), n);
 
     if (p != n)
+    {
       destroy_rec(R(p), n);
+    }
 
     delete p;
   }
 
   template <typename Key, class Cmp>
-  void LHeap<Key, Cmp>::sift_up(Node *p)
+  void LHeap<Key, Cmp>::sift_up(Node* p)
   {
     while (p != root && cmp(KEY(p), KEY(U(p))))
+    {
       swap_with_parent(p);
+    }
   }
 
   template <typename Key, class Cmp>
-  void LHeap<Key, Cmp>::sift_down(Node *p)
+  void LHeap<Key, Cmp>::sift_down(Node* p)
   {
     while (!p->is_leaf())
     {
-      Node *c = L(p);
+      Node* c = L(p);
 
       if (has_sibling(c))
+      {
         if (cmp(KEY(R(p)), KEY(L(p))))
+        {
           c = R(p);
+        }
+      }
 
       if (!cmp(KEY(c), KEY(p)))
+      {
         return;
+      }
 
       swap_with_parent(c);
     }
@@ -967,19 +1111,27 @@ namespace Designar
   void LHeap<Key, Cmp>::clear()
   {
     if (root == nullptr)
+    {
       return;
+    }
 
     if (num_items <= 3)
     {
       while (!is_empty())
+      {
         get();
+      }
       return;
     }
 
     if (last->is_left())
+    {
       destroy_rec(root, U(last));
+    }
     else
+    {
       destroy_rec(root, nullptr);
+    }
 
     root = nullptr;
     last = head;

@@ -12,13 +12,13 @@
 using namespace std;
 using namespace Designar;
 
-ostream &operator<<(ostream &out, const Polygon::PointType &p)
+ostream& operator<<(ostream& out, const Polygon::PointType& p)
 {
   out << p.to_string();
   return out;
 }
 
-ostream &operator<<(ostream &out, const Polygon::SegmentType &s)
+ostream& operator<<(ostream& out, const Polygon::SegmentType& s)
 {
   out << '(' << s.get_src_point().to_string() << ','
       << s.get_tgt_point().to_string();
@@ -31,7 +31,7 @@ string to_str(bool v)
 }
 
 template <typename It>
-string to_str(const It &it)
+string to_str(const It& it)
 {
   stringstream s;
   if (it.has_current())
@@ -42,7 +42,7 @@ string to_str(const It &it)
 }
 
 template <class Container, typename T = int>
-void demo_forward_iterator(const initializer_list<T> &xs)
+void demo_forward_iterator(const initializer_list<T>& xs)
 {
   Container c{xs};
 
@@ -63,7 +63,7 @@ void demo_forward_iterator(const initializer_list<T> &xs)
 }
 
 template <class Container, typename T = int>
-void demo_bidirectional_iterator(const initializer_list<T> &xs)
+void demo_bidirectional_iterator(const initializer_list<T>& xs)
 {
   demo_forward_iterator<Container, T>(xs);
 
@@ -86,7 +86,7 @@ void demo_bidirectional_iterator(const initializer_list<T> &xs)
 }
 
 template <class Container, typename T = int>
-void demo_random_access_iterator(const initializer_list<T> &xs)
+void demo_random_access_iterator(const initializer_list<T>& xs)
 {
   demo_bidirectional_iterator<Container, T>(xs);
 
@@ -124,7 +124,7 @@ void demo_random_access_iterator(const initializer_list<T> &xs)
        << to_str(it2) << endl;
 }
 
-void demo_polygon_iterators(const Polygon &p)
+void demo_polygon_iterators(const Polygon& p)
 {
   cout << "Declaring vertex iterator explicitly\n";
   for (Polygon::VertexIterator it(p); it.has_current(); it.next())
@@ -183,12 +183,15 @@ class Value
   T value;
 
 public:
-  Value(const T &v) : value{v} {};
+  Value(const T& v) : value{v} {};
 
-  const T &get_value() const { return value; }
+  const T& get_value() const
+  {
+    return value;
+  }
 };
 
-void demo_arrow_operator(const SLList<Value<int>> &l)
+void demo_arrow_operator(const SLList<Value<int>>& l)
 {
   for (auto it = l.begin(); it != l.end(); ++it)
     cout << it->get_value() << ' ';

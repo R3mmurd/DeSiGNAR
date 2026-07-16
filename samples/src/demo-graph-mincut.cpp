@@ -15,7 +15,7 @@ using namespace Designar;
 
 using GT = Graph<nat_t>;
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   nat_t num_nodes = argc < 2 ? 40 : stoul(argv[1]);
   real_t prob_arcs = argc < 3 ? 0.3 : stod(argv[2]);

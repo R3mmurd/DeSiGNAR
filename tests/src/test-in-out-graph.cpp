@@ -18,7 +18,7 @@ using GT = Graph<int, int, int>;
 using DGT = Digraph<int, int, int>;
 
 template <typename G>
-bool graph_equal(const G &g1, const G &g2)
+bool graph_equal(const G& g1, const G& g2)
 {
   if (g1.get_info() != g2.get_info())
     return false;
@@ -69,11 +69,11 @@ int main()
 
   GT g1 = er_random_graph<GT>(
       100, 0.7, false,
-      [&nc](auto &p)
+      [&nc](auto& p)
       {
         p->get_info() = ++nc;
       },
-      [&ac](auto &a)
+      [&ac](auto& a)
       {
         a->get_info() = ++ac;
       });
@@ -111,11 +111,11 @@ int main()
 
   DGT dg1 = er_random_graph<DGT>(
       100, 0.7, false,
-      [&nc](auto &p)
+      [&nc](auto& p)
       {
         p->get_info() = ++nc;
       },
-      [&ac](auto &a)
+      [&ac](auto& a)
       {
         a->get_info() = ++ac;
       });

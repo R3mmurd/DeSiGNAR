@@ -8,52 +8,63 @@
 
 #include <array.hpp>
 #include <tree.hpp>
+#include <treap.hpp>
+#include <avltree.hpp>
+#include <rankedavltree.hpp>
+#include <rbtree.hpp>
+#include <randomizedtree.hpp>
+#include <splaytree.hpp>
 #include <hash.hpp>
+#include <openhash.hpp>
 #include <sort.hpp>
+#include <typetraits.hpp>
 
 namespace Designar
 {
+  /** @see DefaultCmpHolder for why `cmp` is a reference and why a
+      default-constructed instance must be owned (via
+      DefaultCmpHolder<Cmp>) rather than bound to a temporary. */
   template <typename Key, class Cmp = std::less<Key>>
-  struct NotEqualKey
+  struct NotEqualKey : private DefaultCmpHolder<Cmp>
   {
-    Cmp &cmp;
+    Cmp& cmp;
 
-    NotEqualKey(Cmp &c)
+    NotEqualKey(Cmp& c)
         : cmp(c)
     {
       // empty
     }
 
-    NotEqualKey(Cmp &&c = Cmp())
-        : cmp(c)
+    NotEqualKey()
+        : cmp(this->default_cmp)
     {
       // empty
     }
 
-    bool operator()(const Key &a, const Key &b) const
+    bool operator()(const Key& a, const Key& b) const
     {
       return cmp(a, b) || cmp(b, a);
     }
   };
 
   template <typename Key, class Cmp = std::less<Key>>
-  struct EqualKey
+  struct EqualKey : private DefaultCmpHolder<Cmp>
   {
-    Cmp &cmp;
+    Cmp& cmp;
 
-    EqualKey(Cmp &c)
+    EqualKey(Cmp& c)
         : cmp(c)
     {
       // empty
     }
 
-    EqualKey(Cmp &&c = Cmp())
-        : cmp(c)
+    EqualKey()
+        : cmp(this->default_cmp)
     {
       // empty
     }
 
-    bool operator()(const Key &a, const Key &b) const
+    bool operator()(const Key& a, const Key& b) const
     {
       return !NotEqualKey<Key, Cmp>(cmp)(a, b);
     }
@@ -62,20 +73,20 @@ namespace Designar
   template <typename Key, class Cmp>
   class SortedArraySetOp
   {
-    DynArray<Key> &array;
-    Cmp &cmp;
+    DynArray<Key>& array;
+    Cmp& cmp;
 
   protected:
     NotEqualKey<Key, Cmp> not_equal_key;
     EqualKey<Key, Cmp> equal_key;
 
-    int_t search(const Key &k, int_t l, int_t r) const
+    int_t search(const Key& k, int_t l, int_t r) const
     {
       return binary_search(array, k, l, r, cmp);
     }
 
   public:
-    SortedArraySetOp(DynArray<Key> &a, Cmp &c)
+    SortedArraySetOp(DynArray<Key>& a, Cmp& c)
         : array(a), cmp(c), not_equal_key(cmp), equal_key(cmp)
     {
       // empty
@@ -86,74 +97,94 @@ namespace Designar
       return true;
     }
 
-    Key *insert(const Key &item)
+    Key* insert(const Key& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(item);
+      }
 
       if (equal_key(item, array.at(pos)))
+      {
         return nullptr;
+      }
 
       return &array.insert(pos, item);
     }
 
-    Key *insert(Key &&item)
+    Key* insert(Key&& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(std::forward<Key>(item));
+      }
 
       if (equal_key(item, array.at(pos)))
+      {
         return nullptr;
+      }
 
       return &array.insert(pos, std::forward<Key>(item));
     }
 
-    Key *insert_dup(const Key &item)
+    Key* insert_dup(const Key& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(item);
+      }
 
       return &array.insert(pos, item);
     }
 
-    Key *insert_dup(Key &&item)
+    Key* insert_dup(Key&& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(std::forward<Key>(item));
+      }
 
       return &array.insert(pos, std::forward<Key>(item));
     }
 
-    Key *search_or_insert(const Key &item)
+    Key* search_or_insert(const Key& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(item);
+      }
 
       if (equal_key(item, array.at(pos)))
+      {
         return &array[pos];
+      }
 
       return &array.insert(pos, item);
     }
 
-    Key *search_or_insert(Key &&item)
+    Key* search_or_insert(Key&& item)
     {
       int_t pos = search(item, 0, array.size() - 1);
 
       if (pos == array.size())
+      {
         return &array.append(std::forward<Key>(item));
+      }
 
       if (equal_key(item, array.at(pos)))
+      {
         return &array[pos];
+      }
 
       return &array.insert(pos, std::forward<Key>(item));
     }
@@ -163,12 +194,12 @@ namespace Designar
       return array.remove_pos_closing_breach(pos);
     }
 
-    const Key &select(nat_t i)
+    const Key& select(nat_t i)
     {
       return array.at(i);
     }
 
-    nat_t position(const Key &item)
+    nat_t position(const Key& item)
     {
       return search(item, 0, array.size() - 1);
     }
@@ -177,21 +208,21 @@ namespace Designar
   template <typename Key, class Cmp>
   class UnsortedArraySetOp
   {
-    DynArray<Key> &array;
-    Cmp &cmp;
+    DynArray<Key>& array;
+    Cmp& cmp;
 
   protected:
     NotEqualKey<Key, Cmp> not_equal_key;
     EqualKey<Key, Cmp> equal_key;
 
   protected:
-    int_t search(const Key &k, int_t l, int_t r) const
+    int_t search(const Key& k, int_t l, int_t r) const
     {
       return sequential_search(array, k, l, r, equal_key);
     }
 
   public:
-    UnsortedArraySetOp(DynArray<Key> &a, Cmp &c)
+    UnsortedArraySetOp(DynArray<Key>& a, Cmp& c)
         : array(a), cmp(c), not_equal_key(cmp), equal_key(cmp)
     {
       // empty
@@ -202,52 +233,60 @@ namespace Designar
       return array.template is_sorted<Cmp>(cmp);
     }
 
-    Key *insert(const Key &item)
+    Key* insert(const Key& item)
     {
       int_t pos = search(item, 0, int_t(array.size()) - 1);
 
       if (pos < array.size())
+      {
         return nullptr;
+      }
 
       return &array.append(item);
     }
 
-    Key *insert(Key &&item)
+    Key* insert(Key&& item)
     {
       int_t pos = search(item, 0, int_t(array.size()) - 1);
 
       if (pos < array.size())
+      {
         return nullptr;
+      }
 
       return &array.append(std::forward<Key>(item));
     }
 
-    Key *insert_dup(const Key &item)
+    Key* insert_dup(const Key& item)
     {
       return &array.append(item);
     }
 
-    Key *insert_dup(Key &&item)
+    Key* insert_dup(Key&& item)
     {
       return &array.append(std::forward<Key>(item));
     }
 
-    Key *search_or_insert(const Key &item)
+    Key* search_or_insert(const Key& item)
     {
       int_t pos = search(item, 0, int_t(array.size()) - 1);
 
       if (pos < array.size())
+      {
         return &array[pos];
+      }
 
       return &array.append(item);
     }
 
-    Key *search_or_insert(Key &&item)
+    Key* search_or_insert(Key&& item)
     {
       int_t pos = search(item, 0, int_t(array.size()) - 1);
 
       if (pos < array.size())
+      {
         return &array[pos];
+      }
 
       return &array.append(std::forward<Key>(item));
     }
@@ -257,21 +296,26 @@ namespace Designar
       return array.remove_pos(pos);
     }
 
-    const Key &select(nat_t i)
+    const Key& select(nat_t i)
     {
       quicksort(array, 0, array.size() - 1, cmp);
       return array.at(i);
     }
 
-    nat_t position(const Key &item)
+    nat_t position(const Key& item)
     {
       quicksort(array, 0, array.size() - 1, cmp);
       return search(item, 0, array.size() - 1);
     }
   };
 
+  /** @see DefaultCmpHolder for why this class privately derives from
+      `DefaultCmpHolder<Cmp>` (as its first base, so `default_cmp` is
+      already alive when `ArraySetOp`'s constructor runs) instead of
+      binding `cmp` to a default-constructed temporary. */
   template <typename Key, class Cmp, class ArraySetOp>
-  class GenArraySet : public ArraySetOp,
+  class GenArraySet : private DefaultCmpHolder<Cmp>,
+                      public ArraySetOp,
                       public ContainerAlgorithms<GenArraySet<Key, Cmp, ArraySetOp>, Key>,
                       public SetAlgorithms<GenArraySet<Key, Cmp, ArraySetOp>, Key>
   {
@@ -283,45 +327,92 @@ namespace Designar
     using SizeType = nat_t;
 
     DynArray<Key> array;
-    Cmp &cmp;
+    Cmp& cmp;
+
+  private:
+    /** A copy must preserve *ownership* semantics, not just reference
+        identity: if `a` uses its own owned `default_cmp` (no external
+        comparator was ever supplied to it), the copy must own an
+        independent comparator too — aliasing `a.default_cmp` would leave
+        the copy's `cmp` dangling the moment `a` is destroyed. If `a`
+        instead references a caller-supplied external comparator, the
+        copy intentionally shares that same external object, matching
+        the reference-based design (see DefaultCmpHolder). */
+    static Cmp& cmp_for_copy(GenArraySet& self, const GenArraySet& a)
+    {
+      if (&a.cmp == &a.default_cmp)
+      {
+        self.default_cmp = a.default_cmp;
+        return self.default_cmp;
+      }
+
+      return a.cmp;
+    }
 
   public:
-    GenArraySet(nat_t cap, Cmp &_cmp)
+    GenArraySet(nat_t cap, Cmp& _cmp)
         : ArraySetOp(array, _cmp), array(cap), cmp(_cmp)
     {
       // empty
     }
 
-    GenArraySet(Cmp &&_cmp = Cmp())
-        : ArraySetOp(array, _cmp), array(), cmp(_cmp)
+    /** Accepts an explicit comparator by value (or none, via the default
+        argument) and copies its value into the owned `default_cmp`
+        slot, binding `cmp` to that owned storage rather than to the
+        constructor parameter itself. `_cmp` is a temporary (or the
+        materialized `Cmp()` default argument) that is destroyed at the
+        end of this constructor call; a reference member bound directly
+        to it would dangle immediately. This is also what makes it safe
+        for GenMap-derived classes (ArrayMap, TreeMap, HashMap) to build
+        a `CmpWrapper` adapter as a temporary and hand it here — a real,
+        load-bearing use of this overload, not just sugar for "no
+        comparator given".
+
+        A copy-assignment (`default_cmp = _cmp`) is used deliberately
+        instead of a move: when `_cmp` is itself a CmpWrapper whose own
+        `cmp` references someone else's long-lived comparator (exactly
+        the case when ArrayMap/TreeMap/HashMap forward a
+        reference-holding CmpWrapper here), CmpWrapper's move-assignment
+        swaps the *values* the two wrappers' references point to — which
+        would reach through and stomp the caller's external comparator
+        with a freshly-default-constructed one as a side effect of
+        merely constructing this set. Copy-assignment only ever writes
+        into `default_cmp`'s own storage, leaving whatever `_cmp`
+        referenced untouched. Comparators are expected to be small
+        (usually stateless), so the extra copy is not a real cost. */
+    GenArraySet(Cmp&& _cmp = Cmp())
+        : ArraySetOp(array, this->default_cmp), array(), cmp(this->default_cmp)
+    {
+      this->default_cmp = _cmp;
+    }
+
+    GenArraySet(nat_t cap, Cmp&& _cmp = Cmp())
+        : ArraySetOp(array, this->default_cmp), array(cap), cmp(this->default_cmp)
+    {
+      this->default_cmp = _cmp;
+    }
+
+    GenArraySet(const GenArraySet& a)
+        : ArraySetOp(array, cmp_for_copy(*this, a)), array(a.array),
+          cmp(cmp_for_copy(*this, a))
     {
       // empty
     }
 
-    GenArraySet(nat_t cap, Cmp &&_cmp = Cmp())
-        : GenArraySet(cap, _cmp)
-    {
-      // empty
-    }
-
-    GenArraySet(const GenArraySet &a)
-        : ArraySetOp(array, a.cmp), array(a.array), cmp(a.cmp)
-    {
-      // empty
-    }
-
-    GenArraySet(GenArraySet &&a)
+    GenArraySet(GenArraySet&& a)
         : GenArraySet()
     {
       swap(a);
     }
 
-    GenArraySet(const std::initializer_list<Key> &);
+    GenArraySet(const std::initializer_list<Key>&);
 
-    GenArraySet &operator=(const GenArraySet &a)
+    GenArraySet& operator=(const GenArraySet& a)
     {
       if (&a == this)
+      {
         return *this;
+      }
 
       array = a.array;
       cmp = a.cmp;
@@ -329,24 +420,24 @@ namespace Designar
       return *this;
     }
 
-    GenArraySet &operator=(GenArraySet &&a)
+    GenArraySet& operator=(GenArraySet&& a)
     {
       swap(a);
       return *this;
     }
 
-    void swap(GenArraySet &a)
+    void swap(GenArraySet& a)
     {
       array.swap(a.array);
       std::swap(cmp, a.cmp);
     }
 
-    Cmp &get_cmp()
+    Cmp& get_cmp()
     {
       return cmp;
     }
 
-    const Cmp &get_cmp() const
+    const Cmp& get_cmp() const
     {
       return cmp;
     }
@@ -366,79 +457,89 @@ namespace Designar
       array.clear();
     }
 
-    Key *append(const Key &k)
+    Key* append(const Key& k)
     {
       return ArraySetOp::insert(k);
     }
 
-    Key *append(Key &&k)
+    Key* append(Key&& k)
     {
       return ArraySetOp::insert(std::forward<Key>(k));
     }
 
-    Key *append_dup(const Key &k)
+    Key* append_dup(const Key& k)
     {
       return ArraySetOp::insert_dup(k);
     }
 
-    Key *append_dup(Key &&k)
+    Key* append_dup(Key&& k)
     {
       return ArraySetOp::insert_dup(std::forward<Key>(k));
     }
 
-    Key *search(const Key &item)
+    Key* search(const Key& item)
     {
       int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
 
       if (pos >= this->size() || ArraySetOp::not_equal_key(item, array.at(pos)))
+      {
         return nullptr;
+      }
 
       return &array.at(pos);
     }
 
-    const Key *search(const Key &item) const
+    const Key* search(const Key& item) const
     {
       int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
 
       if (pos >= this->size() || ArraySetOp::not_equal_key(item, array.at(pos)))
+      {
         return nullptr;
+      }
 
       return &array.at(pos);
     }
 
-    Key &find(const Key &item)
+    Key& find(const Key& item)
     {
-      Key *result = search(item);
+      Key* result = search(item);
       if (result == nullptr)
+      {
         throw std::domain_error("Item does not exist");
+      }
       return *result;
     }
 
-    const Key &find(const Key &item) const
+    const Key& find(const Key& item) const
     {
-      const Key *result = search(item);
+      const Key* result = search(item);
       if (result == nullptr)
+      {
         throw std::domain_error("Item does not exist");
+      }
       return *result;
     }
 
-    bool remove(const Key &item)
+    bool remove(const Key& item)
     {
       int_t pos = ArraySetOp::search(item, 0, int_t(this->size()) - 1);
 
       if (pos >= this->size() || ArraySetOp::not_equal_key(array.at(pos), item))
+      {
         return false;
+      }
 
       ArraySetOp::remove_pos(pos);
       return true;
     }
 
-    Key &operator[](nat_t i)
+    Key& operator[](nat_t i)
     {
       return array[i];
     }
 
-    const Key &operator[](nat_t i) const
+    const Key& operator[](nat_t i) const
     {
       return array[i];
     }
@@ -454,25 +555,25 @@ namespace Designar
         // empty
       }
 
-      Iterator(const GenArraySet &a)
+      Iterator(const GenArraySet& a)
           : Base(a.array)
       {
         // empty
       }
 
-      Iterator(const GenArraySet &a, nat_t c)
+      Iterator(const GenArraySet& a, nat_t c)
           : Base(a.array, c)
       {
         // empty
       }
 
-      Iterator(const Iterator &itor)
+      Iterator(const Iterator& itor)
           : Base(itor)
       {
         // empty
       }
 
-      Iterator(Iterator &&itor)
+      Iterator(Iterator&& itor)
           : Iterator()
       {
         Base::swap(itor);
@@ -502,11 +603,13 @@ namespace Designar
 
   template <typename Key, class Cmp, class ArraySetOp>
   GenArraySet<Key, Cmp, ArraySetOp>::
-      GenArraySet(const std::initializer_list<Key> &l)
+      GenArraySet(const std::initializer_list<Key>& l)
       : GenArraySet(l.size())
   {
-    for (const Key &item : l)
+    for (const Key& item : l)
+    {
       append(item);
+    }
   }
 
   template <typename Key, class Cmp = std::less<Key>>
@@ -557,4 +660,4 @@ namespace Designar
     using ContainerType = HashTableType<Key, Cmp>;
   };
 
-} // end namespace DeSIGNAR
+} // namespace Designar

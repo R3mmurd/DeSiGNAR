@@ -11,16 +11,24 @@
 namespace Designar
 {
 
+  /** A single byte (8 bits), bit-indexed from 0 (least significant, "b1"
+      in to_string()'s naming) to 7 (most significant, "b8"). Stored as a
+      plain `unsigned char` and manipulated with explicit mask/shift
+      operations.
+
+      Earlier versions represented the 8 bits as eight adjacent
+      `unsigned int : 1` bitfields and read/wrote them by reinterpreting
+      `this` as an `unsigned char *`. The C++ standard leaves the bit
+      order and padding of adjacent bitfields implementation-defined, so
+      that approach silently assumed a specific compiler/ABI bit layout;
+      on an implementation that packs bitfields differently, every
+      operation here (set, to_num, shifts, masks) would have produced
+      bit-reversed or corrupted values without ever crashing. Operating
+      directly on a single `unsigned char` with `<<`/`>>`/`&`/`|` has
+      fully-defined behavior regardless of platform. */
   class Byte
   {
-    unsigned int b1 : 1;
-    unsigned int b2 : 1;
-    unsigned int b3 : 1;
-    unsigned int b4 : 1;
-    unsigned int b5 : 1;
-    unsigned int b6 : 1;
-    unsigned int b7 : 1;
-    unsigned int b8 : 1;
+    unsigned char byte;
 
   public:
     Byte();
@@ -29,7 +37,7 @@ namespace Designar
 
     Byte(int);
 
-    Byte(const Byte &b);
+    Byte(const Byte& b);
 
     bool get_bit(unsigned char) const;
 
@@ -47,9 +55,9 @@ namespace Designar
 
     operator std::string() const;
 
-    Byte &operator=(const Byte &);
+    Byte& operator=(const Byte&);
 
-    Byte &operator=(int);
+    Byte& operator=(int);
 
     Byte operator<<(nat_t);
 
@@ -89,11 +97,11 @@ namespace Designar
 
     class RWProxy
     {
-      DynBitSet &dbs;
+      DynBitSet& dbs;
       nat_t i;
 
     public:
-      RWProxy(DynBitSet &, nat_t);
+      RWProxy(DynBitSet&, nat_t);
 
       operator bool() const;
 
@@ -128,19 +136,19 @@ namespace Designar
 
     DynBitSet(nat_t, bool val = false);
 
-    DynBitSet(const DynBitSet &);
+    DynBitSet(const DynBitSet&);
 
-    DynBitSet(DynBitSet &&);
+    DynBitSet(DynBitSet&&);
 
-    DynBitSet(const std::initializer_list<bool> &);
+    DynBitSet(const std::initializer_list<bool>&);
 
     ~DynBitSet() = default;
 
-    DynBitSet &operator=(const DynBitSet &);
+    DynBitSet& operator=(const DynBitSet&);
 
-    DynBitSet &operator=(DynBitSet &&);
+    DynBitSet& operator=(DynBitSet&&);
 
-    void swap(DynBitSet &);
+    void swap(DynBitSet&);
 
     bool is_empty() const;
 
@@ -158,9 +166,9 @@ namespace Designar
 
     std::string to_string() const;
 
-    void write(std::ostream &) const;
+    void write(std::ostream&) const;
 
-    void read(std::istream &);
+    void read(std::istream&);
 
     const RWProxy operator[](nat_t) const;
 

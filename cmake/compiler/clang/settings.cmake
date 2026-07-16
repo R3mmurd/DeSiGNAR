@@ -20,3 +20,13 @@ target_compile_options(designar-warning-interface
 )
 
 message(STATUS "Clang: All warnings enabled")
+
+# Hardening: detect stack-buffer corruption before a corrupted return
+# address/saved registers can be used, and enable glibc's additional
+# bounds-checked replacements for common libc calls (memcpy, sprintf, etc).
+# _FORTIFY_SOURCE only takes effect at -O1 and above.
+target_compile_options(designar-compile-option-interface
+  INTERFACE
+    -fstack-protector-strong
+    -D_FORTIFY_SOURCE=2
+)

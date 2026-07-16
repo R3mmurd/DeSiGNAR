@@ -32,46 +32,48 @@ namespace Designar
       // empty
     }
 
-    GenPoint2D(const NumT &_x, const NumT &_y)
+    GenPoint2D(const NumT& _x, const NumT& _y)
         : x(_x), y(_y)
     {
       // empty
     }
 
-    GenPoint2D(const NumT &_x, NumT &&_y)
+    GenPoint2D(const NumT& _x, NumT&& _y)
         : x(_x), y(std::forward<NumT>(_y))
     {
       // empty
     }
 
-    GenPoint2D(NumT &&_x, const NumT &_y)
+    GenPoint2D(NumT&& _x, const NumT& _y)
         : x(std::forward<NumT>(_x)), y(_y)
     {
       // empty
     }
 
-    GenPoint2D(NumT &&_x, NumT &&_y)
+    GenPoint2D(NumT&& _x, NumT&& _y)
         : x(std::forward<NumT>(_x)), y(std::forward<NumT>(_y))
     {
       // empty
     }
 
-    GenPoint2D(const GenPoint2D &p)
+    GenPoint2D(const GenPoint2D& p)
         : x(p.x), y(p.y)
     {
       // empty
     }
 
-    GenPoint2D(GenPoint2D &&p)
+    GenPoint2D(GenPoint2D&& p)
         : GenPoint2D()
     {
       swap(p);
     }
 
-    GenPoint2D &operator=(const GenPoint2D &p)
+    GenPoint2D& operator=(const GenPoint2D& p)
     {
       if (this == &p)
+      {
         return *this;
+      }
 
       x = p.x;
       y = p.y;
@@ -79,44 +81,44 @@ namespace Designar
       return *this;
     }
 
-    GenPoint2D &operator=(GenPoint2D &&p)
+    GenPoint2D& operator=(GenPoint2D&& p)
     {
       swap(p);
       return *this;
     }
 
-    void swap(GenPoint2D &p)
+    void swap(GenPoint2D& p)
     {
       std::swap(x, p.x);
       std::swap(y, p.y);
     }
 
-    const NumT &get_x() const
+    const NumT& get_x() const
     {
       return x;
     }
 
-    const NumT &get_y() const
+    const NumT& get_y() const
     {
       return y;
     }
 
-    void set_x(const NumT &_x)
+    void set_x(const NumT& _x)
     {
       x = _x;
     }
 
-    void set_x(NumT &&_x)
+    void set_x(NumT&& _x)
     {
       x = std::move(_x);
     }
 
-    void set_y(const NumT &_y)
+    void set_y(const NumT& _y)
     {
       y = _y;
     }
 
-    void set_y(NumT &&_y)
+    void set_y(NumT&& _y)
     {
       y = std::move(_y);
     }
@@ -136,14 +138,14 @@ namespace Designar
       return is_null();
     }
 
-    NumT square_distance_with(const GenPoint2D &p) const
+    NumT square_distance_with(const GenPoint2D& p) const
     {
       NumT dx = p.x - x;
       NumT dy = p.y - y;
       return dx * dx + dy * dy;
     }
 
-    real_t distance_with(const GenPoint2D &p) const
+    real_t distance_with(const GenPoint2D& p) const
     {
       return std::sqrt(square_distance_with(p));
     }
@@ -158,40 +160,54 @@ namespace Designar
       return std::sqrt(square_distance_to_origin());
     }
 
-    bool is_to_right_from(const GenPoint2D &p, const GenPoint2D &q) const
+    bool is_to_right_from(const GenPoint2D& p, const GenPoint2D& q) const
     {
       return area_of_parallelogram(p, q, *this) < NumT(0);
     }
 
-    bool is_to_right_on_from(const GenPoint2D &p, const GenPoint2D &q) const
+    bool is_to_right_on_from(const GenPoint2D& p, const GenPoint2D& q) const
     {
       return area_of_parallelogram(p, q, *this) <= NumT(0);
     }
 
-    bool is_to_left_from(const GenPoint2D &p, const GenPoint2D &q) const
+    bool is_to_left_from(const GenPoint2D& p, const GenPoint2D& q) const
     {
       return area_of_parallelogram(p, q, *this) > NumT(0);
     }
 
-    bool is_to_left_on_from(const GenPoint2D &p, const GenPoint2D &q) const
+    bool is_to_left_on_from(const GenPoint2D& p, const GenPoint2D& q) const
     {
       return area_of_parallelogram(p, q, *this) >= NumT(0);
     }
 
-    bool is_collinear_with(const GenPoint2D &p, const GenPoint2D &q) const
+    bool is_collinear_with(const GenPoint2D& p, const GenPoint2D& q) const
     {
       return num_equal(area_of_parallelogram(p, q, *this), NumT(0));
     }
 
-    bool is_between(const GenPoint2D &p, const GenPoint2D &q) const
+    /** Whether this point lies on the segment between `p` and `q`
+        (which must already be known to be collinear with it). Uses
+        num_equal() rather than a raw `!=` to decide whether `p`/`q` form
+        a (near-)vertical segment, matching every other predicate in this
+        class; comparing floating-point coordinates for exact equality
+        would pick the wrong axis to check containment along whenever
+        `p.get_x()` and `q.get_x()` are mathematically equal but differ
+        by a rounding ulp. */
+    bool is_between(const GenPoint2D& p, const GenPoint2D& q) const
     {
       if (!is_collinear_with(p, q))
+      {
         return false;
+      }
 
-      if (p.get_x() != q.get_x())
+      if (!num_equal(p.get_x(), q.get_x()))
+      {
         return ((p.get_x() <= this->get_x()) && (this->get_x() <= q.get_x())) || ((p.get_x() >= this->get_x()) && (this->get_x() >= q.get_x()));
+      }
       else
+      {
         return ((p.get_y() <= this->get_y()) && (this->get_y() <= q.get_y())) || ((p.get_y() >= this->get_y()) && (this->get_y() >= q.get_y()));
+      }
     }
 
     explicit operator bool() const
@@ -199,12 +215,12 @@ namespace Designar
       return !is_null();
     }
 
-    bool operator==(const GenPoint2D &p) const
+    bool operator==(const GenPoint2D& p) const
     {
       return num_equal(x, p.x) && num_equal(y, p.y);
     }
 
-    bool operator!=(const GenPoint2D &p) const
+    bool operator!=(const GenPoint2D& p) const
     {
       return !(*this == p);
     }

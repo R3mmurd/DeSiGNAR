@@ -4,6 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file polygon.hpp
+    @brief GenPolygon: a simple polygon as a circular doubly-linked list
+    of vertices, plus point-in-polygon testing.
+    @ingroup Geometry
+*/
+
 #pragma once
 
 #include <segment.hpp>
@@ -18,20 +24,20 @@ namespace Designar
   {
     using Vertex = DLNode<PointT>;
 
-    static Vertex *dl_to_vertex(DL *v)
+    static Vertex* dl_to_vertex(DL* v)
     {
-      return static_cast<Vertex *>(v);
+      return static_cast<Vertex*>(v);
     }
 
-    static Vertex *to_vertex(PointT &p)
+    static Vertex* to_vertex(PointT& p)
     {
-      Vertex *zero = 0;
+      Vertex* zero = 0;
       nat_t off_set = (nat_t)&zero->get_item();
       nat_t point_address = (nat_t)&p;
-      return (Vertex *)(point_address - off_set);
+      return (Vertex*)(point_address - off_set);
     }
 
-    void copy(const GenPolygon &);
+    void copy(const GenPolygon&);
 
     nat_t num_vertices;
     DL vertex_list;
@@ -46,15 +52,15 @@ namespace Designar
       // empty
     }
 
-    GenPolygon(const std::initializer_list<PointT> &);
+    GenPolygon(const std::initializer_list<PointT>&);
 
-    GenPolygon(const GenPolygon &p)
+    GenPolygon(const GenPolygon& p)
         : GenPolygon()
     {
       copy(p);
     }
 
-    GenPolygon(GenPolygon &&p)
+    GenPolygon(GenPolygon&& p)
         : GenPolygon()
     {
       swap(p);
@@ -65,10 +71,12 @@ namespace Designar
       clear();
     }
 
-    GenPolygon &operator=(const GenPolygon &p)
+    GenPolygon& operator=(const GenPolygon& p)
     {
       if (this == &p)
+      {
         return *this;
+      }
 
       clear();
       copy(p);
@@ -76,13 +84,13 @@ namespace Designar
       return *this;
     }
 
-    GenPolygon &operator=(GenPolygon &&p)
+    GenPolygon& operator=(GenPolygon&& p)
     {
       swap(p);
       return *this;
     }
 
-    void swap(GenPolygon &p)
+    void swap(GenPolygon& p)
     {
       std::swap(num_vertices, p.num_vertices);
       vertex_list.swap(p.vertex_list);
@@ -90,59 +98,69 @@ namespace Designar
 
     void clear();
 
-    void add_vertex(const PointT &p)
+    void add_vertex(const PointT& p)
     {
       vertex_list.insert_prev(new Vertex(p));
       ++num_vertices;
     }
 
-    void add_vertex(PointT &&p)
+    void add_vertex(PointT&& p)
     {
       vertex_list.insert_prev(new Vertex(std::forward<PointT>(p)));
       ++num_vertices;
     }
 
-    PointT &get_first_vertex()
+    PointT& get_first_vertex()
     {
       if (num_vertices == 0)
+      {
         throw std::length_error("Polygon has not vertices");
+      }
 
       return dl_to_vertex(vertex_list.get_next())->get_item();
     }
 
-    const PointT &get_first_vertex() const
+    const PointT& get_first_vertex() const
     {
       if (num_vertices == 0)
+      {
         throw std::length_error("Polygon has not vertices");
+      }
 
-      return dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
+      return dl_to_vertex(const_cast<DL*>(vertex_list.get_next()))->get_item();
     }
 
-    PointT &get_last_vertex()
+    PointT& get_last_vertex()
     {
       if (num_vertices == 0)
+      {
         throw std::length_error("Polygon has not vertices");
+      }
 
       return dl_to_vertex(vertex_list.get_prev())->get_item();
     }
 
-    const PointT &get_last_vertex() const
+    const PointT& get_last_vertex() const
     {
       if (num_vertices == 0)
+      {
         throw std::length_error("Polygon has not vertices");
+      }
 
-      return dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+      return dl_to_vertex(const_cast<DL*>(vertex_list.get_prev()))->get_item();
     }
 
     SegmentType get_first_segment() const
     {
       if (num_vertices < 2)
+      {
         throw std::length_error("Polygon has not segments");
+      }
 
-      const PointT &s =
-          dl_to_vertex(const_cast<DL *>(vertex_list.get_next()))->get_item();
-      const PointT &t =
-          dl_to_vertex(const_cast<DL *>(vertex_list.get_next()->get_next()))
+      const PointT& s =
+          dl_to_vertex(const_cast<DL*>(vertex_list.get_next()))->get_item();
+      const PointT& t =
+          dl_to_vertex(const_cast<DL*>(vertex_list.get_next()->get_next()))
               ->get_item();
       return SegmentType(s, t);
     }
@@ -150,13 +168,15 @@ namespace Designar
     SegmentType get_last_segment() const
     {
       if (num_vertices < 2)
+      {
         throw std::length_error("Polygon has not segments");
+      }
 
-      const PointT &s =
-          dl_to_vertex(const_cast<DL *>(vertex_list.get_prev())->get_prev())
+      const PointT& s =
+          dl_to_vertex(const_cast<DL*>(vertex_list.get_prev())->get_prev())
               ->get_item();
-      const PointT &t =
-          dl_to_vertex(const_cast<DL *>(vertex_list.get_prev()))->get_item();
+      const PointT& t =
+          dl_to_vertex(const_cast<DL*>(vertex_list.get_prev()))->get_item();
 
       return SegmentType(s, t);
     }
@@ -178,7 +198,7 @@ namespace Designar
 
       using Base = DL::Iterator;
 
-      GenPolygon *p_ptr;
+      GenPolygon* p_ptr;
 
     public:
       VertexIterator()
@@ -187,62 +207,64 @@ namespace Designar
         // empty
       }
 
-      VertexIterator(const GenPolygon &p)
-          : Base(const_cast<DL *>(&p.vertex_list)),
-            p_ptr(const_cast<GenPolygon *>(&p))
+      VertexIterator(const GenPolygon& p)
+          : Base(const_cast<DL*>(&p.vertex_list)),
+            p_ptr(const_cast<GenPolygon*>(&p))
       {
         // empty
       }
 
-      VertexIterator(const GenPolygon &p, DL *curr)
-          : Base(const_cast<DL *>(&p.vertex_list), curr),
-            p_ptr(const_cast<GenPolygon *>(&p))
+      VertexIterator(const GenPolygon& p, DL* curr)
+          : Base(const_cast<DL*>(&p.vertex_list), curr),
+            p_ptr(const_cast<GenPolygon*>(&p))
       {
         // empty
       }
 
-      VertexIterator(const VertexIterator &it)
+      VertexIterator(const VertexIterator& it)
           : Base(it), p_ptr(it.p_ptr)
       {
         // empty
       }
 
-      VertexIterator(VertexIterator &&it)
+      VertexIterator(VertexIterator&& it)
           : VertexIterator()
       {
         swap(it);
       }
 
-      VertexIterator &operator=(const VertexIterator &it)
+      VertexIterator& operator=(const VertexIterator& it)
       {
         if (this == &it)
+        {
           return *this;
+        }
 
-        (Base &)*this = it;
+        (Base&)* this = it;
         p_ptr = it.p_ptr;
 
         return *this;
       }
 
-      VertexIterator &operator=(VertexIterator &&it)
+      VertexIterator& operator=(VertexIterator&& it)
       {
         swap(it);
 
         return *this;
       }
 
-      void swap(VertexIterator &it)
+      void swap(VertexIterator& it)
       {
         Base::swap(it);
         std::swap(p_ptr, it.p_ptr);
       }
 
-      PointT &get_current()
+      PointT& get_current()
       {
         return dl_to_vertex(Base::get_current())->get_item();
       }
 
-      const PointT &get_current() const
+      const PointT& get_current() const
       {
         return dl_to_vertex(Base::get_current())->get_item();
       }
@@ -250,9 +272,11 @@ namespace Designar
       void del()
       {
         if (!Base::has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
-        Vertex *v = dl_to_vertex(Base::get_current());
+        Vertex* v = dl_to_vertex(Base::get_current());
         Base::next();
         --p_ptr->num_vertices;
         v->del();
@@ -265,12 +289,12 @@ namespace Designar
     {
       friend class BasicIterator<SegmentIterator, SegmentType, true>;
 
-      GenPolygon *p_ptr;
-      Vertex *head;
-      Vertex *curr;
+      GenPolygon* p_ptr;
+      Vertex* head;
+      Vertex* curr;
 
     protected:
-      Vertex *get_location() const
+      Vertex* get_location() const
       {
         return curr;
       }
@@ -282,35 +306,39 @@ namespace Designar
         // empty
       }
 
-      SegmentIterator(const GenPolygon &p)
-          : head(dl_to_vertex(const_cast<DL *>(&p.vertex_list))),
+      SegmentIterator(const GenPolygon& p)
+          : head(dl_to_vertex(const_cast<DL*>(&p.vertex_list))),
             curr(head->get_next())
       {
         if (p.size() < 2)
+        {
           throw std::length_error("There are no segments in polygon");
+        }
       }
 
-      SegmentIterator(const GenPolygon &p, DL *c)
-          : head(dl_to_vertex(const_cast<DL *>(&p.vertex_list))),
+      SegmentIterator(const GenPolygon& p, DL* c)
+          : head(dl_to_vertex(const_cast<DL*>(&p.vertex_list))),
             curr(dl_to_vertex(c))
       {
         if (p.size() < 2)
+        {
           throw std::length_error("There are no segments in polygon");
+        }
       }
 
-      SegmentIterator(const SegmentIterator &it)
+      SegmentIterator(const SegmentIterator& it)
           : head(it.head), curr(it.curr)
       {
         // empty
       }
 
-      SegmentIterator(SegmentIterator &&it)
+      SegmentIterator(SegmentIterator&& it)
           : SegmentIterator()
       {
         swap(it);
       }
 
-      void swap(SegmentIterator &it)
+      void swap(SegmentIterator& it)
       {
         std::swap(head, it.head);
         std::swap(curr, it.curr);
@@ -324,9 +352,11 @@ namespace Designar
       SegmentType get_current()
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
-        Vertex *next = curr->get_next() == head ? head->get_next() : curr->get_next();
+        Vertex* next = curr->get_next() == head ? head->get_next() : curr->get_next();
 
         return SegmentType(curr->get_item(), next->get_item());
       }
@@ -334,9 +364,11 @@ namespace Designar
       SegmentType get_current() const
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
-        Vertex *next = curr->get_next() == head ? head->get_next() : curr->get_next();
+        Vertex* next = curr->get_next() == head ? head->get_next() : curr->get_next();
 
         return SegmentType(curr->get_item(), next->get_item());
       }
@@ -344,7 +376,9 @@ namespace Designar
       void next()
       {
         if (!has_current())
+        {
           return;
+        }
 
         curr = curr->get_next();
       }
@@ -352,7 +386,9 @@ namespace Designar
       void prev()
       {
         if (curr == head->get_next())
+        {
           return;
+        }
 
         curr = curr->get_prev();
       }
@@ -360,10 +396,12 @@ namespace Designar
       void del()
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
-        Vertex *c = curr;
-        Vertex *n = nullptr;
+        Vertex* c = curr;
+        Vertex* n = nullptr;
 
         if (c->get_next() == head)
         {
@@ -414,7 +452,7 @@ namespace Designar
 
     VertexIterator vertices_end() const
     {
-      return VertexIterator(*this, const_cast<DL *>(&vertex_list));
+      return VertexIterator(*this, const_cast<DL*>(&vertex_list));
     }
 
     SegmentIterator segments_begin()
@@ -434,104 +472,104 @@ namespace Designar
 
     SegmentIterator segments_end() const
     {
-      return SegmentIterator(*this, const_cast<DL *>(&vertex_list));
+      return SegmentIterator(*this, const_cast<DL*>(&vertex_list));
     }
 
     template <class Op>
-    void for_each_vertex(Op &op) const
+    void for_each_vertex(Op& op) const
     {
       for_each_it(vertices_begin(), vertices_end(), op);
     }
 
     template <class Op>
-    void for_each_vertex(Op &&op = Op()) const
+    void for_each_vertex(Op&& op = Op()) const
     {
       for_each_it(vertices_begin(), vertices_end(), std::forward<Op>(op));
     }
 
     template <class Pred>
-    bool all_vertex(Pred &pred) const
+    bool all_vertex(Pred& pred) const
     {
       return all_it(vertices_begin(), vertices_end(), pred);
     }
 
     template <class Pred>
-    bool all_vertex(Pred &&pred = Pred()) const
+    bool all_vertex(Pred&& pred = Pred()) const
     {
       return all_it(vertices_begin(), vertices_end(), std::forward<Pred>(pred));
     }
 
     template <class Pred>
-    bool exists_vertex(Pred &pred) const
+    bool exists_vertex(Pred& pred) const
     {
       return exists_it(vertices_begin(), vertices_end(), pred);
     }
 
     template <class Pred>
-    bool exists_vertex(Pred &&pred = Pred()) const
+    bool exists_vertex(Pred&& pred = Pred()) const
     {
       return exists_it(vertices_begin(), vertices_end(),
                        std::forward<Pred>(pred));
     }
 
     template <class Pred>
-    bool none_vertex(Pred &pred) const
+    bool none_vertex(Pred& pred) const
     {
       return none_it(vertices_begin(), vertices_end(), pred);
     }
 
     template <class Pred>
-    bool none_vertex(Pred &&pred = Pred()) const
+    bool none_vertex(Pred&& pred = Pred()) const
     {
       return none_it(vertices_begin(), vertices_end(),
                      std::forward<Pred>(pred));
     }
 
     template <class Op>
-    void for_each_segment(Op &op) const
+    void for_each_segment(Op& op) const
     {
       for_each_it(segments_begin(), segments_end(), op);
     }
 
     template <class Op>
-    void for_each_segment(Op &&op = Op()) const
+    void for_each_segment(Op&& op = Op()) const
     {
       for_each_it(segments_begin(), segments_end(), std::forward<Op>(op));
     }
 
     template <class Pred>
-    bool all_segment(Pred &pred) const
+    bool all_segment(Pred& pred) const
     {
       return all_it(segments_begin(), segments_end(), pred);
     }
 
     template <class Pred>
-    bool all_segment(Pred &&pred = Pred()) const
+    bool all_segment(Pred&& pred = Pred()) const
     {
       return all_it(segments_begin(), segments_end(), std::forward<Pred>(pred));
     }
 
     template <class Pred>
-    bool exists_segment(Pred &pred) const
+    bool exists_segment(Pred& pred) const
     {
       return exists_it(segments_begin(), segments_end(), pred);
     }
 
     template <class Pred>
-    bool exists_segment(Pred &&pred = Pred()) const
+    bool exists_segment(Pred&& pred = Pred()) const
     {
       return exists_it(segments_begin(), segments_end(),
                        std::forward<Pred>(pred));
     }
 
     template <class Pred>
-    bool none_segment(Pred &pred) const
+    bool none_segment(Pred& pred) const
     {
       return none_it(segments_begin(), segments_end(), pred);
     }
 
     template <class Pred>
-    bool none_segment(Pred &&pred = Pred()) const
+    bool none_segment(Pred&& pred = Pred()) const
     {
       return none_it(segments_begin(), segments_end(),
                      std::forward<Pred>(pred));
@@ -539,9 +577,9 @@ namespace Designar
   };
 
   template <class PointT>
-  void GenPolygon<PointT>::copy(const GenPolygon &p)
+  void GenPolygon<PointT>::copy(const GenPolygon& p)
   {
-    Vertex *v = dl_to_vertex(const_cast<DL *>(p.vertex_list.get_next()));
+    Vertex* v = dl_to_vertex(const_cast<DL*>(p.vertex_list.get_next()));
 
     while (v != &p.vertex_list)
     {
@@ -552,18 +590,33 @@ namespace Designar
   }
 
   template <class PointT>
-  GenPolygon<PointT>::GenPolygon(const std::initializer_list<PointT> &l)
+  GenPolygon<PointT>::GenPolygon(const std::initializer_list<PointT>& l)
       : GenPolygon()
   {
-    for (const PointT &p : l)
+    for (const PointT& p : l)
+    {
       add_vertex(p);
+    }
   }
 
   template <class PointT>
   void GenPolygon<PointT>::clear()
   {
+    // Every node in vertex_list was allocated as a Vertex (DLNode<PointT>,
+    // see add_vertex()), but DL::remove_next() only knows about (and
+    // returns a pointer to) the DL base subobject. DL has no virtual
+    // destructor, so `delete`-ing that DL* directly deletes through the
+    // base class pointer to a derived object — undefined behavior that,
+    // in practice, skips PointT's destructor entirely (harmless for the
+    // trivially-destructible Point2D/PointInt2D this ships with, but
+    // silently wrong for any PointT that owns a resource) and was
+    // flagged immediately by AddressSanitizer as a new/delete size
+    // mismatch. dl_to_vertex() (already used elsewhere in this class for
+    // exactly this reason) recovers the actual Vertex* first.
     while (!vertex_list.is_empty())
-      delete vertex_list.remove_next();
+    {
+      delete dl_to_vertex(vertex_list.remove_next());
+    }
 
     num_vertices = 0;
   }
@@ -579,5 +632,47 @@ namespace Designar
     using Base = GenPolygon<Point2D>;
     using Base::Base;
   };
+
+  /** Ray-casting (even-odd rule) point-in-polygon test: a ray cast from
+      `p` to infinity (here, conceptually to the right) crosses the
+      polygon's boundary an even number of times if `p` is outside, odd
+      if inside. Works for arbitrary simple polygons (convex or not,
+      as long as edges don't self-intersect) in O(vertex count) by
+      checking, for each edge, whether it straddles `p`'s horizontal
+      line and if so whether the crossing point is to the right of `p`.
+      Behavior for `p` exactly on the boundary is unspecified (as with
+      essentially every implementation of this classic algorithm — it is
+      inherently a boundary case sensitive to floating-point rounding). */
+  template <class PointT>
+  bool point_in_polygon(const GenPolygon<PointT>& poly, const PointT& p)
+  {
+    bool inside = false;
+
+    poly.for_each_segment([&](const GenSegment<PointT>& seg)
+                          {
+                            const PointT& a = seg.get_src_point();
+                            const PointT& b = seg.get_tgt_point();
+
+                            bool straddles = (a.get_y() > p.get_y()) !=
+                                              (b.get_y() > p.get_y());
+
+                            if (!straddles)
+                            {
+                              return;
+                            }
+
+                            real_t x_intersect =
+                                real_t(a.get_x()) +
+                                real_t(p.get_y() - a.get_y()) *
+                                    real_t(b.get_x() - a.get_x()) /
+                                    real_t(b.get_y() - a.get_y());
+
+                            if (real_t(p.get_x()) < x_intersect)
+                            {
+                              inside = !inside;
+                            } });
+
+    return inside;
+  }
 
 } // end namespace Designar

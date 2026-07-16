@@ -16,7 +16,7 @@ using Node = MTreeNode<char>;
 
 int main()
 {
-  Node *root = new Node('A');
+  Node* root = new Node('A');
 
   assert(root != nullptr);
   assert(root->get_key() == 'A');
@@ -28,15 +28,15 @@ int main()
   assert(!root->has_siblings());
   assert(!root->has_children());
 
-  Node *first_child = new Node('B');
+  Node* first_child = new Node('B');
   assert(!first_child->has_parent());
   assert(!first_child->has_siblings());
   assert(!first_child->has_children());
-  Node *second_child = new Node('C');
+  Node* second_child = new Node('C');
   assert(!second_child->has_parent());
   assert(!second_child->has_siblings());
   assert(!second_child->has_children());
-  Node *third_child = new Node('D');
+  Node* third_child = new Node('D');
   assert(!third_child->has_parent());
   assert(!third_child->has_siblings());
   assert(!third_child->has_children());
@@ -82,7 +82,7 @@ int main()
   assert(root->get_last_child()->get_left_sibling()->get_left_sibling() == first_child);
   assert(root->get_last_child()->get_right_sibling() == nullptr);
 
-  Node *grand_child = new Node('E');
+  Node* grand_child = new Node('E');
   root->get_first_child()->get_right_sibling()->append_child(grand_child);
   assert(root->has_children());
   assert(grand_child->has_parent());

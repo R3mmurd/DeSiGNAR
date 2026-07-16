@@ -65,7 +65,7 @@ int main()
   assert(another_hash_set_cpy.size() == 5);
   assert(another_hash_set_cpy.size() == another_hash_set.size());
 
-  HashSet<int_t> another_hash_set_mv = move(another_hash_set_cpy);
+  HashSet<int_t> another_hash_set_mv = std::move(another_hash_set_cpy);
   assert(another_hash_set_cpy.is_empty());
 
   HashSet<int_t> hs;
@@ -105,6 +105,52 @@ int main()
 		
 		return p.second < q.second; })
              .equal({{1, 3}, {1, 4}, {1, 5}, {1, 6}, {2, 3}, {2, 4}, {2, 5}, {2, 6}, {3, 3}, {3, 4}, {3, 5}, {3, 6}, {4, 3}, {4, 4}, {4, 5}, {4, 6}}));
+
+  // Regression: LHashTable's default comparator constructor used to bind
+  // `Cmp &cmp` straight to a temporary/default-argument destroyed at the
+  // end of the constructor call (see hash.hpp / typetraits.hpp's
+  // DefaultCmpHolder). Every HashSet used above is already exercised via
+  // that default-argument path; this also checks that an explicit
+  // *stateful* external comparator is genuinely shared.
+  {
+    struct CountingEqual
+    {
+      nat_t count = 0;
+
+      bool operator()(int_t a, int_t b)
+      {
+        ++count;
+        return a == b;
+      }
+    };
+
+    CountingEqual cmp;
+    HashSet<int_t, CountingEqual> counting_hash(cmp);
+
+    counting_hash.append(3);
+    counting_hash.append(1);
+    counting_hash.append(3);
+
+    assert(cmp.count > 0);
+    assert(counting_hash.size() == 2);
+  }
+
+  // Regression: LHashTable::clear() (and, through it, HashSet::clear()/
+  // HashMap::clear()) called a nonexistent FixedArray::clear() after
+  // clear_lists() had already emptied every bucket in place — a
+  // compile error that had never been hit because nothing in this
+  // suite had called clear() on any HashSet/HashMap before now.
+  {
+    HashSet<int_t> hs = {1, 2, 3, 4, 5};
+    assert(hs.size() == 5);
+    hs.clear();
+    assert(hs.is_empty());
+    assert(hs.size() == 0);
+    assert(hs.search(1) == nullptr);
+    hs.append(42);
+    assert(hs.size() == 1);
+    assert(hs.search(42) != nullptr);
+  }
 
   cout << "Everything ok!\n";
 

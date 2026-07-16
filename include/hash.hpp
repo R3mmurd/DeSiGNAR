@@ -11,68 +11,72 @@
 #include <containeralgorithms.hpp>
 #include <setalgorithms.hpp>
 #include <iterator.hpp>
+#include <typetraits.hpp>
 
 #undef get16bits
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) || defined(_MSC_VER) || defined(__BORLANDC__) || defined(__TURBOC__)
-#define get16bits(d) (*((const uint16_t *)(d)))
+#define get16bits(d) (*((const uint16_t*)(d)))
 #endif
 
 #if !defined(get16bits)
-#define get16bits(d) ((((uint32_t)(((const uint8_t *)(d))[1])) << 8) + (uint32_t)(((const uint8_t *)(d))[0]))
+#define get16bits(d) ((((uint32_t)(((const uint8_t*)(d))[1])) << 8) + (uint32_t)(((const uint8_t*)(d))[0]))
 #endif
 
 namespace Designar
 {
-  nat_t super_fast_hash(void *, nat_t);
+  nat_t super_fast_hash(void*, nat_t);
 
-  inline nat_t super_fast_hash(const char *key)
+  inline nat_t super_fast_hash(const char* key)
   {
-    return super_fast_hash((void *)key, strlen(key));
+    return super_fast_hash((void*)key, strlen(key));
   }
 
-  inline nat_t super_fast_hash(const std::string &key)
+  inline nat_t super_fast_hash(const std::string& key)
   {
-    return super_fast_hash((void *)key.c_str(), key.size());
+    return super_fast_hash((void*)key.c_str(), key.size());
   }
 
   template <typename Key>
-  inline nat_t super_fast_hash(const Key &key)
+  inline nat_t super_fast_hash(const Key& key)
   {
-    return super_fast_hash((void *)&key, sizeof(key));
+    return super_fast_hash((void*)&key, sizeof(key));
   }
 
   template <typename First, typename Second>
-  inline nat_t super_fast_hash(const std::pair<First, Second> &p)
+  inline nat_t super_fast_hash(const std::pair<First, Second>& p)
   {
     return super_fast_hash<First>(p.first) ^ super_fast_hash<Second>(p.second);
   }
 
   template <typename T>
-  void hash_combine(size_t &seed, const T &val)
+  void hash_combine(size_t& seed, const T& val)
   {
     seed ^= super_fast_hash<T>(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
   }
 
   template <typename T, typename... Ts>
-  void hash_combine(size_t &seed, const T &val, const Ts &...args)
+  void hash_combine(size_t& seed, const T& val, const Ts&... args)
   {
     hash_combine(seed, val);
     hash_combine(seed, args...);
   }
 
-  void hash_combine(size_t &seed);
+  void hash_combine(size_t& seed);
 
   template <typename... Ts>
-  size_t hash_val(const Ts &...args)
+  size_t hash_val(const Ts&... args)
   {
     size_t seed{0};
     hash_combine(seed, args...);
     return seed;
   }
 
+  /** @see DefaultCmpHolder for why this class privately derives from
+      `DefaultCmpHolder<Cmp>`. */
   template <typename Key,
             class Cmp = std::equal_to<Key>>
-  class LHashTable : private FixedArray<DLList<Key>>,
+  class LHashTable : private DefaultCmpHolder<Cmp>,
+                     private FixedArray<DLList<Key>>,
                      public ContainerAlgorithms<LHashTable<Key, Cmp>, Key>,
                      public SetAlgorithms<LHashTable<Key, Cmp>, Key>
   {
@@ -86,8 +90,8 @@ namespace Designar
     using ValueType = Key;
     using SizeType = nat_t;
     using CmpType = Cmp;
-    using HashFctPtr = nat_t (*)(const Key &);
-    using HashFctType = std::function<nat_t(const Key &)>;
+    using HashFctPtr = nat_t (*)(const Key&);
+    using HashFctType = std::function<nat_t(const Key&)>;
 
     static constexpr nat_t DFT_SIZE = 32;
     static constexpr real_t DFT_LOWER_ALPHA = 0.25;
@@ -95,7 +99,7 @@ namespace Designar
 
   private:
     nat_t num_items;
-    Cmp &cmp;
+    Cmp& cmp;
     HashFctType hash_fct;
     real_t lower_alpha;
     real_t upper_alpha;
@@ -104,25 +108,38 @@ namespace Designar
 
     void resize(nat_t);
 
-    Key *search_in_list(List &list, const Key &k)
+    Key* search_in_list(List& list, const Key& k)
     {
-      return list.search_ptr([&k, this](const auto &item)
+      return list.search_ptr([&k, this](const auto& item)
                              { return cmp(k, item); });
     }
 
-    const Key *search_in_list(const List &list, const Key &k) const
+    const Key* search_in_list(const List& list, const Key& k) const
     {
-      return list.search_ptr([&k, this](const auto &item)
+      return list.search_ptr([&k, this](const auto& item)
                              { return cmp(k, item); });
     }
 
-    nat_t h(const Key &item) const
+    nat_t h(const Key& item) const
     {
       return hash_fct(item) % BaseArray::get_capacity();
     }
 
+    /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
+        logic and the same reason it is needed. */
+    static Cmp& cmp_for_copy(LHashTable& self, const LHashTable& h)
+    {
+      if (&h.cmp == &h.default_cmp)
+      {
+        self.default_cmp = h.default_cmp;
+        return self.default_cmp;
+      }
+
+      return h.cmp;
+    }
+
   public:
-    LHashTable(nat_t size, Cmp &_cmp, HashFctType fct,
+    LHashTable(nat_t size, Cmp& _cmp, HashFctType fct,
                real_t _lower_alpha, real_t _upper_alpha)
         : BaseArray(size), num_items(0), cmp(_cmp), hash_fct(fct),
           lower_alpha(_lower_alpha), upper_alpha(_upper_alpha)
@@ -130,76 +147,103 @@ namespace Designar
       // empty
     }
 
-    LHashTable(nat_t size, Cmp &_cmp, HashFctType fct)
+    /** The rvalue-accepting counterpart of the constructor above: takes
+        a comparator by value (or none, via a chain of default
+        arguments) and copies it into the owned `default_cmp` slot rather
+        than binding `cmp` to this constructor's own
+        temporary/default-argument parameter (which is destroyed at the
+        end of the call — see DefaultCmpHolder). Every other `Cmp &&`
+        overload below must delegate here with `std::forward<Cmp>(_cmp)`
+        rather than a bare `_cmp`: a named `Cmp &&` parameter is an
+        lvalue expression, so a bare `_cmp` would silently resolve to the
+        *lvalue* overload above and bind `cmp` straight to that
+        overload's own about-to-be-destroyed parameter — reintroducing
+        the same dangling-reference bug one delegation level down. */
+    LHashTable(nat_t size, Cmp&& _cmp, HashFctType fct,
+               real_t _lower_alpha, real_t _upper_alpha)
+        : BaseArray(size), num_items(0), cmp(this->default_cmp), hash_fct(fct),
+          lower_alpha(_lower_alpha), upper_alpha(_upper_alpha)
+    {
+      this->default_cmp = _cmp;
+    }
+
+    LHashTable(nat_t size, Cmp& _cmp, HashFctType fct)
         : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(nat_t size, Cmp &&_cmp, HashFctType fct)
+    LHashTable(nat_t size, Cmp&& _cmp, HashFctType fct)
+        : LHashTable(size, std::forward<Cmp>(_cmp), fct, DFT_LOWER_ALPHA,
+                     DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+
+    LHashTable(nat_t size, Cmp& _cmp, HashFctPtr fct = &super_fast_hash)
         : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(nat_t size, Cmp &_cmp, HashFctPtr fct = &super_fast_hash)
-        : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
-    {
-      // empty
-    }
-
-    LHashTable(nat_t size, Cmp &&_cmp = Cmp(),
+    LHashTable(nat_t size, Cmp&& _cmp = Cmp(),
                HashFctPtr fct = &super_fast_hash)
-        : LHashTable(size, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+        : LHashTable(size, std::forward<Cmp>(_cmp), fct, DFT_LOWER_ALPHA,
+                     DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(Cmp &_cmp, HashFctType fct)
+    LHashTable(Cmp& _cmp, HashFctType fct)
         : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(Cmp &&_cmp, HashFctType fct)
+    LHashTable(Cmp&& _cmp, HashFctType fct)
+        : LHashTable(DFT_SIZE, std::forward<Cmp>(_cmp), fct, DFT_LOWER_ALPHA,
+                     DFT_UPPER_ALPHA)
+    {
+      // empty
+    }
+
+    LHashTable(Cmp& _cmp, HashFctPtr fct = &super_fast_hash)
         : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(Cmp &_cmp, HashFctPtr fct = &super_fast_hash)
-        : LHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+    LHashTable(Cmp&& _cmp = Cmp(), HashFctPtr fct = &super_fast_hash)
+        : LHashTable(DFT_SIZE, std::forward<Cmp>(_cmp), fct, DFT_LOWER_ALPHA,
+                     DFT_UPPER_ALPHA)
     {
       // empty
     }
 
-    LHashTable(Cmp &&_cmp = Cmp(), HashFctPtr fct = &super_fast_hash)
-        : LHashTable(_cmp, fct)
+    LHashTable(const LHashTable& h)
+        : BaseArray(h), num_items(h.num_items), cmp(cmp_for_copy(*this, h)),
+          hash_fct(h.hash_fct), lower_alpha(h.lower_alpha),
+          upper_alpha(h.upper_alpha)
     {
       // empty
     }
 
-    LHashTable(const LHashTable &h)
-        : BaseArray(h), num_items(h.num_items), cmp(h.cmp), hash_fct(h.hash_fct),
-          lower_alpha(h.lower_alpha), upper_alpha(h.upper_alpha)
-    {
-      // empty
-    }
-
-    LHashTable(LHashTable &&h)
+    LHashTable(LHashTable&& h)
         : LHashTable()
     {
       swap(h);
     }
 
-    LHashTable(const std::initializer_list<Key> &);
+    LHashTable(const std::initializer_list<Key>&);
 
-    LHashTable &operator=(const LHashTable &h)
+    LHashTable& operator=(const LHashTable& h)
     {
       if (this == &h)
+      {
         return *this;
+      }
 
-      (BaseArray &)*this = h;
+      (BaseArray&)* this = h;
       num_items = h.num_items;
       cmp = h.cmp;
       hash_fct = h.hash_fct;
@@ -209,13 +253,13 @@ namespace Designar
       return *this;
     }
 
-    LHashTable &operator=(LHashTable &&h)
+    LHashTable& operator=(LHashTable&& h)
     {
       swap(h);
       return *this;
     }
 
-    void swap(LHashTable &h)
+    void swap(LHashTable& h)
     {
       BaseArray::swap(h);
       std::swap(num_items, h.num_items);
@@ -225,17 +269,17 @@ namespace Designar
       std::swap(upper_alpha, h.upper_alpha);
     }
 
-    Cmp &get_cmp()
+    Cmp& get_cmp()
     {
       return cmp;
     }
 
-    const Cmp &get_cmp() const
+    const Cmp& get_cmp() const
     {
       return cmp;
     }
 
-    const HashFctType &get_hash_fct() const
+    const HashFctType& get_hash_fct() const
     {
       return hash_fct;
     }
@@ -291,21 +335,30 @@ namespace Designar
       return BaseArray::get_capacity();
     }
 
+    /** clear_lists() already empties every bucket's list in place; the
+        backing FixedArray itself has a fixed number of buckets and has
+        no (and needs no) clear() of its own — a stray call to one
+        (`BaseArray::clear()`) used to sit here, which never compiled
+        for the simple reason that FixedArray never had such a method;
+        it went unnoticed because nothing in this codebase's test suite
+        had ever called LHashTable::clear() (or HashSet::clear()/
+        HashMap::clear(), which forward to it) until this session. */
     void clear()
     {
       clear_lists();
       num_items = 0;
-      BaseArray::clear();
     }
 
-    Key *insert(const Key &item)
+    Key* insert(const Key& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (!list.is_empty() && search_in_list(list, item) != nullptr)
+      {
         return nullptr;
+      }
 
       if (alpha() < upper_alpha)
       {
@@ -319,14 +372,16 @@ namespace Designar
       return &BaseArray::at(i).insert(item);
     }
 
-    Key *insert(Key &&item)
+    Key* insert(Key&& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (!list.is_empty() && search_in_list(list, item) != nullptr)
+      {
         return nullptr;
+      }
 
       if (alpha() < upper_alpha)
       {
@@ -340,11 +395,11 @@ namespace Designar
       return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
-    Key *insert_dup(const Key &item)
+    Key* insert_dup(const Key& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (alpha() < upper_alpha)
       {
@@ -358,11 +413,11 @@ namespace Designar
       return &BaseArray::at(i).insert(item);
     }
 
-    Key *insert_dup(Key &&item)
+    Key* insert_dup(Key&& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (alpha() < upper_alpha)
       {
@@ -376,62 +431,68 @@ namespace Designar
       return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
-    Key *append(const Key &k)
+    Key* append(const Key& k)
     {
       return insert(k);
     }
 
-    Key *append(Key &&k)
+    Key* append(Key&& k)
     {
       return insert(std::forward<Key>(k));
     }
 
-    Key *append_dup(const Key &k)
+    Key* append_dup(const Key& k)
     {
       return insert_dup(k);
     }
 
-    Key *append_dup(Key &&k)
+    Key* append_dup(Key&& k)
     {
       return insert_dup(std::forward<Key>(k));
     }
 
-    Key *search(const Key &k)
+    Key* search(const Key& k)
     {
       nat_t i = h(k);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (list.is_empty())
+      {
         return nullptr;
+      }
 
       return search_in_list(list, k);
     }
 
-    const Key *search(const Key &k) const
+    const Key* search(const Key& k) const
     {
       nat_t i = h(k);
 
-      const List &list = BaseArray::at(i);
+      const List& list = BaseArray::at(i);
 
       if (list.is_empty())
+      {
         return nullptr;
+      }
 
       return search_in_list(list, k);
     }
 
-    Key *search_or_insert(const Key &item)
+    Key* search_or_insert(const Key& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (!list.is_empty())
       {
-        Key *result = search_in_list(list, item);
+        Key* result = search_in_list(list, item);
 
         if (result != nullptr)
+        {
           return result;
+        }
       }
 
       if (alpha() < upper_alpha)
@@ -446,18 +507,20 @@ namespace Designar
       return &BaseArray::at(i).insert(item);
     }
 
-    Key *search_or_insert(Key &&item)
+    Key* search_or_insert(Key&& item)
     {
       nat_t i = h(item);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (!list.is_empty())
       {
-        Key *result = search_in_list(list, item);
+        Key* result = search_in_list(list, item);
 
         if (result != nullptr)
+        {
           return result;
+        }
       }
 
       if (alpha() < upper_alpha)
@@ -472,47 +535,57 @@ namespace Designar
       return &BaseArray::at(i).insert(std::forward<Key>(item));
     }
 
-    Key &find(const Key &k)
+    Key& find(const Key& k)
     {
-      Key *ptr = search(k);
+      Key* ptr = search(k);
 
       if (ptr == nullptr)
+      {
         throw std::domain_error("Key does not exists");
+      }
 
       return *ptr;
     }
 
-    const Key &find(const Key &k) const
+    const Key& find(const Key& k) const
     {
-      const Key *ptr = search(k);
+      const Key* ptr = search(k);
 
       if (ptr == nullptr)
+      {
         throw std::domain_error("Key does not exists");
+      }
 
       return *ptr;
     }
 
-    bool remove(const Key &k)
+    bool remove(const Key& k)
     {
       nat_t i = h(k);
 
-      List &list = BaseArray::at(i);
+      List& list = BaseArray::at(i);
 
       if (list.is_empty())
+      {
         return false;
+      }
 
-      bool result = list.remove_first_if([&k, this](const auto &item)
+      bool result = list.remove_first_if([&k, this](const auto& item)
                                          { return cmp(k, item); });
 
       if (!result)
+      {
         return false;
+      }
 
       --num_items;
 
       nat_t min_size = DFT_SIZE;
 
       if (BaseArray::get_capacity() == min_size || alpha() > lower_alpha)
+      {
         return true;
+      }
 
       nat_t new_size = std::max(min_size, BaseArray::get_capacity() / 2);
       resize(new_size);
@@ -525,7 +598,7 @@ namespace Designar
       friend class LHashTable;
       friend class BasicIterator<Iterator, Key>;
 
-      LHashTable *set_ptr;
+      LHashTable* set_ptr;
       int_t set_pos;
       typename List::Iterator list_it;
       int_t pos;
@@ -542,8 +615,8 @@ namespace Designar
         return pos;
       }
 
-      Iterator(const LHashTable &h, int)
-          : set_ptr(&const_cast<LHashTable &>(h)), set_pos(h.M()),
+      Iterator(const LHashTable& h, int)
+          : set_ptr(&const_cast<LHashTable&>(h)), set_pos(h.M()),
             list_it(), pos(h.N())
       {
         locate_end();
@@ -556,29 +629,31 @@ namespace Designar
         // empty
       }
 
-      Iterator(const LHashTable &h)
-          : set_ptr(&const_cast<LHashTable &>(h)), set_pos(0), list_it(), pos(0)
+      Iterator(const LHashTable& h)
+          : set_ptr(&const_cast<LHashTable&>(h)), set_pos(0), list_it(), pos(0)
       {
         locate_next(set_pos);
       }
 
-      Iterator(const Iterator &it)
+      Iterator(const Iterator& it)
           : set_ptr(it.set_ptr), set_pos(it.set_pos), list_it(it.list_it),
             pos(it.pos)
       {
         // empty
       }
 
-      Iterator(Iterator &&it)
+      Iterator(Iterator&& it)
           : Iterator()
       {
         swap(it);
       }
 
-      Iterator &operator=(const Iterator &it)
+      Iterator& operator=(const Iterator& it)
       {
         if (this == &it)
+        {
           return *this;
+        }
 
         set_ptr = it.set_ptr;
         set_pos = it.set_pos;
@@ -588,13 +663,13 @@ namespace Designar
         return *this;
       }
 
-      Iterator &operator=(Iterator &&it)
+      Iterator& operator=(Iterator&& it)
       {
         swap(it);
         return *this;
       }
 
-      void swap(Iterator &it)
+      void swap(Iterator& it)
       {
         std::swap(set_ptr, it.set_ptr);
         std::swap(set_pos, it.set_pos);
@@ -620,18 +695,22 @@ namespace Designar
         return set_pos >= 0 && set_pos < set_ptr->get_capacity();
       }
 
-      Key &get_current()
+      Key& get_current()
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
         return list_it.get_current();
       }
 
-      const Key &get_current() const
+      const Key& get_current() const
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
         return list_it.get_current();
       }
@@ -639,25 +718,33 @@ namespace Designar
       void next()
       {
         if (!has_current())
+        {
           return;
+        }
 
         ++pos;
 
         list_it.next();
 
         if (!list_it.has_current())
+        {
           locate_next(set_pos + 1);
+        }
       }
 
       void prev()
       {
         if (pos == 0)
+        {
           return;
+        }
 
         --pos;
 
         if (set_pos == set_ptr->M() || list_it == set_ptr->at(set_pos).begin())
+        {
           locate_prev(set_pos);
+        }
 
         list_it.prev();
       }
@@ -688,7 +775,9 @@ namespace Designar
   void LHashTable<Key, Cmp>::clear_lists()
   {
     for (nat_t i = 0; i < BaseArray::get_capacity(); ++i)
+    {
       BaseArray::at(i).clear();
+    }
   }
 
   template <typename Key, class Cmp>
@@ -696,39 +785,51 @@ namespace Designar
   {
     LHashTable new_hash_set(sz, cmp, hash_fct, lower_alpha, upper_alpha);
 
-    for (Key &item : *this)
+    for (Key& item : *this)
+    {
       new_hash_set.append(std::move(item));
+    }
 
     swap(new_hash_set);
   }
 
   template <typename Key, class Cmp>
-  LHashTable<Key, Cmp>::LHashTable(const std::initializer_list<Key> &l)
+  LHashTable<Key, Cmp>::LHashTable(const std::initializer_list<Key>& l)
       : LHashTable()
   {
-    for (const Key &item : l)
+    for (const Key& item : l)
+    {
       append(item);
+    }
   }
 
   template <typename Key, class Cmp>
   void LHashTable<Key, Cmp>::Iterator::locate_end()
   {
     while (set_pos > 0 && set_ptr->at(set_pos - 1).is_empty())
+    {
       --set_pos;
+    }
 
     if (set_pos > 0)
+    {
       list_it = set_ptr->at(set_pos - 1).end();
+    }
   }
 
   template <typename Key, class Cmp>
   void LHashTable<Key, Cmp>::Iterator::locate_next(nat_t i)
   {
     if (set_ptr->is_empty())
+    {
       return;
+    }
 
     while (i < set_ptr->get_capacity() and
            set_ptr->at(i).is_empty())
+    {
       ++i;
+    }
 
     if (i < set_ptr->get_capacity())
     {
@@ -743,10 +844,14 @@ namespace Designar
   void LHashTable<Key, Cmp>::Iterator::locate_prev(nat_t i)
   {
     if (set_ptr->is_empty())
+    {
       return;
+    }
 
     while (i > 0 && set_ptr->at(i - 1).is_empty())
+    {
       --i;
+    }
 
     if (i > 0)
     {

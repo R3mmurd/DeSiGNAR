@@ -12,7 +12,9 @@ namespace Designar
   nat_t EquivalenceRelation::find(nat_t p) const
   {
     while (p != id[p])
+    {
       p = id[p];
+    }
 
     return p;
   }
@@ -33,7 +35,9 @@ namespace Designar
     nat_t j = find(q);
 
     if (i == j)
+    {
       return;
+    }
 
     if (sz[i] < sz[j])
     {

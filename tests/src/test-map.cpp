@@ -34,16 +34,16 @@ int main()
 
   assert(array_map.equal({{"One", 1}, {"Two", 2}, {"Three", 3}, {"Four", 4}, {"Five", 5}, {"Six", 6}}));
 
-  auto sum = array_map.fold(map_item(string(""), 0), [](const auto &p,
-                                                        const auto &acc)
+  auto sum = array_map.fold(map_item(string(""), 0), [](const auto& p,
+                                                        const auto& acc)
                             { return map_item(key(acc) + key(p) + "+",
                                               value(acc) + value(p)); });
 
   key(sum).pop_back();
   assert(key(sum) == "One+Two+Three+Four+Five+Six" && value(sum) == 21);
 
-  auto prod = array_map.fold(map_item(string(""), 1), [](const auto &p,
-                                                         const auto &acc)
+  auto prod = array_map.fold(map_item(string(""), 1), [](const auto& p,
+                                                         const auto& acc)
                              { return map_item(key(acc) + key(p) + "*",
                                                value(acc) * value(p)); });
 
@@ -75,8 +75,8 @@ int main()
   key(sum).clear();
   value(sum) = 0;
 
-  sum = tree_map.fold(map_item(string(""), 0), [](const auto &p,
-                                                  const auto &acc)
+  sum = tree_map.fold(map_item(string(""), 0), [](const auto& p,
+                                                  const auto& acc)
                       { return map_item(key(acc) + key(p) + "+",
                                         value(acc) + value(p)); });
 
@@ -86,8 +86,8 @@ int main()
   key(prod).clear();
   value(prod) = 0;
 
-  prod = tree_map.fold(map_item(string(""), 1), [](const auto &p,
-                                                   const auto &acc)
+  prod = tree_map.fold(map_item(string(""), 1), [](const auto& p,
+                                                   const auto& acc)
                        { return map_item(key(acc) + key(p) + "*",
                                          value(acc) * value(p)); });
 
@@ -117,8 +117,8 @@ int main()
   key(sum).clear();
   value(sum) = 0;
 
-  sum = hash_map.fold(map_item(string(""), 0), [](const auto &p,
-                                                  const auto &acc)
+  sum = hash_map.fold(map_item(string(""), 0), [](const auto& p,
+                                                  const auto& acc)
                       { return map_item(key(acc) + key(p) + "+",
                                         value(acc) + value(p)); });
 
@@ -128,8 +128,8 @@ int main()
   key(prod).clear();
   value(prod) = 0;
 
-  prod = hash_map.fold(map_item(string(""), 1), [](const auto &p,
-                                                   const auto &acc)
+  prod = hash_map.fold(map_item(string(""), 1), [](const auto& p,
+                                                   const auto& acc)
                        { return map_item(key(acc) + key(p) + "*",
                                          value(acc) * value(p)); });
 

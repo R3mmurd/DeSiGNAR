@@ -53,7 +53,7 @@ int main()
     fixed_stack.push(11);
     assert(false);
   }
-  catch (overflow_error)
+  catch (const overflow_error&)
   {
     assert(true);
   }
@@ -72,7 +72,7 @@ int main()
   assert(fixed_stack_cpy.top() == 6);
   assert(fixed_stack_cpy.size() == 6);
 
-  FixedStack<int_t, 10> fixed_stack_mv = move(fixed_stack_cpy);
+  FixedStack<int_t, 10> fixed_stack_mv = std::move(fixed_stack_cpy);
 
   assert(fixed_stack_mv.top() == 6);
   assert(fixed_stack_mv.size() == 6);
@@ -87,7 +87,7 @@ int main()
     fixed_stack.top();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -101,7 +101,7 @@ int main()
     fixed_stack.pop();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -155,7 +155,7 @@ int main()
   assert(array_stack_cpy.top() == 7);
   assert(array_stack_cpy.size() == 7);
 
-  DynStack<int_t> array_stack_mv = move(array_stack_cpy);
+  DynStack<int_t> array_stack_mv = std::move(array_stack_cpy);
 
   assert(array_stack_mv.top() == 7);
   assert(array_stack_mv.size() == 7);
@@ -170,7 +170,7 @@ int main()
     array_stack.top();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -184,7 +184,7 @@ int main()
     array_stack.pop();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -246,7 +246,7 @@ int main()
   assert(list_stack_cpy.top() == 7);
   assert(list_stack_cpy.size() == 7);
 
-  ListStack<int_t> list_stack_mv = move(list_stack_cpy);
+  ListStack<int_t> list_stack_mv = std::move(list_stack_cpy);
 
   assert(list_stack_mv.top() == 7);
   assert(list_stack_mv.size() == 7);
@@ -261,7 +261,7 @@ int main()
     list_stack.top();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -275,7 +275,7 @@ int main()
     list_stack.pop();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }

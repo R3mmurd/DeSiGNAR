@@ -9,7 +9,7 @@
 namespace Designar
 {
 
-  void DL::split(DL &l, DL &r)
+  void DL::split(DL& l, DL& r)
   {
     assert(l.is_empty());
     assert(r.is_empty());
@@ -19,7 +19,9 @@ namespace Designar
       l.insert_prev(this->remove_next());
 
       if (!this->is_empty())
+      {
         r.insert_next(this->remove_prev());
+      }
     }
   }
 

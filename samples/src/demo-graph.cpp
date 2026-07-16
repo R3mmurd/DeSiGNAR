@@ -13,7 +13,7 @@ using GT = Graph<string, int_t>;
 using DGT = Digraph<string, int_t>;
 
 template <class Graph>
-void write_graph(Graph &g, const char &name)
+void write_graph(Graph& g, const char& name)
 {
   string connector = "--";
 
@@ -42,7 +42,7 @@ void write_graph(Graph &g, const char &name)
 }
 
 template <class Graph>
-void write_node(Graph &g, typename Graph::Node *p)
+void write_node(Graph& g, typename Graph::Node* p)
 {
   string connector = g.is_digraph() ? "->" : "--";
 
@@ -87,7 +87,7 @@ int main()
   write_graph(h, 'h');
   write_graph(i, 'i');
 
-  i = move(g);
+  i = std::move(g);
 
   write_graph(g, 'g');
   write_graph(h, 'h');
@@ -185,7 +185,7 @@ int main()
   write_graph(dh, 'h');
   write_graph(di, 'i');
 
-  di = move(dg);
+  di = std::move(dg);
 
   write_graph(dg, 'g');
   write_graph(dh, 'h');

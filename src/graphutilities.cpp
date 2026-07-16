@@ -10,7 +10,7 @@ namespace Designar
 {
 
   CommonNodeArc::CommonNodeArc()
-      : tag(0), _counter(0), _cookie(nullptr)
+      : tag(0), _counter(0), _cookie()
   {
     // empty
   }
@@ -30,9 +30,14 @@ namespace Designar
     return (tag & nat_t(graph_tag)) == nat_t(graph_tag);
   }
 
-  void *&CommonNodeArc::cookie()
+  void*& CommonNodeArc::cookie()
   {
-    return _cookie;
+    return _cookie.ptr;
+  }
+
+  int_t& CommonNodeArc::cookie_as_int()
+  {
+    return _cookie.num;
   }
 
   void CommonNodeArc::reset_tag()
@@ -40,7 +45,7 @@ namespace Designar
     tag = 0;
   }
 
-  int_t &CommonNodeArc::counter()
+  int_t& CommonNodeArc::counter()
   {
     return _counter;
   }
@@ -49,7 +54,7 @@ namespace Designar
   {
     tag = 0;
     _counter = 0;
-    _cookie = nullptr;
+    _cookie.ptr = nullptr;
   }
 
 } // end namespace Designar

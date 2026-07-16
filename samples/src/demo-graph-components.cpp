@@ -16,7 +16,7 @@ using GT = Graph<string>;
 using DGT = Digraph<string>;
 
 template <class G>
-void print_graph(const G &g, const string &name)
+void print_graph(const G& g, const string& name)
 {
   cout << name << endl;
 
@@ -41,11 +41,11 @@ int main()
 {
   GT g;
 
-  GT::Node *ga = g.insert_node("a");
-  GT::Node *gb = g.insert_node("b");
-  GT::Node *gc = g.insert_node("c");
-  GT::Node *gd = g.insert_node("d");
-  GT::Node *ge = g.insert_node("e");
+  GT::Node* ga = g.insert_node("a");
+  GT::Node* gb = g.insert_node("b");
+  GT::Node* gc = g.insert_node("c");
+  GT::Node* gd = g.insert_node("d");
+  GT::Node* ge = g.insert_node("e");
   g.insert_node("f");
 
   g.insert_arc(ga, gb);
@@ -59,7 +59,7 @@ int main()
   auto l = compute_connected_components(g);
 
   nat_t i = 0;
-  for (const GT &gg : l)
+  for (const GT& gg : l)
   {
     stringstream s;
     s << "Component " << ++i;
@@ -68,20 +68,20 @@ int main()
 
   GT gg;
 
-  GT::Node *gga = gg.insert_node("a");
-  GT::Node *ggb = gg.insert_node("b");
-  GT::Node *ggc = gg.insert_node("c");
-  GT::Node *ggd = gg.insert_node("d");
-  GT::Node *gge = gg.insert_node("e");
-  GT::Node *ggf = gg.insert_node("f");
-  GT::Node *ggg = gg.insert_node("g");
-  GT::Node *ggh = gg.insert_node("h");
-  GT::Node *ggi = gg.insert_node("i");
-  GT::Node *ggj = gg.insert_node("j");
-  GT::Node *ggk = gg.insert_node("k");
-  GT::Node *ggl = gg.insert_node("l");
-  GT::Node *ggm = gg.insert_node("m");
-  GT::Node *ggn = gg.insert_node("n");
+  GT::Node* gga = gg.insert_node("a");
+  GT::Node* ggb = gg.insert_node("b");
+  GT::Node* ggc = gg.insert_node("c");
+  GT::Node* ggd = gg.insert_node("d");
+  GT::Node* gge = gg.insert_node("e");
+  GT::Node* ggf = gg.insert_node("f");
+  GT::Node* ggg = gg.insert_node("g");
+  GT::Node* ggh = gg.insert_node("h");
+  GT::Node* ggi = gg.insert_node("i");
+  GT::Node* ggj = gg.insert_node("j");
+  GT::Node* ggk = gg.insert_node("k");
+  GT::Node* ggl = gg.insert_node("l");
+  GT::Node* ggm = gg.insert_node("m");
+  GT::Node* ggn = gg.insert_node("n");
 
   gg.insert_arc(ggm, ggn);
   gg.insert_arc(ggm, ggi);
@@ -117,7 +117,7 @@ int main()
   auto t = compute_cut_nodes_connected_components(gg, cn);
 
   i = 0;
-  for (const GT &gg : get<0>(t))
+  for (const GT& gg : get<0>(t))
   {
     stringstream s;
     s << "Cut nodes Component " << ++i;
@@ -127,7 +127,7 @@ int main()
   print_graph(get<1>(t), "Cut graph");
 
   cout << "Cross arcs\n";
-  for (GT::Arc *a : get<2>(t))
+  for (GT::Arc* a : get<2>(t))
   {
     auto p = a->get_src_node();
     auto q = a->get_tgt_node();
@@ -137,12 +137,12 @@ int main()
 
   DGT dg;
 
-  DGT::Node *dga = dg.insert_node("a");
-  DGT::Node *dgb = dg.insert_node("b");
-  DGT::Node *dgc = dg.insert_node("c");
-  DGT::Node *dgd = dg.insert_node("d");
-  DGT::Node *dge = dg.insert_node("e");
-  DGT::Node *dgf = dg.insert_node("f");
+  DGT::Node* dga = dg.insert_node("a");
+  DGT::Node* dgb = dg.insert_node("b");
+  DGT::Node* dgc = dg.insert_node("c");
+  DGT::Node* dgd = dg.insert_node("d");
+  DGT::Node* dge = dg.insert_node("e");
+  DGT::Node* dgf = dg.insert_node("f");
 
   dg.insert_arc(dga, dgb);
   dg.insert_arc(dgb, dgc);
@@ -158,7 +158,7 @@ int main()
   auto dl = Kosaraju_compute_strong_connected_components(dg);
 
   i = 0;
-  for (const DGT &dgg : dl)
+  for (const DGT& dgg : dl)
   {
     stringstream s;
     s << "Component " << ++i;

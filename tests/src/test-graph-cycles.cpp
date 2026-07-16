@@ -20,10 +20,10 @@ void test()
 {
   GT g1;
 
-  Node<GT> *g1a = g1.insert_node('a');
-  Node<GT> *g1b = g1.insert_node('b');
-  Node<GT> *g1c = g1.insert_node('c');
-  Node<GT> *g1d = g1.insert_node('d');
+  Node<GT>* g1a = g1.insert_node('a');
+  Node<GT>* g1b = g1.insert_node('b');
+  Node<GT>* g1c = g1.insert_node('c');
+  Node<GT>* g1d = g1.insert_node('d');
 
   g1.insert_arc(g1a, g1b);
   g1.insert_arc(g1b, g1c);
@@ -36,10 +36,10 @@ void test()
 
   GT g2;
 
-  Node<GT> *g2a = g2.insert_node('a');
-  Node<GT> *g2b = g2.insert_node('b');
-  Node<GT> *g2c = g2.insert_node('c');
-  Node<GT> *g2d = g2.insert_node('d');
+  Node<GT>* g2a = g2.insert_node('a');
+  Node<GT>* g2b = g2.insert_node('b');
+  Node<GT>* g2c = g2.insert_node('c');
+  Node<GT>* g2d = g2.insert_node('d');
 
   g2.insert_arc(g2a, g2b);
   g2.insert_arc(g2b, g2c);
@@ -51,9 +51,9 @@ void test()
 
   GT g3;
 
-  Node<GT> *g3a = g3.insert_node('a');
-  Node<GT> *g3b = g3.insert_node('b');
-  Node<GT> *g3c = g3.insert_node('c');
+  Node<GT>* g3a = g3.insert_node('a');
+  Node<GT>* g3b = g3.insert_node('b');
+  Node<GT>* g3c = g3.insert_node('c');
   g3.insert_node('d');
 
   g3.insert_arc(g3a, g3b);
@@ -65,10 +65,10 @@ void test()
 
   GT g4;
 
-  Node<GT> *g4a = g4.insert_node('a');
-  Node<GT> *g4b = g4.insert_node('b');
-  Node<GT> *g4c = g4.insert_node('c');
-  Node<GT> *g4d = g4.insert_node('d');
+  Node<GT>* g4a = g4.insert_node('a');
+  Node<GT>* g4b = g4.insert_node('b');
+  Node<GT>* g4c = g4.insert_node('c');
+  Node<GT>* g4d = g4.insert_node('d');
 
   g4.insert_arc(g4a, g4b);
   g4.insert_arc(g4b, g4c);
@@ -79,10 +79,10 @@ void test()
 
   GT g5;
 
-  Node<GT> *g5a = g5.insert_node('a');
-  Node<GT> *g5b = g5.insert_node('b');
-  Node<GT> *g5c = g5.insert_node('c');
-  Node<GT> *g5d = g5.insert_node('d');
+  Node<GT>* g5a = g5.insert_node('a');
+  Node<GT>* g5b = g5.insert_node('b');
+  Node<GT>* g5c = g5.insert_node('c');
+  Node<GT>* g5d = g5.insert_node('d');
 
   g5.insert_arc(g5a, g5b);
   g5.insert_arc(g5a, g5c);
@@ -94,11 +94,11 @@ void test()
 
   GT g6;
 
-  Node<GT> *g6a = g6.insert_node('a');
-  Node<GT> *g6b = g6.insert_node('b');
-  Node<GT> *g6c = g6.insert_node('c');
-  Node<GT> *g6d = g6.insert_node('d');
-  Node<GT> *g6e = g6.insert_node('e');
+  Node<GT>* g6a = g6.insert_node('a');
+  Node<GT>* g6b = g6.insert_node('b');
+  Node<GT>* g6c = g6.insert_node('c');
+  Node<GT>* g6d = g6.insert_node('d');
+  Node<GT>* g6e = g6.insert_node('e');
 
   g6.insert_arc(g6a, g6e);
   g6.insert_arc(g6a, g6b);
@@ -113,11 +113,11 @@ void test()
 
   GT g7;
 
-  Node<GT> *g7a = g7.insert_node('a');
-  Node<GT> *g7b = g7.insert_node('b');
-  Node<GT> *g7c = g7.insert_node('c');
-  Node<GT> *g7d = g7.insert_node('d');
-  Node<GT> *g7e = g7.insert_node('e');
+  Node<GT>* g7a = g7.insert_node('a');
+  Node<GT>* g7b = g7.insert_node('b');
+  Node<GT>* g7c = g7.insert_node('c');
+  Node<GT>* g7d = g7.insert_node('d');
+  Node<GT>* g7e = g7.insert_node('e');
 
   g7.insert_arc(g7e, g7a);
   g7.insert_arc(g7a, g7b);

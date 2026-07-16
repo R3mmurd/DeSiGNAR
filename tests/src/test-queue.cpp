@@ -56,7 +56,7 @@ int main()
     fixed_queue.put(11);
     assert(false);
   }
-  catch (overflow_error)
+  catch (const overflow_error&)
   {
     assert(true);
   }
@@ -76,7 +76,7 @@ int main()
   assert(fixed_queue_cpy.rear() == 10);
   assert(fixed_queue_cpy.size() == 6);
 
-  FixedQueue<int_t, 10> fixed_queue_mv = move(fixed_queue_cpy);
+  FixedQueue<int_t, 10> fixed_queue_mv = std::move(fixed_queue_cpy);
 
   assert(fixed_queue_mv.front() == 5);
   assert(fixed_queue_mv.rear() == 10);
@@ -97,7 +97,7 @@ int main()
     fixed_queue.front();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -111,7 +111,7 @@ int main()
     fixed_queue.get();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -167,7 +167,7 @@ int main()
   assert(array_queue_cpy.rear() == 11);
   assert(array_queue_cpy.size() == 7);
 
-  DynQueue<int_t> array_queue_mv = move(array_queue_cpy);
+  DynQueue<int_t> array_queue_mv = std::move(array_queue_cpy);
 
   assert(array_queue_mv.front() == 5);
   assert(array_queue_mv.rear() == 11);
@@ -189,7 +189,7 @@ int main()
     array_queue.front();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -203,7 +203,7 @@ int main()
     array_queue.get();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -267,7 +267,7 @@ int main()
   assert(list_queue_cpy.rear() == 11);
   assert(list_queue_cpy.size() == 7);
 
-  ListQueue<int_t> list_queue_mv = move(list_queue_cpy);
+  ListQueue<int_t> list_queue_mv = std::move(list_queue_cpy);
 
   assert(list_queue_mv.front() == 5);
   assert(list_queue_mv.rear() == 11);
@@ -289,7 +289,7 @@ int main()
     list_queue.front();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }
@@ -303,7 +303,7 @@ int main()
     list_queue.get();
     assert(false);
   }
-  catch (underflow_error)
+  catch (const underflow_error&)
   {
     assert(true);
   }

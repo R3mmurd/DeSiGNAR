@@ -34,7 +34,9 @@ namespace Designar
     T ret_val = 1;
 
     while (a <= b)
+    {
       ret_val *= a++;
+    }
 
     return ret_val;
   }
@@ -48,7 +50,9 @@ namespace Designar
     T ret_val = 1;
 
     while (a >= b)
+    {
       ret_val *= a--;
+    }
 
     return ret_val;
   }
@@ -57,7 +61,9 @@ namespace Designar
   T factorial(T n)
   {
     if (n < 0)
+    {
       throw std::domain_error("Argument must be positive");
+    }
 
     return forward_prod(T(1), n);
   }
@@ -66,10 +72,14 @@ namespace Designar
   T count_permutations(T n, T r)
   {
     if (n < 0 || r < 0)
+    {
       throw std::domain_error("Arguments must be positive numbers");
+    }
 
     if (r > n)
+    {
       throw std::logic_error("r > n");
+    }
 
     return backward_prod(n, n - r + T(1));
   }
@@ -78,10 +88,14 @@ namespace Designar
   T count_combinations(T n, T r)
   {
     if (n < 0 || r < 0)
+    {
       throw std::domain_error("Arguments must be positive numbers");
+    }
 
     if (r > n)
+    {
       throw std::logic_error("r > n");
+    }
 
     return backward_prod(n, n - r + T(1)) / factorial(r);
   }

@@ -1,0 +1,48 @@
+# Doxygen configuration for DeSiGNAR (English edition).
+#
+# This is a curated subset of Doxygen's settings, not a full generated
+# file: any setting not listed here falls back to Doxygen's own default
+# (run `doxygen -g -` to see the complete list of defaults). Generate the
+# documentation with:
+#
+#   doxygen Doxyfile
+#
+# HTML output is written to en-doc/html/index.html. See Doxyfile.es for
+# the Spanish edition (only the main/landing page — README.es.md — and
+# Doxygen's own UI strings are translated; the source code's own Doxygen
+# comments are English throughout, matching this library's established
+# convention).
+
+PROJECT_NAME           = "DeSiGNAR"
+PROJECT_BRIEF           = "A C++ data structures and algorithms library for teaching"
+OUTPUT_DIRECTORY        = en-doc
+OUTPUT_LANGUAGE         = English
+
+INPUT                   = include README.md
+FILE_PATTERNS           = *.hpp
+RECURSIVE               = YES
+USE_MDFILE_AS_MAINPAGE  = README.md
+
+# Every public class/function in this library is meant to be readable
+# documentation for students, including the ones that do not (yet) have
+# an explicit Doxygen comment block.
+EXTRACT_ALL             = YES
+EXTRACT_PRIVATE         = NO
+EXTRACT_STATIC          = YES
+
+# Group related classes/functions together (several files already use
+# @ingroup, e.g. geometricalgorithms.hpp's Geometry group).
+DISTRIBUTE_GROUP_DOC    = YES
+
+GENERATE_HTML           = YES
+GENERATE_LATEX          = NO
+
+# Fail loudly (nonzero exit) on Doxygen warnings such as undocumented
+# parameters or broken @see/@ref links, so documentation rot is caught
+# the same way a compiler warning would be, rather than silently
+# accumulating.
+WARN_IF_UNDOCUMENTED    = YES
+WARN_IF_DOC_ERROR       = YES
+WARN_NO_PARAMDOC        = NO
+
+QUIET                   = YES

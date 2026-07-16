@@ -14,7 +14,7 @@ using namespace Designar;
 
 using DGT = Digraph<string>;
 
-void write_graph(DGT &g, const char *name)
+void write_graph(DGT& g, const char* name)
 {
   cout << "digraph " << name << "\n";
   cout << g.get_num_nodes() << " nodes, " << g.get_num_arcs()
@@ -37,15 +37,15 @@ void write_graph(DGT &g, const char *name)
 int main()
 {
   DGT dag;
-  DGT::Node *a = dag.insert_node("Medias");
-  DGT::Node *b = dag.insert_node("Interiores");
-  DGT::Node *c = dag.insert_node("Camisa");
-  DGT::Node *d = dag.insert_node("Pantalón");
-  DGT::Node *e = dag.insert_node("Corbata");
-  DGT::Node *f = dag.insert_node("Zapatos");
-  DGT::Node *g = dag.insert_node("Correa");
-  DGT::Node *h = dag.insert_node("Chaleco");
-  DGT::Node *i = dag.insert_node("Paltó");
+  DGT::Node* a = dag.insert_node("Medias");
+  DGT::Node* b = dag.insert_node("Interiores");
+  DGT::Node* c = dag.insert_node("Camisa");
+  DGT::Node* d = dag.insert_node("Pantalón");
+  DGT::Node* e = dag.insert_node("Corbata");
+  DGT::Node* f = dag.insert_node("Zapatos");
+  DGT::Node* g = dag.insert_node("Correa");
+  DGT::Node* h = dag.insert_node("Chaleco");
+  DGT::Node* i = dag.insert_node("Paltó");
 
   dag.insert_arc(a, f);
   dag.insert_arc(b, d);
@@ -83,7 +83,7 @@ int main()
   cout << "Topological ranks\n";
 
   nat_t r = 0;
-  for (auto &l : tr)
+  for (auto& l : tr)
   {
     cout << "Rank " << ++r << ": ";
 

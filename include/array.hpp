@@ -19,7 +19,7 @@ namespace Designar
     friend class RandomAccessIterator<Derived, T, RET_CPY>;
 
   protected:
-    ArrayType *array_ptr;
+    ArrayType* array_ptr;
     nat_t curr;
 
     nat_t get_location() const
@@ -34,47 +34,49 @@ namespace Designar
       // empty
     }
 
-    ArrayIterator(const ArrayType &a)
-        : array_ptr(&const_cast<ArrayType &>(a)), curr(0)
+    ArrayIterator(const ArrayType& a)
+        : array_ptr(&const_cast<ArrayType&>(a)), curr(0)
     {
       // empty
     }
 
-    ArrayIterator(const ArrayType &a, nat_t c)
-        : array_ptr(&const_cast<ArrayType &>(a)), curr(c)
+    ArrayIterator(const ArrayType& a, nat_t c)
+        : array_ptr(&const_cast<ArrayType&>(a)), curr(c)
     {
       // empty
     }
 
-    ArrayIterator(const ArrayIterator &it)
+    ArrayIterator(const ArrayIterator& it)
         : array_ptr(it.array_ptr), curr(it.curr)
     {
       // empty
     }
 
-    ArrayIterator(ArrayIterator &&it)
+    ArrayIterator(ArrayIterator&& it)
         : ArrayIterator()
     {
       swap(it);
     }
 
-    ArrayIterator &operator=(const ArrayIterator &it)
+    ArrayIterator& operator=(const ArrayIterator& it)
     {
       if (this == &it)
+      {
         return *this;
+      }
 
       array_ptr = it.array_ptr;
       curr = it.curr;
       return *this;
     }
 
-    ArrayIterator &operator=(ArrayIterator &&it)
+    ArrayIterator& operator=(ArrayIterator&& it)
     {
       swap(it);
       return *this;
     }
 
-    void swap(ArrayIterator &it)
+    void swap(ArrayIterator& it)
     {
       std::swap(array_ptr, it.array_ptr);
       std::swap(curr, it.curr);
@@ -88,7 +90,9 @@ namespace Designar
     void next()
     {
       if (!has_current())
+      {
         return;
+      }
 
       ++curr;
     }
@@ -101,7 +105,9 @@ namespace Designar
     void prev()
     {
       if (curr == 0)
+      {
         return;
+      }
 
       --curr;
     }
@@ -133,27 +139,41 @@ namespace Designar
     }
   };
 
-  template <class ArrayType, typename T>
-  class TArrayIterator : public ArrayIterator<TArrayIterator<ArrayType, T>,
-                                              ArrayType, T, false>
+  /** `Derived` here is the actual leaf Iterator class (FixedArray<T>::
+      Iterator, DynArray<T>::Iterator, ...), not TArrayIterator itself:
+      RandomAccessIterator's operator+/operator-/operator[] construct and
+      return a value of the CRTP type they were given, and if that type
+      were TArrayIterator (this class) instead of the true leaf class,
+      every one of those operators would silently return a
+      TArrayIterator sliced from whatever leaf iterator was passed in —
+      a different type than the original iterator despite one being
+      derived from the other, which is exactly the kind of type
+      mismatch `<algorithm>` functions like std::sort (which need every
+      intermediate iterator expression to agree on one exact type) will
+      not compile against. */
+  template <class ArrayType, typename T, class Derived>
+  class TArrayIterator : public ArrayIterator<Derived, ArrayType, T, false>
   {
-    using Base = ArrayIterator<TArrayIterator<ArrayType, T>,
-                               ArrayType, T, false>;
+    using Base = ArrayIterator<Derived, ArrayType, T, false>;
     using Base::Base;
 
   public:
-    T &get_current()
+    T& get_current()
     {
       if (!Base::has_current())
+      {
         throw std::overflow_error("There is not current element");
+      }
 
       return (*Base::array_ptr)[Base::curr];
     }
 
-    const T &get_current() const
+    const T& get_current() const
     {
       if (!Base::has_current())
+      {
         throw std::overflow_error("There is not current element");
+      }
 
       return (*Base::array_ptr)[Base::curr];
     }
@@ -163,11 +183,11 @@ namespace Designar
   class FixedArray
   {
     nat_t cap;
-    T *array_ptr;
+    T* array_ptr;
 
-    void init(const T &);
+    void init(const T&);
 
-    void copy(const FixedArray &);
+    void copy(const FixedArray&);
 
   public:
     using ItemType = T;
@@ -176,9 +196,15 @@ namespace Designar
     using ValueType = T;
     using SizeType = nat_t;
 
-    nat_t item_to_pos(T &item)
+    /** Returns the index of `item` within this array, assuming `item` is
+        a reference to one of its elements (e.g. one previously returned by
+        at()/operator[]/append()/insert()). Relies on typed pointer
+        arithmetic (`&item - array_ptr`), which the language already
+        expresses in units of `T`, so it is correct for any `T` regardless
+        of `sizeof(T)`. */
+    nat_t item_to_pos(T& item)
     {
-      return nat_t(&item) - nat_t(array_ptr);
+      return static_cast<nat_t>(&item - array_ptr);
     }
 
     FixedArray()
@@ -193,35 +219,37 @@ namespace Designar
       // empty
     }
 
-    FixedArray(nat_t c, const T &init_value)
+    FixedArray(nat_t c, const T& init_value)
         : FixedArray(c)
     {
       init(init_value);
     }
 
-    FixedArray(const FixedArray &a)
+    FixedArray(const FixedArray& a)
         : FixedArray(a.cap)
     {
       copy(a);
     }
 
-    FixedArray(FixedArray &&a)
+    FixedArray(FixedArray&& a)
         : FixedArray()
     {
       swap(a);
     }
 
-    FixedArray(const std::initializer_list<T> &);
+    FixedArray(const std::initializer_list<T>&);
 
     ~FixedArray()
     {
       delete[] array_ptr;
     }
 
-    FixedArray &operator=(const FixedArray &a)
+    FixedArray& operator=(const FixedArray& a)
     {
       if (this == &a)
+      {
         return *this;
+      }
 
       delete[] array_ptr;
       cap = a.cap;
@@ -230,13 +258,13 @@ namespace Designar
       return *this;
     }
 
-    FixedArray &operator=(FixedArray &&a)
+    FixedArray& operator=(FixedArray&& a)
     {
       swap(a);
       return *this;
     }
 
-    void swap(FixedArray &a)
+    void swap(FixedArray& a)
     {
       std::swap(cap, a.cap);
       std::swap(array_ptr, a.array_ptr);
@@ -254,35 +282,39 @@ namespace Designar
       return get_capacity();
     }
 
-    T &at(nat_t i)
+    T& at(nat_t i)
     {
       if (i >= cap)
+      {
         throw std::out_of_range("Index out of range");
+      }
 
       return array_ptr[i];
     }
 
-    const T &at(nat_t i) const
+    const T& at(nat_t i) const
     {
       if (i >= cap)
+      {
         throw std::out_of_range("Index out of range");
+      }
 
       return array_ptr[i];
     }
 
-    T &operator[](nat_t i)
+    T& operator[](nat_t i)
     {
       return at(i);
     }
 
-    const T &operator[](nat_t i) const
+    const T& operator[](nat_t i) const
     {
       return at(i);
     }
 
-    class Iterator : public TArrayIterator<FixedArray, T>
+    class Iterator : public TArrayIterator<FixedArray, T, Iterator>
     {
-      using Base = TArrayIterator<FixedArray, T>;
+      using Base = TArrayIterator<FixedArray, T, Iterator>;
       using Base::Base;
     };
 
@@ -308,34 +340,52 @@ namespace Designar
   };
 
   template <typename T>
-  void FixedArray<T>::init(const T &init_value)
+  void FixedArray<T>::init(const T& init_value)
   {
     for (nat_t i = 0; i < cap; ++i)
+    {
       array_ptr[i] = init_value;
+    }
   }
 
   template <typename T>
-  void FixedArray<T>::copy(const FixedArray &a)
+  void FixedArray<T>::copy(const FixedArray& a)
   {
-    if (std::is_pod<T>::value)
+    // `if constexpr` (rather than a runtime `if`) so the memcpy branch is
+    // only ever compiled for actually-POD T: with a plain runtime `if`,
+    // both branches are type-checked for every T regardless of which one
+    // executes, and GCC's -Wclass-memaccess correctly flags memcpy-ing a
+    // non-POD class (e.g. one with a user-provided copy constructor) even
+    // though that branch is dead code for such a T.
+    if constexpr (std::is_pod<T>::value)
+    {
       memcpy(array_ptr, a.array_ptr, sizeof(T) * cap);
+    }
     else
+    {
       for (nat_t i = 0; i < cap; ++i)
+      {
         array_ptr[i] = a.array_ptr[i];
+      }
+    }
   }
 
   template <typename T>
   void FixedArray<T>::resize(nat_t c)
   {
     if (c == cap)
+    {
       return;
+    }
 
-    T *new_array_ptr = new T[c];
+    T* new_array_ptr = new T[c];
 
     nat_t sz = std::min(c, cap);
 
     for (nat_t i = 0; i < sz; ++i)
+    {
       new_array_ptr[i] = array_ptr[i];
+    }
 
     delete[] array_ptr;
     cap = c;
@@ -343,13 +393,15 @@ namespace Designar
   }
 
   template <typename T>
-  FixedArray<T>::FixedArray(const std::initializer_list<T> &l)
+  FixedArray<T>::FixedArray(const std::initializer_list<T>& l)
       : FixedArray(l.size())
   {
     nat_t i = 0;
 
-    for (const T &item : l)
+    for (const T& item : l)
+    {
       array_ptr[i++] = item;
+    }
   }
 
   template <typename T>
@@ -371,23 +423,38 @@ namespace Designar
 
     nat_t num_items;
 
-    void copy_array(const DynArray &);
+    void copy_array(const DynArray&);
 
+    /** Grows capacity geometrically (by RESIZE_FACTOR) once the array is
+        full. The naive `cap * (1 + RESIZE_FACTOR)` truncates back to `cap`
+        itself for small capacities (e.g. cap in {0, 1, 2}), which would
+        stall growth forever and make the very next append()/insert()
+        throw std::out_of_range. Taking the max with `cap + 1` guarantees
+        capacity always increases by at least one slot, while still
+        growing geometrically (amortized O(1) append) once cap is large
+        enough for the factor to matter. */
     void resize_up()
     {
-      if (num_items < BaseArray::get_capacity())
+      nat_t cap = BaseArray::get_capacity();
+
+      if (num_items < cap)
+      {
         return;
+      }
 
-      assert(BaseArray::get_capacity() * (1 + RESIZE_FACTOR) > num_items);
+      nat_t new_cap = std::max<nat_t>(cap + 1,
+                                      nat_t(cap * (1 + RESIZE_FACTOR)));
 
-      BaseArray::resize(BaseArray::get_capacity() * (1 + RESIZE_FACTOR));
+      BaseArray::resize(new_cap);
     }
 
     void resize_down()
     {
       if (num_items > BaseArray::get_capacity() * RESIZE_FACTOR or
           BaseArray::get_capacity() == MIN_SIZE)
+      {
         return;
+      }
 
       assert(BaseArray::get_capacity() * (1 - RESIZE_FACTOR) > num_items);
 
@@ -409,10 +476,19 @@ namespace Designar
       // empty
     }
 
-    DynArray(nat_t cap, const T &init_val)
-        : BaseArray(cap, init_val), num_items(cap)
+    /** Constructs an array holding `n` elements, each initialized to
+        `init_val`. `n` is a count of elements, not a capacity reservation:
+        the array is left in exactly the state it would be in had it grown
+        organically via append() until it held `n` items, including the
+        one-step-ahead capacity growth append() relies on (see
+        resize_up()). Without that immediate resize_up() call, the array
+        would be exactly full with no spare capacity, and the very next
+        append()/insert() would throw std::out_of_range instead of
+        growing. */
+    DynArray(nat_t n, const T& init_val)
+        : BaseArray(n, init_val), num_items(n)
     {
-      // empty
+      resize_up();
     }
 
     DynArray()
@@ -421,21 +497,21 @@ namespace Designar
       // empty
     }
 
-    DynArray(const DynArray &a)
+    DynArray(const DynArray& a)
         : BaseArray(a.get_capacity()), num_items(a.num_items)
     {
       copy_array(a);
     }
 
-    DynArray(DynArray &&a)
+    DynArray(DynArray&& a)
         : BaseArray(), num_items(0)
     {
       swap(a);
     }
 
-    DynArray(const std::initializer_list<T> &);
+    DynArray(const std::initializer_list<T>&);
 
-    void swap(DynArray &a)
+    void swap(DynArray& a)
     {
       BaseArray::swap(a);
       std::swap(num_items, a.num_items);
@@ -467,42 +543,62 @@ namespace Designar
       }
     }
 
-    T &get_first()
+    T& get_first()
     {
       if (num_items == 0)
+      {
         throw std::underflow_error("Array is empty");
+      }
 
       return BaseArray::at(0);
     }
 
-    const T &get_first() const
+    const T& get_first() const
     {
       if (num_items == 0)
+      {
         throw std::underflow_error("Array is empty");
+      }
 
       return BaseArray::at(0);
     }
 
-    T &get_last()
+    T& get_last()
     {
       if (num_items == 0)
+      {
         throw std::overflow_error("Array is empty");
+      }
 
       return BaseArray::at(num_items - 1);
     }
 
-    const T &get_last() const
+    const T& get_last() const
     {
       if (num_items == 0)
+      {
         throw std::overflow_error("Array is empty");
+      }
 
       return BaseArray::at(num_items - 1);
     }
 
-    T &insert(nat_t pos, const T &item)
+    T& insert(nat_t pos, const T& item)
     {
       if (pos > num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
+
+      // resize_up() must run *before* open_breach(): open_breach() itself
+      // writes at index `num_items` (shifting the last element into the
+      // slot right after it) whenever pos < num_items, which requires
+      // that slot to already exist. Growing only after the write (the
+      // original order) left a window where the array's capacity could
+      // be exactly `num_items`, e.g. right after DynArray(n, init_val) or
+      // DynArray(0) followed immediately by an insert/append, and
+      // open_breach()/the write below would index one past the end.
+      resize_up();
 
       open_breach(pos);
 
@@ -510,15 +606,18 @@ namespace Designar
 
       ++num_items;
 
-      resize_up();
-
       return BaseArray::at(pos);
     }
 
-    T &insert(nat_t pos, T &&item)
+    T& insert(nat_t pos, T&& item)
     {
       if (pos > num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
+
+      resize_up(); // see the const-ref overload above for why this must
+                   // come before open_breach()
 
       open_breach(pos);
 
@@ -526,51 +625,58 @@ namespace Designar
 
       ++num_items;
 
-      resize_up();
-
       return BaseArray::at(pos);
     }
 
-    T &insert(const T &item)
+    T& insert(const T& item)
     {
       return insert(0, item);
     }
 
-    T &insert(T &&item)
+    T& insert(T&& item)
     {
       return insert(0, std::forward<T>(item));
     }
 
-    T &append(const T &item)
+    T& append(const T& item)
     {
-      BaseArray::at(num_items++) = item;
+      // resize_up() must run *before* the write below, not after: if
+      // capacity is currently exactly num_items (e.g. right after
+      // DynArray(n, init_val) or DynArray(0)), at(num_items) is already
+      // one past the end, so growing after attempting the write is too
+      // late.
       resize_up();
+      BaseArray::at(num_items++) = item;
       return BaseArray::at(num_items - 1);
     }
 
-    T &append(T &&item)
+    T& append(T&& item)
     {
+      resize_up(); // see the const-ref overload above
       BaseArray::at(num_items++) = std::move(item);
-      resize_up();
       return BaseArray::at(num_items - 1);
     }
 
     T remove_pos(nat_t pos)
     {
       if (pos >= num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
 
       T ret_val = std::move(BaseArray::at(pos));
       BaseArray::at(pos) = std::move(BaseArray::at(--num_items));
       return ret_val;
     }
 
-    T remove(T &item)
+    T remove(T& item)
     {
       nat_t i = BaseArray::item_to_pos(item);
 
       if (i >= num_items)
+      {
         throw std::logic_error("Item does not belong to array");
+      }
 
       return remove_pos(i);
     }
@@ -578,7 +684,9 @@ namespace Designar
     T remove_pos_closing_breach(nat_t pos)
     {
       if (pos >= num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
 
       T ret_val = std::move(BaseArray::at(pos));
 
@@ -592,12 +700,14 @@ namespace Designar
       ;
     }
 
-    T remove_closing_breach(T &item)
+    T remove_closing_breach(T& item)
     {
       nat_t i = BaseArray::item_to_pos(item);
 
       if (i >= num_items)
+      {
         throw std::logic_error("Item does not belong to array");
+      }
 
       return remove_pos_closing_breach(i);
     }
@@ -605,7 +715,9 @@ namespace Designar
     T remove_first()
     {
       if (num_items == 0)
+      {
         throw std::underflow_error("Array is empty");
+      }
 
       return remove_pos(0);
     }
@@ -617,58 +729,66 @@ namespace Designar
       return ret_val;
     }
 
-    DynArray &operator=(const DynArray &a)
+    DynArray& operator=(const DynArray& a)
     {
       if (this == &a)
+      {
         return *this;
+      }
 
-      (BaseArray &)*this = a;
+      (BaseArray&)* this = a;
       num_items = a.num_items;
       return *this;
     }
 
-    DynArray &operator=(DynArray &&a)
+    DynArray& operator=(DynArray&& a)
     {
       swap(a);
       return *this;
     }
 
-    T &at(nat_t i)
+    T& at(nat_t i)
     {
       if (i >= num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
 
       return BaseArray::at(i);
     }
 
-    const T &at(nat_t i) const
+    const T& at(nat_t i) const
     {
       if (i >= num_items)
+      {
         throw std::out_of_range("Index is out of range");
+      }
 
       return BaseArray::at(i);
     }
 
-    T &operator[](nat_t i)
+    T& operator[](nat_t i)
     {
       return at(i);
     }
 
-    const T &operator[](nat_t i) const
+    const T& operator[](nat_t i) const
     {
       return at(i);
     }
 
-    class Iterator : public TArrayIterator<DynArray, T>
+    class Iterator : public TArrayIterator<DynArray, T, Iterator>
     {
-      using Base = TArrayIterator<DynArray, T>;
+      using Base = TArrayIterator<DynArray, T, Iterator>;
       using Base::Base;
 
     public:
       T del()
       {
         if (!Base::has_current())
+        {
           throw std::logic_error("There is not current element");
+        }
 
         return Base::array_ptr->remove_pos_closing_breach(Base::curr);
       }
@@ -696,32 +816,40 @@ namespace Designar
   };
 
   template <typename T>
-  DynArray<T>::DynArray(const std::initializer_list<T> &l)
+  DynArray<T>::DynArray(const std::initializer_list<T>& l)
       : DynArray(l.size() + 1)
   {
-    for (const T &item : l)
+    for (const T& item : l)
+    {
       append(item);
+    }
   }
 
   template <typename T>
-  void DynArray<T>::copy_array(const DynArray &a)
+  void DynArray<T>::copy_array(const DynArray& a)
   {
     for (nat_t i = 0; i < num_items; ++i)
+    {
       BaseArray::at(i) = a.at(i);
+    }
   }
 
   template <typename T>
   void DynArray<T>::open_breach(nat_t p)
   {
     for (nat_t i = num_items; i > p; --i)
+    {
       BaseArray::at(i) = std::move(BaseArray::at(i - 1));
+    }
   }
 
   template <typename T>
   void DynArray<T>::close_breach(nat_t p)
   {
     for (nat_t i = p; i < num_items; ++i)
+    {
       BaseArray::at(i) = std::move(BaseArray::at(i + 1));
+    }
   }
 
   template <typename T, nat_t N = 2>
@@ -737,7 +865,7 @@ namespace Designar
 
       void init();
 
-      void swap(Slice &another)
+      void swap(Slice& another)
       {
         std::swap(sz, another.sz);
         std::swap(exts, another.exts);
@@ -751,19 +879,19 @@ namespace Designar
         init();
       };
 
-      Slice(const Slice &slice)
+      Slice(const Slice& slice)
           : sz(slice.sz), exts(slice.exts), strs(slice.strs)
       {
         // empty
       }
 
-      Slice(Slice &&slice)
+      Slice(Slice&& slice)
           : Slice()
       {
         swap(slice);
       }
 
-      Slice(const std::initializer_list<nat_t> &l)
+      Slice(const std::initializer_list<nat_t>& l)
           : sz(1), exts(l), strs(l.size())
       {
         init();
@@ -778,12 +906,12 @@ namespace Designar
         init();
       }
 
-      const FixedArray<nat_t> &extents() const
+      const FixedArray<nat_t>& extents() const
       {
         return exts;
       }
 
-      const FixedArray<nat_t> &strides() const
+      const FixedArray<nat_t>& strides() const
       {
         return strs;
       }
@@ -794,12 +922,14 @@ namespace Designar
       }
 
       template <typename... Dims>
-      nat_t operator()(Dims...);
+      nat_t operator()(Dims...) const;
 
-      Slice &operator=(const Slice &slice)
+      Slice& operator=(const Slice& slice)
       {
         if (&slice == this)
+        {
           return *this;
+        }
 
         sz = slice.sz;
         exts = slice.exts;
@@ -808,7 +938,7 @@ namespace Designar
         return *this;
       }
 
-      Slice &operator=(Slice &&slice)
+      Slice& operator=(Slice&& slice)
       {
         swap(slice);
         return *this;
@@ -826,7 +956,7 @@ namespace Designar
     Slice slice;
     FixedArray<T> array;
 
-    void swap(MultiDimArray &another)
+    void swap(MultiDimArray& another)
     {
       std::swap(slice, another.slice);
       std::swap(array, another.array);
@@ -842,13 +972,13 @@ namespace Designar
       // empty
     }
 
-    MultiDimArray(const MultiDimArray &mda)
+    MultiDimArray(const MultiDimArray& mda)
         : slice(mda.slice), array(mda.array)
     {
       // empty
     }
 
-    MultiDimArray(MultiDimArray &&mda)
+    MultiDimArray(MultiDimArray&& mda)
         : MultiDimArray()
     {
       swap(mda);
@@ -860,51 +990,57 @@ namespace Designar
     }
 
     template <typename... Dims>
-    T &get(Dims... dims)
+    T& get(Dims... dims)
     {
       nat_t idx = slice(dims...);
       if (idx >= slice.size())
+      {
         throw std::overflow_error("Invalid position");
+      }
       return array[idx];
     }
 
     template <typename... Dims>
-    const T &get(Dims... dims) const
+    const T& get(Dims... dims) const
     {
       nat_t idx = slice(dims...);
       if (idx >= slice.size())
+      {
         throw std::overflow_error("Invalid position");
+      }
       return array[idx];
     }
 
     template <typename... Dims>
-    T &at(Dims... dims)
+    T& at(Dims... dims)
     {
       return get(dims...);
     }
 
     template <typename... Dims>
-    const T &at(Dims... dims) const
+    const T& at(Dims... dims) const
     {
       return get(dims...);
     }
 
     template <typename... Dims>
-    T &operator()(Dims... dims)
+    T& operator()(Dims... dims)
     {
       return get(dims...);
     }
 
     template <typename... Dims>
-    const T &operator()(Dims... dims) const
+    const T& operator()(Dims... dims) const
     {
       return get(dims...);
     }
 
-    MultiDimArray &operator=(const MultiDimArray &mda)
+    MultiDimArray& operator=(const MultiDimArray& mda)
     {
       if (&mda == this)
+      {
         return *this;
+      }
 
       slice = mda.slice;
       array = mda.array;
@@ -912,7 +1048,7 @@ namespace Designar
       return *this;
     }
 
-    MultiDimArray &operator=(MultiDimArray &&mda)
+    MultiDimArray& operator=(MultiDimArray&& mda)
     {
       swap(mda);
       return *this;
@@ -929,25 +1065,25 @@ namespace Designar
         // empty
       }
 
-      Iterator(const MultiDimArray &a)
+      Iterator(const MultiDimArray& a)
           : Base(a.array)
       {
         // empty
       }
 
-      Iterator(const MultiDimArray &a, nat_t c)
+      Iterator(const MultiDimArray& a, nat_t c)
           : Base(a.array, c)
       {
         // empty
       }
 
-      Iterator(const Iterator &itor)
+      Iterator(const Iterator& itor)
           : Base(itor)
       {
         // empty
       }
 
-      Iterator(Iterator &&itor)
+      Iterator(Iterator&& itor)
           : Iterator()
       {
         Base::swap(itor);
@@ -979,17 +1115,21 @@ namespace Designar
   void MultiDimArray<T, N>::Slice::init()
   {
     for (nat_t i = 0; i < N; ++i)
+    {
       sz *= exts[i];
+    }
 
     strs[N - 1] = 1;
 
     for (nat_t i = N - 1; i > 0; --i)
+    {
       strs[i - 1] = strs[i] * exts[i];
+    }
   }
 
   template <typename T, nat_t N>
   template <typename... Dims>
-  nat_t MultiDimArray<T, N>::Slice::operator()(Dims... dims)
+  nat_t MultiDimArray<T, N>::Slice::operator()(Dims... dims) const
   {
     static_assert(sizeof...(Dims) == N, "");
     static_assert(AllAreConvertible<nat_t, Dims...>::value, "");
@@ -998,7 +1138,9 @@ namespace Designar
     nat_t ret = 0;
 
     for (size_t i = 0; i < N; ++i)
+    {
       ret += arr[i] * strs[i];
+    }
 
     return ret;
   }

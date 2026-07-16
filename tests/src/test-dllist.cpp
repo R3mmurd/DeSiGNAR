@@ -61,52 +61,52 @@ int main()
 
   assert(list.equal({1, 2, 3, 4, 5}));
 
-  auto flist = list.filter([](const auto &item)
+  auto flist = list.filter([](const auto& item)
                            { return item % 2 == 0; });
 
   assert(flist.equal({2, 4}));
 
-  auto mlist = list.map([](const auto &item)
+  auto mlist = list.map([](const auto& item)
                         { return item * 2; });
 
   assert(mlist.equal({2, 4, 6, 8, 10}));
 
-  auto sum = list.fold(0, [](const auto &item, const auto &acc)
+  auto sum = list.fold(0, [](const auto& item, const auto& acc)
                        { return item + acc; });
 
   assert(sum == 15);
 
-  auto prod = list.fold(1, [](const auto &item, const auto &acc)
+  auto prod = list.fold(1, [](const auto& item, const auto& acc)
                         { return item * acc; });
 
   assert(prod == 120);
 
-  assert(!list.all([](const auto &item)
+  assert(!list.all([](const auto& item)
                    { return item % 2 == 0; }));
-  assert(flist.all([](const auto &item)
+  assert(flist.all([](const auto& item)
                    { return item % 2 == 0; }));
-  assert(mlist.all([](const auto &item)
+  assert(mlist.all([](const auto& item)
                    { return item % 2 == 0; }));
 
-  assert(list.exists([](const auto &item)
+  assert(list.exists([](const auto& item)
                      { return item % 2 == 0; }));
-  assert(flist.exists([](const auto &item)
+  assert(flist.exists([](const auto& item)
                       { return item % 2 == 0; }));
-  assert(mlist.exists([](const auto &item)
+  assert(mlist.exists([](const auto& item)
                       { return item % 2 == 0; }));
 
-  assert(!list.none([](const auto &item)
+  assert(!list.none([](const auto& item)
                     { return item % 2 == 0; }));
-  assert(!flist.none([](const auto &item)
+  assert(!flist.none([](const auto& item)
                      { return item % 2 == 0; }));
-  assert(!mlist.none([](const auto &item)
+  assert(!mlist.none([](const auto& item)
                      { return item % 2 == 0; }));
 
-  assert(!list.none([](const auto &item)
+  assert(!list.none([](const auto& item)
                     { return item % 2 != 0; }));
-  assert(flist.none([](const auto &item)
+  assert(flist.none([](const auto& item)
                     { return item % 2 != 0; }));
-  assert(mlist.none([](const auto &item)
+  assert(mlist.none([](const auto& item)
                     { return item % 2 != 0; }));
 
   DLList<int_t> list_cpy = list;
@@ -115,7 +115,7 @@ int main()
   assert(list.equal({1, 2, 3, 4, 5}));
   assert(list_cpy.equal({1, 2, 3, 4, 5}));
 
-  DLList<int_t> list_mv = move(list_cpy);
+  DLList<int_t> list_mv = std::move(list_cpy);
 
   assert(list_cpy.size() == 0);
   assert(list_mv.size() == 5);
@@ -126,10 +126,10 @@ int main()
   for (nat_t i = 0; i < list.size(); ++i)
     assert(list.nth(i) == i + 1);
 
-  assert(list.search_ptr([](const auto &item)
+  assert(list.search_ptr([](const auto& item)
                          { return item == 3; }) != nullptr);
 
-  assert(list.search_ptr([](const auto &item)
+  assert(list.search_ptr([](const auto& item)
                          { return item > 5; }) == nullptr);
 
   DLList<int_t> another_list = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -142,7 +142,7 @@ int main()
     another_list[10];
     assert(false);
   }
-  catch (out_of_range)
+  catch (const out_of_range&)
   {
   }
   catch (...)

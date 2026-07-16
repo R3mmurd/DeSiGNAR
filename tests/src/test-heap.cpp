@@ -92,13 +92,13 @@ int main()
   constexpr nat_t max_num_items_to_remove = 100;
   nat_t current_item = 0;
 
-  FixedArray<int_t *> to_remove(max_num_items_to_remove);
+  FixedArray<int_t*> to_remove(max_num_items_to_remove);
 
   rng_t rng(time(nullptr));
 
   for (int_t i = 0; i < 100000; ++i)
   {
-    auto &item = lheap.insert(i);
+    auto& item = lheap.insert(i);
 
     if (current_item == max_num_items_to_remove)
       continue;
@@ -106,7 +106,7 @@ int main()
     auto r = random(rng);
 
     if (r > 0.5)
-      to_remove[current_item++] = &const_cast<int_t &>(item);
+      to_remove[current_item++] = &const_cast<int_t&>(item);
   }
 
   for (nat_t i = 0; i < current_item; ++i)
@@ -114,6 +114,36 @@ int main()
 
   for (int_t i = 0; i < 100000 - current_item; ++i)
     lheap.get();
+
+  // Regression: FixedHeap/DynHeap/LHeap's default comparator constructor
+  // used to bind `Cmp &cmp` straight to a temporary/default-argument
+  // destroyed at the end of the constructor call (see heap.hpp /
+  // typetraits.hpp's DefaultCmpHolder). A default-constructed heap
+  // (exercised throughout this file already) is the main regression
+  // check; this also confirms an explicit *stateful* external comparator
+  // is genuinely shared, not copied.
+  {
+    struct CountingLess
+    {
+      nat_t count = 0;
+
+      bool operator()(int_t a, int_t b)
+      {
+        ++count;
+        return a < b;
+      }
+    };
+
+    CountingLess cmp;
+    DynHeap<int_t, CountingLess> counting_heap(cmp);
+
+    counting_heap.insert(3);
+    counting_heap.insert(1);
+    counting_heap.insert(2);
+
+    assert(cmp.count > 0);
+    assert(counting_heap.get() == 1);
+  }
 
   cout << "Everything ok!\n";
 

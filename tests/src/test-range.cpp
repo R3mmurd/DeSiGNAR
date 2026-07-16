@@ -116,6 +116,34 @@ int main()
   assert(num_equal(r11.step_size(), 0.02));
   assert(r11.size() == 500);
 
+  // Regression: Range::Iterator::reset_last() called a nonexistent
+  // `step()` method (only `step_size()` exists, a latent compile-time
+  // bug) and, once fixed to call the right name, still computed the
+  // wrong value (missing the range's `min()` offset). It is now
+  // implemented via move_to(), which is also what
+  // RandomAccessIterator::operator[]() requires — before this fix, an
+  // iterator's `it[i]` failed to compile on any
+  // Range/IntRange/UIntRange/RealRange because move_to() did not exist
+  // at all.
+  {
+    Range<int> r(0, 10, 2); // 0 2 4 6 8
+
+    auto it = r.begin();
+    assert(it[0] == 0);
+    assert(it[1] == 2);
+    assert(it[4] == 8);
+
+    it.reset_last();
+    assert(it.get_current() == 8);
+
+    Range<int> r2(-5, 5, 3); // -5 -2 1 4
+    auto it2 = r2.begin();
+    it2.reset_last();
+    assert(it2.get_current() == 4);
+    assert(it2[0] == -5);
+    assert(it2[3] == 4);
+  }
+
   cout << "Everything ok!\n";
   return 0;
 }

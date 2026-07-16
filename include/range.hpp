@@ -37,10 +37,14 @@ namespace Designar
         : first(_first), last(_last), step(_step)
     {
       if (first > last)
+      {
         throw std::range_error("First value cannot be greater than last value");
+      }
 
       if (num_equal(step, T(0)))
+      {
         throw std::logic_error("Step cannot be zero");
+      }
     }
 
     Range(T _last)
@@ -75,12 +79,12 @@ namespace Designar
       return std::ceil(double(last - first) / step);
     }
 
-    bool operator==(const Range &r) const
+    bool operator==(const Range& r) const
     {
       return num_equal(first, r.first) && num_equal(last, r.last) and num_equal(step, r.step);
     }
 
-    bool operator!=(const Range &r) const
+    bool operator!=(const Range& r) const
     {
       return !(*this == r);
     }
@@ -89,7 +93,7 @@ namespace Designar
     {
       friend class BasicIterator<Iterator, T, true>;
 
-      const Range &r;
+      const Range& r;
       T c;
       nat_t p;
 
@@ -100,16 +104,16 @@ namespace Designar
       }
 
     public:
-      Iterator(const Range &_r)
+      Iterator(const Range& _r)
           : r(_r), c(r.min()), p(0)
       {
         // empty
       }
 
-      Iterator(const Range &_r, nat_t pos)
-          : r(_r), c((r.max() - r.min()) * pos), p(pos)
+      Iterator(const Range& _r, nat_t pos)
+          : r(_r), c(r.min()), p(0)
       {
-        // empty
+        move_to(pos);
       }
 
       bool has_current() const
@@ -120,7 +124,9 @@ namespace Designar
       T get_current() const
       {
         if (!has_current())
+        {
           throw std::overflow_error("There is not current element");
+        }
 
         return c;
       }
@@ -128,7 +134,9 @@ namespace Designar
       void next()
       {
         if (!has_current())
+        {
           return;
+        }
 
         ++p;
         c += r.step_size();
@@ -137,7 +145,9 @@ namespace Designar
       void next_n(nat_t n)
       {
         if (!has_current())
+        {
           return;
+        }
 
         p = std::min(p + n, r.size());
         c = std::min(c + r.step_size() * n, r.size() * r.step_size());
@@ -146,7 +156,9 @@ namespace Designar
       void prev()
       {
         if (c == r.min())
+        {
           return;
+        }
 
         --p;
         c -= r.step_size();
@@ -155,7 +167,9 @@ namespace Designar
       void prev_n(nat_t n)
       {
         if (n * r.step_size() > c - r.min())
+        {
           return;
+        }
 
         p -= n;
         c -= n * r.step_size();
@@ -163,13 +177,27 @@ namespace Designar
 
       void reset_first()
       {
+        p = 0;
         c = r.min();
+      }
+
+      /** Positions the iterator at index `new_p` (clamped to the range's
+          size), recomputing the corresponding value from scratch rather
+          than stepping incrementally from wherever the iterator
+          currently is. Required by RandomAccessIterator::operator[](),
+          which calls move_to() directly — without it, any use of
+          `range[i]` on a Range/IntRange/UIntRange/RealRange fails to
+          compile (a latent bug that stayed hidden because operator[] on
+          these iterators was never actually exercised). */
+      void move_to(nat_t new_p)
+      {
+        p = std::min(new_p, r.size());
+        c = r.min() + p * r.step_size();
       }
 
       void reset_last()
       {
-        p = r.size() - 1;
-        c = p * r.step();
+        move_to(r.size() - 1);
       }
     };
 

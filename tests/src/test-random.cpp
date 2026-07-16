@@ -43,7 +43,7 @@ int main()
     assert(r_i >= min_i && r_i < max_i);
 
     auto r_n = random_uniform(rng_n, max_n);
-    assert(r_n >= 0 && r_n < max_n);
+    assert(r_n < max_n); // r_n is unsigned (nat_t): r_n >= 0 always holds
     r_n = random_uniform(rng_n, min_n, max_n);
     assert(r_n >= min_n && r_n < max_n);
 

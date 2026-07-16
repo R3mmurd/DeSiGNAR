@@ -20,9 +20,9 @@ namespace Designar
     nat_t f;
     nat_t r;
 
-    void copy_queue(const FixedQueue &);
+    void copy_queue(const FixedQueue&);
 
-    void swap(FixedQueue &q)
+    void swap(FixedQueue& q)
     {
       std::swap(array, q.array);
       std::swap(num_items, q.num_items);
@@ -43,22 +43,24 @@ namespace Designar
       // empty
     }
 
-    FixedQueue(const FixedQueue &q)
+    FixedQueue(const FixedQueue& q)
         : num_items(q.num_items)
     {
       copy_queue(q);
     }
 
-    FixedQueue(FixedQueue &&q)
+    FixedQueue(FixedQueue&& q)
         : FixedQueue()
     {
       swap(q);
     }
 
-    FixedQueue &operator=(const FixedQueue &q)
+    FixedQueue& operator=(const FixedQueue& q)
     {
       if (this == &q)
+      {
         return *this;
+      }
 
       num_items = q.num_items;
       f = q.f;
@@ -68,7 +70,7 @@ namespace Designar
       return *this;
     }
 
-    FixedQueue &operator=(FixedQueue &&q)
+    FixedQueue& operator=(FixedQueue&& q)
     {
       swap(q);
       return *this;
@@ -101,42 +103,52 @@ namespace Designar
       r = CAP - 1;
     }
 
-    T &front()
+    T& front()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return array[f];
     }
 
-    const T &front() const
+    const T& front() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return array[f];
     }
 
-    T &rear()
+    T& rear()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return array[r];
     }
 
-    const T &rear() const
+    const T& rear() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return array[r];
     }
 
-    T &put(const T &item)
+    T& put(const T& item)
     {
       if (is_full())
+      {
         throw std::overflow_error("Queue is full");
+      }
 
       r = (r + 1) % CAP;
       array[r] = item;
@@ -144,10 +156,12 @@ namespace Designar
       return array[r];
     }
 
-    T &put(T &&item)
+    T& put(T&& item)
     {
       if (is_full())
+      {
         throw std::overflow_error("Queue is full");
+      }
 
       r = (r + 1) % CAP;
       array[r] = std::move(item);
@@ -158,7 +172,9 @@ namespace Designar
     T get()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       T ret_val = std::move(array[f]);
       f = (f + 1) % CAP;
@@ -168,7 +184,7 @@ namespace Designar
   };
 
   template <typename T, nat_t CAP>
-  void FixedQueue<T, CAP>::copy_queue(const FixedQueue &q)
+  void FixedQueue<T, CAP>::copy_queue(const FixedQueue& q)
   {
     nat_t ii = q.f;
 
@@ -194,9 +210,9 @@ namespace Designar
     nat_t f;
     nat_t r;
 
-    void copy_queue(const DynQueue &);
+    void copy_queue(const DynQueue&);
 
-    void swap(DynQueue &q)
+    void swap(DynQueue& q)
     {
       BaseArray::swap(q);
       std::swap(num_items, q.num_items);
@@ -209,7 +225,9 @@ namespace Designar
     void resize_up()
     {
       if (num_items < BaseArray::get_capacity())
+      {
         return;
+      }
 
       assert(BaseArray::get_capacity() * (1 + RESIZE_FACTOR) > num_items);
 
@@ -220,7 +238,9 @@ namespace Designar
     {
       if (num_items > BaseArray::get_capacity() * RESIZE_FACTOR or
           BaseArray::get_capacity() == MIN_SIZE)
+      {
         return;
+      }
 
       assert(BaseArray::get_capacity() * (1 - RESIZE_FACTOR) > num_items);
 
@@ -240,22 +260,24 @@ namespace Designar
       // empty
     }
 
-    DynQueue(const DynQueue &q)
+    DynQueue(const DynQueue& q)
         : BaseArray(q.get_capacity()), num_items(q.num_items)
     {
       copy_queue(q);
     }
 
-    DynQueue(DynQueue &&q)
+    DynQueue(DynQueue&& q)
         : BaseArray(), num_items(0), f(0), r(0)
     {
       swap(q);
     }
 
-    DynQueue &operator=(const DynQueue &q)
+    DynQueue& operator=(const DynQueue& q)
     {
       if (this == &q)
+      {
         return *this;
+      }
 
       BaseArray arr(q.get_capacity());
       BaseArray::swap(arr);
@@ -265,7 +287,7 @@ namespace Designar
       return *this;
     }
 
-    DynQueue &operator=(DynQueue &&q)
+    DynQueue& operator=(DynQueue&& q)
     {
       swap(q);
       return *this;
@@ -295,39 +317,47 @@ namespace Designar
       r = MIN_SIZE - 1;
     }
 
-    T &front()
+    T& front()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseArray::at(f);
     }
 
-    const T &front() const
+    const T& front() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseArray::at(f);
     }
 
-    T &rear()
+    T& rear()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseArray::at(r);
     }
 
-    const T &rear() const
+    const T& rear() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseArray::at(r);
     }
 
-    T &put(const T &item)
+    T& put(const T& item)
     {
       r = (r + 1) % BaseArray::get_capacity();
       BaseArray::at(r) = item;
@@ -336,7 +366,7 @@ namespace Designar
       return BaseArray::at(r);
     }
 
-    T &put(T &&item)
+    T& put(T&& item)
     {
       r = (r + 1) % BaseArray::get_capacity();
       BaseArray::at(r) = std::move(item);
@@ -348,7 +378,9 @@ namespace Designar
     T get()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       T ret_val = std::move(BaseArray::at(f));
       f = (f + 1) % BaseArray::get_capacity();
@@ -359,7 +391,7 @@ namespace Designar
   };
 
   template <typename T>
-  void DynQueue<T>::copy_queue(const DynQueue &q)
+  void DynQueue<T>::copy_queue(const DynQueue& q)
   {
     nat_t ii = q.f;
 
@@ -377,7 +409,9 @@ namespace Designar
   void DynQueue<T>::resize(nat_t sz)
   {
     if (sz < MIN_SIZE)
+    {
       sz = MIN_SIZE;
+    }
 
     BaseArray new_array(sz);
 
@@ -413,28 +447,30 @@ namespace Designar
       // empty
     }
 
-    ListQueue(const ListQueue &q)
+    ListQueue(const ListQueue& q)
         : BaseList(q)
     {
       // empty
     }
 
-    ListQueue(ListQueue &&q)
+    ListQueue(ListQueue&& q)
         : BaseList(std::forward<ListQueue<T>>(q))
     {
       // empty
     }
 
-    ListQueue &operator=(const ListQueue &q)
+    ListQueue& operator=(const ListQueue& q)
     {
       if (this == &q)
+      {
         return *this;
+      }
 
-      (BaseList &)*this = q;
+      (BaseList&)* this = q;
       return *this;
     }
 
-    ListQueue &operator=(ListQueue &&q)
+    ListQueue& operator=(ListQueue&& q)
     {
       BaseList::swap(q);
       return *this;
@@ -455,44 +491,52 @@ namespace Designar
       BaseList::clear();
     }
 
-    T &front()
+    T& front()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseList::get_first();
     }
 
-    const T &front() const
+    const T& front() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseList::get_first();
     }
 
-    T &rear()
+    T& rear()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseList::get_last();
     }
 
-    const T &rear() const
+    const T& rear() const
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseList::get_last();
     }
 
-    T &put(const T &item)
+    T& put(const T& item)
     {
       return BaseList::append(item);
     }
 
-    T &put(T &&item)
+    T& put(T&& item)
     {
       return BaseList::append(std::forward<T>(item));
     }
@@ -500,7 +544,9 @@ namespace Designar
     T get()
     {
       if (is_empty())
+      {
         throw std::underflow_error("Queue is empty");
+      }
 
       return BaseList::remove_first();
     }
@@ -514,20 +560,31 @@ namespace Designar
     Queue queue;
 
   public:
-    T &put(const T &item)
+    /** Unlike every other queue in this header, put() returns void
+        instead of a reference to the inserted item. The other queues
+        (FixedQueue, DynQueue, ListQueue) can safely hand back a
+        reference because they are single-threaded: the reference stays
+        valid for as long as the caller holds on to the queue. Here, the
+        lock protecting `queue` is released as soon as put() returns —
+        that is the whole point of a lock_guard scoped to the function
+        body — so a reference into the queue's internal storage (e.g. a
+        Queue node) would be exposed to the caller with no lock held.
+        A consumer thread blocked in get() can wake up, dequeue, and free
+        that exact node before the producer ever touches the returned
+        reference: a cross-thread use-after-free. Returning void keeps
+        the API honest about what it can actually guarantee. */
+    void put(const T& item)
     {
       std::lock_guard<std::mutex> lck(mtx);
-      T &ret = queue.put(item);
+      queue.put(item);
       cond_var.notify_one();
-      return ret;
     }
 
-    T &put(T &&item)
+    void put(T&& item)
     {
       std::lock_guard<std::mutex> lck(mtx);
-      T &ret = queue.put(std::move(item));
+      queue.put(std::move(item));
       cond_var.notify_one();
-      return ret;
     }
 
     T get()
@@ -540,13 +597,13 @@ namespace Designar
 
     nat_t size() const
     {
-      std::lock_guard<std::mutex> lck(const_cast<std::mutex &>(mtx));
+      std::lock_guard<std::mutex> lck(const_cast<std::mutex&>(mtx));
       return queue.size();
     }
 
     bool is_empty() const
     {
-      std::lock_guard<std::mutex> lck(const_cast<std::mutex &>(mtx));
+      std::lock_guard<std::mutex> lck(const_cast<std::mutex&>(mtx));
       return queue.is_empty();
     }
   };

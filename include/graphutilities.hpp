@@ -33,11 +33,48 @@ namespace Designar
     MIN_PATH_TREE = 4096
   };
 
+  /** `cookie()` is a general-purpose scratch slot every node/arc carries,
+      used by graph algorithms to stash algorithm-specific data (a mapped
+      node/arc pointer, a `MinPathNodeInfo*`, a small int, ...) without
+      growing the node/arc layout for every algorithm that needs one.
+
+      Most users only ever store a pointer there and read it back as a
+      pointer (`mapped_node`, `NI`/`AI` in this file) — that is a
+      pointer-to-pointer round trip through `void*`, which is
+      well-defined. `low()` (used by Tarjan's cut-node algorithm) is the
+      exception: it needs to store an `int_t`, not a pointer. Storing the
+      cookie as a plain `void *` and having `low()` reinterpret the
+      *reference* `void *&` as `int_t &` is a real bug on any platform
+      where pointers are smaller than `int_t` (e.g. 32-bit, where `void*`
+      is 4 bytes but `int_t`/`int64_t` is always 8): the reference cast
+      changes the apparent size of the referenced storage, so writes
+      through it overrun the 4 bytes actually reserved for `_cookie` and
+      corrupt whatever data member happens to follow it.
+
+      `_cookie` is a union of both types instead: its storage is sized
+      for the larger of `void *` and `int_t` on every platform (so an
+      `int_t` write can never overrun it), and `cookie()`/`cookie_as_int()`
+      give type-safe access to the member actually in use — no
+      reinterpret_cast on the reference is needed anywhere. Rather than
+      adding a separate dedicated field (e.g. a `low` member) purely for
+      Tarjan's algorithm, fixing the shared `cookie()` slot keeps every
+      algorithm's storage need going through the same general-purpose
+      mechanism, matching how it was already used for everything else. */
   class CommonNodeArc
   {
     nat_t tag;
     int_t _counter;
-    void *_cookie;
+
+    union Cookie
+    {
+      void* ptr;
+      int_t num;
+
+      Cookie() : ptr(nullptr)
+      {
+        // empty
+      }
+    } _cookie;
 
   public:
     CommonNodeArc();
@@ -48,11 +85,15 @@ namespace Designar
 
     bool is_visited(GraphTag) const;
 
-    void *&cookie();
+    void*& cookie();
+
+    /** Type-safe counterpart of cookie() for storing an `int_t` instead
+        of a pointer in the same scratch slot (see the class comment). */
+    int_t& cookie_as_int();
 
     void reset_tag();
 
-    int_t &counter();
+    int_t& counter();
 
     void reset();
   };
@@ -68,7 +109,7 @@ namespace Designar
   template <class GT>
   using AdArcIt = typename GT::AdjacentArcIterator;
 
-  inline void map_graph_item(CommonNodeArc *x, CommonNodeArc *y)
+  inline void map_graph_item(CommonNodeArc* x, CommonNodeArc* y)
   {
     if (x->cookie() == nullptr)
     {
@@ -83,27 +124,27 @@ namespace Designar
   }
 
   template <class SG, class TG = SG>
-  void map_nodes(Node<SG> *p, Node<TG> *q)
+  void map_nodes(Node<SG>* p, Node<TG>* q)
   {
     map_graph_item(p, q);
   }
 
   template <class SG, class TG = SG>
-  void map_arcs(Arc<SG> *a, Arc<TG> *b)
+  void map_arcs(Arc<SG>* a, Arc<TG>* b)
   {
     map_graph_item(a, b);
   }
 
   template <class SG, class TG = SG>
-  typename TG::Node *mapped_node(Node<SG> *p)
+  typename TG::Node* mapped_node(Node<SG>* p)
   {
-    return reinterpret_cast<Node<TG> *>(p->cookie());
+    return reinterpret_cast<Node<TG>*>(p->cookie());
   }
 
   template <class SG, class TG = SG>
-  typename TG::Arc *mapped_arc(Arc<SG> *a)
+  typename TG::Arc* mapped_arc(Arc<SG>* a)
   {
-    return reinterpret_cast<Arc<TG> *>(a->cookie());
+    return reinterpret_cast<Arc<TG>*>(a->cookie());
   }
 
   template <class GT>
@@ -116,10 +157,10 @@ namespace Designar
   private:
     struct PathDesc
     {
-      NodeType *node;
-      ArcType *arc;
+      NodeType* node;
+      ArcType* arc;
 
-      PathDesc(NodeType *_node = nullptr, ArcType *_arc = nullptr)
+      PathDesc(NodeType* _node = nullptr, ArcType* _arc = nullptr)
           : node(_node), arc(_arc)
       {
         // Empty
@@ -128,13 +169,15 @@ namespace Designar
 
     using ListType = DLList<PathDesc>;
 
-    GT *ptr_owner_graph;
+    GT* ptr_owner_graph;
     ListType list;
 
     void test_for_graph() const
     {
       if (ptr_owner_graph == nullptr)
+      {
         throw std::logic_error("Graph has not been specified");
+      }
     }
 
   public:
@@ -144,52 +187,54 @@ namespace Designar
       // Empty
     }
 
-    Path(const GT &graph)
-        : ptr_owner_graph(const_cast<GT *>(&graph)), list()
+    Path(const GT& graph)
+        : ptr_owner_graph(const_cast<GT*>(&graph)), list()
     {
       // Empty
     }
 
-    Path(GT *graph_ptr)
+    Path(GT* graph_ptr)
         : ptr_owner_graph(graph_ptr), list()
     {
       // Empty
     }
 
-    Path(const Path &path)
+    Path(const Path& path)
         : ptr_owner_graph(path.ptr_owner_graph), list(path.list)
     {
       // Empty
     }
 
-    Path(Path &&path)
+    Path(Path&& path)
         : ptr_owner_graph(nullptr), list()
     {
       std::swap(ptr_owner_graph, path.ptr_owner_graph);
       std::swap(list, path.list);
     }
 
-    GT &get_graph()
+    GT& get_graph()
     {
       test_for_graph();
       return *ptr_owner_graph;
     }
 
-    void init(NodeType *start)
+    void init(NodeType* start)
     {
       test_for_graph();
       list.clear();
       list.append(PathDesc(start));
     }
 
-    void set(GT &graph, NodeType *ptr_start = nullptr)
+    void set(GT& graph, NodeType* ptr_start = nullptr)
     {
       clear();
 
       ptr_owner_graph = &graph;
 
       if (ptr_start != nullptr)
+      {
         init(ptr_start);
+      }
     }
 
     void clear()
@@ -197,21 +242,23 @@ namespace Designar
       list.clear();
     }
 
-    void insert(ArcType *arc)
+    void insert(ArcType* arc)
     {
       test_for_graph();
 
       if (list.is_empty())
+      {
         throw std::domain_error("Path is empty");
+      }
 
-      PathDesc &first = list.get_first();
+      PathDesc& first = list.get_first();
 
-      NodeType *prev_node = arc->get_connected_node(first.node);
+      NodeType* prev_node = arc->get_connected_node(first.node);
 
       list.insert(PathDesc(prev_node, arc));
     }
 
-    void insert(NodeType *s)
+    void insert(NodeType* s)
     {
       test_for_graph();
 
@@ -221,33 +268,37 @@ namespace Designar
         return;
       }
 
-      PathDesc &first = list.get_first();
+      PathDesc& first = list.get_first();
 
-      ArcType *ptr_arc = ptr_owner_graph->search_arc(s, first.node);
+      ArcType* ptr_arc = ptr_owner_graph->search_arc(s, first.node);
 
       if (ptr_arc == nullptr)
+      {
         throw std::logic_error("There is not arc between last && current node");
+      }
 
       list.insert(PathDesc(s, ptr_arc));
     }
 
-    void append(ArcType *arc)
+    void append(ArcType* arc)
     {
       test_for_graph();
 
       if (list.is_empty())
+      {
         throw std::domain_error("Path is empty");
+      }
 
-      PathDesc &last = list.get_last();
+      PathDesc& last = list.get_last();
 
       last.arc = arc;
 
-      NodeType *next_node = arc->get_connected_node(last.node);
+      NodeType* next_node = arc->get_connected_node(last.node);
 
       list.append(PathDesc(next_node));
     }
 
-    void append(NodeType *t)
+    void append(NodeType* t)
     {
       test_for_graph();
 
@@ -257,12 +308,14 @@ namespace Designar
         return;
       }
 
-      PathDesc &last = list.get_last();
+      PathDesc& last = list.get_last();
 
-      ArcType *ptr_arc = ptr_owner_graph->search_arc(last.node, t);
+      ArcType* ptr_arc = ptr_owner_graph->search_arc(last.node, t);
 
       if (ptr_arc == nullptr)
+      {
         throw std::logic_error("There is not arc between last && current node");
+      }
 
       last.arc = ptr_arc;
 
@@ -274,124 +327,158 @@ namespace Designar
       test_for_graph();
 
       if (list.is_empty())
+      {
         throw std::underflow_error("Path is empty");
+      }
 
       list.remove_last();
 
       if (!list.is_empty())
+      {
         list.get_last().arc = nullptr;
+      }
     }
 
-    NodeType *get_last_node()
+    NodeType* get_last_node()
     {
       test_for_graph();
 
       if (list.is_empty())
+      {
         throw std::overflow_error("Path is empty");
+      }
 
       return list.get_last().node;
     }
 
-    NodeType *get_last_node() const
+    NodeType* get_last_node() const
     {
       test_for_graph();
 
       if (list.is_empty())
+      {
         throw std::overflow_error("Path is empty");
+      }
 
       return list.get_last().node;
     }
 
-    NodeType *get_first_node()
+    NodeType* get_first_node()
     {
       if (list.is_empty())
+      {
         throw std::underflow_error("Path is empty");
+      }
 
       return list.get_first().node;
     }
 
-    NodeType *get_first_node() const
+    NodeType* get_first_node() const
     {
       if (list.is_empty())
+      {
         throw std::underflow_error("Path is empty");
+      }
 
       return list.get_first().node;
     }
 
-    ArcType *get_last_arc()
+    ArcType* get_last_arc()
     {
       if (list.is_empty())
+      {
         throw std::overflow_error("Path is empty");
+      }
 
       if (list.size() == 1)
+      {
         throw std::overflow_error("Path has only one node (without arcs)");
+      }
 
       return list.get_last().arc;
     }
 
-    ArcType *get_last_arc() const
+    ArcType* get_last_arc() const
     {
       if (list.is_empty())
+      {
         throw std::overflow_error("Path is empty");
+      }
 
       if (list.size() == 1)
+      {
         throw std::overflow_error("Path has only one node (without arcs)");
+      }
 
       return list.get_last().arc;
     }
 
-    ArcType *get_first_arc()
+    ArcType* get_first_arc()
     {
       if (list.is_empty())
+      {
         throw std::underflow_error("Path is empty");
+      }
 
       if (list.is_unitarian())
+      {
         throw std::underflow_error("Path has only one node (without arcs)");
+      }
 
       return list.get_first().arc;
     }
 
-    ArcType *get_first_arc() const
+    ArcType* get_first_arc() const
     {
       if (list.is_empty())
+      {
         throw std::underflow_error("Path is empty");
+      }
 
       if (list.is_unitarian())
+      {
         throw std::underflow_error("Path has only one node (without arcs)");
+      }
 
       return list.get_first().arc;
     }
 
     template <class Op>
-    void for_each(Op &op) const
+    void for_each(Op& op) const
     {
-      for (const PathDesc &path_desc : list)
+      for (const PathDesc& path_desc : list)
+      {
         op(path_desc.node, path_desc.arc);
+      }
     }
 
     template <class Op>
-    void for_each(Op &&op = Op()) const
+    void for_each(Op&& op = Op()) const
     {
       for_each<Op>(op);
     }
 
     template <class Op>
-    void for_each(Op &op)
+    void for_each(Op& op)
     {
-      for (PathDesc &path_desc : list)
+      for (PathDesc& path_desc : list)
+      {
         op(path_desc.node, path_desc.arc);
+      }
     }
 
     template <class Op>
-    void for_each(Op &&op = Op())
+    void for_each(Op&& op = Op())
     {
       for_each<Op>(op);
     }
 
-    Path &operator=(const Path &path)
+    Path& operator=(const Path& path)
     {
       if (&path == this)
+      {
         return *this;
+      }
 
       ptr_owner_graph = path.ptr_owner_graph;
       list = path.list;
@@ -399,23 +486,23 @@ namespace Designar
       return *this;
     }
 
-    SLList<Node<GT> *> nodes() const
+    SLList<Node<GT>*> nodes() const
     {
-      return list.template map<Node<GT> *, SLList<Node<GT> *>>([](auto &pd)
-                                                               { return pd.node; });
+      return list.template map<Node<GT>*, SLList<Node<GT>*>>([](auto& pd)
+                                                             { return pd.node; });
     }
 
-    SLList<Arc<GT> *> arcs() const
+    SLList<Arc<GT>*> arcs() const
     {
-      return list.template map_if<Arc<GT> *>([](auto &pd)
-                                             { return pd.arc; },
-                                             [](auto &pd)
-                                             {
-                                               return pd.arc != nullptr;
-                                             });
+      return list.template map_if<Arc<GT>*>([](auto& pd)
+                                            { return pd.arc; },
+                                            [](auto& pd)
+                                            {
+                                              return pd.arc != nullptr;
+                                            });
     }
 
-    Path &operator=(Path &&path)
+    Path& operator=(Path&& path)
     {
       std::swap(ptr_owner_graph, path.ptr_owner_graph);
       std::swap(list, path.list);
@@ -436,15 +523,15 @@ namespace Designar
 
   // For compute cut nodes and Tarjan algorithm
   template <class GT>
-  inline int_t &df(Node<GT> *p)
+  inline int_t& df(Node<GT>* p)
   {
     return p->counter();
   }
 
   template <class GT>
-  inline int_t &low(Node<GT> *p)
+  inline int_t& low(Node<GT>* p)
   {
-    return (int_t &)p->cookie();
+    return p->cookie_as_int();
   }
 
   // For Dijkstra and Astar algorithms
@@ -452,7 +539,7 @@ namespace Designar
   class MinPathNodeInfo
   {
   public:
-    Node<GT> *tree_node;
+    Node<GT>* tree_node;
     typename Distance::Type accumulated_distance;
 
     MinPathNodeInfo()
@@ -466,7 +553,7 @@ namespace Designar
   class MinPathArcInfo
   {
   public:
-    Arc<GT> *tree_arc;
+    Arc<GT>* tree_arc;
     typename Distance::Type potential;
     bool is_in_queue;
 
@@ -478,71 +565,73 @@ namespace Designar
   };
 
   template <class GT, class Distance>
-  inline MinPathNodeInfo<GT, Distance> *&NI(Node<GT> *p)
+  inline MinPathNodeInfo<GT, Distance>*& NI(Node<GT>* p)
   {
-    return (MinPathNodeInfo<GT, Distance> *&)p->cookie();
+    return (MinPathNodeInfo<GT, Distance>*&)p->cookie();
   }
 
   template <class GT, class Distance>
-  inline Node<GT> *&TREE_NODE(Node<GT> *p)
+  inline Node<GT>*& TREE_NODE(Node<GT>* p)
   {
     return NI<GT, Distance>(p)->tree_node;
   }
 
   template <class GT, class Distance>
-  inline typename Distance::Type &ACC(Node<GT> *p)
+  inline typename Distance::Type& ACC(Node<GT>* p)
   {
     return NI<GT, Distance>(p)->accumulated_distance;
   }
 
   template <class GT, class Distance>
-  inline MinPathArcInfo<GT, Distance> *&AI(Arc<GT> *a)
+  inline MinPathArcInfo<GT, Distance>*& AI(Arc<GT>* a)
   {
-    return (MinPathArcInfo<GT, Distance> *&)a->cookie();
+    return (MinPathArcInfo<GT, Distance>*&)a->cookie();
   }
 
   template <class GT, class Distance>
-  inline Arc<GT> *&TREE_ARC(Arc<GT> *a)
+  inline Arc<GT>*& TREE_ARC(Arc<GT>* a)
   {
     return AI<GT, Distance>(a)->tree_arc;
   }
 
   template <class GT, class Distance>
-  inline typename Distance::Type &POT(Arc<GT> *a)
+  inline typename Distance::Type& POT(Arc<GT>* a)
   {
     return AI<GT, Distance>(a)->potential;
   }
 
   template <class GT, class Distance>
-  inline bool &IS_IN_QUEUE(Arc<GT> *a)
+  inline bool& IS_IN_QUEUE(Arc<GT>* a)
   {
     return AI<GT, Distance>(a)->is_in_queue;
   }
 
   template <class GT, class Distance>
-  inline void allocate_node_info(const GT &g)
+  inline void allocate_node_info(const GT& g)
   {
-    g.for_each_node([](Node<GT> *node)
+    g.for_each_node([](Node<GT>* node)
                     { NI<GT, Distance>(node) = new MinPathNodeInfo<GT, Distance>; });
   }
 
   template <class GT, class Distance>
-  inline void allocate_arc_info(const GT &g)
+  inline void allocate_arc_info(const GT& g)
   {
-    g.for_each_arc([](Arc<GT> *arc)
+    g.for_each_arc([](Arc<GT>* arc)
                    { AI<GT, Distance>(arc) = new MinPathArcInfo<GT, Distance>; });
   }
 
   template <class GT, class Distance>
-  void destroy_node_info(const GT &g)
+  void destroy_node_info(const GT& g)
   {
-    g.for_each_node([](Node<GT> *node)
+    g.for_each_node([](Node<GT>* node)
                     {
 		      auto to_destroy = NI<GT, Distance>(node);
 		      auto ptr_tree_node = TREE_NODE<GT, Distance>(node);
 		      
 		      if (ptr_tree_node == nullptr)
+		      {
 			node->cookie() = nullptr;
+		      }
 		      else
 			{
 			  node->cookie()          = ptr_tree_node;
@@ -553,15 +642,17 @@ namespace Designar
   }
 
   template <class GT, class Distance>
-  void destroy_arc_info(const GT &g)
+  void destroy_arc_info(const GT& g)
   {
-    g.for_each_arc([&](Arc<GT> *arc)
+    g.for_each_arc([&](Arc<GT>* arc)
                    {
 		     auto to_destroy = AI<GT, Distance>(arc);
 		     auto ptr_tree_arc = TREE_ARC<GT, Distance>(arc);
       
 		     if (ptr_tree_arc == nullptr)
+		     {
 		       arc->cookie() = nullptr;
+		     }
 		     else
 		       {
 			 arc->cookie()          = ptr_tree_arc;
@@ -572,19 +663,21 @@ namespace Designar
   }
 
   template <class GT, class Distance, class Heap>
-  void put_in_heap(Arc<GT> *a, Node<GT> *t, Heap &h)
+  void put_in_heap(Arc<GT>* a, Node<GT>* t, Heap& h)
   {
     if (IS_IN_QUEUE<GT, Distance>(a))
+    {
       return;
+    }
 
     IS_IN_QUEUE<GT, Distance>(a) = true;
     h.insert_arc(a, t);
   }
 
   template <class GT, class Distance, class Heap>
-  Arc<GT> *get_from_heap(Heap &h)
+  Arc<GT>* get_from_heap(Heap& h)
   {
-    Arc<GT> *ret_val = h.get_min_arc();
+    Arc<GT>* ret_val = h.get_min_arc();
     IS_IN_QUEUE<GT, Distance>(ret_val) = false;
     return ret_val;
   }
@@ -593,7 +686,7 @@ namespace Designar
   class GetPot
   {
   public:
-    typename Distance::Type operator()(Arc<GT> *a)
+    typename Distance::Type operator()(Arc<GT>* a)
     {
       return POT<GT, Distance>(a);
     }
@@ -611,7 +704,7 @@ namespace Designar
   class DftGridNodeInit
   {
   public:
-    void operator()(Node<GT> *, nat_t, nat_t)
+    void operator()(Node<GT>*, nat_t, nat_t)
     {
       // empty
     }
@@ -621,7 +714,7 @@ namespace Designar
   class DftGridArcInit
   {
   public:
-    void operator()(Arc<GT> *)
+    void operator()(Arc<GT>*)
     {
       // empty
     }
@@ -631,7 +724,7 @@ namespace Designar
   class DftNodeInit
   {
   public:
-    void operator()(Node<GT> *)
+    void operator()(Node<GT>*)
     {
       // empty
     }
@@ -641,7 +734,7 @@ namespace Designar
   class DftArcInit
   {
   public:
-    void operator()(Arc<GT> *)
+    void operator()(Arc<GT>*)
     {
       // empty
     }
@@ -651,14 +744,14 @@ namespace Designar
   class DftNodeOutput
   {
   public:
-    void operator()(std::ostream &out, const Node<GT> *p)
+    void operator()(std::ostream& out, const Node<GT>* p)
     {
       out << p->get_info();
     }
 
-    void operator()(std::ofstream &out, const Node<GT> *p)
+    void operator()(std::ofstream& out, const Node<GT>* p)
     {
-      out.write(reinterpret_cast<const char *>(&p->get_info()),
+      out.write(reinterpret_cast<const char*>(&p->get_info()),
                 sizeof(typename GT::NodeInfoType));
     }
   };
@@ -667,14 +760,14 @@ namespace Designar
   class DftArcOutput
   {
   public:
-    void operator()(std::ostream &out, const Arc<GT> *a)
+    void operator()(std::ostream& out, const Arc<GT>* a)
     {
       out << a->get_info();
     }
 
-    void operator()(std::ofstream &out, const Arc<GT> *a)
+    void operator()(std::ofstream& out, const Arc<GT>* a)
     {
-      out.write(reinterpret_cast<const char *>(&a->get_info()),
+      out.write(reinterpret_cast<const char*>(&a->get_info()),
                 sizeof(typename GT::ArcInfoType));
     }
   };
@@ -683,14 +776,14 @@ namespace Designar
   class DftGraphOutput
   {
   public:
-    void operator()(std::ostream &out, const GT &g)
+    void operator()(std::ostream& out, const GT& g)
     {
       out << g.get_info();
     }
 
-    void operator()(std::ofstream &out, const GT &g)
+    void operator()(std::ofstream& out, const GT& g)
     {
-      out.write(reinterpret_cast<const char *>(&g.get_info()),
+      out.write(reinterpret_cast<const char*>(&g.get_info()),
                 sizeof(typename GT::GraphInfoType));
     }
   };
@@ -699,14 +792,14 @@ namespace Designar
   class DftNodeInput
   {
   public:
-    void operator()(std::istream &in, Node<GT> *p)
+    void operator()(std::istream& in, Node<GT>* p)
     {
       in >> p->get_info();
     }
 
-    void operator()(std::ifstream &in, Node<GT> *p)
+    void operator()(std::ifstream& in, Node<GT>* p)
     {
-      in.read(reinterpret_cast<char *>(&p->get_info()),
+      in.read(reinterpret_cast<char*>(&p->get_info()),
               sizeof(typename GT::NodeInfoType));
     }
   };
@@ -715,14 +808,14 @@ namespace Designar
   class DftArcInput
   {
   public:
-    void operator()(std::istream &in, Arc<GT> *a)
+    void operator()(std::istream& in, Arc<GT>* a)
     {
       in >> a->get_info();
     }
 
-    void operator()(std::ifstream &in, Arc<GT> *a)
+    void operator()(std::ifstream& in, Arc<GT>* a)
     {
-      in.read(reinterpret_cast<char *>(&a->get_info()),
+      in.read(reinterpret_cast<char*>(&a->get_info()),
               sizeof(typename GT::ArcInfoType));
     }
   };
@@ -731,14 +824,14 @@ namespace Designar
   class DftGraphInput
   {
   public:
-    void operator()(std::istream &in, GT &g)
+    void operator()(std::istream& in, GT& g)
     {
       in >> g.get_info();
     }
 
-    void operator()(std::ifstream &in, GT &g)
+    void operator()(std::ifstream& in, GT& g)
     {
-      in.read(reinterpret_cast<char *>(&g.get_info()),
+      in.read(reinterpret_cast<char*>(&g.get_info()),
               sizeof(typename GT::GraphInfoType));
     }
   };
@@ -747,7 +840,7 @@ namespace Designar
   class DftDotNodeAttr
   {
   public:
-    std::string operator()(Node<GT> *p)
+    std::string operator()(Node<GT>* p)
     {
       std::stringstream s;
       s << "label = \"" << p->get_info() << "\"";
@@ -759,7 +852,7 @@ namespace Designar
   class DftDotArcAttr
   {
   public:
-    std::string operator()(Arc<GT> *a)
+    std::string operator()(Arc<GT>* a)
     {
       std::stringstream s;
       s << "label = \"" << a->get_info() << "\"";
@@ -771,7 +864,7 @@ namespace Designar
   class DftDotGraphAttr
   {
   public:
-    std::string operator()(const GT &)
+    std::string operator()(const GT&)
     {
       return "  // Without graph attributes";
     }

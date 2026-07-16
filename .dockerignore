@@ -1,0 +1,13 @@
+build/
+lib/*
+!lib/.gitkeep
+obj/*
+!obj/.gitkeep
+samples/bin/*
+!samples/bin/.gitkeep
+tests/bin/*
+!tests/bin/.gitkeep
+doc/
+en-doc/
+es-doc/
+.git/

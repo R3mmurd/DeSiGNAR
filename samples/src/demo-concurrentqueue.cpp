@@ -12,7 +12,7 @@ using namespace std;
 
 using namespace Designar;
 
-void send(ConcurrentQueue<string> &q, nat_t num_msgs, nat_t ms)
+void send(ConcurrentQueue<string>& q, nat_t num_msgs, nat_t ms)
 {
   for (int i = 0; i < num_msgs; ++i)
   {
@@ -23,7 +23,7 @@ void send(ConcurrentQueue<string> &q, nat_t num_msgs, nat_t ms)
   }
 }
 
-void receive(ConcurrentQueue<string> &q, nat_t num_msgs)
+void receive(ConcurrentQueue<string>& q, nat_t num_msgs)
 {
   for (int i = 0; i < num_msgs; ++i)
     cout << q.get() << endl;

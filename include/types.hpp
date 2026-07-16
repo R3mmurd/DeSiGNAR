@@ -46,11 +46,11 @@ namespace Designar
     { /* empty */
     }
 
-    EmptyClass(const EmptyClass &)
+    EmptyClass(const EmptyClass&)
     { /* empty */
     }
 
-    EmptyClass(EmptyClass &&)
+    EmptyClass(EmptyClass&&)
     { /* empty */
     }
 
@@ -58,28 +58,52 @@ namespace Designar
     { /* empty */
     }
 
-    EmptyClass &operator=(const EmptyClass &) { return *this; }
+    EmptyClass& operator=(const EmptyClass&)
+    {
+      return *this;
+    }
 
-    EmptyClass &operator=(EmptyClass &&) { return *this; }
+    EmptyClass& operator=(EmptyClass&&)
+    {
+      return *this;
+    }
 
-    bool operator==(const EmptyClass &) const { return true; }
+    bool operator==(const EmptyClass&) const
+    {
+      return true;
+    }
 
-    bool operator!=(const EmptyClass &) const { return false; }
+    bool operator!=(const EmptyClass&) const
+    {
+      return false;
+    }
 
-    bool operator<(const EmptyClass &) const { return false; }
+    bool operator<(const EmptyClass&) const
+    {
+      return false;
+    }
 
-    bool operator<=(const EmptyClass &) const { return true; }
+    bool operator<=(const EmptyClass&) const
+    {
+      return true;
+    }
 
-    bool operator>(const EmptyClass &) const { return false; }
+    bool operator>(const EmptyClass&) const
+    {
+      return false;
+    }
 
-    bool operator>=(const EmptyClass &) const { return true; }
+    bool operator>=(const EmptyClass&) const
+    {
+      return true;
+    }
 
-    friend std::ostream &operator<<(std::ostream &out, const EmptyClass &)
+    friend std::ostream& operator<<(std::ostream& out, const EmptyClass&)
     {
       return out;
     }
 
-    friend std::istream &operator>>(std::istream &in, EmptyClass &)
+    friend std::istream& operator>>(std::istream& in, EmptyClass&)
     {
       return in;
     }

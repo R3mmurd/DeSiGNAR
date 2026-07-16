@@ -30,7 +30,7 @@ int main()
     tree.select(5);
     assert(false);
   }
-  catch (out_of_range)
+  catch (const out_of_range&)
   {
     assert(true);
   }
@@ -47,7 +47,7 @@ int main()
     tree[5];
     assert(false);
   }
-  catch (out_of_range)
+  catch (const out_of_range&)
   {
     assert(true);
   }
@@ -100,7 +100,7 @@ int main()
   assert(get<1>(q).size() == 0);
   assert(tree.size() == 5);
 
-  TreeSet<int_t> tree_mv = move(tree_cpy);
+  TreeSet<int_t> tree_mv = std::move(tree_cpy);
   assert(tree_cpy.is_empty());
   assert(tree_mv.size() == 4);
 
@@ -154,7 +154,7 @@ int main()
                   { return item % 2 == 0; }));
   assert(!tree.exists([](auto item)
                       { return item % 2 != 0; }));
-  assert(tree.none([](const auto &item)
+  assert(tree.none([](const auto& item)
                    { return item % 2 != 0; }));
 
   TreeSet<int_t> ts1 = {1, 2, 3, 4};
@@ -184,6 +184,35 @@ int main()
   ttt.remove_if([](int x)
                 { return (x & 1); });
   assert(ttt.equal({2, 4, 8, 10}));
+
+  // Regression: RankedTreap's default comparator constructor used to
+  // bind `Cmp &cmp` straight to a temporary/default-argument destroyed
+  // at the end of the constructor call (see tree.hpp /
+  // typetraits.hpp's DefaultCmpHolder). Every TreeSet used above is
+  // already exercised via that default-argument path; this also checks
+  // that an explicit *stateful* external comparator is genuinely shared.
+  {
+    struct CountingLess
+    {
+      nat_t count = 0;
+
+      bool operator()(int_t a, int_t b)
+      {
+        ++count;
+        return a < b;
+      }
+    };
+
+    CountingLess cmp;
+    TreeSet<int_t, CountingLess> counting_tree(cmp);
+
+    counting_tree.append(3);
+    counting_tree.append(1);
+    counting_tree.append(2);
+
+    assert(cmp.count > 0);
+    assert(counting_tree.equal({1, 2, 3}));
+  }
 
   cout << "Everything ok!\n";
 

@@ -13,82 +13,82 @@
 namespace Designar
 {
   template <class GT, class NodeInit, class ArcInit>
-  GT full_graph(nat_t, NodeInit &, ArcInit &);
+  GT full_graph(nat_t, NodeInit&, ArcInit&);
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
-  GT full_graph(nat_t, NodeInit &&node_init = NodeInit(),
-                ArcInit &&arc_init = ArcInit());
+  GT full_graph(nat_t, NodeInit&& node_init = NodeInit(),
+                ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT ring_graph(nat_t, nat_t, NodeInit &, ArcInit &);
+  GT ring_graph(nat_t, nat_t, NodeInit&, ArcInit&);
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
-  GT ring_graph(nat_t, nat_t, NodeInit &&node_init = NodeInit(),
-                ArcInit &&arc_init = ArcInit());
+  GT ring_graph(nat_t, nat_t, NodeInit&& node_init = NodeInit(),
+                ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
   GT build_grid(nat_t width, nat_t height, GridType type,
-                NodeInit &node_init, ArcInit &arc_init);
+                NodeInit& node_init, ArcInit& arc_init);
 
   template <class GT,
             class NodeInit = DftGridNodeInit<GT>,
             class ArcInit = DftGridArcInit<GT>>
   GT build_grid(nat_t width, nat_t height, GridType type = GridType::RECTANGULAR,
-                NodeInit &&node_init = NodeInit(), ArcInit &&arc_init = ArcInit());
+                NodeInit&& node_init = NodeInit(), ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT random_graph(nat_t, nat_t, rng_seed_t, NodeInit &, ArcInit &);
+  GT random_graph(nat_t, nat_t, rng_seed_t, NodeInit&, ArcInit&);
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
   GT random_graph(nat_t, nat_t, rng_seed_t,
-                  NodeInit &&node_init = NodeInit(),
-                  ArcInit &&arc_init = ArcInit());
+                  NodeInit&& node_init = NodeInit(),
+                  ArcInit&& arc_init = ArcInit());
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
   GT random_graph(nat_t, nat_t,
-                  NodeInit &&node_init = NodeInit(),
-                  ArcInit &&arc_init = ArcInit());
+                  NodeInit&& node_init = NodeInit(),
+                  ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT er_random_graph(nat_t, real_t, rng_seed_t, bool, NodeInit &, ArcInit &);
+  GT er_random_graph(nat_t, real_t, rng_seed_t, bool, NodeInit&, ArcInit&);
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
   GT er_random_graph(nat_t, real_t, rng_seed_t, bool grant_connectivity = false,
-                     NodeInit &&node_init = NodeInit(),
-                     ArcInit &&arc_init = ArcInit());
+                     NodeInit&& node_init = NodeInit(),
+                     ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT er_random_graph(nat_t, real_t, bool, NodeInit &, ArcInit &);
+  GT er_random_graph(nat_t, real_t, bool, NodeInit&, ArcInit&);
 
   template <class GT,
             class NodeInit = DftNodeInit<GT>,
             class ArcInit = DftArcInit<GT>>
   GT er_random_graph(nat_t, real_t, bool grant_connectivity = false,
-                     NodeInit &&node_init = NodeInit(),
-                     ArcInit &&arc_init = ArcInit());
+                     NodeInit&& node_init = NodeInit(),
+                     ArcInit&& arc_init = ArcInit());
 
   template <class GT, class NodeInit, class ArcInit>
-  GT full_graph(nat_t num_nodes, NodeInit &node_init, ArcInit &arc_init)
+  GT full_graph(nat_t num_nodes, NodeInit& node_init, ArcInit& arc_init)
   {
     GT g;
 
     for (nat_t i = 0; i < num_nodes; ++i)
     {
-      Node<GT> *p = g.insert_node();
+      Node<GT>* p = g.insert_node();
       node_init(p);
     }
 
-    g.for_each_node_pair([&g, &arc_init](Node<GT> *s, Node<GT> *t)
+    g.for_each_node_pair([&g, &arc_init](Node<GT>* s, Node<GT>* t)
                          {
       Arc<GT> * fa = g.insert_arc(s, t);
       arc_init(fa);
@@ -102,20 +102,20 @@ namespace Designar
   }
 
   template <class GT, class NodeInit, class ArcInit>
-  GT full_graph(nat_t num_nodes, NodeInit &&node_init, ArcInit &&arc_init)
+  GT full_graph(nat_t num_nodes, NodeInit&& node_init, ArcInit&& arc_init)
   {
     return full_graph<GT, NodeInit, ArcInit>(num_nodes, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
   GT ring_graph(nat_t num_nodes, nat_t num_neighbors,
-                NodeInit &node_init, ArcInit &arc_init)
+                NodeInit& node_init, ArcInit& arc_init)
   {
     GT g;
 
     for (nat_t i = 0; i < num_nodes; ++i)
     {
-      Node<GT> *p = g.insert_node();
+      Node<GT>* p = g.insert_node();
       node_init(p);
     }
 
@@ -125,12 +125,12 @@ namespace Designar
 
       for (nat_t k = 0; k < num_neighbors / 2; ++k)
       {
-        Arc<GT> *fa = g.insert_arc(*i, *j);
+        Arc<GT>* fa = g.insert_arc(*i, *j);
         arc_init(fa);
 
         if (g.is_digraph())
         {
-          Arc<GT> *ba = g.insert_arc(*j, *i);
+          Arc<GT>* ba = g.insert_arc(*j, *i);
           arc_init(ba);
         }
 
@@ -143,7 +143,7 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT ring_graph(nat_t num_nodes, nat_t num_neighbors,
-                NodeInit &&node_init, ArcInit &&arc_init)
+                NodeInit&& node_init, ArcInit&& arc_init)
   {
     return ring_graph<GT, NodeInit, ArcInit>(num_nodes, num_neighbors,
                                              node_init, arc_init);
@@ -151,12 +151,12 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT build_grid(nat_t width, nat_t height, GridType type,
-                NodeInit &node_init, ArcInit &arc_init)
+                NodeInit& node_init, ArcInit& arc_init)
   {
     if (width < 2 || height < 2)
       throw std::length_error("The minimun size must be 2 x 2");
 
-    MultiDimArray<Node<GT> *, 2> mat(height, width);
+    MultiDimArray<Node<GT>*, 2> mat(height, width);
 
     GT g;
 
@@ -172,7 +172,7 @@ namespace Designar
     for (nat_t i = 0; i < height; ++i)
       for (nat_t j = 0; j < width; ++j)
       {
-        Node<GT> *p = mat(i, j);
+        Node<GT>* p = mat(i, j);
 
         for (auto n : neighborhood)
         {
@@ -182,12 +182,12 @@ namespace Designar
           if (n_i < 0 || n_i >= height || n_j < 0 || n_j >= width)
             continue;
 
-          Node<GT> *q = mat(n_i, n_j);
+          Node<GT>* q = mat(n_i, n_j);
 
           if (g.search_arc(p, q) != nullptr)
             continue;
 
-          Arc<GT> *arc = g.insert_arc(p, q);
+          Arc<GT>* arc = g.insert_arc(p, q);
           arc_init(arc);
         }
       }
@@ -205,7 +205,7 @@ namespace Designar
       for (nat_t i = 0; i < height; ++i)
         for (nat_t j = 1; j < width; j += 2)
         {
-          Node<GT> *p = mat(i, j);
+          Node<GT>* p = mat(i, j);
 
           for (auto n : neighborhood)
           {
@@ -215,12 +215,12 @@ namespace Designar
             if (n_i < 0 || n_i >= height || n_j < 0 || n_j >= width)
               continue;
 
-            Node<GT> *q = mat(n_i, n_j);
+            Node<GT>* q = mat(n_i, n_j);
 
             if (g.search_arc(p, q) != nullptr)
               continue;
 
-            Arc<GT> *arc = g.insert_arc(p, q);
+            Arc<GT>* arc = g.insert_arc(p, q);
             arc_init(arc);
           }
         }
@@ -229,9 +229,9 @@ namespace Designar
       for (nat_t i = 0; i < height - 1; ++i)
         for (nat_t j = !(i % 2); j < width; j += 2)
         {
-          Node<GT> *p = mat(i, j);
-          Node<GT> *q = mat(i + 1, j);
-          Arc<GT> *a = g.search_arc(p, q);
+          Node<GT>* p = mat(i, j);
+          Node<GT>* q = mat(i + 1, j);
+          Arc<GT>* a = g.search_arc(p, q);
 
           if (a != nullptr)
             g.remove_arc(a);
@@ -242,32 +242,32 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT build_grid(nat_t width, nat_t height, GridType type,
-                NodeInit &&node_init, ArcInit &&arc_init)
+                NodeInit&& node_init, ArcInit&& arc_init)
   {
     return build_grid<GT, NodeInit, ArcInit>(width, height, type, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
   GT random_graph(nat_t num_nodes, nat_t num_arcs, rng_seed_t seed,
-                  NodeInit &node_init, ArcInit &arc_init)
+                  NodeInit& node_init, ArcInit& arc_init)
   {
     GT g;
 
-    FixedArray<Node<GT> *> nodes(num_nodes);
+    FixedArray<Node<GT>*> nodes(num_nodes);
 
     rng_t rng(seed);
 
     for (nat_t i = 0; i < num_nodes; ++i)
     {
-      Node<GT> *p = g.insert_node();
+      Node<GT>* p = g.insert_node();
       node_init(p);
       nodes[i] = p;
     }
 
     for (nat_t i = 0; i < num_arcs; ++i)
     {
-      Node<GT> *s = nodes[random_uniform(rng, nodes.size())];
-      Node<GT> *t = nodes[random_uniform(rng, nodes.size())];
+      Node<GT>* s = nodes[random_uniform(rng, nodes.size())];
+      Node<GT>* t = nodes[random_uniform(rng, nodes.size())];
 
       if (s == t)
         continue;
@@ -275,7 +275,7 @@ namespace Designar
       if (g.search_arc(s, t) != nullptr)
         continue;
 
-      Arc<GT> *a = g.insert_arc(s, t);
+      Arc<GT>* a = g.insert_arc(s, t);
       arc_init(a);
     }
 
@@ -284,22 +284,22 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT random_graph(nat_t num_nodes, nat_t num_arcs, rng_seed_t seed,
-                  NodeInit &&node_init, ArcInit &&arc_init)
+                  NodeInit&& node_init, ArcInit&& arc_init)
   {
     return random_graph<GT, NodeInit, ArcInit>(num_nodes, num_arcs, seed, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
   GT random_graph(nat_t num_nodes, nat_t num_arcs,
-                  NodeInit &&node_init, ArcInit &&arc_init)
+                  NodeInit&& node_init, ArcInit&& arc_init)
   {
     return random_graph<GT, NodeInit, ArcInit>(num_nodes, num_arcs, get_random_seed(), node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
-                     bool grant_connectivity, NodeInit &node_init,
-                     ArcInit &arc_init)
+                     bool grant_connectivity, NodeInit& node_init,
+                     ArcInit& arc_init)
   {
     GT g;
 
@@ -307,12 +307,12 @@ namespace Designar
 
     for (nat_t i = 0; i < num_nodes; ++i)
     {
-      Node<GT> *p = g.insert_node();
+      Node<GT>* p = g.insert_node();
       node_init(p);
     }
 
-    g.for_each_node_pair([&g, &arc_init, prob_arc, &rng](Node<GT> *s,
-                                                         Node<GT> *t)
+    g.for_each_node_pair([&g, &arc_init, prob_arc, &rng](Node<GT>* s,
+                                                         Node<GT>* t)
                          {
       if (flip(rng, prob_arc))
 	{
@@ -343,10 +343,10 @@ namespace Designar
 
     for (; it2.has_current(); it1.next(), it2.next())
     {
-      auto &l1 = *it1;
-      auto &l2 = *it2;
+      auto& l1 = *it1;
+      auto& l2 = *it2;
 
-      Arc<GT> *a = g.insert_arc(l1.get_first(), l2.get_last());
+      Arc<GT>* a = g.insert_arc(l1.get_first(), l2.get_last());
       arc_init(a);
     }
 
@@ -355,15 +355,15 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, rng_seed_t seed,
-                     bool grant_connectivity, NodeInit &&node_init,
-                     ArcInit &&arc_init)
+                     bool grant_connectivity, NodeInit&& node_init,
+                     ArcInit&& arc_init)
   {
     return er_random_graph<GT, NodeInit, ArcInit>(num_nodes, prob_arc, seed, grant_connectivity, node_init, arc_init);
   }
 
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
-                     NodeInit &node_init, ArcInit &arc_init)
+                     NodeInit& node_init, ArcInit& arc_init)
   {
     return er_random_graph<GT, NodeInit, ArcInit>(num_nodes, prob_arc, get_random_seed(), grant_connectivity,
                                                   node_init, arc_init);
@@ -371,7 +371,7 @@ namespace Designar
 
   template <class GT, class NodeInit, class ArcInit>
   GT er_random_graph(nat_t num_nodes, real_t prob_arc, bool grant_connectivity,
-                     NodeInit &&node_init, ArcInit &&arc_init)
+                     NodeInit&& node_init, ArcInit&& arc_init)
   {
     return er_random_graph<GT, NodeInit, ArcInit>(num_nodes, prob_arc, grant_connectivity, node_init, arc_init);
   }
