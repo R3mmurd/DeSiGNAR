@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <array.hpp>
 #include <containeralgorithms.hpp>
 #include <setalgorithms.hpp>
@@ -44,12 +46,25 @@ namespace Designar
         static constexpr nat_t MAX_LEVEL = 32;
         static constexpr real_t P = 0.5;
 
+        /** `key` is a `std::optional<Key>` rather than a plain `Key key;`
+            — `header` (the one node built via the level-only
+            constructor) never actually has its key read anywhere in this
+            file, so requiring `Key` to be default-constructible purely
+            to give the header node *some* key value was unnecessary (the
+            same class of needless requirement DynArray used to impose on
+            its own element type). */
         struct Node
         {
-            Key key;
+            std::optional<Key> key;
             DynArray<Node*> forward;
 
             Node(const Key& k, nat_t lvl) : key(k), forward(lvl, nullptr)
+            {
+                // empty
+            }
+
+            Node(Key&& k, nat_t lvl)
+                : key(std::forward<Key>(k)), forward(lvl, nullptr)
             {
                 // empty
             }
@@ -117,7 +132,7 @@ namespace Designar
             for (int_t i = int_t(level) - 1; i >= 0; --i)
             {
                 while (curr->forward[i] != nullptr &&
-                       cmp(curr->forward[i]->key, k))
+                       cmp(*curr->forward[i]->key, k))
                 {
                     curr = curr->forward[i];
                 }
@@ -267,7 +282,7 @@ namespace Designar
             DynArray<Node*> update = locate_update(k);
             Node* curr = update[0]->forward[0];
 
-            if (curr != nullptr && !cmp(k, curr->key) && !cmp(curr->key, k))
+            if (curr != nullptr && !cmp(k, *curr->key) && !cmp(*curr->key, k))
             {
                 return nullptr; // duplicate
             }
@@ -293,12 +308,51 @@ namespace Designar
             }
 
             ++num_items;
-            return &n->key;
+            return &*n->key;
+        }
+
+        Key* insert(Key&& k)
+        {
+            DynArray<Node*> update = locate_update(k);
+            Node* curr = update[0]->forward[0];
+
+            if (curr != nullptr && !cmp(k, *curr->key) && !cmp(*curr->key, k))
+            {
+                return nullptr; // duplicate
+            }
+
+            nat_t new_level = random_level();
+
+            if (new_level > level)
+            {
+                for (nat_t i = level; i < new_level; ++i)
+                {
+                    update[i] = header;
+                }
+
+                level = new_level;
+            }
+
+            Node* n = new Node(std::forward<Key>(k), new_level);
+
+            for (nat_t i = 0; i < new_level; ++i)
+            {
+                n->forward[i] = update[i]->forward[i];
+                update[i]->forward[i] = n;
+            }
+
+            ++num_items;
+            return &*n->key;
         }
 
         Key* append(const Key& k)
         {
             return insert(k);
+        }
+
+        Key* append(Key&& k)
+        {
+            return insert(std::forward<Key>(k));
         }
 
         Key* search(const Key& k)
@@ -308,7 +362,7 @@ namespace Designar
             for (int_t i = int_t(level) - 1; i >= 0; --i)
             {
                 while (curr->forward[i] != nullptr &&
-                       cmp(curr->forward[i]->key, k))
+                       cmp(*curr->forward[i]->key, k))
                 {
                     curr = curr->forward[i];
                 }
@@ -316,9 +370,9 @@ namespace Designar
 
             curr = curr->forward[0];
 
-            if (curr != nullptr && !cmp(k, curr->key) && !cmp(curr->key, k))
+            if (curr != nullptr && !cmp(k, *curr->key) && !cmp(*curr->key, k))
             {
-                return &curr->key;
+                return &*curr->key;
             }
 
             return nullptr;
@@ -333,6 +387,12 @@ namespace Designar
         {
             Key* found = search(k);
             return found != nullptr ? found : insert(k);
+        }
+
+        Key* search_or_insert(Key&& k)
+        {
+            Key* found = search(k);
+            return found != nullptr ? found : insert(std::forward<Key>(k));
         }
 
         Key& find(const Key& k)
@@ -364,7 +424,7 @@ namespace Designar
             DynArray<Node*> update = locate_update(k);
             Node* curr = update[0]->forward[0];
 
-            if (curr == nullptr || cmp(k, curr->key) || cmp(curr->key, k))
+            if (curr == nullptr || cmp(k, *curr->key) || cmp(*curr->key, k))
             {
                 return false;
             }
@@ -397,7 +457,7 @@ namespace Designar
                 throw std::underflow_error("SkipList is empty");
             }
 
-            return header->forward[0]->key;
+            return *header->forward[0]->key;
         }
 
         const Key& max() const
@@ -417,7 +477,7 @@ namespace Designar
                 }
             }
 
-            return curr->key;
+            return *curr->key;
         }
 
         class Iterator : public ForwardIterator<Iterator, Key>
@@ -456,7 +516,7 @@ namespace Designar
                     throw std::overflow_error("There is not current element");
                 }
 
-                return curr->key;
+                return *curr->key;
             }
 
             const Key& get_current() const
@@ -466,7 +526,7 @@ namespace Designar
                     throw std::overflow_error("There is not current element");
                 }
 
-                return curr->key;
+                return *curr->key;
             }
 
             void next()

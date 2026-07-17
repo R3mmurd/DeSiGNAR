@@ -74,6 +74,51 @@ int main()
     SkipList<int_t> sl4 = std::move(sl3);
     assert(sl4.search(99999) != nullptr);
 
+    // header (the one Node built via the level-only constructor) used to
+    // unconditionally default-construct a Key, even though its key is
+    // never read by anything in this file — fixed via std::optional<Key>.
+    // insert()/append()/search_or_insert() also gained Key&& overloads,
+    // matching every other tree/set in this library. Exercised end to
+    // end with a Key that has no default constructor and is move-only.
+    {
+        struct NoDefaultKey
+        {
+            int_t value;
+
+            NoDefaultKey() = delete;
+
+            explicit NoDefaultKey(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            NoDefaultKey(const NoDefaultKey&) = delete;
+            NoDefaultKey& operator=(const NoDefaultKey&) = delete;
+            NoDefaultKey(NoDefaultKey&&) = default;
+            NoDefaultKey& operator=(NoDefaultKey&&) = default;
+
+            bool operator<(const NoDefaultKey& o) const
+            {
+                return value < o.value;
+            }
+        };
+
+        SkipList<NoDefaultKey> sl5;
+
+        for (int_t i = 0; i < 100; ++i)
+        {
+            sl5.insert(NoDefaultKey(i));
+        }
+
+        assert(sl5.search(NoDefaultKey(50)) != nullptr);
+        assert(sl5.search(NoDefaultKey(9999)) == nullptr);
+        assert(sl5.remove(NoDefaultKey(50)));
+        assert(sl5.search(NoDefaultKey(50)) == nullptr);
+
+        cout << "SkipList: non-default-constructible, move-only Key "
+                "Everything ok!\n";
+    }
+
     cout << "SkipList: Everything ok!\n";
     return 0;
 }
