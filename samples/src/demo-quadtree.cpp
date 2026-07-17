@@ -35,5 +35,14 @@ int main()
 
     cout << endl;
 
+    Point2D target(10., 10.);
+    cout << "search(10, 10): " << (qt.search(target) ? "found" : "not found")
+         << endl;
+
+    qt.remove(target);
+    cout << "after remove(10, 10), search(10, 10): "
+         << (qt.search(target) ? "found" : "not found") << endl;
+    cout << "total points: " << qt.size() << endl;
+
     return 0;
 }

@@ -295,12 +295,86 @@ namespace Designar
             return found;
         }
 
+        /** Whether `p` (compared via PointT::operator==, not merely
+            boundary containment) is stored anywhere in this node or its
+            descendants. A subdivided node's own `points` array can still
+            hold points inserted before it subdivided — subdivide() does
+            not redistribute them into the new children — so, exactly
+            like query_range(), this checks `points` unconditionally
+            (leaf or not) rather than only inside the is_leaf() branch. */
+        bool search(const PointT& p) const
+        {
+            if (!boundary.contains(p))
+            {
+                return false;
+            }
+
+            for (nat_t i = 0; i < points.size(); ++i)
+            {
+                if (points[i] == p)
+                {
+                    return true;
+                }
+            }
+
+            if (is_leaf())
+            {
+                return false;
+            }
+
+            return northwest->search(p) || northeast->search(p) ||
+                   southwest->search(p) || southeast->search(p);
+        }
+
+        /** Removes `p` if present, returning whether it was found. Checks
+            this node's own `points` first (see search()'s comment on why
+            a non-leaf node can still hold points directly), then
+            recurses into the children. After a successful removal from a
+            child subtree, this node tries to collapse back into a leaf
+            (try_merge()) if all four children are themselves leaves
+            whose combined points, together with this node's own, would
+            still fit in a single node — the same shape a fresh
+            insert()-only tree over the surviving points would have
+            settled into, so a tree that has had points removed does not
+            carry indefinitely many needlessly-subdivided
+            empty/near-empty nodes. */
+        bool remove(const PointT& p)
+        {
+            if (!boundary.contains(p))
+            {
+                return false;
+            }
+
+            for (nat_t i = 0; i < points.size(); ++i)
+            {
+                if (points[i] == p)
+                {
+                    points.remove_pos(i);
+                    return true;
+                }
+            }
+
+            if (is_leaf())
+            {
+                return false;
+            }
+
+            bool removed = northwest->remove(p) || northeast->remove(p) ||
+                           southwest->remove(p) || southeast->remove(p);
+
+            if (removed)
+            {
+                try_merge();
+            }
+
+            return removed;
+        }
+
         /** Total number of points stored anywhere in this node or its
             descendants (an O(number of nodes) traversal, not O(1) — this
-            quadtree does not cache a running count, matching how points
-            can only be added, never removed, so callers that need the
-            count on a hot path should track it themselves at insert()
-            time). */
+            quadtree does not cache a running count, so callers that need
+            the count on a hot path should track it themselves at
+            insert()/remove() time). */
         nat_t size() const
         {
             nat_t total = points.size();
@@ -319,6 +393,49 @@ namespace Designar
         bool is_empty() const
         {
             return is_leaf() && points.is_empty();
+        }
+
+    private:
+        /** Collapses this node's four children back into it (becoming a
+            leaf again) if every child is itself already a leaf and their
+            combined point count, together with whatever this node
+            already holds directly in its own `points` (see search()'s
+            comment on why a non-leaf node can hold points of its own),
+            still fits within NODE_CAPACITY — mirrors subdivide()'s own
+            condition in reverse, so a tree that has had points removed
+            converges to the same shape a fresh insert()-only build over
+            the surviving points would have. Only ever called right after
+            a successful remove() beneath this node, so this node itself
+            is never a leaf here. */
+        void try_merge()
+        {
+            if (!northwest->is_leaf() || !northeast->is_leaf() ||
+                !southwest->is_leaf() || !southeast->is_leaf())
+            {
+                return;
+            }
+
+            nat_t total = points.size() + northwest->points.size() +
+                          northeast->points.size() + southwest->points.size() +
+                          southeast->points.size();
+
+            if (total > NODE_CAPACITY)
+            {
+                return;
+            }
+
+            QuadTree* children[4] = {northwest, northeast, southwest,
+                                     southeast};
+
+            for (nat_t c = 0; c < 4; ++c)
+            {
+                for (nat_t i = 0; i < children[c]->points.size(); ++i)
+                {
+                    points.append(children[c]->points[i]);
+                }
+            }
+
+            destroy();
         }
     };
 
