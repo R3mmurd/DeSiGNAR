@@ -1074,6 +1074,39 @@ namespace Designar
         return p->get_rchild();
     }
 
+    /** Plain BST descent, shared by every tree built on BaseBinTreeNode
+        (AVLTree, RbTree, SplayTree, RandomizedTree, RankedAVLTree, Treap,
+        RankedTreap) — search is the one tree operation that never needs
+        any of what makes those trees differ from each other
+        (rebalancing, coloring, priorities, counts), so a single generic
+        version here serves all of them. Heterogeneous in the probe type
+        `K` (not necessarily `BinTreeNode::KeyType`) specifically so a
+        tree can be searched by a bare key that only *compares* like a
+        stored key, without needing to construct a full stored-key value
+        first — see GenMap::search()/find()/has()/remove() (map.hpp),
+        which used to construct a full MapKey<Key, Value> probe pair
+        purely to search, requiring `Value` to be default-constructible
+        for no algorithmic reason at all. */
+    template <class BinTreeNode, typename K, class Cmp>
+    BinTreeNode* generic_bst_search_by(BinTreeNode* r, const K& k, Cmp& cmp)
+    {
+        if (r == BinTreeNode::null)
+        {
+            return BinTreeNode::null;
+        }
+
+        if (cmp(k, KEY(r)))
+        {
+            return generic_bst_search_by<BinTreeNode>(L(r), k, cmp);
+        }
+        else if (cmp(KEY(r), k))
+        {
+            return generic_bst_search_by<BinTreeNode>(R(r), k, cmp);
+        }
+
+        return r;
+    }
+
     template <typename NodeInfo, class CommonGraphNodeArc>
     class BaseGraphNode : public CommonGraphNodeArc
     {

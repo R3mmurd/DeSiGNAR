@@ -112,7 +112,14 @@ namespace Designar
             stops (key found, or the correct empty spot reached), the node it
             stopped at is stitched together with the accumulated left/right
             trees and returned as the new root. */
-        static Node* splay(Node* t, const Key& k, Cmp& cmp)
+        /** Templated on the probe type `K` (deduced as `Key` at every
+            existing call site) rather than fixed to `const Key&`, purely
+            so search_by() below can reuse this exact splaying logic for
+            a heterogeneous probe too — `k` is only ever compared via
+            `cmp`, never stored, so nothing here actually depended on `K`
+            being `Key` in the first place. */
+        template <typename K>
+        static Node* splay(Node* t, const K& k, Cmp& cmp)
         {
             if (t == Node::null)
             {
@@ -350,6 +357,35 @@ namespace Designar
         const Key* search(const Key& k) const
         {
             return const_cast<SplayTree*>(this)->search(k);
+        }
+
+        /** Heterogeneous lookup: same splaying behavior as search(), just
+            probed with anything comparable to `Key` via `cmp` rather than
+            `Key` itself — see map.hpp's GenMap::search(), which needs
+            exactly this to avoid constructing a full MapKey<Key, Value>
+            probe pair purely to look a key up. */
+        template <typename K>
+        Key* search_by(const K& k)
+        {
+            if (root == Node::null)
+            {
+                return nullptr;
+            }
+
+            root = splay(root, k, cmp);
+
+            if (cmp(k, KEY(root)) || cmp(KEY(root), k))
+            {
+                return nullptr;
+            }
+
+            return &KEY(root);
+        }
+
+        template <typename K>
+        const Key* search_by(const K& k) const
+        {
+            return const_cast<SplayTree*>(this)->search_by(k);
         }
 
         Key& find(const Key& k)

@@ -182,6 +182,56 @@ namespace Designar
         return sequential_search<T, ArrayType, Cmp>(a, k, cmp);
     }
 
+    /** Heterogeneous counterparts of binary_search()/sequential_search():
+        the probe `k` is a *different* type `K` than the array's own
+        element type `T`, compared via `cmp(k, a.at(i))`/`cmp(a.at(i), k)`
+        exactly like the homogeneous versions — the algorithm itself never
+        actually needed `k` and the array elements to be the same type,
+        only `Cmp` did (by being declared as a fixed `Cmp<T,T>` in the
+        signature). Used by GenMap's search()/find()/has()/remove() to
+        look a key up directly, without ever constructing a full
+        MapKey<Key, Value> probe pair — which used to require `Value` to
+        be default-constructible purely to have *something* to put in the
+        probe's unused second field. */
+    template <typename T, template <typename> class ArrayType, typename K,
+              class Cmp>
+    int_t binary_search_by(const ArrayType<T>& a, const K& k, int_t l, int_t r,
+                           Cmp& cmp)
+    {
+        if (l > r)
+        {
+            return l;
+        }
+
+        int_t m = (l + r) / 2;
+
+        if (cmp(k, a.at(m)))
+        {
+            return binary_search_by(a, k, l, m - 1, cmp);
+        }
+        else if (cmp(a.at(m), k))
+        {
+            return binary_search_by(a, k, m + 1, r, cmp);
+        }
+
+        return m;
+    }
+
+    template <typename T, template <typename> class ArrayType, typename K,
+              class Cmp>
+    int_t sequential_search_by(const ArrayType<T>& a, const K& k, int_t l,
+                               int_t r, Cmp& cmp)
+    {
+        int_t i = l;
+
+        while (i <= r && !cmp(k, a.at(i)))
+        {
+            ++i;
+        }
+
+        return i;
+    }
+
     /** The shared core of insertion_sort() and shell_sort(): moves a[i]
         leftward `gap` positions at a time until it reaches its correct
         place (per `cmp`) among the elements `gap` apart from it.

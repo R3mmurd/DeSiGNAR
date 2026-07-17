@@ -199,6 +199,35 @@ namespace Designar
         {
             return search(item, 0, array.size() - 1);
         }
+
+        /** Heterogeneous lookup: `k` (of any type `K`, not necessarily
+            `Key` itself) is compared directly against each stored `Key`
+            via `cmp` — `cmp` need only overload `operator()` for the
+            `(K, Key)`/`(Key, K)` combinations actually used here, it does
+            not need `K` and `Key` to be the same type. This is what lets
+            GenMap (map.hpp) look an entry up by a bare `Key` without ever
+            constructing a full `MapKey<Key, Value>` probe pair, which
+            used to require `Value` to be default-constructible purely to
+            have *something* in the probe's unused second field. */
+        template <typename K>
+        Key* search_by(const K& k)
+        {
+            int_t pos = binary_search_by(array, k, 0, array.size() - 1, cmp);
+
+            if (pos == array.size())
+            {
+                return nullptr;
+            }
+
+            const Key& candidate = array.at(pos);
+
+            if (cmp(k, candidate) || cmp(candidate, k))
+            {
+                return nullptr;
+            }
+
+            return &array[pos];
+        }
     };
 
     template <typename Key, class Cmp>
@@ -302,6 +331,23 @@ namespace Designar
         {
             quicksort(array, 0, array.size() - 1, cmp);
             return search(item, 0, array.size() - 1);
+        }
+
+        /** @see SortedArraySetOp::search_by — same heterogeneous-lookup
+            purpose, via a linear scan (matching this class's own
+            unsorted search()) rather than binary search. */
+        template <typename K>
+        Key* search_by(const K& k)
+        {
+            for (nat_t i = 0; i < array.size(); ++i)
+            {
+                if (!cmp(k, array[i]) && !cmp(array[i], k))
+                {
+                    return &array[i];
+                }
+            }
+
+            return nullptr;
         }
     };
 

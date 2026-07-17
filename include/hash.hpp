@@ -493,6 +493,48 @@ namespace Designar
             return search_in_list(list, k);
         }
 
+        /** Heterogeneous lookup: probes with a bare `k` of any type `K`
+            that only *compares* like a stored `Key` (via `cmp`), not one
+            that has to actually construct a full `Key`. Unlike the BST
+            trees' search_by() (nodesdef.hpp's generic_bst_search_by,
+            which only ever needed a heterogeneous *comparator*), a hash
+            table also needs to *hash* the probe to find its bucket, and
+            this table's own `hash_fct` is fixed to hash a full `Key` —
+            so the caller must supply a `key_hash_fct` that hashes `K` the
+            same way `hash_fct` would hash a `Key` built from it (see
+            GenMap::search()/HashMap's own `fct` member in map.hpp, which
+            is exactly the un-wrapped per-mapped-Key hash function
+            `hash_fct` was built from). */
+        template <typename K, class KeyHashFct>
+        Key* search_by(const K& k, KeyHashFct&& key_hash_fct)
+        {
+            nat_t i = key_hash_fct(k) % BaseArray::get_capacity();
+            List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
+        template <typename K, class KeyHashFct>
+        const Key* search_by(const K& k, KeyHashFct&& key_hash_fct) const
+        {
+            nat_t i = key_hash_fct(k) % BaseArray::get_capacity();
+            const List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
         Key* search_or_insert(const Key& item)
         {
             nat_t i = h(item);

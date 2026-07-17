@@ -393,6 +393,23 @@ namespace Designar
             return result == Node::null ? nullptr : &KEY(result);
         }
 
+        /** @see generic_bst_search_by (nodesdef.hpp) for why this exists:
+            heterogeneous lookup by anything comparable to `Key` via
+            `cmp`, not necessarily `Key` itself. */
+        template <typename K>
+        Key* search_by(const K& k)
+        {
+            Node* result = generic_bst_search_by<Node>(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
+        template <typename K>
+        const Key* search_by(const K& k) const
+        {
+            Node* result = generic_bst_search_by<Node>(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
         Key* search_or_insert(const Key& k)
         {
             return search_or_insert(new Node(k));

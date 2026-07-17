@@ -461,9 +461,24 @@ namespace Designar
             valid index) if `k` is not present. */
         nat_t find_slot(const Key& k) const
         {
+            return find_slot_by(k, hash_fct);
+        }
+
+        /** Heterogeneous counterpart of find_slot(): `k` (of any type `K`)
+            is compared to stored keys via `cmp` and hashed via the
+            caller-supplied `key_hash_fct` rather than this table's own
+            `hash_fct` (which is fixed to hash a full `Key`) — see
+            GenMap::search() (map.hpp), which supplies HashMap's own raw
+            per-mapped-Key hash function here, the exact one `hash_fct`
+            was itself built from. */
+        template <typename K, class KeyHashFct>
+        nat_t find_slot_by(const K& k, KeyHashFct&& key_hash_fct) const
+        {
             nat_t cap = table.size();
-            nat_t h1 = hash_fct(k) & (cap - 1);
-            nat_t h2 = secondary_hash(k);
+            nat_t raw_hash = key_hash_fct(k);
+            nat_t h1 = raw_hash & (cap - 1);
+            nat_t h2 =
+                (2 * ((raw_hash / cap) % (cap / 2))) + 1; // secondary_hash(k)
 
             for (nat_t i = 0; i < cap; ++i)
             {
@@ -482,6 +497,20 @@ namespace Designar
             }
 
             return cap;
+        }
+
+        template <typename K, class KeyHashFct>
+        Key* search_by(const K& k, KeyHashFct&& key_hash_fct)
+        {
+            nat_t idx = find_slot_by(k, key_hash_fct);
+            return idx == table.size() ? nullptr : &*table[idx].key;
+        }
+
+        template <typename K, class KeyHashFct>
+        const Key* search_by(const K& k, KeyHashFct&& key_hash_fct) const
+        {
+            nat_t idx = find_slot_by(k, key_hash_fct);
+            return idx == table.size() ? nullptr : &*table[idx].key;
         }
 
         Key* insert(const Key& k)

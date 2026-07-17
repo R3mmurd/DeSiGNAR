@@ -159,6 +159,23 @@ namespace Designar
         {
             return cmp(p.first, q.first);
         }
+
+        /** Heterogeneous overloads: compare a stored (Key, Value) item
+            directly against a bare Key, in either argument order — what
+            lets every backend's search_by()/find_slot_by() look an entry
+            up without ever materializing a full MapKey<Key, Value> probe
+            pair (which used to require Value to be default-constructible
+            purely to have *something* in the probe's unused second
+            field; see GenMap::search()/find()/has()/remove() below). */
+        bool operator()(const MapKey<Key, Value>& p, const Key& k) const
+        {
+            return cmp(p.first, k);
+        }
+
+        bool operator()(const Key& k, const MapKey<Key, Value>& p) const
+        {
+            return cmp(k, p.first);
+        }
     };
 
     template <typename Key, typename Value, class Cmp, class BaseSet>
@@ -259,60 +276,36 @@ namespace Designar
             return insert(std::forward<Key>(k), std::forward<Value>(v));
         }
 
+        /** Looks `k` up via BaseSet::search_by() — a heterogeneous lookup
+            comparing `k` directly against every stored (Key, Value)
+            item's Key half, never materializing a probe pair at all —
+            rather than the old `Item p = map_key(k, Value());
+            BaseSet::search(p);`, which required `Value` to be
+            default-constructible purely to have *something* to put in
+            the probe's unused second field. HashMap overrides all four
+            of search()/find()/has()/remove() below, since its backend's
+            search_by() additionally needs a hash function for `k` (see
+            HashMap's own overrides further down). */
         Value* search(const Key& k)
         {
-            Item p = map_key(k, Value());
-
-            Item* result = BaseSet::search(p);
-
-            if (result == nullptr)
-            {
-                return nullptr;
-            }
-
-            return &result->second;
+            Item* result = BaseSet::search_by(k);
+            return result == nullptr ? nullptr : &result->second;
         }
 
         Value* search(Key&& k)
         {
-            Item p = map_key(std::forward<Key>(k), Value());
-
-            Item* result = BaseSet::search(p);
-
-            if (result == nullptr)
-            {
-                return nullptr;
-            }
-
-            return &result->second;
+            return search(static_cast<const Key&>(k));
         }
 
         const Value* search(const Key& k) const
         {
-            Item p = map_key(k, Value());
-
-            const Item* result = BaseSet::search(p);
-
-            if (result == nullptr)
-            {
-                return nullptr;
-            }
-
-            return &result->second;
+            const Item* result = BaseSet::search_by(k);
+            return result == nullptr ? nullptr : &result->second;
         }
 
         const Value* search(Key&& k) const
         {
-            Item p = map_key(std::forward<Key>(k), Value());
-
-            const Item* result = BaseSet::search(p);
-
-            if (result == nullptr)
-            {
-                return nullptr;
-            }
-
-            return &result->second;
+            return search(static_cast<const Key&>(k));
         }
 
         Value* search_or_insert(const Key& k, const Value& v)
@@ -352,44 +345,65 @@ namespace Designar
 
         Value& find(const Key& k)
         {
-            Item p = map_key(k, Value());
-            return BaseSet::find(std::move(p)).second;
+            Value* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key does not exist");
+            }
+
+            return *result;
         }
 
         const Value& find(const Key& k) const
         {
-            Item p = map_key(k, Value());
-            return BaseSet::find(std::move(p)).second;
+            const Value* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key does not exist");
+            }
+
+            return *result;
         }
 
         Value& find(Key&& k)
         {
-            Item p = map_key(std::forward<Key>(k), Value());
-            return BaseSet::find(std::move(p)).second;
+            return find(static_cast<const Key&>(k));
         }
 
         const Value& find(Key&& k) const
         {
-            Item p = map_key(std::forward<Key>(k), Value());
-            return BaseSet::find(std::move(p)).second;
+            return find(static_cast<const Key&>(k));
         }
 
         bool has(const Key& k) const
         {
-            Item p = map_key(k, Value());
-            return BaseSet::has(std::move(p));
+            return search(k) != nullptr;
         }
 
         bool has(Key&& k) const
         {
-            Item p = map_key(std::forward<Key>(k), Value());
-            return BaseSet::has(std::move(p));
+            return search(static_cast<const Key&>(k)) != nullptr;
         }
 
+        /** Finds `k` via search_by() (see search() above), then removes
+            using the *real* item that was found — passing a genuinely
+            already-existing (Key, Value) pair back into BaseSet::remove()
+            avoids ever needing to construct a synthetic probe pair at
+            all, since every backend's remove() already re-locates its
+            target purely by comparison (via Cmp), not by pointer
+            identity. */
         bool remove(const Key& k)
         {
-            Item p = map_key(k, Value());
-            return BaseSet::remove(p);
+            Item* result = BaseSet::search_by(k);
+
+            if (result == nullptr)
+            {
+                return false;
+            }
+
+            return BaseSet::remove(*result);
         }
 
         Value& operator[](const Key& k)
@@ -631,6 +645,93 @@ namespace Designar
         {
             BaseMap::swap(map);
             std::swap(fct, map.fct);
+        }
+
+        /** Overrides GenMap::search()/find()/has()/remove(): a hash
+            table's search_by() additionally needs a hash function for
+            the bare probe Key (see BaseHash::search_by()'s own comment
+            in hash.hpp/openhash.hpp), which only HashMap has on hand
+            (`fct`, the raw per-Key hash function the whole table was
+            built from) — GenMap's generic versions call
+            `BaseSet::search_by(k)` with no such function, which works
+            for ArrayMap/TreeMap's backends but does not exist for a hash
+            table backend. */
+        Value* search(const Key& k)
+        {
+            Item* result = BaseHash::search_by(k, fct);
+            return result == nullptr ? nullptr : &result->second;
+        }
+
+        Value* search(Key&& k)
+        {
+            return search(static_cast<const Key&>(k));
+        }
+
+        const Value* search(const Key& k) const
+        {
+            const Item* result = BaseHash::search_by(k, fct);
+            return result == nullptr ? nullptr : &result->second;
+        }
+
+        const Value* search(Key&& k) const
+        {
+            return search(static_cast<const Key&>(k));
+        }
+
+        Value& find(const Key& k)
+        {
+            Value* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key does not exist");
+            }
+
+            return *result;
+        }
+
+        const Value& find(const Key& k) const
+        {
+            const Value* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key does not exist");
+            }
+
+            return *result;
+        }
+
+        Value& find(Key&& k)
+        {
+            return find(static_cast<const Key&>(k));
+        }
+
+        const Value& find(Key&& k) const
+        {
+            return find(static_cast<const Key&>(k));
+        }
+
+        bool has(const Key& k) const
+        {
+            return search(k) != nullptr;
+        }
+
+        bool has(Key&& k) const
+        {
+            return search(static_cast<const Key&>(k)) != nullptr;
+        }
+
+        bool remove(const Key& k)
+        {
+            Item* result = BaseHash::search_by(k, fct);
+
+            if (result == nullptr)
+            {
+                return false;
+            }
+
+            return BaseHash::remove(*result);
         }
 
         HashFctType& get_hash_fct()
