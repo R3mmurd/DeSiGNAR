@@ -15,11 +15,11 @@
 
 #pragma once
 
+#include <stdexcept>
+
 #include <array.hpp>
 #include <set.hpp>
 #include <map.hpp>
-
-#include <stdexcept>
 
 namespace Designar
 {

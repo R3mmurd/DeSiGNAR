@@ -29,12 +29,12 @@
 
 #pragma once
 
-#include <array.hpp>
-#include <map.hpp>
-
 #include <stdexcept>
 #include <functional>
 #include <string>
+
+#include <array.hpp>
+#include <map.hpp>
 
 namespace Designar
 {

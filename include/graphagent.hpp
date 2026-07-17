@@ -14,10 +14,10 @@
 
 #pragma once
 
+#include <future>
+
 #include <concurrentgraph.hpp>
 #include <threadpool.hpp>
-
-#include <future>
 
 namespace Designar
 {

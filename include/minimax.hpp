@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <array.hpp>
-
 #include <algorithm>
 #include <limits>
+
+#include <array.hpp>
 
 namespace Designar
 {

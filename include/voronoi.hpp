@@ -21,10 +21,10 @@
 
 #pragma once
 
+#include <stdexcept>
+
 #include <point2D.hpp>
 #include <array.hpp>
-
-#include <stdexcept>
 
 namespace Designar
 {

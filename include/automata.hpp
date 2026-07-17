@@ -15,13 +15,13 @@
 
 #pragma once
 
+#include <stdexcept>
+#include <string>
+
 #include <array.hpp>
 #include <set.hpp>
 #include <map.hpp>
 #include <sort.hpp>
-
-#include <stdexcept>
-#include <string>
 
 namespace Designar
 {

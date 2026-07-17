@@ -15,11 +15,11 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <array.hpp>
 #include <list.hpp>
 #include <typetraits.hpp>
-
-#include <type_traits>
 
 namespace Designar
 {

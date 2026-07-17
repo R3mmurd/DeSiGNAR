@@ -6,8 +6,9 @@
 
 #include <iostream>
 #include <cassert>
-#include <stringalgorithms.hpp>
 #include <string>
+
+#include <stringalgorithms.hpp>
 #include <random.hpp>
 
 using namespace Designar;

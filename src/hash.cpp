@@ -4,9 +4,9 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <hash.hpp>
-
 #include <random>
+
+#include <hash.hpp>
 
 namespace Designar
 {

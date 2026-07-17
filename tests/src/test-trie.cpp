@@ -6,8 +6,9 @@
 
 #include <iostream>
 #include <cassert>
-#include <trie.hpp>
 #include <string>
+
+#include <trie.hpp>
 
 using namespace Designar;
 using namespace std;

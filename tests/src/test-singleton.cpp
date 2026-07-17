@@ -9,12 +9,12 @@
 
 using namespace std;
 
-#include <singleton.hpp>
-#include <types.hpp>
-
 #include <thread>
 #include <vector>
 #include <unordered_set>
+
+#include <singleton.hpp>
+#include <types.hpp>
 
 using namespace Designar;
 

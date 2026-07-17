@@ -14,12 +14,12 @@
 
 #pragma once
 
-#include <queue.hpp>
-#include <array.hpp>
-
 #include <thread>
 #include <functional>
 #include <future>
+
+#include <queue.hpp>
+#include <array.hpp>
 
 namespace Designar
 {

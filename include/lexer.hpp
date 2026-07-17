@@ -18,10 +18,10 @@
 
 #pragma once
 
-#include <automata.hpp>
-
 #include <stdexcept>
 #include <string>
+
+#include <automata.hpp>
 
 namespace Designar
 {

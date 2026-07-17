@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <array.hpp>
-
 #include <cmath>
 #include <stdexcept>
+
+#include <array.hpp>
 
 namespace Designar
 {

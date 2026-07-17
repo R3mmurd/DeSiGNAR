@@ -13,8 +13,9 @@
 
 #pragma once
 
-#include <graph.hpp>
 #include <mutex>
+
+#include <graph.hpp>
 
 namespace Designar
 {

@@ -6,11 +6,11 @@
 
 #pragma once
 
+#include <new>
+
 #include <setalgorithms.hpp>
 #include <containeralgorithms.hpp>
 #include <iterator.hpp>
-
-#include <new>
 
 namespace Designar
 {

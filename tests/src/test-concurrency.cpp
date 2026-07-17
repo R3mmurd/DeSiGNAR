@@ -6,10 +6,11 @@
 
 #include <iostream>
 #include <cassert>
-#include <concurrentmap.hpp>
-#include <threadpool.hpp>
 #include <atomic>
 #include <vector>
+
+#include <concurrentmap.hpp>
+#include <threadpool.hpp>
 
 using namespace Designar;
 using namespace std;
