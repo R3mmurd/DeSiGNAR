@@ -34,7 +34,17 @@ namespace Designar
             Node* prev = nullptr;
             Node* next = nullptr;
 
-            Node(const Key& k, const Value& v) : key(k), value(v)
+            /** A single forwarding constructor covers all four
+                combinations of lvalue/rvalue Key/Value (matching every
+                other container in this library's const&/&& overload
+                ladder without writing out all four by hand) — nothing
+                here needs to inspect `k`/`v`, only perfectly forward them
+                into `key`/`value`, so `K`/`V` need only be deducible as
+                `Key`/`Value` (or an rvalue thereof), not distinct types
+                in their own right. */
+            template <class K, class V>
+            Node(K&& k, V&& v)
+                : key(std::forward<K>(k)), value(std::forward<V>(v))
             {
                 // empty
             }
@@ -94,6 +104,36 @@ namespace Designar
             index.remove(victim->key);
             delete victim;
             --num_items;
+        }
+
+        /** @see put()'s four overloads — `K`/`V` are always deduced as
+            `Key`/`Value` (or an rvalue thereof), forwarded through to
+            either Node's constructor (new entry) or a move/copy
+            assignment (existing entry), whichever the caller's argument
+            value category calls for. */
+        template <class K, class V>
+        void put_impl(K&& k, V&& v)
+        {
+            Node** np = index.search(k);
+
+            if (np != nullptr)
+            {
+                Node* n = *np;
+                n->value = std::forward<V>(v);
+                unlink(n);
+                push_front(n);
+                return;
+            }
+
+            if (cap > 0 && num_items == cap)
+            {
+                evict_tail();
+            }
+
+            Node* n = new Node(std::forward<K>(k), std::forward<V>(v));
+            push_front(n);
+            index.insert(n->key, n);
+            ++num_items;
         }
 
         void destroy_all()
@@ -199,29 +239,29 @@ namespace Designar
 
         /** Inserts or updates `k` -> `v`, marking it most-recently-used;
             evicts the least-recently-used entry first if the cache is at
-            capacity and `k` is not already present. */
+            capacity and `k` is not already present. Four overloads (not
+            just `const&`) so a move-only `Value` (e.g. `std::unique_ptr`,
+            `std::future`) can be cached at all — the update-existing-key
+            path move- or copy-assigns to match whichever overload was
+            called. */
         void put(const Key& k, const Value& v)
         {
-            Node** np = index.search(k);
+            put_impl(k, v);
+        }
 
-            if (np != nullptr)
-            {
-                Node* n = *np;
-                n->value = v;
-                unlink(n);
-                push_front(n);
-                return;
-            }
+        void put(Key&& k, const Value& v)
+        {
+            put_impl(std::forward<Key>(k), v);
+        }
 
-            if (cap > 0 && num_items == cap)
-            {
-                evict_tail();
-            }
+        void put(const Key& k, Value&& v)
+        {
+            put_impl(k, std::forward<Value>(v));
+        }
 
-            Node* n = new Node(k, v);
-            push_front(n);
-            index.insert(k, n);
-            ++num_items;
+        void put(Key&& k, Value&& v)
+        {
+            put_impl(std::forward<Key>(k), std::forward<Value>(v));
         }
 
         void clear()
