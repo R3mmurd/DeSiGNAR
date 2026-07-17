@@ -160,7 +160,7 @@ namespace Designar
 
             for (nat_t j = T; j < y->keys.size(); ++j)
             {
-                z->keys.append(y->keys[j]);
+                z->keys.append(std::move(y->keys[j]));
             }
 
             if (!y->leaf)
@@ -171,7 +171,7 @@ namespace Designar
                 }
             }
 
-            Key mid = y->keys[T - 1];
+            Key mid = std::move(y->keys[T - 1]);
 
             truncate(y->keys, T - 1);
 
@@ -276,7 +276,7 @@ namespace Designar
 
             for (nat_t j = 0; j < right->keys.size(); ++j)
             {
-                left->keys.append(right->keys[j]);
+                left->keys.append(std::move(right->keys[j]));
             }
 
             if (!left->leaf)
@@ -308,7 +308,7 @@ namespace Designar
             if (i > 0 && x->children[i - 1]->num_keys() > MIN_KEYS)
             {
                 Node* left = x->children[i - 1];
-                c->keys.insert(0, x->keys[i - 1]);
+                c->keys.insert(0, std::move(x->keys[i - 1]));
                 x->keys[i - 1] = left->keys.remove_last();
 
                 if (!c->leaf)
@@ -320,7 +320,7 @@ namespace Designar
                      x->children[i + 1]->num_keys() > MIN_KEYS)
             {
                 Node* right = x->children[i + 1];
-                c->keys.append(x->keys[i]);
+                c->keys.append(std::move(x->keys[i]));
                 x->keys[i] = right->keys.remove_pos_closing_breach(0);
 
                 if (!c->leaf)
