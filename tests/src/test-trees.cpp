@@ -205,6 +205,59 @@ int main()
         cout << "SplayTree: repeated-access stress ok!\n";
     }
 
+    // Every one of these trees shares BaseBinTreeNode (nodesdef.hpp) as
+    // its node representation, whose internal sentinel/head bookkeeping
+    // node used to unconditionally default-construct a `Key` — even
+    // though that node's key is never read by any tree algorithm — so a
+    // Key type with no default constructor at all could not be used with
+    // *any* of these trees. `NoDefaultKey` below has an explicitly
+    // deleted default constructor, only a value constructor and
+    // comparison, exercising exactly that fixed path end to end (insert,
+    // search, remove) for the two most commonly used trees.
+    {
+        struct NoDefaultKey
+        {
+            int_t value;
+
+            NoDefaultKey() = delete;
+
+            explicit NoDefaultKey(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            bool operator<(const NoDefaultKey& o) const
+            {
+                return value < o.value;
+            }
+        };
+
+        AVLTree<NoDefaultKey> avl;
+        avl.insert(NoDefaultKey(5));
+        avl.insert(NoDefaultKey(3));
+        avl.insert(NoDefaultKey(8));
+        avl.insert(NoDefaultKey(1));
+
+        assert(avl.search(NoDefaultKey(5)) != nullptr);
+        assert(avl.search(NoDefaultKey(9)) == nullptr);
+
+        avl.remove(NoDefaultKey(3));
+        assert(avl.search(NoDefaultKey(3)) == nullptr);
+        assert(avl.search(NoDefaultKey(5)) != nullptr);
+
+        RbTree<NoDefaultKey> rb;
+        rb.insert(NoDefaultKey(5));
+        rb.insert(NoDefaultKey(3));
+        rb.insert(NoDefaultKey(8));
+
+        assert(rb.search(NoDefaultKey(8)) != nullptr);
+        rb.remove(NoDefaultKey(8));
+        assert(rb.search(NoDefaultKey(8)) == nullptr);
+
+        cout << "AVLTree/RbTree: non-default-constructible Key Everything "
+                "ok!\n";
+    }
+
     cout << "Everything ok!\n";
     return 0;
 }

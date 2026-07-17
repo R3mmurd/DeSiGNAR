@@ -145,6 +145,45 @@ int main()
         assert(counting_heap.get() == 1);
     }
 
+    // LHeap's head_node (its own internal bookkeeping node, unrelated to
+    // any value the heap actually stores) used to unconditionally
+    // default-construct a `Key`, and key_offset() (used by remove(Key&))
+    // separately did the same via a throwaway placement-constructed
+    // Node — both fixed, so a Key with no default constructor at all now
+    // works end to end: insert, top(), and remove(Key&) (which is what
+    // exercises key_to_node()/key_offset() specifically).
+    {
+        struct NoDefaultKey
+        {
+            int_t value;
+
+            NoDefaultKey() = delete;
+
+            explicit NoDefaultKey(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            bool operator<(const NoDefaultKey& o) const
+            {
+                return value < o.value;
+            }
+        };
+
+        LHeap<NoDefaultKey> h;
+        const NoDefaultKey& a = h.insert(NoDefaultKey(5));
+        h.insert(NoDefaultKey(3));
+        h.insert(NoDefaultKey(8));
+
+        assert(h.top().value == 3);
+
+        h.remove(const_cast<NoDefaultKey&>(
+            a)); // exercises key_to_node()/key_offset()
+        assert(h.top().value == 3);
+
+        cout << "LHeap: non-default-constructible Key Everything ok!\n";
+    }
+
     cout << "Everything ok!\n";
 
     return 0;

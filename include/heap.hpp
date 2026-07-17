@@ -423,46 +423,45 @@ namespace Designar
     {
         using Node = HeapNode<Key>;
 
-        /** Computes the byte offset of a Node's `key` member exactly once
-            (the offset is the same for every Node, cached in a function-
-            local static — thread-safe to initialize per C++11's "magic
-            statics") by actually constructing a real, live Node on the
-            stack and measuring the distance between its address and its
-            key's address.
+        /** The byte offset of a Node's `key` member — the same for every
+            Node of this type, so it only ever needs to be measured once
+            and is then cached in `offset_cache()`'s function-local static
+            (thread-safe to initialize per C++11's "magic statics").
 
-            The previous implementation computed this same offset via
-            `(size_t)&(KEY((Node *)0))` — reading a member's address through
-            a *null* Node pointer. That never actually dereferences memory
-            (the compiler only ever computes an address, `this + offset`,
-            never loads through it), so it happens to work on every
-            mainstream compiler, but it is undefined behavior in the
-            standard's abstract machine (forming a reference to a member of
-            a null object), and UndefinedBehaviorSanitizer correctly flags
-            it as "member access within null pointer" on every single call
-            to remove(Key&) — which would make this library's own test
-            suite fail immediately under UBSan, exactly backwards from the
-            point of adding sanitizer coverage. Measuring the offset from a
-            genuinely alive object sidesteps the null-object question
-            entirely, for the one-time cost of constructing and destroying
-            a throwaway Node the first time key_to_node() is ever called. */
-        static nat_t key_offset()
+            An earlier version of this function measured the offset by
+            constructing a throwaway `Node()` purely to have "a real
+            object" to measure from — which required `Key` to be
+            default-constructible for no algorithmic reason at all (this
+            offset is a pure class-layout property, not something that
+            depends on which `Key` value a Node happens to hold). Instead,
+            `cache_key_offset()` is called with an already-real node the
+            very first time one is ever built (see insert_node()) — by the
+            time key_to_node() below is ever called (from remove(Key&),
+            which can only receive a key that was already inserted), the
+            offset is guaranteed to already be cached. */
+        static nat_t& offset_cache()
         {
-            alignas(Node) unsigned char storage[sizeof(Node)];
-            Node* p = ::new (static_cast<void*>(storage)) Node();
-
-            nat_t offset = reinterpret_cast<unsigned char*>(&KEY(p)) -
-                           reinterpret_cast<unsigned char*>(p);
-
-            p->~Node();
+            static nat_t offset = 0;
             return offset;
+        }
+
+        static void cache_key_offset(Node* real_node)
+        {
+            static bool cached = false;
+
+            if (!cached)
+            {
+                offset_cache() =
+                    reinterpret_cast<unsigned char*>(&KEY(real_node)) -
+                    reinterpret_cast<unsigned char*>(real_node);
+                cached = true;
+            }
         }
 
         static Node* key_to_node(Key& k)
         {
-            static const nat_t offset = key_offset();
-
             return reinterpret_cast<Node*>(
-                reinterpret_cast<unsigned char*>(&k) - offset);
+                reinterpret_cast<unsigned char*>(&k) - offset_cache());
         }
 
         static bool is_in_list(Node* p)
@@ -743,6 +742,8 @@ namespace Designar
         Node* insert_node(Node* p)
         {
             assert(p->is_leaf());
+
+            cache_key_offset(p);
 
             if (root == nullptr)
             {

@@ -9,6 +9,8 @@
 #include <types.hpp>
 #include <iterator.hpp>
 
+#include <new>
+
 namespace Designar
 {
 
@@ -921,33 +923,88 @@ namespace Designar
               BinTreeNodeNullValue NULL_VALUE>
     class BaseBinTreeNode
     {
-        static DerivedNodeType sentinel_node;
-
     public:
         using KeyType = Key;
 
         static DerivedNodeType* const null;
 
     private:
-        Key key;
+        /** Manual storage for `key`, rather than a plain `Key key;`
+            member: a bookkeeping-only node — built via the
+            BinTreeNodeCtor overload, used for the shared `sentinel_node`
+            below and for every tree's own `head`/`head_node` member —
+            never actually has its key read by any algorithm in this
+            library (confirmed directly: nothing calls get_key()/KEY() on
+            `null` or on any tree's `head`). Requiring `Key` to be
+            default-constructible purely to give such a node *some* key
+            value is therefore unnecessary — the same class of needless
+            requirement DynArray used to impose on its own element type.
+            `has_key` tracks whether `key_storage` currently holds a live
+            object, so the destructor knows whether `~Key()` needs to
+            run; `std::launder` is required to legally re-obtain a typed
+            pointer into storage that was placement-new'd after this
+            object's own lifetime began (see [basic.life] — without it, a
+            sufficiently aggressive optimizer is permitted to assume
+            `key_storage`'s bytes never changed since this BaseBinTreeNode
+            was constructed). */
+        alignas(Key) unsigned char key_storage[sizeof(Key)];
+        bool has_key;
         DerivedNodeType* lchild;
         DerivedNodeType* rchild;
 
+        Key& key_ref()
+        {
+            return *std::launder(reinterpret_cast<Key*>(key_storage));
+        }
+
+        const Key& key_ref() const
+        {
+            return *std::launder(reinterpret_cast<const Key*>(key_storage));
+        }
+
+        /** The sentinel `null` (in SENTINEL mode) refers to, behind a
+            function-local static rather than a class-level static data
+            member specifically so `if constexpr` can discard the whole
+            branch — including the sentinel's construction — for
+            NULLPTR-mode instantiations (only LHeap uses NULLPTR). A
+            class-level `static DerivedNodeType sentinel_node;` would
+            require *every* instantiation to define it regardless of
+            NULL_VALUE, since a plain (non-`if constexpr`) ternary's
+            untaken branch still has to be a well-formed expression. */
+        static DerivedNodeType* null_ptr()
+        {
+            if constexpr (NULL_VALUE == BinTreeNodeNullValue::NULLPTR)
+            {
+                return nullptr;
+            }
+            else
+            {
+                static DerivedNodeType sentinel_node(
+                    BinTreeNodeCtor::SENTINEL_CTOR);
+                return &sentinel_node;
+            }
+        }
+
     public:
-        BaseBinTreeNode() : key(), lchild(null), rchild(null)
+        /** The bookkeeping-node constructor: leaves `key` genuinely
+            unconstructed. get_key()/KEY() must never be called on a node
+            built this way — nothing in this library ever does (a
+            sentinel/head node's key is never meaningful, only its
+            child/parent pointers are). */
+        BaseBinTreeNode() : has_key(false), lchild(null), rchild(null)
         {
             // empty
         }
 
-        BaseBinTreeNode(const Key& k) : key(k), lchild(null), rchild(null)
+        BaseBinTreeNode(const Key& k)
+            : has_key(true), lchild(null), rchild(null)
         {
-            // empty
+            new (key_storage) Key(k);
         }
 
-        BaseBinTreeNode(Key&& k)
-            : key(std::forward<Key>(k)), lchild(null), rchild(null)
+        BaseBinTreeNode(Key&& k) : has_key(true), lchild(null), rchild(null)
         {
-            // empty
+            new (key_storage) Key(std::forward<Key>(k));
         }
 
         BaseBinTreeNode(BinTreeNodeCtor) : BaseBinTreeNode()
@@ -959,14 +1016,22 @@ namespace Designar
 
         BaseBinTreeNode& operator=(const BaseBinTreeNode&) = delete;
 
+        ~BaseBinTreeNode()
+        {
+            if (has_key)
+            {
+                key_ref().~Key();
+            }
+        }
+
         Key& get_key()
         {
-            return key;
+            return key_ref();
         }
 
         const Key& get_key() const
         {
-            return key;
+            return key_ref();
         }
 
         DerivedNodeType*& get_lchild()
@@ -987,16 +1052,9 @@ namespace Designar
 
     template <typename Key, class DerivedNodeType,
               BinTreeNodeNullValue NULL_VALUE>
-    DerivedNodeType
-        BaseBinTreeNode<Key, DerivedNodeType, NULL_VALUE>::sentinel_node(
-            BinTreeNodeCtor::SENTINEL_CTOR);
-
-    template <typename Key, class DerivedNodeType,
-              BinTreeNodeNullValue NULL_VALUE>
     DerivedNodeType* const
         BaseBinTreeNode<Key, DerivedNodeType, NULL_VALUE>::null =
-            NULL_VALUE == BinTreeNodeNullValue::NULLPTR ? nullptr
-                                                        : &sentinel_node;
+            BaseBinTreeNode<Key, DerivedNodeType, NULL_VALUE>::null_ptr();
 
     template <class BinTreeNode>
     inline typename BinTreeNode::KeyType& KEY(BinTreeNode* p)
