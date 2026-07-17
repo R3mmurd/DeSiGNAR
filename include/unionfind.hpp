@@ -18,122 +18,124 @@
 
 namespace Designar
 {
-  /** Maintains a partition of a universe of keys into disjoint sets,
-      supporting near-constant-amortized-time make_set()/find()/
-      union_sets() via the classic union-by-rank + path-halving
-      combination (either alone gives O(log n) amortized; together they
-      give the (inverse-Ackermann) O(alpha(n)) bound covered in every
-      algorithms course).
+    /** Maintains a partition of a universe of keys into disjoint sets,
+        supporting near-constant-amortized-time make_set()/find()/
+        union_sets() via the classic union-by-rank + path-halving
+        combination (either alone gives O(log n) amortized; together they
+        give the (inverse-Ackermann) O(alpha(n)) bound covered in every
+        algorithms course).
 
-      Unlike the textbook presentation (which operates on plain integer
-      indices 0..n-1 and leaves mapping application-level identifiers to
-      indices as an exercise for the reader), this maps arbitrary Key
-      values to internal indices itself via a HashMap, so it can be used
-      directly with whatever domain the caller is partitioning (graph
-      nodes, string identifiers, ...) — the same spirit as Kruskal's
-      algorithm in graphalgorithms.hpp, which needs exactly this
-      structure internally (there, over Node<GT>* pointers) but builds
-      it in an ad hoc way rather than exposing it as a reusable type. */
-  template <typename Key, class Cmp = std::equal_to<Key>>
-  class DisjointSet
-  {
-    HashMap<Key, nat_t, Cmp> index_of;
-    DynArray<nat_t> parent;
-    DynArray<nat_t> rnk;
-    DynArray<Key> key_of;
-
-    nat_t find_root(nat_t i)
+        Unlike the textbook presentation (which operates on plain integer
+        indices 0..n-1 and leaves mapping application-level identifiers to
+        indices as an exercise for the reader), this maps arbitrary Key
+        values to internal indices itself via a HashMap, so it can be used
+        directly with whatever domain the caller is partitioning (graph
+        nodes, string identifiers, ...) — the same spirit as Kruskal's
+        algorithm in graphalgorithms.hpp, which needs exactly this
+        structure internally (there, over Node<GT>* pointers) but builds
+        it in an ad hoc way rather than exposing it as a reusable type. */
+    template <typename Key, class Cmp = std::equal_to<Key>>
+    class DisjointSet
     {
-      while (parent[i] != i)
-      {
-        parent[i] = parent[parent[i]]; // path halving
-        i = parent[i];
-      }
+        HashMap<Key, nat_t, Cmp> index_of;
+        DynArray<nat_t> parent;
+        DynArray<nat_t> rnk;
+        DynArray<Key> key_of;
 
-      return i;
-    }
+        nat_t find_root(nat_t i)
+        {
+            while (parent[i] != i)
+            {
+                parent[i] = parent[parent[i]]; // path halving
+                i = parent[i];
+            }
 
-    nat_t index_of_existing(const Key& k) const
-    {
-      const nat_t* idx = index_of.search(k);
+            return i;
+        }
 
-      if (idx == nullptr)
-      {
-        throw std::domain_error("Key does not belong to this DisjointSet");
-      }
+        nat_t index_of_existing(const Key& k) const
+        {
+            const nat_t* idx = index_of.search(k);
 
-      return *idx;
-    }
+            if (idx == nullptr)
+            {
+                throw std::domain_error(
+                    "Key does not belong to this DisjointSet");
+            }
 
-  public:
-    DisjointSet() = default;
+            return *idx;
+        }
 
-    /** Adds `k` as a new singleton set, if it is not already present
-        (present keys are left untouched, matching the classic
-        make_set() being a no-op on an already-known element). */
-    void make_set(const Key& k)
-    {
-      if (index_of.search(k) != nullptr)
-      {
-        return;
-      }
+    public:
+        DisjointSet() = default;
 
-      nat_t idx = parent.size();
-      index_of.insert(k, idx);
-      parent.append(idx);
-      rnk.append(0);
-      key_of.append(k);
-    }
+        /** Adds `k` as a new singleton set, if it is not already present
+            (present keys are left untouched, matching the classic
+            make_set() being a no-op on an already-known element). */
+        void make_set(const Key& k)
+        {
+            if (index_of.search(k) != nullptr)
+            {
+                return;
+            }
 
-    bool contains(const Key& k) const
-    {
-      return index_of.search(k) != nullptr;
-    }
+            nat_t idx = parent.size();
+            index_of.insert(k, idx);
+            parent.append(idx);
+            rnk.append(0);
+            key_of.append(k);
+        }
 
-    nat_t num_keys() const
-    {
-      return parent.size();
-    }
+        bool contains(const Key& k) const
+        {
+            return index_of.search(k) != nullptr;
+        }
 
-    /** Returns the representative key of the set containing `k`. Two
-        keys are in the same set exactly when find() returns the same
-        representative for both (see same_set()). */
-    const Key& find(const Key& k)
-    {
-      return key_of[find_root(index_of_existing(k))];
-    }
+        nat_t num_keys() const
+        {
+            return parent.size();
+        }
 
-    bool same_set(const Key& a, const Key& b)
-    {
-      return find_root(index_of_existing(a)) == find_root(index_of_existing(b));
-    }
+        /** Returns the representative key of the set containing `k`. Two
+            keys are in the same set exactly when find() returns the same
+            representative for both (see same_set()). */
+        const Key& find(const Key& k)
+        {
+            return key_of[find_root(index_of_existing(k))];
+        }
 
-    /** Merges the sets containing `a` and `b` (a no-op if they are
-        already the same set). The smaller-rank tree's root is attached
-        under the larger-rank tree's root, which is what keeps every
-        tree's height at O(log n) even without path compression's help. */
-    void union_sets(const Key& a, const Key& b)
-    {
-      nat_t ra = find_root(index_of_existing(a));
-      nat_t rb = find_root(index_of_existing(b));
+        bool same_set(const Key& a, const Key& b)
+        {
+            return find_root(index_of_existing(a)) ==
+                   find_root(index_of_existing(b));
+        }
 
-      if (ra == rb)
-      {
-        return;
-      }
+        /** Merges the sets containing `a` and `b` (a no-op if they are
+            already the same set). The smaller-rank tree's root is attached
+            under the larger-rank tree's root, which is what keeps every
+            tree's height at O(log n) even without path compression's help. */
+        void union_sets(const Key& a, const Key& b)
+        {
+            nat_t ra = find_root(index_of_existing(a));
+            nat_t rb = find_root(index_of_existing(b));
 
-      if (rnk[ra] < rnk[rb])
-      {
-        std::swap(ra, rb);
-      }
+            if (ra == rb)
+            {
+                return;
+            }
 
-      parent[rb] = ra;
+            if (rnk[ra] < rnk[rb])
+            {
+                std::swap(ra, rb);
+            }
 
-      if (rnk[ra] == rnk[rb])
-      {
-        ++rnk[ra];
-      }
-    }
-  };
+            parent[rb] = ra;
+
+            if (rnk[ra] == rnk[rb])
+            {
+                ++rnk[ra];
+            }
+        }
+    };
 
 } // end namespace Designar

@@ -14,3099 +14,3151 @@
 namespace Designar
 {
 
-  /* Depth first based algorithms */
+    /* Depth first based algorithms */
 
-  template <class GT, class Op>
-  void depth_first_traverse_prefix_rec(const GT&, Node<GT>*, Op&);
+    template <class GT, class Op>
+    void depth_first_traverse_prefix_rec(const GT&, Node<GT>*, Op&);
 
-  template <class GT, class Op>
-  void depth_first_traverse_prefix(const GT&, Op& op);
+    template <class GT, class Op>
+    void depth_first_traverse_prefix(const GT&, Op& op);
 
-  template <class GT, class Op>
-  void depth_first_traverse_prefix(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse_prefix<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix_rec(const GT&, Node<GT>*, Op&);
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix(const GT&, Op& op);
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse_suffix<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse(const GT& g, Op& op)
-  {
-    depth_first_traverse_prefix<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse<GT, Op>(g, op);
-  }
-
-  template <class GT>
-  bool depth_first_search_path_rec(const GT&, Node<GT>*, Node<GT>*, Path<GT>&);
-
-  template <class GT>
-  Path<GT> depth_first_search_path(const GT&, Node<GT>*, Node<GT>*);
-
-  template <class GT>
-  bool test_for_cycle(const GT&, Node<GT>*, bool);
-
-  template <class GT>
-  bool has_cycle(const GT&, Node<GT>*);
-
-  template <class GT>
-  bool has_cycle(const GT&);
-
-  template <class GT>
-  bool is_acyclique(const GT&, Node<GT>*);
-
-  template <class GT>
-  bool is_acyclique(const GT&);
-
-  template <class GT>
-  GT invert_digraph(const GT&);
-
-  template <class GT>
-  void build_subgraph_rec(const GT&, Node<GT>*, const GT&);
-
-  template <class GT>
-  SLList<GT> compute_connected_components(const GT&);
-
-  template <class GT>
-  void add_nodes_to_component_rec(const GT&, Node<GT>*, SLList<Node<GT>*>&);
-
-  template <class GT>
-  SLList<SLList<Node<GT>*>> connected_components_node_list(const GT&);
-
-  template <class GT>
-  void compute_cut_nodes_rec(const GT&, Node<GT>*, Arc<GT>&,
-                             SLList<Node<GT>*>&, int_t&);
-
-  template <class GT>
-  SLList<Node<GT>*> compute_cut_nodes(const GT&);
-
-  template <class GT>
-  void paint_cut_nodes_connected_components_rec(const GT&, Node<GT>*, int_t);
-
-  template <class GT>
-  void paint_from_cut_node(const GT&, Node<GT>*, int_t&);
-
-  template <class GT>
-  int_t paint_cut_nodes_subgraphs(const GT&, const SLList<Node<GT>*>&);
-
-  template <class GT>
-  void build_cut_nodes_subgraph_rec(const GT&, Node<GT>*, const GT&, int_t);
-
-  template <class GT>
-  SLList<GT> build_cut_nodes_subgraphs(const GT&);
-
-  template <class GT>
-  std::tuple<GT, SLList<Arc<GT>*>>
-  build_cut_graph(const GT&, const SLList<Node<GT>*>&);
-
-  template <class GT>
-  std::tuple<SLList<GT>, GT, SLList<Arc<GT>*>>
-  compute_cut_nodes_connected_components(const GT&,
-                                         const SLList<Node<GT>*>&);
-
-  template <class GT>
-  void Kosaraju_build_subgraph_rec(const GT&, Node<GT>*, const GT&, nat_t);
-
-  template <class GT>
-  SLList<GT> Kosaraju_compute_strong_connected_components(const GT&);
-
-  template <class GT>
-  SLList<Node<GT>*> df_topological_sort(const GT&);
-
-  /* Breadth first based algorithms */
-
-  template <class GT, class Op>
-  void breadth_first_traverse(const GT&, Node<GT>*, Op&);
-
-  template <class GT, class Op>
-  void breadth_first_traverse(const GT& g, Node<GT>* p, Op&& op = Op())
-  {
-    breadth_first_traverse<GT, Op>(g, p, op);
-  }
-
-  template <class GT, class Op>
-  void breadth_first_traverse(const GT& g, Op& op)
-  {
-    breadth_first_traverse<GT, Op>(g, g.get_first_node(), op);
-  }
-
-  template <class GT, class Op>
-  void breadth_first_traverse(const GT& g, Op&& op = Op())
-  {
-    breadth_first_traverse<GT, Op>(g, op);
-  }
-
-  template <class GT>
-  Path<GT> breadth_first_search_path(const GT& g, Node<GT>*, Node<GT>*);
-
-  template <class GT>
-  SLList<Node<GT>*> bf_topological_sort(const GT&);
-
-  template <class GT>
-  SLList<SLList<Node<GT>*>> topological_ranks(const GT&);
-
-  template <class GT, class Op>
-  void depth_first_traverse_prefix_rec(const GT& g, Node<GT>* p, Op& op)
-  {
-    if (p->is_visited(GraphTag::DEPTH_FIRST))
-      return;
-
-    op(p);
-    p->visit(GraphTag::DEPTH_FIRST);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+    template <class GT, class Op>
+    void depth_first_traverse_prefix(const GT& g, Op&& op = Op())
     {
-      Arc<GT>* a = *it;
-
-      if (a->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      a->visit(GraphTag::DEPTH_FIRST);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      depth_first_traverse_prefix_rec(g, q, op);
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix_rec(const GT& g, Node<GT>* p, Op& op)
-  {
-    if (p->is_visited(GraphTag::DEPTH_FIRST))
-      return;
-
-    p->visit(GraphTag::DEPTH_FIRST);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = *it;
-
-      if (a->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      a->visit(GraphTag::DEPTH_FIRST);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      depth_first_traverse_suffix_rec(g, q, op);
+        depth_first_traverse_prefix<GT, Op>(g, op);
     }
 
-    op(p);
-  }
+    template <class GT, class Op>
+    void depth_first_traverse_suffix_rec(const GT&, Node<GT>*, Op&);
 
-  template <class GT>
-  bool depth_first_search_path_rec(const GT& g, Node<GT>* p, Node<GT>* end,
-                                   Path<GT>& path)
-  {
-    if (p->is_visited(GraphTag::DEPTH_FIRST))
-      return false;
+    template <class GT, class Op>
+    void depth_first_traverse_suffix(const GT&, Op& op);
 
-    p->visit(GraphTag::DEPTH_FIRST);
-
-    path.append(p);
-
-    if (p == end)
-      return true;
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+    template <class GT, class Op>
+    void depth_first_traverse_suffix(const GT& g, Op&& op = Op())
     {
-      Arc<GT>* a = *it;
-
-      if (a->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      a->visit(GraphTag::DEPTH_FIRST);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      if (depth_first_search_path_rec(g, q, end, path))
-        return true;
+        depth_first_traverse_suffix<GT, Op>(g, op);
     }
 
-    path.remove_last_node();
-    return false;
-  }
-
-  template <class GT>
-  bool test_for_cycle(const GT& g, Node<GT>* p, bool has)
-  {
-    if (p->is_visited(GraphTag::DEPTH_FIRST))
-      return has;
-
-    p->visit(GraphTag::DEPTH_FIRST);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+    template <class GT, class Op>
+    void depth_first_traverse(const GT& g, Op& op)
     {
-      Arc<GT>* a = *it;
-
-      if (a->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      a->visit(GraphTag::DEPTH_FIRST);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      if (test_for_cycle(g, q, has) == has)
-        return has;
+        depth_first_traverse_prefix<GT, Op>(g, op);
     }
 
-    p->unvisit(GraphTag::DEPTH_FIRST);
-
-    return !has;
-  }
-
-  template <class GT>
-  bool has_cycle(const GT& g, Node<GT>* start)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_for_cycle(g, start, true);
-  }
-
-  template <class GT>
-  bool has_cycle(const GT& g)
-  {
-    if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
-      return true;
-
-    return g.exists_node([&g](Node<GT>* p)
-                         { return has_cycle(g, p); });
-  }
-
-  template <class GT>
-  bool is_acyclique(const GT& g, Node<GT>* start)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_for_cycle(g, start, false);
-  }
-
-  template <class GT>
-  bool is_acyclique(const GT& g)
-  {
-    if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
-      return false;
-
-    return g.all_nodes([&g](Node<GT>* p)
-                       { return is_acyclique(g, p); });
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_prefix(const GT& g, Op& op)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-
-    for (NodeIt<GT> it(g); it.has_current(); it.next())
+    template <class GT, class Op>
+    void depth_first_traverse(const GT& g, Op&& op = Op())
     {
-      Node<GT>* p = it.get_current();
-
-      if (p->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      depth_first_traverse_prefix_rec(g, p, op);
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix(const GT& g, Op& op)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-
-    for (NodeIt<GT> it(g); it.has_current(); it.next())
-    {
-      Node<GT>* p = it.get_current();
-
-      if (p->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      depth_first_traverse_suffix_rec(g, p, op);
-    }
-  }
-
-  template <class GT>
-  Path<GT> depth_first_search_path(const GT& g, Node<GT>* begin,
-                                   Node<GT>* end)
-  {
-    Path<GT> ret_val(g);
-
-    if (begin == end)
-    {
-      ret_val.init(begin);
-      return ret_val;
+        depth_first_traverse<GT, Op>(g, op);
     }
 
-    g.reset_tag(GraphTag::DEPTH_FIRST);
+    template <class GT>
+    bool depth_first_search_path_rec(const GT&, Node<GT>*, Node<GT>*,
+                                     Path<GT>&);
 
-    depth_first_search_path_rec(g, begin, end, ret_val);
-    return ret_val;
-  }
+    template <class GT>
+    Path<GT> depth_first_search_path(const GT&, Node<GT>*, Node<GT>*);
 
-  /* Iterative counterparts of the DFS-family algorithms above.
-   *
-   * DeSiGNAR's DFS routines are written recursively above because that is
-   * the clearest way to *read* a depth-first algorithm: the call stack
-   * mirrors the DFS tree directly, and each function reads as a direct
-   * transcription of the textbook recursive definition. That clarity has
-   * a real cost, though: each recursive call consumes a stack frame, so
-   * the recursion depth equals the length of the longest path the DFS
-   * walks. On a graph shaped like a long chain (easily built with
-   * buildgraph.hpp's random/ring graph generators) with on the order of
-   * tens or hundreds of thousands of nodes, that can exhaust the
-   * (fixed-size, OS-limited) call stack and crash the program — a real
-   * risk for a general-purpose library, not just a theoretical one.
-   *
-   * The functions below are line-for-line behavioral equivalents of
-   * their `_rec`/plain counterparts above, rewritten to replace the
-   * implicit call stack with an explicit `DynStack<Frame>`, where a
-   * `Frame` bundles a node with the adjacency-arc iterator positioned at
-   * whatever arc it should resume from — exactly the state a recursive
-   * call's stack frame would hold. Recursion depth becomes stack size,
-   * which lives on the heap (via DynStack's underlying DynArray) instead
-   * of the call stack, so it scales to however much memory is available
-   * rather than a fixed, comparatively small limit.
-   *
-   * Both versions are kept side by side deliberately: this library's
-   * purpose is teaching, and comparing a recursive algorithm with its
-   * iterative twin side by side — same behavior, same tag/visited
-   * bookkeeping, different mechanism for "remembering where to resume"
-   * — is itself a worthwhile lesson. Prefer the recursive versions for
-   * reading and for graphs you know are shallow; prefer the iterative
-   * versions when the graph's depth is unbounded or untrusted.
-   */
+    template <class GT>
+    bool test_for_cycle(const GT&, Node<GT>*, bool);
 
-  template <class GT, class Op>
-  void depth_first_traverse_prefix_iterative(const GT& g, Node<GT>* start,
-                                             Op& op)
-  {
-    if (start->is_visited(GraphTag::DEPTH_FIRST))
-      return;
+    template <class GT>
+    bool has_cycle(const GT&, Node<GT>*);
 
-    struct Frame
+    template <class GT>
+    bool has_cycle(const GT&);
+
+    template <class GT>
+    bool is_acyclique(const GT&, Node<GT>*);
+
+    template <class GT>
+    bool is_acyclique(const GT&);
+
+    template <class GT>
+    GT invert_digraph(const GT&);
+
+    template <class GT>
+    void build_subgraph_rec(const GT&, Node<GT>*, const GT&);
+
+    template <class GT>
+    SLList<GT> compute_connected_components(const GT&);
+
+    template <class GT>
+    void add_nodes_to_component_rec(const GT&, Node<GT>*, SLList<Node<GT>*>&);
+
+    template <class GT>
+    SLList<SLList<Node<GT>*>> connected_components_node_list(const GT&);
+
+    template <class GT>
+    void compute_cut_nodes_rec(const GT&, Node<GT>*, Arc<GT>&,
+                               SLList<Node<GT>*>&, int_t&);
+
+    template <class GT>
+    SLList<Node<GT>*> compute_cut_nodes(const GT&);
+
+    template <class GT>
+    void paint_cut_nodes_connected_components_rec(const GT&, Node<GT>*, int_t);
+
+    template <class GT>
+    void paint_from_cut_node(const GT&, Node<GT>*, int_t&);
+
+    template <class GT>
+    int_t paint_cut_nodes_subgraphs(const GT&, const SLList<Node<GT>*>&);
+
+    template <class GT>
+    void build_cut_nodes_subgraph_rec(const GT&, Node<GT>*, const GT&, int_t);
+
+    template <class GT>
+    SLList<GT> build_cut_nodes_subgraphs(const GT&);
+
+    template <class GT>
+    std::tuple<GT, SLList<Arc<GT>*>> build_cut_graph(const GT&,
+                                                     const SLList<Node<GT>*>&);
+
+    template <class GT>
+    std::tuple<SLList<GT>, GT, SLList<Arc<GT>*>>
+    compute_cut_nodes_connected_components(const GT&, const SLList<Node<GT>*>&);
+
+    template <class GT>
+    void Kosaraju_build_subgraph_rec(const GT&, Node<GT>*, const GT&, nat_t);
+
+    template <class GT>
+    SLList<GT> Kosaraju_compute_strong_connected_components(const GT&);
+
+    template <class GT>
+    SLList<Node<GT>*> df_topological_sort(const GT&);
+
+    /* Breadth first based algorithms */
+
+    template <class GT, class Op>
+    void breadth_first_traverse(const GT&, Node<GT>*, Op&);
+
+    template <class GT, class Op>
+    void breadth_first_traverse(const GT& g, Node<GT>* p, Op&& op = Op())
     {
-      Node<GT>* node;
-      AdArcIt<GT> it;
-
-      Frame()
-          : node(nullptr), it()
-      {
-        // empty
-      }
-
-      Frame(const GT& g, Node<GT>* n)
-          : node(n), it(g, n)
-      {
-        // empty
-      }
-    };
-
-    DynStack<Frame> pending;
-
-    op(start);
-    start->visit(GraphTag::DEPTH_FIRST);
-    pending.push(Frame(g, start));
-
-    while (!pending.is_empty())
-    {
-      bool descended = false;
-
-      while (true)
-      {
-        Frame& frame = pending.top();
-
-        if (!frame.it.has_current())
-          break;
-
-        Arc<GT>* a = *frame.it;
-
-        if (a->is_visited(GraphTag::DEPTH_FIRST))
-        {
-          frame.it.next();
-          continue;
-        }
-
-        a->visit(GraphTag::DEPTH_FIRST);
-
-        Node<GT>* q = frame.it.get_tgt_node();
-
-        frame.it.next();
-
-        if (q->is_visited(GraphTag::DEPTH_FIRST))
-          continue;
-
-        op(q);
-        q->visit(GraphTag::DEPTH_FIRST);
-        pending.push(Frame(g, q)); // invalidates `frame`; do not use it below
-        descended = true;
-        break;
-      }
-
-      if (!descended)
-        pending.pop();
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_prefix_iterative(const GT& g, Op& op)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-
-    for (NodeIt<GT> it(g); it.has_current(); it.next())
-    {
-      Node<GT>* p = it.get_current();
-
-      if (p->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      depth_first_traverse_prefix_iterative(g, p, op);
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_prefix_iterative(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse_prefix_iterative<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix_iterative(const GT& g, Node<GT>* start,
-                                             Op& op)
-  {
-    if (start->is_visited(GraphTag::DEPTH_FIRST))
-      return;
-
-    struct Frame
-    {
-      Node<GT>* node;
-      AdArcIt<GT> it;
-
-      Frame()
-          : node(nullptr), it()
-      {
-        // empty
-      }
-
-      Frame(const GT& g, Node<GT>* n)
-          : node(n), it(g, n)
-      {
-        // empty
-      }
-    };
-
-    DynStack<Frame> pending;
-
-    start->visit(GraphTag::DEPTH_FIRST);
-    pending.push(Frame(g, start));
-
-    while (!pending.is_empty())
-    {
-      bool descended = false;
-
-      while (true)
-      {
-        Frame& frame = pending.top();
-
-        if (!frame.it.has_current())
-          break;
-
-        Arc<GT>* a = *frame.it;
-
-        if (a->is_visited(GraphTag::DEPTH_FIRST))
-        {
-          frame.it.next();
-          continue;
-        }
-
-        a->visit(GraphTag::DEPTH_FIRST);
-
-        Node<GT>* q = frame.it.get_tgt_node();
-
-        frame.it.next();
-
-        if (q->is_visited(GraphTag::DEPTH_FIRST))
-          continue;
-
-        q->visit(GraphTag::DEPTH_FIRST);
-        pending.push(Frame(g, q)); // invalidates `frame`; do not use it below
-        descended = true;
-        break;
-      }
-
-      if (!descended)
-      {
-        // Suffix (post-order): visit the node only once every arc out of
-        // it has been fully explored, i.e. exactly when it is popped.
-        op(pending.top().node);
-        pending.pop();
-      }
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix_iterative(const GT& g, Op& op)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-
-    for (NodeIt<GT> it(g); it.has_current(); it.next())
-    {
-      Node<GT>* p = it.get_current();
-
-      if (p->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      depth_first_traverse_suffix_iterative(g, p, op);
-    }
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_suffix_iterative(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse_suffix_iterative<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_iterative(const GT& g, Op& op)
-  {
-    depth_first_traverse_prefix_iterative<GT, Op>(g, op);
-  }
-
-  template <class GT, class Op>
-  void depth_first_traverse_iterative(const GT& g, Op&& op = Op())
-  {
-    depth_first_traverse_iterative<GT, Op>(g, op);
-  }
-
-  template <class GT>
-  bool depth_first_search_path_iterative(const GT& g, Node<GT>* start,
-                                         Node<GT>* end, Path<GT>& path)
-  {
-    if (start->is_visited(GraphTag::DEPTH_FIRST))
-      return false;
-
-    struct Frame
-    {
-      Node<GT>* node;
-      AdArcIt<GT> it;
-
-      Frame()
-          : node(nullptr), it()
-      {
-        // empty
-      }
-
-      Frame(const GT& g, Node<GT>* n)
-          : node(n), it(g, n)
-      {
-        // empty
-      }
-    };
-
-    start->visit(GraphTag::DEPTH_FIRST);
-    path.append(start);
-
-    if (start == end)
-      return true;
-
-    DynStack<Frame> pending;
-    pending.push(Frame(g, start));
-
-    while (!pending.is_empty())
-    {
-      bool descended = false;
-
-      while (true)
-      {
-        Frame& frame = pending.top();
-
-        if (!frame.it.has_current())
-          break;
-
-        Arc<GT>* a = *frame.it;
-
-        if (a->is_visited(GraphTag::DEPTH_FIRST))
-        {
-          frame.it.next();
-          continue;
-        }
-
-        a->visit(GraphTag::DEPTH_FIRST);
-
-        Node<GT>* q = frame.it.get_tgt_node();
-
-        frame.it.next();
-
-        if (q->is_visited(GraphTag::DEPTH_FIRST))
-          continue;
-
-        q->visit(GraphTag::DEPTH_FIRST);
-        path.append(q);
-
-        if (q == end)
-          return true;
-
-        pending.push(Frame(g, q)); // invalidates `frame`; do not use it below
-        descended = true;
-        break;
-      }
-
-      if (!descended)
-      {
-        path.remove_last_node();
-        pending.pop();
-      }
+        breadth_first_traverse<GT, Op>(g, p, op);
     }
 
-    return false;
-  }
-
-  template <class GT>
-  Path<GT> depth_first_search_path_iterative(const GT& g, Node<GT>* begin,
-                                             Node<GT>* end)
-  {
-    Path<GT> ret_val(g);
-
-    if (begin == end)
+    template <class GT, class Op>
+    void breadth_first_traverse(const GT& g, Op& op)
     {
-      ret_val.init(begin);
-      return ret_val;
+        breadth_first_traverse<GT, Op>(g, g.get_first_node(), op);
     }
 
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-
-    depth_first_search_path_iterative(g, begin, end, ret_val);
-    return ret_val;
-  }
-
-  /** Iterative counterpart of test_for_cycle(). The recursive version
-      encodes two different queries ("is there a cycle", "is the graph
-      acyclic") in a single function via the `has` flag: reaching an
-      already-visited node means "found what we were looking for" and
-      propagates `has` all the way up through every enclosing call
-      *without* running that call's `p->unvisit(...)` — a short-circuit.
-      Reaching the end of a node's adjacency list with nothing found
-      means "not found through this node", which unvisits it (so a
-      different DFS branch may still validly reach it) and propagates
-      `!has` upward instead, which does *not* short-circuit its caller.
-
-      That short-circuit is what an explicit `return has;` below
-      reproduces directly: returning from this function abandons every
-      pending stack frame at once, exactly like a chain of recursive
-      calls returning without reaching their own `unvisit()` line. The
-      non-short-circuit path (a frame's adjacency list is exhausted) is
-      the one case that does unvisit before popping, mirroring the
-      recursive fall-through to `p->unvisit(...); return !has;`. */
-  template <class GT>
-  bool test_for_cycle_iterative(const GT& g, Node<GT>* start, bool has)
-  {
-    if (start->is_visited(GraphTag::DEPTH_FIRST))
-      return has;
-
-    struct Frame
+    template <class GT, class Op>
+    void breadth_first_traverse(const GT& g, Op&& op = Op())
     {
-      Node<GT>* node;
-      AdArcIt<GT> it;
-
-      Frame()
-          : node(nullptr), it()
-      {
-        // empty
-      }
-
-      Frame(const GT& g, Node<GT>* n)
-          : node(n), it(g, n)
-      {
-        // empty
-      }
-    };
-
-    DynStack<Frame> pending;
-
-    start->visit(GraphTag::DEPTH_FIRST);
-    pending.push(Frame(g, start));
-
-    while (!pending.is_empty())
-    {
-      bool descended = false;
-
-      while (true)
-      {
-        Frame& frame = pending.top();
-
-        if (!frame.it.has_current())
-          break;
-
-        Arc<GT>* a = *frame.it;
-
-        if (a->is_visited(GraphTag::DEPTH_FIRST))
-        {
-          frame.it.next();
-          continue;
-        }
-
-        a->visit(GraphTag::DEPTH_FIRST);
-
-        Node<GT>* q = frame.it.get_tgt_node();
-
-        frame.it.next();
-
-        if (q->is_visited(GraphTag::DEPTH_FIRST))
-          return has; // short-circuit: see the function comment above
-
-        q->visit(GraphTag::DEPTH_FIRST);
-        pending.push(Frame(g, q)); // invalidates `frame`; do not use it below
-        descended = true;
-        break;
-      }
-
-      if (!descended)
-      {
-        pending.top().node->unvisit(GraphTag::DEPTH_FIRST);
-        pending.pop();
-      }
+        breadth_first_traverse<GT, Op>(g, op);
     }
 
-    return !has;
-  }
+    template <class GT>
+    Path<GT> breadth_first_search_path(const GT& g, Node<GT>*, Node<GT>*);
 
-  template <class GT>
-  bool has_cycle_iterative(const GT& g, Node<GT>* start)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_for_cycle_iterative(g, start, true);
-  }
+    template <class GT>
+    SLList<Node<GT>*> bf_topological_sort(const GT&);
 
-  template <class GT>
-  bool has_cycle_iterative(const GT& g)
-  {
-    if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
-      return true;
+    template <class GT>
+    SLList<SLList<Node<GT>*>> topological_ranks(const GT&);
 
-    return g.exists_node([&g](Node<GT>* p)
-                         { return has_cycle_iterative(g, p); });
-  }
-
-  template <class GT>
-  bool is_acyclique_iterative(const GT& g, Node<GT>* start)
-  {
-    g.reset_tag(GraphTag::DEPTH_FIRST);
-    return test_for_cycle_iterative(g, start, false);
-  }
-
-  template <class GT>
-  bool is_acyclique_iterative(const GT& g)
-  {
-    if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
-      return false;
-
-    return g.all_nodes([&g](Node<GT>* p)
-                       { return is_acyclique_iterative(g, p); });
-  }
-
-  template <class GT>
-  GT invert_digraph(const GT& g)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    g.reset_node_cookies();
-
-    GT i;
-
-    g.for_each_arc([&i](auto a)
-                   {
-		     auto s = a->get_src_node();
-		     auto t = a->get_tgt_node();
-		     auto sp = mapped_node<GT>(s);
-
-		     if (sp == nullptr)
-		       {
-			 sp = i.insert_node(s->get_info());
-			 map_nodes<GT>(s, sp);
-		       }
-
-		     auto tp = mapped_node<GT>(t);
-
-		     if (tp == nullptr)
-		       {
-			 tp = i.insert_node(t->get_info());
-			 map_nodes<GT>(t, tp);
-		       }
-
-		     auto ap = i.insert_arc(tp, sp, a->get_info());
-		     map_arcs<GT>(a, ap); });
-
-    return i;
-  }
-
-  template <class GT>
-  void build_subgraph_rec(const GT& g, Node<GT>* p, GT& t)
-  {
-    if (p->is_visited(GraphTag::COMPONENT))
-      return;
-
-    p->visit(GraphTag::COMPONENT);
-
-    Node<GT>* pp = t.insert_node(p->get_info());
-    map_nodes<GT>(p, pp);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+    template <class GT, class Op>
+    void depth_first_traverse_prefix_rec(const GT& g, Node<GT>* p, Op& op)
     {
-      Arc<GT>* a = it.get_current();
-
-      if (a->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      a->visit(GraphTag::COMPONENT);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      build_subgraph_rec(g, q, t);
-
-      Node<GT>* qq = mapped_node<GT>(q);
-
-      Arc<GT>* aa = t.insert_arc(pp, qq, a->get_info());
-      map_arcs<GT>(a, aa);
-    }
-  }
-
-  template <class GT>
-  SLList<GT> compute_connected_components(const GT& g)
-  {
-    if (g.is_digraph())
-      throw std::domain_error("Argument must be an undirected graph");
-
-    g.reset_tag(GraphTag::COMPONENT);
-    g.reset_cookies();
-
-    SLList<GT> ret;
-
-    g.for_each_node([&g, &ret](Node<GT>* p)
-                    {
-		      if (p->is_visited(GraphTag::COMPONENT))
-			return;
-			      
-		      GT h;
-		      build_subgraph_rec(g, p, h);
-		      ret.append(std::move(h)); });
-
-    return ret;
-  }
-
-  template <class GT>
-  void add_nodes_to_component_rec(const GT& g, Node<GT>* p,
-                                  SLList<Node<GT>*>& list)
-  {
-    if (p->is_visited(GraphTag::COMPONENT))
-      return;
-
-    p->visit(GraphTag::COMPONENT);
-
-    list.append(p);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = it.get_current();
-
-      if (a->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      a->visit(GraphTag::COMPONENT);
-
-      Node<GT>* q = it.get_tgt_node();
-
-      add_nodes_to_component_rec(g, q, list);
-    }
-  }
-
-  template <class GT>
-  SLList<SLList<Node<GT>*>> connected_components_node_list(const GT& g)
-  {
-    if (g.is_digraph())
-      throw std::domain_error("Argument must be an undirected graph");
-
-    g.reset_tag(GraphTag::COMPONENT);
-    g.reset_cookies();
-
-    SLList<SLList<Node<GT>*>> ret;
-
-    g.for_each_node([&g, &ret](Node<GT>* p)
-                    {
-		      if (p->is_visited(GraphTag::COMPONENT))
-			return;
-			      
-		      SLList<Node<GT> *> l;
-		      add_nodes_to_component_rec(g, p, l);
-		      ret.append(std::move(l)); });
-
-    return ret;
-  }
-
-  template <class GT>
-  void compute_cut_nodes_rec(const GT& g, Node<GT>* p, Arc<GT>* a,
-                             SLList<Node<GT>*>& l, int_t& cdf)
-  {
-    p->visit(GraphTag::DEPTH_FIRST);
-    low<GT>(p) = df<GT>(p) = cdf++;
-
-    bool is_cut = false;
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* arc = it.get_current();
-
-      if (arc == a)
-        continue;
-
-      Node<GT>* q = it.get_tgt_node();
-
-      if (q->is_visited(GraphTag::DEPTH_FIRST))
-      {
-        if (!arc->is_visited(GraphTag::DEPTH_FIRST))
-          low<GT>(p) = std::min(low<GT>(p), df<GT>(q));
-
-        continue;
-      }
-
-      if (arc->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      arc->visit(GraphTag::DEPTH_FIRST);
-
-      compute_cut_nodes_rec(g, q, arc, l, cdf);
-
-      low<GT>(p) = std::min(low<GT>(p), low<GT>(q));
-
-      // `is_cut` accumulates across every DFS child of `p`: `p` is a cut
-      // node if *any* child satisfies this condition, so this must be
-      // OR'd in, not assigned — a plain assignment here would let a
-      // later child that fails the check silently overwrite a `true`
-      // set by an earlier child, making the result depend on adjacency
-      // list order instead of the graph's actual structure.
-      is_cut = is_cut || (low<GT>(q) >= df<GT>(p) && df<GT>(q) != 0);
-    }
-
-    if (is_cut)
-    {
-      p->visit(GraphTag::CUT);
-      l.append(p);
-    }
-  }
-
-  template <class GT>
-  SLList<Node<GT>*> compute_cut_nodes(const GT& g)
-  {
-    g.for_each_node([](Node<GT>* p)
-                    {
-		      p->reset_tag();
-		      df<GT>(p)  =  0;
-		      low<GT>(p) = -1; });
-    g.reset_arcs();
-
-    nat_t call_counter = 0;
-    int_t current_df = 0;
-
-    Node<GT>* start = g.get_first_node();
-    start->visit(GraphTag::DEPTH_FIRST);
-    df<GT>(start) = current_df++;
-
-    SLList<Node<GT>*> list;
-
-    for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
-    {
-      Node<GT>* t = it.get_tgt_node();
-
-      if (t->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      Arc<GT>* a = it.get_current();
-
-      if (a->is_visited(GraphTag::DEPTH_FIRST))
-        continue;
-
-      a->visit(GraphTag::DEPTH_FIRST);
-
-      compute_cut_nodes_rec(g, t, a, list, current_df);
-      ++call_counter;
-    }
-
-    if (call_counter > 1)
-    {
-      start->visit(GraphTag::CUT);
-      list.append(start);
-    }
-
-    return list;
-  }
-
-  template <class GT>
-  void paint_cut_nodes_connected_components_rec(const GT& g, Node<GT>* p,
-                                                int_t c)
-  {
-    if (p->counter() > 0)
-      return;
-
-    p->counter() = c;
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = it.get_current();
-
-      if (a->counter() > 0)
-        continue;
-
-      Node<GT>* q = it.get_tgt_node();
-
-      if (q->is_visited(GraphTag::CUT))
-        continue;
-
-      a->counter() = c;
-
-      paint_cut_nodes_connected_components_rec(g, q, c);
-    }
-  }
-
-  template <class GT>
-  void paint_from_cut_node(const GT& g, Node<GT>* p, int_t& color)
-  {
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = it.get_current();
-      Node<GT>* q = it.get_tgt_node();
-
-      if (q->is_visited(GraphTag::CUT))
-      {
-        a->visit(GraphTag::CUT);
-        continue;
-      }
-      else
-      {
-        a->counter() = -1;
-
-        if (q->counter() > 0)
-          continue;
-      }
-
-      paint_cut_nodes_connected_components_rec(g, q, color);
-      ++color;
-    }
-  }
-
-  template <class GT>
-  int_t paint_cut_nodes_subgraphs(const GT& g, const SLList<Node<GT>*>& l)
-  {
-    g.reset_counters();
-
-    int_t color = 1;
-
-    l.for_each([&g, &color](Node<GT>* curr)
-               { paint_from_cut_node(g, curr, color); });
-
-    return color;
-  }
-
-  template <class GT>
-  void build_cut_nodes_subgraph_rec(const GT& g, Node<GT>* p, GT& t,
-                                    int_t color)
-  {
-    Node<GT>* pp = mapped_node<GT>(p);
-
-    for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = it.get_current();
-
-      if (a->counter() != color || a->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      a->visit(GraphTag::COMPONENT);
-
-      Node<GT>* q = it.get_tgt_node();
-      Node<GT>* qp = nullptr;
-
-      if (q->is_visited(GraphTag::COMPONENT))
-        qp = mapped_node<GT>(q);
-      else
-      {
-        qp = t.insert_node(q->get_info());
-        map_nodes<GT>(q, qp);
-        q->visit(GraphTag::COMPONENT);
-      }
-
-      Arc<GT>* ap = t.insert_arc(pp, qp, a->get_info());
-      map_arcs<GT>(a, ap);
-
-      build_cut_nodes_subgraph_rec(g, q, t, color);
-    }
-  }
-
-  template <class GT>
-  SLList<GT> build_cut_nodes_subgraphs(const GT& g)
-  {
-    SLList<GT> list;
-
-    for (NodeIt<GT> it(g); it.has_current(); it.next())
-    {
-      Node<GT>* p = it.get_current();
-
-      if (p->counter() == 0 || p->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      GT t;
-      Node<GT>* q = t.insert_node(p->get_info());
-      map_nodes<GT>(p, q);
-      p->visit(GraphTag::COMPONENT);
-      build_cut_nodes_subgraph_rec(g, p, t, p->counter());
-      list.append(std::move(t));
-    }
-
-    return list;
-  }
-
-  template <class GT>
-  std::tuple<GT, SLList<Arc<GT>*>>
-  build_cut_graph(const GT& g, const SLList<Node<GT>*>& cut_nodes)
-  {
-    GT cut_graph;
-    SLList<Arc<GT>*> cross_arcs;
-
-    cut_nodes.for_each([&](Node<GT>* p)
-                       {
-			 Node<GT> * q = cut_graph.insert_node(p->get_info());
-			 map_nodes<GT>(p, q); });
-
-    g.for_each_arc([&](Arc<GT>* a)
-                   {
-		     if (a->counter() == -1)
-		       {
-			 cross_arcs.append(a);
-			 return;
-		       }
-			     
-		     if (!a->is_visited(GraphTag::CUT))
-		       return;
-
-		     auto p = mapped_node<GT>(a->get_src_node());
-		     auto q = mapped_node<GT>(a->get_tgt_node());
-		     Arc<GT> * ap =
-		       cut_graph.insert_arc(p, q, a->get_info());
-		     map_arcs<GT>(a, ap); });
-
-    return std::make_tuple(std::move(cut_graph), std::move(cross_arcs));
-  }
-
-  template <class GT>
-  std::tuple<SLList<GT>, GT, SLList<Arc<GT>*>>
-  compute_cut_nodes_connected_components(const GT& g,
-                                         const SLList<Node<GT>*>& cut_nodes)
-  {
-    g.reset_cookies();
-    paint_cut_nodes_subgraphs(g, cut_nodes);
-    auto subgraphs = build_cut_nodes_subgraphs(g);
-    auto t = build_cut_graph(g, cut_nodes);
-    return std::make_tuple(std::move(subgraphs), std::move(std::get<0>(t)),
-                           std::move(std::get<1>(t)));
-  }
-
-  template <class GT>
-  void Kosaraju_build_subgraph_rec(const GT& inv_g, Node<GT>* p, GT& sg,
-                                   nat_t num)
-  {
-    if (p->is_visited(GraphTag::COMPONENT))
-      return;
-
-    Node<GT>* pp = sg.insert_node(p->get_info());
-    map_nodes<GT>(p, pp);
-
-    p->visit(GraphTag::COMPONENT);
-    p->counter() = num;
-
-    for (AdArcIt<GT> it(inv_g, p); it.has_current(); it.next())
-    {
-      Arc<GT>* a = it.get_current();
-
-      if (a->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      Node<GT>* q = a->get_tgt_node();
-
-      Kosaraju_build_subgraph_rec(inv_g, q, sg, num);
-
-      Node<GT>* qp = mapped_node<GT>(q);
-
-      if (p->counter() != q->counter())
-        continue;
-
-      Arc<GT>* ap = sg.insert_arc(qp, pp, a->get_info());
-
-      map_arcs<GT>(a, ap);
-    }
-  }
-
-  template <class GT>
-  SLList<GT> Kosaraju_compute_strong_connected_components(const GT& g)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    g.reset_cookies();
-    g.reset_tag(GraphTag::COMPONENT);
-
-    FixedArray<Node<GT>*> df(g.get_num_nodes());
-    nat_t i = 0;
-    depth_first_traverse_suffix(g, [&df, &i](Node<GT>* p)
-                                { df[i++] = p; });
-
-    GT ig = invert_digraph(g);
-
-    SLList<GT> ret;
-    nat_t num_component = 1;
-
-    for (i = g.get_num_nodes(); i > 0; --i)
-    {
-      Node<GT>* v = mapped_node<GT>(df[i - 1]);
-
-      if (v->is_visited(GraphTag::COMPONENT))
-        continue;
-
-      GT sc;
-      Kosaraju_build_subgraph_rec(ig, v, sc, num_component++);
-      ret.append(std::move(sc));
-    }
-
-    return ret;
-  }
-
-  template <class GT>
-  SLList<Node<GT>*> df_topological_sort(const GT& g)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    SLList<Node<GT>*> ret;
-
-    depth_first_traverse_suffix(g, [&ret](Node<GT>* p)
-                                { ret.insert(p); });
-
-    return ret;
-  }
-
-  template <class GT, class Op>
-  void breadth_first_traverse(const GT& g, Node<GT>* begin, Op& op)
-  {
-    g.reset_tag(GraphTag::BREADTH_FIRST);
-
-    op(begin);
-    begin->visit(GraphTag::BREADTH_FIRST);
-    ListQueue<Node<GT>*> queue;
-    queue.put(begin);
-
-    while (!queue.is_empty())
-    {
-      Node<GT>* p = queue.get();
-
-      for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-      {
-        Arc<GT>* a = *it;
-
-        if (a->is_visited(GraphTag::BREADTH_FIRST))
-          continue;
-
-        a->visit(GraphTag::BREADTH_FIRST);
-
-        Node<GT>* q = it.get_tgt_node();
-
-        if (q->is_visited(GraphTag::BREADTH_FIRST))
-          continue;
-
-        op(q);
-        q->visit(GraphTag::BREADTH_FIRST);
-        queue.put(q);
-      }
-    }
-  }
-
-  template <class GT>
-  Path<GT> breadth_first_search_path(const GT& g, Node<GT>* begin,
-                                     Node<GT>* end)
-  {
-    Path<GT> ret_val(g);
-
-    if (begin == end)
-    {
-      ret_val.init(begin);
-      return ret_val;
-    }
-
-    g.reset_tag(GraphTag::BREADTH_FIRST);
-    g.reset_node_cookies();
-
-    begin->visit(GraphTag::BREADTH_FIRST);
-    ListQueue<Node<GT>*> queue;
-    queue.put(begin);
-
-    Node<GT>* ptr = nullptr;
-
-    while (!queue.is_empty() && (ptr = queue.get()) != end)
-    {
-      for (AdArcIt<GT> it(g, ptr); it.has_current(); it.next())
-      {
-        Arc<GT>* a = *it;
-
-        if (a->is_visited(GraphTag::BREADTH_FIRST))
-          continue;
-
-        a->visit(GraphTag::BREADTH_FIRST);
-
-        Node<GT>* q = it.get_tgt_node();
-
-        if (q->is_visited(GraphTag::BREADTH_FIRST))
-          continue;
-
-        q->cookie() = ptr;
-        q->visit(GraphTag::BREADTH_FIRST);
-        queue.put(q);
-      }
-    }
-
-    if (end->cookie() == nullptr)
-      return ret_val;
-
-    Node<GT>* aux = end;
-
-    while (aux != begin)
-    {
-      ret_val.insert(aux);
-      aux = reinterpret_cast<Node<GT>*>(aux->cookie());
-    }
-
-    ret_val.insert(begin);
-
-    return ret_val;
-  }
-
-  template <class GT>
-  SLList<Node<GT>*> bf_topological_sort(const GT& g)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    g.reset_node_counter();
-
-    g.for_each_arc([](Arc<GT>* a)
-                   { ++a->get_tgt_node()->counter(); });
-
-    ListQueue<Node<GT>*> queue;
-
-    g.for_each_node([&queue](Node<GT>* p)
-                    {
-		      if (p->counter() == 0)
-			queue.put(p); });
-
-    SLList<Node<GT>*> ret;
-
-    while (!queue.is_empty())
-    {
-      Node<GT>* p = queue.get();
-
-      ret.append(p);
-
-      for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-      {
-        Node<GT>* q = it.get_tgt_node();
-
-        if (--q->counter() == 0)
-          queue.put(q);
-      }
-    }
-
-    return ret;
-  }
-
-  template <class GT>
-  SLList<SLList<Node<GT>*>> topological_ranks(const GT& g)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    g.reset_node_counter();
-
-    g.for_each_arc([](Arc<GT>* a)
-                   { ++a->get_tgt_node()->counter(); });
-
-    ListQueue<Node<GT>*> queue;
-
-    g.for_each_node([&queue](Node<GT>* p)
-                    {
-		      if (p->counter() == 0)
-			queue.put(p); });
-
-    SLList<SLList<Node<GT>*>> ret;
-
-    while (!queue.is_empty())
-    {
-      ListQueue<Node<GT>*> aqueue;
-
-      SLList<Node<GT>*>& l = ret.append(SLList<Node<GT>*>());
-
-      while (!queue.is_empty())
-      {
-        Node<GT>* p = queue.get();
-
-        l.append(p);
+        if (p->is_visited(GraphTag::DEPTH_FIRST))
+            return;
+
+        op(p);
+        p->visit(GraphTag::DEPTH_FIRST);
 
         for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
         {
-          Node<GT>* q = it.get_tgt_node();
+            Arc<GT>* a = *it;
 
-          if (--q->counter() == 0)
-            aqueue.put(q);
+            if (a->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            a->visit(GraphTag::DEPTH_FIRST);
+
+            Node<GT>* q = it.get_tgt_node();
+
+            depth_first_traverse_prefix_rec(g, q, op);
         }
-      }
-
-      queue = std::move(aqueue);
     }
 
-    return ret;
-  }
-
-  /* Minimum spanning tree algorithms */
-
-  template <class GT>
-  class DefaultDistance
-  {
-  public:
-    using Type = typename GT::ArcInfoType;
-
-    static constexpr Type ZERO = 0;
-    static constexpr Type MAX = std::numeric_limits<Type>::max();
-
-    Type& operator()(Arc<GT>* a)
+    template <class GT, class Op>
+    void depth_first_traverse_suffix_rec(const GT& g, Node<GT>* p, Op& op)
     {
-      return a->get_info();
+        if (p->is_visited(GraphTag::DEPTH_FIRST))
+            return;
+
+        p->visit(GraphTag::DEPTH_FIRST);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = *it;
+
+            if (a->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            a->visit(GraphTag::DEPTH_FIRST);
+
+            Node<GT>* q = it.get_tgt_node();
+
+            depth_first_traverse_suffix_rec(g, q, op);
+        }
+
+        op(p);
     }
 
-    const Type& operator()(Arc<GT>* a) const
+    template <class GT>
+    bool depth_first_search_path_rec(const GT& g, Node<GT>* p, Node<GT>* end,
+                                     Path<GT>& path)
     {
-      return a->get_info();
-    }
-  };
+        if (p->is_visited(GraphTag::DEPTH_FIRST))
+            return false;
 
-  /** @warning `distance`/`cmp` here are references bound to this
-      constructor's own default-argument parameters when no explicit
-      lvalue is supplied (`DistanceCmp(Distance &&d = Distance(), Cmp
-      &&_cmp = Cmp())`); the temporary is destroyed at the end of the
-      constructing full-expression, so the default-argument path is a
-      known dangling-reference hazard identical in kind to the one fixed
-      in set.hpp/map.hpp/tree.hpp/heap.hpp/hash.hpp/sort.hpp (see
-      DefaultCmpHolder in typetraits.hpp). It is intentionally left
-      unfixed here: Kruskal/Prim/Dijkstra/Astar/BellmanFord below share
-      this same shape, and at least one of them (Kruskal, via
-      Graph::sort_arcs) passes a DistanceCmp by value into another
-      wrapper (PtrCmp) that needs to copy-assign it — but DistanceCmp has
-      reference members and therefore an implicitly-deleted
-      copy-assignment operator, so the same owning-slot fix used
-      elsewhere does not apply without first giving DistanceCmp (and
-      these other classes) real copy/move assignment semantics. That is
-      a larger, independent redesign; flagged here rather than attempted
-      as part of this pass. In practice these classes are always
-      constructed and used within a single full-expression/algorithm
-      call (e.g. `Kruskal<GT>().build_min_spanning_tree(g)`), which is
-      why this has not surfaced as an observed bug. */
-  template <class GT, class Distance, class Cmp>
-  class DistanceCmp
-  {
-    Distance& distance;
-    Cmp& cmp;
+        p->visit(GraphTag::DEPTH_FIRST);
 
-  public:
-    DistanceCmp(Distance& d, Cmp& _cmp)
-        : distance(d), cmp(_cmp)
-    {
-      // empty
-    }
+        path.append(p);
 
-    DistanceCmp(Distance&& d = Distance(), Cmp&& _cmp = Cmp())
-        : distance(d), cmp(_cmp)
-    {
-      // empty
-    }
+        if (p == end)
+            return true;
 
-    bool operator()(Arc<GT>* a, Arc<GT>* b) const
-    {
-      return cmp(distance(a), distance(b));
-    }
-  };
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = *it;
 
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Cmp = std::less<typename Distance::Type>>
-  class Kruskal
-  {
-  public:
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
+            if (a->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
 
-  private:
-    using DistCmp = DistanceCmp<GT, Distance, Cmp>;
-    using DistanceType = typename Distance::Type;
+            a->visit(GraphTag::DEPTH_FIRST);
 
-    static constexpr GraphTag TAG = GraphTag::KRUSKAL;
+            Node<GT>* q = it.get_tgt_node();
 
-    Distance& distance;
-    DistCmp cmp;
+            if (depth_first_search_path_rec(g, q, end, path))
+                return true;
+        }
 
-  public:
-    Kruskal(Distance& _distance, Cmp& _cmp)
-        : distance(_distance), cmp(distance, _cmp)
-    {
-      // empty
-    }
-
-    Kruskal(Distance&& _distance = Distance(),
-            Cmp&& _cmp = Cmp())
-        : distance(_distance),
-          cmp(std::forward<Distance>(_distance), std::forward<Cmp>(_cmp))
-    {
-      // Empty
-    }
-
-    GT build_min_spanning_tree(const GT&);
-
-    void paint_min_spanning_tree(const GT& g)
-    {
-      GT tree = build_min_spanning_tree(g);
-
-      g.reset_tag(GraphTag::MIN_SPANNING_TREE);
-
-      tree.for_each_node([](Node<GT>* t_node)
-                         {
-			   Node<GT> * ptr_g_node = mapped_node<GT>(t_node);  
-			   ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE); });
-
-      tree.for_each_arc([](Arc<GT>* t_arc)
-                        {
-			  Arc<GT> * ptr_g_arc = mapped_arc<GT>(t_arc);
-			  ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE); });
-    }
-  };
-
-  template <class GT, class Distance, class DistanceCmp>
-  GT Kruskal<GT, Distance, DistanceCmp>::build_min_spanning_tree(const GT& g)
-  {
-    g.reset_tag(TAG);
-    g.reset_cookies();
-
-    const_cast<GT&>(g).sort_arcs(cmp);
-
-    GT tree;
-
-    TRelation<Node<GT>*> nodes_rel(g.get_num_nodes());
-
-    for (ArcIt<GT> it(g); it.has_current() and
-                          tree.get_num_arcs() < g.get_num_nodes() - 1;
-         it.next())
-    {
-      Arc<GT>* ga = *it;
-      Node<GT>* gs = ga->get_src_node();
-      Node<GT>* gt = ga->get_tgt_node();
-
-      Node<GT>* ts_ptr = mapped_node<GT>(gs);
-
-      if (ts_ptr == nullptr)
-      {
-        gs->visit(TAG);
-        ts_ptr = tree.insert_node(gs->get_info());
-        map_nodes<GT>(gs, ts_ptr);
-      }
-
-      Node<GT>* tt_ptr = mapped_node<GT>(gt);
-
-      if (tt_ptr == nullptr)
-      {
-        gt->visit(TAG);
-        tt_ptr = tree.insert_node(gt->get_info());
-        map_nodes<GT>(gt, tt_ptr);
-      }
-
-      if (nodes_rel.are_connected(ts_ptr, tt_ptr))
-        continue;
-
-      nodes_rel.join(ts_ptr, tt_ptr);
-
-      Arc<GT>* ta = tree.insert_arc(ts_ptr, tt_ptr, ga->get_info());
-      ga->visit(TAG);
-      map_arcs<GT>(ga, ta);
-    }
-
-    return tree;
-  }
-
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Cmp = std::less<typename Distance::Type>>
-  class ArcHeap : public LHeap<Arc<GT>*, DistanceCmp<GT, Distance, Cmp>>
-  {
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-    using Table = HashMap<Node<GT>*, Arc<GT>**>;
-    using BaseHeap = LHeap<Arc<GT>*, DistanceCmp<GT, Distance, Cmp>>;
-    using BaseHeap::BaseHeap;
-
-    Table tgt_nodes;
-
-  public:
-    void insert_arc(Arc<GT>* a, Node<GT>* t)
-    {
-      Arc<GT>*** result = tgt_nodes.search(t);
-
-      if (result == nullptr)
-      {
-        tgt_nodes[t] = const_cast<Arc<GT>**>(&BaseHeap::insert(a));
-        return;
-      }
-
-      Arc<GT>** ap = *result;
-
-      if (BaseHeap::get_cmp()(*ap, a))
-        return;
-
-      BaseHeap::remove(*ap);
-      tgt_nodes[t] = const_cast<Arc<GT>**>(&BaseHeap::insert(a));
-    }
-
-    Arc<GT>* get_min_arc()
-    {
-      Arc<GT>* arc_ptr = BaseHeap::top();
-      Node<GT>* tgt_ptr = arc_ptr->get_src_node();
-      Arc<GT>*** result = tgt_nodes.search(tgt_ptr);
-
-      if (result == nullptr || **result != arc_ptr)
-        result = tgt_nodes.search(tgt_ptr = arc_ptr->get_tgt_node());
-
-      if (result == nullptr || **result != arc_ptr)
-        throw std::logic_error(
-            "ArcHeap::get_min_arc: the top arc of the heap was not found "
-            "indexed by either its source or target node; the heap and "
-            "the tgt_nodes index have gone out of sync");
-
-      BaseHeap::get();
-      tgt_nodes.remove(tgt_ptr);
-
-      return arc_ptr;
-    }
-  };
-
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Cmp = std::less<typename Distance::Type>>
-  class Prim
-  {
-  public:
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-
-  private:
-    Distance& distance;
-    Cmp& cmp;
-
-    using DistanceType = typename Distance::Type;
-
-    static constexpr GraphTag TAG = GraphTag::PRIM;
-
-  public:
-    Prim(Distance& _distance, Cmp& _cmp)
-        : distance(_distance), cmp(_cmp)
-    {
-      // empty
-    }
-
-    Prim(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp())
-        : distance(_distance), cmp(_cmp)
-    {
-      // empty
-    }
-
-    GT build_min_spanning_tree(const GT&, Node<GT>*);
-
-    GT build_min_spanning_tree(const GT& g)
-    {
-      return build_min_spanning_tree(g, g.get_first_node());
-    }
-
-    void paint_min_spanning_tree(const GT& g, Node<GT>* start)
-    {
-      GT tree = build_min_spanning_tree(g, start);
-
-      g.reset_tag(GraphTag::MIN_SPANNING_TREE);
-
-      tree.for_each_node([](Node<GT>* t_node)
-                         {
-			   Node<GT> * ptr_g_node = mapped_node<GT>(t_node);
-			   ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
-			   ptr_g_node->cookie() = nullptr; });
-
-      tree.for_each_arc([](Arc<GT>* t_arc)
-                        {
-			  Arc<GT> * ptr_g_arc = mapped_arc<GT>(t_arc);
-			  ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
-			  ptr_g_arc->cookie() = nullptr; });
-    }
-
-    void paint_min_spanning_tree(const GT& g)
-    {
-      paint_min_spanning_tree(g, g.get_first_node());
-    }
-  };
-
-  template <class GT, class Distance, class Cmp>
-  GT Prim<GT, Distance, Cmp>::build_min_spanning_tree(const GT& g,
-                                                      Node<GT>* start)
-  {
-    g.reset_tag(TAG);
-    g.reset_cookies();
-
-    GT tree;
-    Node<GT>* t_start = tree.insert_node(start->get_info());
-    map_nodes<GT>(start, t_start);
-    start->visit(TAG);
-
-    DistanceCmp<GT, Distance, Cmp> arc_heap_cmp(distance, cmp);
-    ArcHeap<GT, Distance, Cmp> arc_heap(arc_heap_cmp);
-
-    for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
-    {
-      Arc<GT>* a = *it;
-      Node<GT>* t = a->get_connected_node(start);
-      arc_heap.insert_arc(a, t);
-    }
-
-    while (!arc_heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
-    {
-      Arc<GT>* a = arc_heap.get_min_arc();
-
-      if (a->is_visited(TAG))
-        continue;
-
-      a->visit(TAG);
-
-      Node<GT>* p = a->get_src_node()->is_visited(TAG) ? a->get_tgt_node() : a->get_src_node();
-
-      if (p->is_visited(TAG))
-        continue;
-
-      p->visit(TAG);
-
-      Node<GT>* pp = tree.insert_node(p->get_info());
-      map_nodes<GT>(p, pp);
-
-      Node<GT>* ts = mapped_node<GT>(a->get_src_node());
-      Node<GT>* tt = mapped_node<GT>(a->get_tgt_node());
-      Arc<GT>* ap = tree.insert_arc(ts, tt, a->get_info());
-
-      map_arcs<GT>(a, ap);
-
-      for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
-      {
-        Arc<GT>* pa = *it;
-        Node<GT>* pt = pa->get_connected_node(p);
-        arc_heap.insert_arc(pa, pt);
-      }
-    }
-
-    return tree;
-  }
-
-  /* Minimum paths algorithms */
-
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Cmp = std::less<typename Distance::Type>,
-            class Plus = std::plus<typename Distance::Type>>
-  class Dijkstra
-  {
-  public:
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-
-  private:
-    Distance& distance;
-    Cmp& cmp;
-    Plus& plus;
-
-    using DistanceType = typename Distance::Type;
-
-    static constexpr GraphTag TAG = GraphTag::DIJKSTRA;
-
-    using PotHeap = ArcHeap<GT, GetPot<GT, Distance>, Cmp>;
-
-    GT build_partial_min_path_tree(const GT&, Node<GT>*, Node<GT>*);
-
-  public:
-    Dijkstra(Distance& _distance, Cmp& _cmp, Plus& _plus)
-        : distance(_distance), cmp(_cmp), plus(_plus)
-    {
-      // empty
-    }
-
-    Dijkstra(Distance&& _distance = Distance(),
-             Cmp&& _cmp = Cmp(), Plus&& _plus = Plus())
-        : distance(_distance), cmp(_cmp), plus(_plus)
-    {
-      // Empty
-    }
-
-    GT build_min_path_tree(const GT&, Node<GT>*);
-
-    void paint_min_path_tree(const GT& g, Node<GT>* start)
-    {
-      GT tree = build_min_path_tree(g, start);
-
-      g.reset_tag(GraphTag::MIN_PATH_TREE);
-
-      tree.for_each_node([](Node<GT>* t_node)
-                         {
-			   Node<GT> * ptr_g_node = mapped_node<GT>(t_node);
-			   ptr_g_node->visit(GraphTag::MIN_PATH_TREE);
-			   ptr_g_node->cookie() = nullptr; });
-
-      tree.for_each_arc([](Arc<GT>* t_arc)
-                        {
-			  Arc<GT> * ptr_g_arc = mapped_arc<GT>(t_arc);
-			  ptr_g_arc->visit(GraphTag::MIN_PATH_TREE);
-			  ptr_g_arc->cookie() = nullptr; });
-    }
-
-    Path<GT> search_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
-    {
-      GT tree = build_partial_min_path_tree(g, start, end);
-
-      Node<GT>* t_start = mapped_node<GT>(start);
-      Node<GT>* t_end = mapped_node<GT>(end);
-
-      Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
-      Path<GT> path(g);
-
-      if (t_path.is_empty())
-        return path;
-
-      path.init(start);
-
-      t_path.for_each([&](Node<GT>*, Arc<GT>* ptr_arc)
-                      {
-			if (ptr_arc == nullptr)
-			  return;
-		
-			Arc<GT> * arc = mapped_arc<GT>(ptr_arc);
-			path.append(arc); });
-
-      return path;
-    }
-
-    void paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
-    {
-      Path<GT> path = search_min_path(g, start, end);
-
-      g.reset_tag(GraphTag::MIN_PATH);
-
-      path.for_each([](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
-                    {
-		      ptr_node->visit(GraphTag::MIN_PATH);
-		
-		      if (ptr_arc != nullptr)
-			ptr_arc->visit(GraphTag::MIN_PATH); });
-    }
-  };
-
-  template <class GT, class Distance, class Cmp, class Plus>
-  GT Dijkstra<GT, Distance, Cmp, Plus>::
-      build_partial_min_path_tree(const GT& g, Node<GT>* start, Node<GT>* end)
-  {
-    g.reset_tag(TAG);
-    allocate_node_info<GT, Distance>(g);
-    allocate_arc_info<GT, Distance>(g);
-
-    GT tree;
-
-    start->visit(TAG);
-    ACC<GT, Distance>(start) = Distance::ZERO;
-    TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
-    TREE_NODE<GT, Distance>(start)->cookie() = start;
-
-    GetPot<GT, Distance> get_pot;
-    DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
-    PotHeap heap(arc_heap_cmp);
-
-    for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
-    {
-      Arc<GT>* arc = *it;
-      POT<GT, Distance>(arc) = distance(arc);
-      arc->visit(TAG);
-      put_in_heap<GT, Distance>(arc, arc->get_connected_node(start), heap);
-    }
-
-    while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
-    {
-      Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
-      Node<GT>* g_src = g_arc->get_src_node();
-      Node<GT>* g_tgt = g_arc->get_tgt_node();
-
-      if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
-        continue;
-
-      Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
-
-      Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
-
-      TREE_NODE<GT, Distance>(new_node) = t_tgt;
-
-      new_node->visit(TAG);
-
-      Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
-                                       TREE_NODE<GT, Distance>(g_tgt),
-                                       g_arc->get_info());
-
-      TREE_ARC<GT, Distance>(g_arc) = t_arc;
-
-      if (new_node == end)
-        break;
-
-      ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
-
-      const DistanceType& acc = ACC<GT, Distance>(new_node);
-
-      for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
-      {
-        Arc<GT>* arc = *it;
-
-        if (arc->is_visited(TAG))
-          continue;
-
-        arc->visit(TAG);
-
-        Node<GT>* tgt = it.get_tgt_node();
-
-        if (tgt->is_visited(TAG))
-          continue;
-
-        POT<GT, Distance>(arc) = plus(acc, distance(arc));
-
-        put_in_heap<GT, Distance>(arc, tgt, heap);
-      }
-    }
-
-    heap.clear();
-    destroy_node_info<GT, Distance>(g);
-    destroy_arc_info<GT, Distance>(g);
-
-    return tree;
-  }
-
-  template <class GT, class Distance, class Cmp, class Plus>
-  GT Dijkstra<GT, Distance, Cmp, Plus>::
-      build_min_path_tree(const GT& g, Node<GT>* start)
-  {
-    g.reset_tag(TAG);
-    allocate_node_info<GT, Distance>(g);
-    allocate_arc_info<GT, Distance>(g);
-
-    GT tree;
-
-    start->visit(TAG);
-    ACC<GT, Distance>(start) = Distance::ZERO;
-    TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
-    TREE_NODE<GT, Distance>(start)->cookie() = start;
-
-    GetPot<GT, Distance> get_pot;
-    DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
-    PotHeap heap(arc_heap_cmp);
-
-    for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
-    {
-      Arc<GT>* arc = *it;
-
-      POT<GT, Distance>(arc) = distance(arc);
-      arc->visit(TAG);
-      put_in_heap<GT, Distance>(arc, arc->get_connected_node(start), heap);
-    }
-
-    while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
-    {
-      Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
-      Node<GT>* g_src = g_arc->get_src_node();
-      Node<GT>* g_tgt = g_arc->get_tgt_node();
-
-      if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
-        continue;
-
-      Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
-
-      Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
-
-      TREE_NODE<GT, Distance>(new_node) = t_tgt;
-
-      new_node->visit(TAG);
-
-      Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
-                                       TREE_NODE<GT, Distance>(g_tgt),
-                                       g_arc->get_info());
-
-      TREE_ARC<GT, Distance>(g_arc) = t_arc;
-
-      ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
-
-      const DistanceType& acc = ACC<GT, Distance>(new_node);
-
-      for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
-      {
-        Arc<GT>* arc = *it;
-
-        if (arc->is_visited(TAG))
-          continue;
-
-        arc->visit(TAG);
-
-        Node<GT>* tgt = it.get_tgt_node();
-
-        if (tgt->is_visited(TAG))
-          continue;
-
-        POT<GT, Distance>(arc) = plus(acc, distance(arc));
-
-        put_in_heap<GT, Distance>(arc, tgt, heap);
-      }
-    }
-
-    heap.clear();
-    destroy_node_info<GT, Distance>(g);
-    destroy_arc_info<GT, Distance>(g);
-
-    return tree;
-  }
-
-  template <class GT, class Distance>
-  class DefaultHeuristic
-  {
-  public:
-    typename Distance::Type operator()(Node<GT>*, Node<GT>*)
-    {
-      return Distance::ZERO;
-    }
-  };
-
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Heuristic = DefaultHeuristic<GT, Distance>,
-            class Cmp = std::less<typename Distance::Type>,
-            class Plus = std::plus<typename Distance::Type>>
-  class Astar
-  {
-  public:
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-
-  private:
-    Distance& distance;
-    Heuristic& heuristic;
-    Cmp& cmp;
-    Plus& plus;
-
-    using DistanceType = typename Distance::Type;
-
-    static constexpr GraphTag TAG = GraphTag::ASTAR;
-
-    using PotHeap = ArcHeap<GT, GetPot<GT, Distance>, Cmp>;
-
-    GT build_partial_min_path_tree(const GT&, Node<GT>*, Node<GT>*);
-
-  public:
-    Astar(Distance& _distance, Heuristic& _heuristic,
-          Cmp& _cmp, Plus& _plus)
-        : distance(_distance), heuristic(_heuristic), cmp(_cmp),
-          plus(_plus)
-    {
-      // empty
-    }
-
-    Astar(Distance&& _distance = Distance(),
-          Heuristic&& _heuristic = Heuristic(), Cmp&& _cmp = Cmp(),
-          Plus&& _plus = Plus())
-        : distance(_distance), heuristic(_heuristic), cmp(_cmp),
-          plus(_plus)
-    {
-      // Empty
-    }
-
-    Path<GT> search_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
-    {
-      GT tree = build_partial_min_path_tree(g, start, end);
-
-      Node<GT>* t_start = mapped_node<GT>(start);
-      Node<GT>* t_end = mapped_node<GT>(end);
-
-      Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
-      Path<GT> path(g);
-
-      if (t_path.is_empty())
-        return path;
-
-      path.init(start);
-
-      t_path.for_each([&](Node<GT>*, Arc<GT>* ptr_arc)
-                      {
-			if (ptr_arc == nullptr)
-			  return;
-		
-			Arc<GT> * arc = mapped_arc<GT>(ptr_arc);
-			path.append(arc); });
-
-      return path;
-    }
-
-    void paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
-    {
-      Path<GT> path = search_min_path(g, start, end);
-
-      g.reset_tag(GraphTag::MIN_PATH);
-
-      path.for_each([](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
-                    {
-		      ptr_node->visit(GraphTag::MIN_PATH);
-		
-		      if (ptr_arc != nullptr)
-			ptr_arc->visit(GraphTag::MIN_PATH); });
-    }
-  };
-
-  template <class GT, class Distance, class Heuristic, class Cmp, class Plus>
-  GT Astar<GT, Distance, Heuristic, Cmp, Plus>::
-      build_partial_min_path_tree(const GT& g, Node<GT>* start, Node<GT>* end)
-  {
-    g.reset_tag(TAG);
-    allocate_node_info<GT, Distance>(g);
-    allocate_arc_info<GT, Distance>(g);
-
-    GT tree;
-
-    start->visit(TAG);
-    ACC<GT, Distance>(start) = Distance::ZERO;
-    TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
-    TREE_NODE<GT, Distance>(start)->cookie() = start;
-
-    GetPot<GT, Distance> get_pot;
-    DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
-    PotHeap heap(arc_heap_cmp);
-
-    for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
-    {
-      Arc<GT>* arc = *it;
-      POT<GT, Distance>(arc) = plus(distance(arc),
-                                    heuristic(it.get_tgt_node(), end));
-      arc->visit(TAG);
-      put_in_heap<GT, Distance>(arc, arc->get_connected_node(start), heap);
-    }
-
-    while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
-    {
-      Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
-      Node<GT>* g_src = g_arc->get_src_node();
-      Node<GT>* g_tgt = g_arc->get_tgt_node();
-
-      if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
-        continue;
-
-      Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
-
-      Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
-
-      TREE_NODE<GT, Distance>(new_node) = t_tgt;
-
-      new_node->visit(TAG);
-
-      Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
-                                       TREE_NODE<GT, Distance>(g_tgt),
-                                       g_arc->get_info());
-
-      TREE_ARC<GT, Distance>(g_arc) = t_arc;
-
-      if (new_node == end)
-        break;
-
-      ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
-
-      const DistanceType& acc = ACC<GT, Distance>(new_node);
-
-      for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
-      {
-        Arc<GT>* arc = *it;
-
-        if (arc->is_visited(TAG))
-          continue;
-
-        arc->visit(TAG);
-
-        Node<GT>* tgt = it.get_tgt_node();
-
-        if (tgt->is_visited(TAG))
-          continue;
-
-        POT<GT, Distance>(arc) = plus(plus(acc, distance(arc)),
-                                      heuristic(it.get_tgt_node(), end));
-
-        put_in_heap<GT, Distance>(arc, tgt, heap);
-      }
-    }
-
-    heap.clear();
-    destroy_node_info<GT, Distance>(g);
-    destroy_arc_info<GT, Distance>(g);
-
-    return tree;
-  }
-
-  template <class GT,
-            class Distance = DefaultDistance<GT>,
-            class Cmp = std::less<typename Distance::Type>,
-            class Plus = std::plus<typename Distance::Type>>
-  class BellmanFord
-  {
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-
-    Distance& distance;
-    Cmp& cmp;
-    Plus& plus;
-
-    struct BFNodeInfo
-    {
-      nat_t idx;
-      typename Distance::Type accum;
-    };
-
-    static BFNodeInfo*& BFNI(Node<GT>* p)
-    {
-      return (BFNodeInfo*&)p->cookie();
-    }
-
-    static typename Distance::Type& ACC(Node<GT>* p)
-    {
-      return BFNI(p)->accum;
-    }
-
-    static nat_t& IDX(Node<GT>* p)
-    {
-      return BFNI(p)->idx;
-    }
-
-    static void init_node_info(const GT& g,
-                               FixedArray<Node<GT>*>& pred,
-                               FixedArray<Arc<GT>*>& arcs)
-    {
-      nat_t i = 0;
-
-      g.for_each_node([&](Node<GT>* p)
-                      {
-			pred[i] = nullptr;
-			arcs[i] = nullptr;
-			BFNI(p) = new BFNodeInfo;
-			IDX(p) = i;
-			ACC(p) = Distance::MAX;
-			++i; });
-    }
-
-    static void destroy_node_info(const GT& g)
-    {
-      g.for_each_node([](Node<GT>* p)
-                      {
-			delete BFNI(p);
-			BFNI(p) = nullptr; });
-    }
-
-    bool relax(Arc<GT>* a, FixedArray<Node<GT>*>& pred,
-               FixedArray<Arc<GT>*>& arcs)
-    {
-      Node<GT>* s = a->get_src_node();
-      Node<GT>* t = a->get_tgt_node();
-
-      if (ACC(s) == Distance::MAX)
+        path.remove_last_node();
         return false;
-
-      typename Distance::Type sum = plus(ACC(s), distance(a));
-
-      if (cmp(sum, ACC(t)))
-      {
-        const nat_t& i = IDX(t);
-        pred[i] = s;
-        arcs[i] = a;
-        ACC(t) = sum;
-        return true;
-      }
-
-      return false;
     }
 
-    bool generic_algorithm(const GT&, FixedArray<Node<GT>*>&,
-                           FixedArray<Arc<GT>*>&);
-
-  public:
-    BellmanFord(Distance& _distance, Cmp& _cmp, Plus& _plus)
-        : distance(_distance), cmp(_cmp), plus(_plus)
+    template <class GT>
+    bool test_for_cycle(const GT& g, Node<GT>* p, bool has)
     {
-      // empty
+        if (p->is_visited(GraphTag::DEPTH_FIRST))
+            return has;
+
+        p->visit(GraphTag::DEPTH_FIRST);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = *it;
+
+            if (a->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            a->visit(GraphTag::DEPTH_FIRST);
+
+            Node<GT>* q = it.get_tgt_node();
+
+            if (test_for_cycle(g, q, has) == has)
+                return has;
+        }
+
+        p->unvisit(GraphTag::DEPTH_FIRST);
+
+        return !has;
     }
 
-    BellmanFord(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp(),
-                Plus&& _plus = Plus())
-        : distance(_distance), cmp(_cmp), plus(_plus)
+    template <class GT>
+    bool has_cycle(const GT& g, Node<GT>* start)
     {
-      // empty
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+        return test_for_cycle(g, start, true);
     }
 
-    std::tuple<bool, GT> build_min_path_tree(const GT&, Node<GT>*);
-
-    bool paint_min_path_tree(const GT& g, Node<GT>* start)
+    template <class GT>
+    bool has_cycle(const GT& g)
     {
-      auto t = build_min_path_tree(g, start);
+        if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
+            return true;
 
-      if (!std::get<0>(t))
+        return g.exists_node([&g](Node<GT>* p) { return has_cycle(g, p); });
+    }
+
+    template <class GT>
+    bool is_acyclique(const GT& g, Node<GT>* start)
+    {
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+        return test_for_cycle(g, start, false);
+    }
+
+    template <class GT>
+    bool is_acyclique(const GT& g)
+    {
+        if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
+            return false;
+
+        return g.all_nodes([&g](Node<GT>* p) { return is_acyclique(g, p); });
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_prefix(const GT& g, Op& op)
+    {
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+
+        for (NodeIt<GT> it(g); it.has_current(); it.next())
+        {
+            Node<GT>* p = it.get_current();
+
+            if (p->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            depth_first_traverse_prefix_rec(g, p, op);
+        }
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_suffix(const GT& g, Op& op)
+    {
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+
+        for (NodeIt<GT> it(g); it.has_current(); it.next())
+        {
+            Node<GT>* p = it.get_current();
+
+            if (p->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            depth_first_traverse_suffix_rec(g, p, op);
+        }
+    }
+
+    template <class GT>
+    Path<GT> depth_first_search_path(const GT& g, Node<GT>* begin,
+                                     Node<GT>* end)
+    {
+        Path<GT> ret_val(g);
+
+        if (begin == end)
+        {
+            ret_val.init(begin);
+            return ret_val;
+        }
+
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+
+        depth_first_search_path_rec(g, begin, end, ret_val);
+        return ret_val;
+    }
+
+    /* Iterative counterparts of the DFS-family algorithms above.
+     *
+     * DeSiGNAR's DFS routines are written recursively above because that is
+     * the clearest way to *read* a depth-first algorithm: the call stack
+     * mirrors the DFS tree directly, and each function reads as a direct
+     * transcription of the textbook recursive definition. That clarity has
+     * a real cost, though: each recursive call consumes a stack frame, so
+     * the recursion depth equals the length of the longest path the DFS
+     * walks. On a graph shaped like a long chain (easily built with
+     * buildgraph.hpp's random/ring graph generators) with on the order of
+     * tens or hundreds of thousands of nodes, that can exhaust the
+     * (fixed-size, OS-limited) call stack and crash the program — a real
+     * risk for a general-purpose library, not just a theoretical one.
+     *
+     * The functions below are line-for-line behavioral equivalents of
+     * their `_rec`/plain counterparts above, rewritten to replace the
+     * implicit call stack with an explicit `DynStack<Frame>`, where a
+     * `Frame` bundles a node with the adjacency-arc iterator positioned at
+     * whatever arc it should resume from — exactly the state a recursive
+     * call's stack frame would hold. Recursion depth becomes stack size,
+     * which lives on the heap (via DynStack's underlying DynArray) instead
+     * of the call stack, so it scales to however much memory is available
+     * rather than a fixed, comparatively small limit.
+     *
+     * Both versions are kept side by side deliberately: this library's
+     * purpose is teaching, and comparing a recursive algorithm with its
+     * iterative twin side by side — same behavior, same tag/visited
+     * bookkeeping, different mechanism for "remembering where to resume"
+     * — is itself a worthwhile lesson. Prefer the recursive versions for
+     * reading and for graphs you know are shallow; prefer the iterative
+     * versions when the graph's depth is unbounded or untrusted.
+     */
+
+    template <class GT, class Op>
+    void depth_first_traverse_prefix_iterative(const GT& g, Node<GT>* start,
+                                               Op& op)
+    {
+        if (start->is_visited(GraphTag::DEPTH_FIRST))
+            return;
+
+        struct Frame
+        {
+            Node<GT>* node;
+            AdArcIt<GT> it;
+
+            Frame() : node(nullptr), it()
+            {
+                // empty
+            }
+
+            Frame(const GT& g, Node<GT>* n) : node(n), it(g, n)
+            {
+                // empty
+            }
+        };
+
+        DynStack<Frame> pending;
+
+        op(start);
+        start->visit(GraphTag::DEPTH_FIRST);
+        pending.push(Frame(g, start));
+
+        while (!pending.is_empty())
+        {
+            bool descended = false;
+
+            while (true)
+            {
+                Frame& frame = pending.top();
+
+                if (!frame.it.has_current())
+                    break;
+
+                Arc<GT>* a = *frame.it;
+
+                if (a->is_visited(GraphTag::DEPTH_FIRST))
+                {
+                    frame.it.next();
+                    continue;
+                }
+
+                a->visit(GraphTag::DEPTH_FIRST);
+
+                Node<GT>* q = frame.it.get_tgt_node();
+
+                frame.it.next();
+
+                if (q->is_visited(GraphTag::DEPTH_FIRST))
+                    continue;
+
+                op(q);
+                q->visit(GraphTag::DEPTH_FIRST);
+                pending.push(
+                    Frame(g, q)); // invalidates `frame`; do not use it below
+                descended = true;
+                break;
+            }
+
+            if (!descended)
+                pending.pop();
+        }
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_prefix_iterative(const GT& g, Op& op)
+    {
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+
+        for (NodeIt<GT> it(g); it.has_current(); it.next())
+        {
+            Node<GT>* p = it.get_current();
+
+            if (p->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            depth_first_traverse_prefix_iterative(g, p, op);
+        }
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_prefix_iterative(const GT& g, Op&& op = Op())
+    {
+        depth_first_traverse_prefix_iterative<GT, Op>(g, op);
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_suffix_iterative(const GT& g, Node<GT>* start,
+                                               Op& op)
+    {
+        if (start->is_visited(GraphTag::DEPTH_FIRST))
+            return;
+
+        struct Frame
+        {
+            Node<GT>* node;
+            AdArcIt<GT> it;
+
+            Frame() : node(nullptr), it()
+            {
+                // empty
+            }
+
+            Frame(const GT& g, Node<GT>* n) : node(n), it(g, n)
+            {
+                // empty
+            }
+        };
+
+        DynStack<Frame> pending;
+
+        start->visit(GraphTag::DEPTH_FIRST);
+        pending.push(Frame(g, start));
+
+        while (!pending.is_empty())
+        {
+            bool descended = false;
+
+            while (true)
+            {
+                Frame& frame = pending.top();
+
+                if (!frame.it.has_current())
+                    break;
+
+                Arc<GT>* a = *frame.it;
+
+                if (a->is_visited(GraphTag::DEPTH_FIRST))
+                {
+                    frame.it.next();
+                    continue;
+                }
+
+                a->visit(GraphTag::DEPTH_FIRST);
+
+                Node<GT>* q = frame.it.get_tgt_node();
+
+                frame.it.next();
+
+                if (q->is_visited(GraphTag::DEPTH_FIRST))
+                    continue;
+
+                q->visit(GraphTag::DEPTH_FIRST);
+                pending.push(
+                    Frame(g, q)); // invalidates `frame`; do not use it below
+                descended = true;
+                break;
+            }
+
+            if (!descended)
+            {
+                // Suffix (post-order): visit the node only once every arc out
+                // of it has been fully explored, i.e. exactly when it is
+                // popped.
+                op(pending.top().node);
+                pending.pop();
+            }
+        }
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_suffix_iterative(const GT& g, Op& op)
+    {
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+
+        for (NodeIt<GT> it(g); it.has_current(); it.next())
+        {
+            Node<GT>* p = it.get_current();
+
+            if (p->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            depth_first_traverse_suffix_iterative(g, p, op);
+        }
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_suffix_iterative(const GT& g, Op&& op = Op())
+    {
+        depth_first_traverse_suffix_iterative<GT, Op>(g, op);
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_iterative(const GT& g, Op& op)
+    {
+        depth_first_traverse_prefix_iterative<GT, Op>(g, op);
+    }
+
+    template <class GT, class Op>
+    void depth_first_traverse_iterative(const GT& g, Op&& op = Op())
+    {
+        depth_first_traverse_iterative<GT, Op>(g, op);
+    }
+
+    template <class GT>
+    bool depth_first_search_path_iterative(const GT& g, Node<GT>* start,
+                                           Node<GT>* end, Path<GT>& path)
+    {
+        if (start->is_visited(GraphTag::DEPTH_FIRST))
+            return false;
+
+        struct Frame
+        {
+            Node<GT>* node;
+            AdArcIt<GT> it;
+
+            Frame() : node(nullptr), it()
+            {
+                // empty
+            }
+
+            Frame(const GT& g, Node<GT>* n) : node(n), it(g, n)
+            {
+                // empty
+            }
+        };
+
+        start->visit(GraphTag::DEPTH_FIRST);
+        path.append(start);
+
+        if (start == end)
+            return true;
+
+        DynStack<Frame> pending;
+        pending.push(Frame(g, start));
+
+        while (!pending.is_empty())
+        {
+            bool descended = false;
+
+            while (true)
+            {
+                Frame& frame = pending.top();
+
+                if (!frame.it.has_current())
+                    break;
+
+                Arc<GT>* a = *frame.it;
+
+                if (a->is_visited(GraphTag::DEPTH_FIRST))
+                {
+                    frame.it.next();
+                    continue;
+                }
+
+                a->visit(GraphTag::DEPTH_FIRST);
+
+                Node<GT>* q = frame.it.get_tgt_node();
+
+                frame.it.next();
+
+                if (q->is_visited(GraphTag::DEPTH_FIRST))
+                    continue;
+
+                q->visit(GraphTag::DEPTH_FIRST);
+                path.append(q);
+
+                if (q == end)
+                    return true;
+
+                pending.push(
+                    Frame(g, q)); // invalidates `frame`; do not use it below
+                descended = true;
+                break;
+            }
+
+            if (!descended)
+            {
+                path.remove_last_node();
+                pending.pop();
+            }
+        }
+
         return false;
-
-      g.reset_tag(GraphTag::MIN_SPANNING_TREE);
-
-      const GT& tree = std::get<1>(t);
-
-      tree.for_each_node([](Node<GT>* t_node)
-                         {
-			   Node<GT> * ptr_g_node = mapped_node<GT>(t_node);  
-			   ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
-			   ptr_g_node->cookie() = nullptr; });
-
-      tree.for_each_arc([](Arc<GT>* t_arc)
-                        {
-			  Arc<GT> * ptr_g_arc = mapped_arc<GT>(t_arc);
-			  ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
-			  ptr_g_arc->cookie() = nullptr; });
-      return true;
     }
 
-    std::tuple<bool, Path<GT>> search_min_path(const GT& g, Node<GT>* start,
+    template <class GT>
+    Path<GT> depth_first_search_path_iterative(const GT& g, Node<GT>* begin,
                                                Node<GT>* end)
     {
-      auto t = build_min_path_tree(g, start, end);
+        Path<GT> ret_val(g);
 
-      if (!std::get<0>(t))
-        return make_tuple(false, Path<GT>());
+        if (begin == end)
+        {
+            ret_val.init(begin);
+            return ret_val;
+        }
 
-      const GT& tree = std::get<1>(t);
+        g.reset_tag(GraphTag::DEPTH_FIRST);
 
-      Node<GT>* t_start = mapped_node<GT>(start);
-      Node<GT>* t_end = mapped_node<GT>(end);
-
-      Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
-      Path<GT> path(g);
-
-      if (t_path.is_empty())
-        return path;
-
-      path.init(start);
-
-      t_path.for_each([&](Node<GT>*, Arc<GT>* ptr_arc)
-                      {
-			if (ptr_arc == nullptr)
-			  return;
-		
-			Arc<GT> * arc = mapped_arc<GT>(ptr_arc);
-			path.append(arc); });
-
-      return make_tuple(true, path);
+        depth_first_search_path_iterative(g, begin, end, ret_val);
+        return ret_val;
     }
 
-    bool paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+    /** Iterative counterpart of test_for_cycle(). The recursive version
+        encodes two different queries ("is there a cycle", "is the graph
+        acyclic") in a single function via the `has` flag: reaching an
+        already-visited node means "found what we were looking for" and
+        propagates `has` all the way up through every enclosing call
+        *without* running that call's `p->unvisit(...)` — a short-circuit.
+        Reaching the end of a node's adjacency list with nothing found
+        means "not found through this node", which unvisits it (so a
+        different DFS branch may still validly reach it) and propagates
+        `!has` upward instead, which does *not* short-circuit its caller.
+
+        That short-circuit is what an explicit `return has;` below
+        reproduces directly: returning from this function abandons every
+        pending stack frame at once, exactly like a chain of recursive
+        calls returning without reaching their own `unvisit()` line. The
+        non-short-circuit path (a frame's adjacency list is exhausted) is
+        the one case that does unvisit before popping, mirroring the
+        recursive fall-through to `p->unvisit(...); return !has;`. */
+    template <class GT>
+    bool test_for_cycle_iterative(const GT& g, Node<GT>* start, bool has)
     {
-      auto t = search_min_path(g, start, end);
+        if (start->is_visited(GraphTag::DEPTH_FIRST))
+            return has;
 
-      if (!std::get<0>(t))
-        return false;
+        struct Frame
+        {
+            Node<GT>* node;
+            AdArcIt<GT> it;
 
-      Path<GT>& path = std::get<1>(t);
+            Frame() : node(nullptr), it()
+            {
+                // empty
+            }
 
-      g.reset_tag(GraphTag::MIN_PATH);
+            Frame(const GT& g, Node<GT>* n) : node(n), it(g, n)
+            {
+                // empty
+            }
+        };
 
-      path.for_each([](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
-                    {
-		      ptr_node->visit(GraphTag::MIN_PATH);
-		
-		      if (ptr_arc != nullptr)
-			ptr_arc->visit(GraphTag::MIN_PATH); });
+        DynStack<Frame> pending;
 
-      return true;
+        start->visit(GraphTag::DEPTH_FIRST);
+        pending.push(Frame(g, start));
+
+        while (!pending.is_empty())
+        {
+            bool descended = false;
+
+            while (true)
+            {
+                Frame& frame = pending.top();
+
+                if (!frame.it.has_current())
+                    break;
+
+                Arc<GT>* a = *frame.it;
+
+                if (a->is_visited(GraphTag::DEPTH_FIRST))
+                {
+                    frame.it.next();
+                    continue;
+                }
+
+                a->visit(GraphTag::DEPTH_FIRST);
+
+                Node<GT>* q = frame.it.get_tgt_node();
+
+                frame.it.next();
+
+                if (q->is_visited(GraphTag::DEPTH_FIRST))
+                    return has; // short-circuit: see the function comment above
+
+                q->visit(GraphTag::DEPTH_FIRST);
+                pending.push(
+                    Frame(g, q)); // invalidates `frame`; do not use it below
+                descended = true;
+                break;
+            }
+
+            if (!descended)
+            {
+                pending.top().node->unvisit(GraphTag::DEPTH_FIRST);
+                pending.pop();
+            }
+        }
+
+        return !has;
     }
-  };
 
-  template <class GT, class Distance, class Cmp, class Plus>
-  bool BellmanFord<GT, Distance, Cmp, Plus>::
-      generic_algorithm(const GT& g, FixedArray<Node<GT>*>& pred,
-                        FixedArray<Arc<GT>*>& arcs)
-  {
-    nat_t n = g.get_num_nodes() - 1;
-
-    bool had_relaxation = true;
-
-    nat_t i;
-
-    for (i = 0; had_relaxation && i < n; ++i)
+    template <class GT>
+    bool has_cycle_iterative(const GT& g, Node<GT>* start)
     {
-      had_relaxation = false;
-
-      g.for_each_arc([&](Arc<GT>* a)
-                     {
-			 if (relax(a, pred, arcs))
-			   had_relaxation = true; });
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+        return test_for_cycle_iterative(g, start, true);
     }
 
-    if (i < n)
-      return true;
-
-    had_relaxation = false;
-
-    g.for_each_arc([&](Arc<GT>* a)
-                   {
-		     if (relax(a, pred, arcs))
-		       had_relaxation = true; });
-
-    return !had_relaxation;
-  }
-
-  template <class GT, class Distance, class Cmp, class Plus>
-  std::tuple<bool, GT> BellmanFord<GT, Distance, Cmp, Plus>::
-      build_min_path_tree(const GT& g, Node<GT>* start)
-  {
-    if (!g.is_digraph())
-      throw std::domain_error("Argument must be a directed graph");
-
-    FixedArray<Node<GT>*> pred(g.get_num_nodes());
-    FixedArray<Arc<GT>*> arcs(g.get_num_nodes());
-
-    init_node_info(g, pred, arcs);
-
-    ACC(start) = Distance::ZERO;
-    bool result = generic_algorithm(g, pred, arcs);
-
-    destroy_node_info(g);
-
-    if (!result)
-      return std::make_tuple(false, GT());
-
-    GT tree;
-
-    for (nat_t i = 0; i < arcs.size(); ++i)
+    template <class GT>
+    bool has_cycle_iterative(const GT& g)
     {
-      Arc<GT>* a = arcs[i];
+        if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
+            return true;
 
-      if (a == nullptr)
-        continue;
-
-      Node<GT>* s = a->get_src_node();
-
-      Node<GT>* st = mapped_node<GT>(s);
-
-      if (st == nullptr)
-      {
-        st = tree.insert_node(s->get_info());
-        map_nodes<GT>(s, st);
-      }
-
-      Node<GT>* t = a->get_tgt_node();
-
-      Node<GT>* tt = mapped_node<GT>(t);
-
-      if (tt == nullptr)
-      {
-        tt = tree.insert_node(t->get_info());
-        map_nodes<GT>(t, tt);
-      }
-
-      Arc<GT>* at = tree.insert_arc(st, tt, a->get_info());
-      map_arcs<GT>(a, at);
+        return g.exists_node([&g](Node<GT>* p)
+                             { return has_cycle_iterative(g, p); });
     }
 
-    return std::make_tuple(true, std::move(tree));
-  }
-
-  /* Randomized algorithms */
-
-  template <class GT>
-  class KargerMinCut
-  {
-    using NodeType = Node<GT>;
-    using ArcType = Arc<GT>;
-    using MNodeInfo = SLList<Node<GT>*>;
-    using MArcInfo = Arc<GT>*;
-    using MGraph = Graph<MNodeInfo, MArcInfo>;
-    using MNode = Node<MGraph>;
-    using MArc = Arc<MGraph>;
-    using ArcSet = TreeSet<MArc*>;
-
-    static constexpr real_t SQ_TWO = 1.414213562;
-
-    rng_t rng;
-
-    static nat_t num_iterations_hint(nat_t n)
+    template <class GT>
+    bool is_acyclique_iterative(const GT& g, Node<GT>* start)
     {
-      return n * n * std::log10(n);
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+        return test_for_cycle_iterative(g, start, false);
     }
 
-    MGraph build_mgraph(const GT& g)
+    template <class GT>
+    bool is_acyclique_iterative(const GT& g)
     {
-      g.reset_nodes();
-      g.reset_arcs();
+        if (!g.is_digraph() && g.get_num_arcs() >= g.get_num_nodes())
+            return false;
 
-      MGraph mg;
-
-      g.for_each_node([&](Node<GT>* p)
-                      {
-			MNode * mp = mg.insert_node();
-			mp->get_info().append(p);
-			map_nodes<GT, MGraph>(p, mp); });
-
-      g.for_each_arc([&](Arc<GT>* a)
-                     {
-		       Node<GT> * p = a->get_src_node();
-		       Node<GT> * q = a->get_tgt_node();
-			       
-		       MNode * mp = mapped_node<GT, MGraph>(p);
-		       MNode * mq = mapped_node<GT, MGraph>(q);
-
-		       mg.insert_arc(mp, mq, a); });
-
-      return mg;
+        return g.all_nodes([&g](Node<GT>* p)
+                           { return is_acyclique_iterative(g, p); });
     }
 
-    ArcSet build_arcs(MGraph& mg)
+    template <class GT>
+    GT invert_digraph(const GT& g)
     {
-      ArcSet ret;
-      mg.for_each_arc([&](MArc* a)
-                      { ret.insert(a); });
-      return ret;
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        g.reset_node_cookies();
+
+        GT i;
+
+        g.for_each_arc(
+            [&i](auto a)
+            {
+                auto s = a->get_src_node();
+                auto t = a->get_tgt_node();
+                auto sp = mapped_node<GT>(s);
+
+                if (sp == nullptr)
+                {
+                    sp = i.insert_node(s->get_info());
+                    map_nodes<GT>(s, sp);
+                }
+
+                auto tp = mapped_node<GT>(t);
+
+                if (tp == nullptr)
+                {
+                    tp = i.insert_node(t->get_info());
+                    map_nodes<GT>(t, tp);
+                }
+
+                auto ap = i.insert_arc(tp, sp, a->get_info());
+                map_arcs<GT>(a, ap);
+            });
+
+        return i;
     }
 
-    void contract_arc(MGraph&, MNode*, MNode*, MNode*, ArcSet&);
+    template <class GT>
+    void build_subgraph_rec(const GT& g, Node<GT>* p, GT& t)
+    {
+        if (p->is_visited(GraphTag::COMPONENT))
+            return;
 
-    void contract(MGraph&, ArcSet&, nat_t);
+        p->visit(GraphTag::COMPONENT);
 
+        Node<GT>* pp = t.insert_node(p->get_info());
+        map_nodes<GT>(p, pp);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+
+            if (a->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            a->visit(GraphTag::COMPONENT);
+
+            Node<GT>* q = it.get_tgt_node();
+
+            build_subgraph_rec(g, q, t);
+
+            Node<GT>* qq = mapped_node<GT>(q);
+
+            Arc<GT>* aa = t.insert_arc(pp, qq, a->get_info());
+            map_arcs<GT>(a, aa);
+        }
+    }
+
+    template <class GT>
+    SLList<GT> compute_connected_components(const GT& g)
+    {
+        if (g.is_digraph())
+            throw std::domain_error("Argument must be an undirected graph");
+
+        g.reset_tag(GraphTag::COMPONENT);
+        g.reset_cookies();
+
+        SLList<GT> ret;
+
+        g.for_each_node(
+            [&g, &ret](Node<GT>* p)
+            {
+                if (p->is_visited(GraphTag::COMPONENT))
+                    return;
+
+                GT h;
+                build_subgraph_rec(g, p, h);
+                ret.append(std::move(h));
+            });
+
+        return ret;
+    }
+
+    template <class GT>
+    void add_nodes_to_component_rec(const GT& g, Node<GT>* p,
+                                    SLList<Node<GT>*>& list)
+    {
+        if (p->is_visited(GraphTag::COMPONENT))
+            return;
+
+        p->visit(GraphTag::COMPONENT);
+
+        list.append(p);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+
+            if (a->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            a->visit(GraphTag::COMPONENT);
+
+            Node<GT>* q = it.get_tgt_node();
+
+            add_nodes_to_component_rec(g, q, list);
+        }
+    }
+
+    template <class GT>
+    SLList<SLList<Node<GT>*>> connected_components_node_list(const GT& g)
+    {
+        if (g.is_digraph())
+            throw std::domain_error("Argument must be an undirected graph");
+
+        g.reset_tag(GraphTag::COMPONENT);
+        g.reset_cookies();
+
+        SLList<SLList<Node<GT>*>> ret;
+
+        g.for_each_node(
+            [&g, &ret](Node<GT>* p)
+            {
+                if (p->is_visited(GraphTag::COMPONENT))
+                    return;
+
+                SLList<Node<GT>*> l;
+                add_nodes_to_component_rec(g, p, l);
+                ret.append(std::move(l));
+            });
+
+        return ret;
+    }
+
+    template <class GT>
+    void compute_cut_nodes_rec(const GT& g, Node<GT>* p, Arc<GT>* a,
+                               SLList<Node<GT>*>& l, int_t& cdf)
+    {
+        p->visit(GraphTag::DEPTH_FIRST);
+        low<GT>(p) = df<GT>(p) = cdf++;
+
+        bool is_cut = false;
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* arc = it.get_current();
+
+            if (arc == a)
+                continue;
+
+            Node<GT>* q = it.get_tgt_node();
+
+            if (q->is_visited(GraphTag::DEPTH_FIRST))
+            {
+                if (!arc->is_visited(GraphTag::DEPTH_FIRST))
+                    low<GT>(p) = std::min(low<GT>(p), df<GT>(q));
+
+                continue;
+            }
+
+            if (arc->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            arc->visit(GraphTag::DEPTH_FIRST);
+
+            compute_cut_nodes_rec(g, q, arc, l, cdf);
+
+            low<GT>(p) = std::min(low<GT>(p), low<GT>(q));
+
+            // `is_cut` accumulates across every DFS child of `p`: `p` is a cut
+            // node if *any* child satisfies this condition, so this must be
+            // OR'd in, not assigned — a plain assignment here would let a
+            // later child that fails the check silently overwrite a `true`
+            // set by an earlier child, making the result depend on adjacency
+            // list order instead of the graph's actual structure.
+            is_cut = is_cut || (low<GT>(q) >= df<GT>(p) && df<GT>(q) != 0);
+        }
+
+        if (is_cut)
+        {
+            p->visit(GraphTag::CUT);
+            l.append(p);
+        }
+    }
+
+    template <class GT>
+    SLList<Node<GT>*> compute_cut_nodes(const GT& g)
+    {
+        g.for_each_node(
+            [](Node<GT>* p)
+            {
+                p->reset_tag();
+                df<GT>(p) = 0;
+                low<GT>(p) = -1;
+            });
+        g.reset_arcs();
+
+        nat_t call_counter = 0;
+        int_t current_df = 0;
+
+        Node<GT>* start = g.get_first_node();
+        start->visit(GraphTag::DEPTH_FIRST);
+        df<GT>(start) = current_df++;
+
+        SLList<Node<GT>*> list;
+
+        for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
+        {
+            Node<GT>* t = it.get_tgt_node();
+
+            if (t->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            Arc<GT>* a = it.get_current();
+
+            if (a->is_visited(GraphTag::DEPTH_FIRST))
+                continue;
+
+            a->visit(GraphTag::DEPTH_FIRST);
+
+            compute_cut_nodes_rec(g, t, a, list, current_df);
+            ++call_counter;
+        }
+
+        if (call_counter > 1)
+        {
+            start->visit(GraphTag::CUT);
+            list.append(start);
+        }
+
+        return list;
+    }
+
+    template <class GT>
+    void paint_cut_nodes_connected_components_rec(const GT& g, Node<GT>* p,
+                                                  int_t c)
+    {
+        if (p->counter() > 0)
+            return;
+
+        p->counter() = c;
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+
+            if (a->counter() > 0)
+                continue;
+
+            Node<GT>* q = it.get_tgt_node();
+
+            if (q->is_visited(GraphTag::CUT))
+                continue;
+
+            a->counter() = c;
+
+            paint_cut_nodes_connected_components_rec(g, q, c);
+        }
+    }
+
+    template <class GT>
+    void paint_from_cut_node(const GT& g, Node<GT>* p, int_t& color)
+    {
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+            Node<GT>* q = it.get_tgt_node();
+
+            if (q->is_visited(GraphTag::CUT))
+            {
+                a->visit(GraphTag::CUT);
+                continue;
+            }
+            else
+            {
+                a->counter() = -1;
+
+                if (q->counter() > 0)
+                    continue;
+            }
+
+            paint_cut_nodes_connected_components_rec(g, q, color);
+            ++color;
+        }
+    }
+
+    template <class GT>
+    int_t paint_cut_nodes_subgraphs(const GT& g, const SLList<Node<GT>*>& l)
+    {
+        g.reset_counters();
+
+        int_t color = 1;
+
+        l.for_each([&g, &color](Node<GT>* curr)
+                   { paint_from_cut_node(g, curr, color); });
+
+        return color;
+    }
+
+    template <class GT>
+    void build_cut_nodes_subgraph_rec(const GT& g, Node<GT>* p, GT& t,
+                                      int_t color)
+    {
+        Node<GT>* pp = mapped_node<GT>(p);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+
+            if (a->counter() != color || a->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            a->visit(GraphTag::COMPONENT);
+
+            Node<GT>* q = it.get_tgt_node();
+            Node<GT>* qp = nullptr;
+
+            if (q->is_visited(GraphTag::COMPONENT))
+                qp = mapped_node<GT>(q);
+            else
+            {
+                qp = t.insert_node(q->get_info());
+                map_nodes<GT>(q, qp);
+                q->visit(GraphTag::COMPONENT);
+            }
+
+            Arc<GT>* ap = t.insert_arc(pp, qp, a->get_info());
+            map_arcs<GT>(a, ap);
+
+            build_cut_nodes_subgraph_rec(g, q, t, color);
+        }
+    }
+
+    template <class GT>
+    SLList<GT> build_cut_nodes_subgraphs(const GT& g)
+    {
+        SLList<GT> list;
+
+        for (NodeIt<GT> it(g); it.has_current(); it.next())
+        {
+            Node<GT>* p = it.get_current();
+
+            if (p->counter() == 0 || p->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            GT t;
+            Node<GT>* q = t.insert_node(p->get_info());
+            map_nodes<GT>(p, q);
+            p->visit(GraphTag::COMPONENT);
+            build_cut_nodes_subgraph_rec(g, p, t, p->counter());
+            list.append(std::move(t));
+        }
+
+        return list;
+    }
+
+    template <class GT>
+    std::tuple<GT, SLList<Arc<GT>*>>
+    build_cut_graph(const GT& g, const SLList<Node<GT>*>& cut_nodes)
+    {
+        GT cut_graph;
+        SLList<Arc<GT>*> cross_arcs;
+
+        cut_nodes.for_each(
+            [&](Node<GT>* p)
+            {
+                Node<GT>* q = cut_graph.insert_node(p->get_info());
+                map_nodes<GT>(p, q);
+            });
+
+        g.for_each_arc(
+            [&](Arc<GT>* a)
+            {
+                if (a->counter() == -1)
+                {
+                    cross_arcs.append(a);
+                    return;
+                }
+
+                if (!a->is_visited(GraphTag::CUT))
+                    return;
+
+                auto p = mapped_node<GT>(a->get_src_node());
+                auto q = mapped_node<GT>(a->get_tgt_node());
+                Arc<GT>* ap = cut_graph.insert_arc(p, q, a->get_info());
+                map_arcs<GT>(a, ap);
+            });
+
+        return std::make_tuple(std::move(cut_graph), std::move(cross_arcs));
+    }
+
+    template <class GT>
+    std::tuple<SLList<GT>, GT, SLList<Arc<GT>*>>
+    compute_cut_nodes_connected_components(const GT& g,
+                                           const SLList<Node<GT>*>& cut_nodes)
+    {
+        g.reset_cookies();
+        paint_cut_nodes_subgraphs(g, cut_nodes);
+        auto subgraphs = build_cut_nodes_subgraphs(g);
+        auto t = build_cut_graph(g, cut_nodes);
+        return std::make_tuple(std::move(subgraphs), std::move(std::get<0>(t)),
+                               std::move(std::get<1>(t)));
+    }
+
+    template <class GT>
+    void Kosaraju_build_subgraph_rec(const GT& inv_g, Node<GT>* p, GT& sg,
+                                     nat_t num)
+    {
+        if (p->is_visited(GraphTag::COMPONENT))
+            return;
+
+        Node<GT>* pp = sg.insert_node(p->get_info());
+        map_nodes<GT>(p, pp);
+
+        p->visit(GraphTag::COMPONENT);
+        p->counter() = num;
+
+        for (AdArcIt<GT> it(inv_g, p); it.has_current(); it.next())
+        {
+            Arc<GT>* a = it.get_current();
+
+            if (a->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            Node<GT>* q = a->get_tgt_node();
+
+            Kosaraju_build_subgraph_rec(inv_g, q, sg, num);
+
+            Node<GT>* qp = mapped_node<GT>(q);
+
+            if (p->counter() != q->counter())
+                continue;
+
+            Arc<GT>* ap = sg.insert_arc(qp, pp, a->get_info());
+
+            map_arcs<GT>(a, ap);
+        }
+    }
+
+    template <class GT>
+    SLList<GT> Kosaraju_compute_strong_connected_components(const GT& g)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        g.reset_cookies();
+        g.reset_tag(GraphTag::COMPONENT);
+
+        FixedArray<Node<GT>*> df(g.get_num_nodes());
+        nat_t i = 0;
+        depth_first_traverse_suffix(g, [&df, &i](Node<GT>* p) { df[i++] = p; });
+
+        GT ig = invert_digraph(g);
+
+        SLList<GT> ret;
+        nat_t num_component = 1;
+
+        for (i = g.get_num_nodes(); i > 0; --i)
+        {
+            Node<GT>* v = mapped_node<GT>(df[i - 1]);
+
+            if (v->is_visited(GraphTag::COMPONENT))
+                continue;
+
+            GT sc;
+            Kosaraju_build_subgraph_rec(ig, v, sc, num_component++);
+            ret.append(std::move(sc));
+        }
+
+        return ret;
+    }
+
+    template <class GT>
+    SLList<Node<GT>*> df_topological_sort(const GT& g)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        SLList<Node<GT>*> ret;
+
+        depth_first_traverse_suffix(g, [&ret](Node<GT>* p) { ret.insert(p); });
+
+        return ret;
+    }
+
+    template <class GT, class Op>
+    void breadth_first_traverse(const GT& g, Node<GT>* begin, Op& op)
+    {
+        g.reset_tag(GraphTag::BREADTH_FIRST);
+
+        op(begin);
+        begin->visit(GraphTag::BREADTH_FIRST);
+        ListQueue<Node<GT>*> queue;
+        queue.put(begin);
+
+        while (!queue.is_empty())
+        {
+            Node<GT>* p = queue.get();
+
+            for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+            {
+                Arc<GT>* a = *it;
+
+                if (a->is_visited(GraphTag::BREADTH_FIRST))
+                    continue;
+
+                a->visit(GraphTag::BREADTH_FIRST);
+
+                Node<GT>* q = it.get_tgt_node();
+
+                if (q->is_visited(GraphTag::BREADTH_FIRST))
+                    continue;
+
+                op(q);
+                q->visit(GraphTag::BREADTH_FIRST);
+                queue.put(q);
+            }
+        }
+    }
+
+    template <class GT>
+    Path<GT> breadth_first_search_path(const GT& g, Node<GT>* begin,
+                                       Node<GT>* end)
+    {
+        Path<GT> ret_val(g);
+
+        if (begin == end)
+        {
+            ret_val.init(begin);
+            return ret_val;
+        }
+
+        g.reset_tag(GraphTag::BREADTH_FIRST);
+        g.reset_node_cookies();
+
+        begin->visit(GraphTag::BREADTH_FIRST);
+        ListQueue<Node<GT>*> queue;
+        queue.put(begin);
+
+        Node<GT>* ptr = nullptr;
+
+        while (!queue.is_empty() && (ptr = queue.get()) != end)
+        {
+            for (AdArcIt<GT> it(g, ptr); it.has_current(); it.next())
+            {
+                Arc<GT>* a = *it;
+
+                if (a->is_visited(GraphTag::BREADTH_FIRST))
+                    continue;
+
+                a->visit(GraphTag::BREADTH_FIRST);
+
+                Node<GT>* q = it.get_tgt_node();
+
+                if (q->is_visited(GraphTag::BREADTH_FIRST))
+                    continue;
+
+                q->cookie() = ptr;
+                q->visit(GraphTag::BREADTH_FIRST);
+                queue.put(q);
+            }
+        }
+
+        if (end->cookie() == nullptr)
+            return ret_val;
+
+        Node<GT>* aux = end;
+
+        while (aux != begin)
+        {
+            ret_val.insert(aux);
+            aux = reinterpret_cast<Node<GT>*>(aux->cookie());
+        }
+
+        ret_val.insert(begin);
+
+        return ret_val;
+    }
+
+    template <class GT>
+    SLList<Node<GT>*> bf_topological_sort(const GT& g)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        g.reset_node_counter();
+
+        g.for_each_arc([](Arc<GT>* a) { ++a->get_tgt_node()->counter(); });
+
+        ListQueue<Node<GT>*> queue;
+
+        g.for_each_node(
+            [&queue](Node<GT>* p)
+            {
+                if (p->counter() == 0)
+                    queue.put(p);
+            });
+
+        SLList<Node<GT>*> ret;
+
+        while (!queue.is_empty())
+        {
+            Node<GT>* p = queue.get();
+
+            ret.append(p);
+
+            for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+            {
+                Node<GT>* q = it.get_tgt_node();
+
+                if (--q->counter() == 0)
+                    queue.put(q);
+            }
+        }
+
+        return ret;
+    }
+
+    template <class GT>
+    SLList<SLList<Node<GT>*>> topological_ranks(const GT& g)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        g.reset_node_counter();
+
+        g.for_each_arc([](Arc<GT>* a) { ++a->get_tgt_node()->counter(); });
+
+        ListQueue<Node<GT>*> queue;
+
+        g.for_each_node(
+            [&queue](Node<GT>* p)
+            {
+                if (p->counter() == 0)
+                    queue.put(p);
+            });
+
+        SLList<SLList<Node<GT>*>> ret;
+
+        while (!queue.is_empty())
+        {
+            ListQueue<Node<GT>*> aqueue;
+
+            SLList<Node<GT>*>& l = ret.append(SLList<Node<GT>*>());
+
+            while (!queue.is_empty())
+            {
+                Node<GT>* p = queue.get();
+
+                l.append(p);
+
+                for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+                {
+                    Node<GT>* q = it.get_tgt_node();
+
+                    if (--q->counter() == 0)
+                        aqueue.put(q);
+                }
+            }
+
+            queue = std::move(aqueue);
+        }
+
+        return ret;
+    }
+
+    /* Minimum spanning tree algorithms */
+
+    template <class GT>
+    class DefaultDistance
+    {
+    public:
+        using Type = typename GT::ArcInfoType;
+
+        static constexpr Type ZERO = 0;
+        static constexpr Type MAX = std::numeric_limits<Type>::max();
+
+        Type& operator()(Arc<GT>* a)
+        {
+            return a->get_info();
+        }
+
+        const Type& operator()(Arc<GT>* a) const
+        {
+            return a->get_info();
+        }
+    };
+
+    /** @warning `distance`/`cmp` here are references bound to this
+        constructor's own default-argument parameters when no explicit
+        lvalue is supplied (`DistanceCmp(Distance &&d = Distance(), Cmp
+        &&_cmp = Cmp())`); the temporary is destroyed at the end of the
+        constructing full-expression, so the default-argument path is a
+        known dangling-reference hazard identical in kind to the one fixed
+        in set.hpp/map.hpp/tree.hpp/heap.hpp/hash.hpp/sort.hpp (see
+        DefaultCmpHolder in typetraits.hpp). It is intentionally left
+        unfixed here: Kruskal/Prim/Dijkstra/Astar/BellmanFord below share
+        this same shape, and at least one of them (Kruskal, via
+        Graph::sort_arcs) passes a DistanceCmp by value into another
+        wrapper (PtrCmp) that needs to copy-assign it — but DistanceCmp has
+        reference members and therefore an implicitly-deleted
+        copy-assignment operator, so the same owning-slot fix used
+        elsewhere does not apply without first giving DistanceCmp (and
+        these other classes) real copy/move assignment semantics. That is
+        a larger, independent redesign; flagged here rather than attempted
+        as part of this pass. In practice these classes are always
+        constructed and used within a single full-expression/algorithm
+        call (e.g. `Kruskal<GT>().build_min_spanning_tree(g)`), which is
+        why this has not surfaced as an observed bug. */
+    template <class GT, class Distance, class Cmp>
+    class DistanceCmp
+    {
+        Distance& distance;
+        Cmp& cmp;
+
+    public:
+        DistanceCmp(Distance& d, Cmp& _cmp) : distance(d), cmp(_cmp)
+        {
+            // empty
+        }
+
+        DistanceCmp(Distance&& d = Distance(), Cmp&& _cmp = Cmp())
+            : distance(d), cmp(_cmp)
+        {
+            // empty
+        }
+
+        bool operator()(Arc<GT>* a, Arc<GT>* b) const
+        {
+            return cmp(distance(a), distance(b));
+        }
+    };
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Cmp = std::less<typename Distance::Type>>
+    class Kruskal
+    {
+    public:
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+
+    private:
+        using DistCmp = DistanceCmp<GT, Distance, Cmp>;
+        using DistanceType = typename Distance::Type;
+
+        static constexpr GraphTag TAG = GraphTag::KRUSKAL;
+
+        Distance& distance;
+        DistCmp cmp;
+
+    public:
+        Kruskal(Distance& _distance, Cmp& _cmp)
+            : distance(_distance), cmp(distance, _cmp)
+        {
+            // empty
+        }
+
+        Kruskal(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp())
+            : distance(_distance),
+              cmp(std::forward<Distance>(_distance), std::forward<Cmp>(_cmp))
+        {
+            // Empty
+        }
+
+        GT build_min_spanning_tree(const GT&);
+
+        void paint_min_spanning_tree(const GT& g)
+        {
+            GT tree = build_min_spanning_tree(g);
+
+            g.reset_tag(GraphTag::MIN_SPANNING_TREE);
+
+            tree.for_each_node(
+                [](Node<GT>* t_node)
+                {
+                    Node<GT>* ptr_g_node = mapped_node<GT>(t_node);
+                    ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
+                });
+
+            tree.for_each_arc(
+                [](Arc<GT>* t_arc)
+                {
+                    Arc<GT>* ptr_g_arc = mapped_arc<GT>(t_arc);
+                    ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
+                });
+        }
+    };
+
+    template <class GT, class Distance, class DistanceCmp>
+    GT Kruskal<GT, Distance, DistanceCmp>::build_min_spanning_tree(const GT& g)
+    {
+        g.reset_tag(TAG);
+        g.reset_cookies();
+
+        const_cast<GT&>(g).sort_arcs(cmp);
+
+        GT tree;
+
+        TRelation<Node<GT>*> nodes_rel(g.get_num_nodes());
+
+        for (ArcIt<GT> it(g);
+             it.has_current() and tree.get_num_arcs() < g.get_num_nodes() - 1;
+             it.next())
+        {
+            Arc<GT>* ga = *it;
+            Node<GT>* gs = ga->get_src_node();
+            Node<GT>* gt = ga->get_tgt_node();
+
+            Node<GT>* ts_ptr = mapped_node<GT>(gs);
+
+            if (ts_ptr == nullptr)
+            {
+                gs->visit(TAG);
+                ts_ptr = tree.insert_node(gs->get_info());
+                map_nodes<GT>(gs, ts_ptr);
+            }
+
+            Node<GT>* tt_ptr = mapped_node<GT>(gt);
+
+            if (tt_ptr == nullptr)
+            {
+                gt->visit(TAG);
+                tt_ptr = tree.insert_node(gt->get_info());
+                map_nodes<GT>(gt, tt_ptr);
+            }
+
+            if (nodes_rel.are_connected(ts_ptr, tt_ptr))
+                continue;
+
+            nodes_rel.join(ts_ptr, tt_ptr);
+
+            Arc<GT>* ta = tree.insert_arc(ts_ptr, tt_ptr, ga->get_info());
+            ga->visit(TAG);
+            map_arcs<GT>(ga, ta);
+        }
+
+        return tree;
+    }
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Cmp = std::less<typename Distance::Type>>
+    class ArcHeap : public LHeap<Arc<GT>*, DistanceCmp<GT, Distance, Cmp>>
+    {
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+        using Table = HashMap<Node<GT>*, Arc<GT>**>;
+        using BaseHeap = LHeap<Arc<GT>*, DistanceCmp<GT, Distance, Cmp>>;
+        using BaseHeap::BaseHeap;
+
+        Table tgt_nodes;
+
+    public:
+        void insert_arc(Arc<GT>* a, Node<GT>* t)
+        {
+            Arc<GT>*** result = tgt_nodes.search(t);
+
+            if (result == nullptr)
+            {
+                tgt_nodes[t] = const_cast<Arc<GT>**>(&BaseHeap::insert(a));
+                return;
+            }
+
+            Arc<GT>** ap = *result;
+
+            if (BaseHeap::get_cmp()(*ap, a))
+                return;
+
+            BaseHeap::remove(*ap);
+            tgt_nodes[t] = const_cast<Arc<GT>**>(&BaseHeap::insert(a));
+        }
+
+        Arc<GT>* get_min_arc()
+        {
+            Arc<GT>* arc_ptr = BaseHeap::top();
+            Node<GT>* tgt_ptr = arc_ptr->get_src_node();
+            Arc<GT>*** result = tgt_nodes.search(tgt_ptr);
+
+            if (result == nullptr || **result != arc_ptr)
+                result = tgt_nodes.search(tgt_ptr = arc_ptr->get_tgt_node());
+
+            if (result == nullptr || **result != arc_ptr)
+                throw std::logic_error(
+                    "ArcHeap::get_min_arc: the top arc of the heap was not "
+                    "found "
+                    "indexed by either its source or target node; the heap and "
+                    "the tgt_nodes index have gone out of sync");
+
+            BaseHeap::get();
+            tgt_nodes.remove(tgt_ptr);
+
+            return arc_ptr;
+        }
+    };
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Cmp = std::less<typename Distance::Type>>
+    class Prim
+    {
+    public:
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+
+    private:
+        Distance& distance;
+        Cmp& cmp;
+
+        using DistanceType = typename Distance::Type;
+
+        static constexpr GraphTag TAG = GraphTag::PRIM;
+
+    public:
+        Prim(Distance& _distance, Cmp& _cmp) : distance(_distance), cmp(_cmp)
+        {
+            // empty
+        }
+
+        Prim(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp())
+            : distance(_distance), cmp(_cmp)
+        {
+            // empty
+        }
+
+        GT build_min_spanning_tree(const GT&, Node<GT>*);
+
+        GT build_min_spanning_tree(const GT& g)
+        {
+            return build_min_spanning_tree(g, g.get_first_node());
+        }
+
+        void paint_min_spanning_tree(const GT& g, Node<GT>* start)
+        {
+            GT tree = build_min_spanning_tree(g, start);
+
+            g.reset_tag(GraphTag::MIN_SPANNING_TREE);
+
+            tree.for_each_node(
+                [](Node<GT>* t_node)
+                {
+                    Node<GT>* ptr_g_node = mapped_node<GT>(t_node);
+                    ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
+                    ptr_g_node->cookie() = nullptr;
+                });
+
+            tree.for_each_arc(
+                [](Arc<GT>* t_arc)
+                {
+                    Arc<GT>* ptr_g_arc = mapped_arc<GT>(t_arc);
+                    ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
+                    ptr_g_arc->cookie() = nullptr;
+                });
+        }
+
+        void paint_min_spanning_tree(const GT& g)
+        {
+            paint_min_spanning_tree(g, g.get_first_node());
+        }
+    };
+
+    template <class GT, class Distance, class Cmp>
+    GT Prim<GT, Distance, Cmp>::build_min_spanning_tree(const GT& g,
+                                                        Node<GT>* start)
+    {
+        g.reset_tag(TAG);
+        g.reset_cookies();
+
+        GT tree;
+        Node<GT>* t_start = tree.insert_node(start->get_info());
+        map_nodes<GT>(start, t_start);
+        start->visit(TAG);
+
+        DistanceCmp<GT, Distance, Cmp> arc_heap_cmp(distance, cmp);
+        ArcHeap<GT, Distance, Cmp> arc_heap(arc_heap_cmp);
+
+        for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
+        {
+            Arc<GT>* a = *it;
+            Node<GT>* t = a->get_connected_node(start);
+            arc_heap.insert_arc(a, t);
+        }
+
+        while (!arc_heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
+        {
+            Arc<GT>* a = arc_heap.get_min_arc();
+
+            if (a->is_visited(TAG))
+                continue;
+
+            a->visit(TAG);
+
+            Node<GT>* p = a->get_src_node()->is_visited(TAG)
+                              ? a->get_tgt_node()
+                              : a->get_src_node();
+
+            if (p->is_visited(TAG))
+                continue;
+
+            p->visit(TAG);
+
+            Node<GT>* pp = tree.insert_node(p->get_info());
+            map_nodes<GT>(p, pp);
+
+            Node<GT>* ts = mapped_node<GT>(a->get_src_node());
+            Node<GT>* tt = mapped_node<GT>(a->get_tgt_node());
+            Arc<GT>* ap = tree.insert_arc(ts, tt, a->get_info());
+
+            map_arcs<GT>(a, ap);
+
+            for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+            {
+                Arc<GT>* pa = *it;
+                Node<GT>* pt = pa->get_connected_node(p);
+                arc_heap.insert_arc(pa, pt);
+            }
+        }
+
+        return tree;
+    }
+
+    /* Minimum paths algorithms */
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Cmp = std::less<typename Distance::Type>,
+              class Plus = std::plus<typename Distance::Type>>
+    class Dijkstra
+    {
+    public:
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+
+    private:
+        Distance& distance;
+        Cmp& cmp;
+        Plus& plus;
+
+        using DistanceType = typename Distance::Type;
+
+        static constexpr GraphTag TAG = GraphTag::DIJKSTRA;
+
+        using PotHeap = ArcHeap<GT, GetPot<GT, Distance>, Cmp>;
+
+        GT build_partial_min_path_tree(const GT&, Node<GT>*, Node<GT>*);
+
+    public:
+        Dijkstra(Distance& _distance, Cmp& _cmp, Plus& _plus)
+            : distance(_distance), cmp(_cmp), plus(_plus)
+        {
+            // empty
+        }
+
+        Dijkstra(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp(),
+                 Plus&& _plus = Plus())
+            : distance(_distance), cmp(_cmp), plus(_plus)
+        {
+            // Empty
+        }
+
+        GT build_min_path_tree(const GT&, Node<GT>*);
+
+        void paint_min_path_tree(const GT& g, Node<GT>* start)
+        {
+            GT tree = build_min_path_tree(g, start);
+
+            g.reset_tag(GraphTag::MIN_PATH_TREE);
+
+            tree.for_each_node(
+                [](Node<GT>* t_node)
+                {
+                    Node<GT>* ptr_g_node = mapped_node<GT>(t_node);
+                    ptr_g_node->visit(GraphTag::MIN_PATH_TREE);
+                    ptr_g_node->cookie() = nullptr;
+                });
+
+            tree.for_each_arc(
+                [](Arc<GT>* t_arc)
+                {
+                    Arc<GT>* ptr_g_arc = mapped_arc<GT>(t_arc);
+                    ptr_g_arc->visit(GraphTag::MIN_PATH_TREE);
+                    ptr_g_arc->cookie() = nullptr;
+                });
+        }
+
+        Path<GT> search_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+        {
+            GT tree = build_partial_min_path_tree(g, start, end);
+
+            Node<GT>* t_start = mapped_node<GT>(start);
+            Node<GT>* t_end = mapped_node<GT>(end);
+
+            Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
+            Path<GT> path(g);
+
+            if (t_path.is_empty())
+                return path;
+
+            path.init(start);
+
+            t_path.for_each(
+                [&](Node<GT>*, Arc<GT>* ptr_arc)
+                {
+                    if (ptr_arc == nullptr)
+                        return;
+
+                    Arc<GT>* arc = mapped_arc<GT>(ptr_arc);
+                    path.append(arc);
+                });
+
+            return path;
+        }
+
+        void paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+        {
+            Path<GT> path = search_min_path(g, start, end);
+
+            g.reset_tag(GraphTag::MIN_PATH);
+
+            path.for_each(
+                [](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
+                {
+                    ptr_node->visit(GraphTag::MIN_PATH);
+
+                    if (ptr_arc != nullptr)
+                        ptr_arc->visit(GraphTag::MIN_PATH);
+                });
+        }
+    };
+
+    template <class GT, class Distance, class Cmp, class Plus>
+    GT Dijkstra<GT, Distance, Cmp, Plus>::build_partial_min_path_tree(
+        const GT& g, Node<GT>* start, Node<GT>* end)
+    {
+        g.reset_tag(TAG);
+        allocate_node_info<GT, Distance>(g);
+        allocate_arc_info<GT, Distance>(g);
+
+        GT tree;
+
+        start->visit(TAG);
+        ACC<GT, Distance>(start) = Distance::ZERO;
+        TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
+        TREE_NODE<GT, Distance>(start)->cookie() = start;
+
+        GetPot<GT, Distance> get_pot;
+        DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
+        PotHeap heap(arc_heap_cmp);
+
+        for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
+        {
+            Arc<GT>* arc = *it;
+            POT<GT, Distance>(arc) = distance(arc);
+            arc->visit(TAG);
+            put_in_heap<GT, Distance>(arc, arc->get_connected_node(start),
+                                      heap);
+        }
+
+        while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
+        {
+            Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
+            Node<GT>* g_src = g_arc->get_src_node();
+            Node<GT>* g_tgt = g_arc->get_tgt_node();
+
+            if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
+                continue;
+
+            Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
+
+            Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
+
+            TREE_NODE<GT, Distance>(new_node) = t_tgt;
+
+            new_node->visit(TAG);
+
+            Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
+                                             TREE_NODE<GT, Distance>(g_tgt),
+                                             g_arc->get_info());
+
+            TREE_ARC<GT, Distance>(g_arc) = t_arc;
+
+            if (new_node == end)
+                break;
+
+            ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
+
+            const DistanceType& acc = ACC<GT, Distance>(new_node);
+
+            for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
+            {
+                Arc<GT>* arc = *it;
+
+                if (arc->is_visited(TAG))
+                    continue;
+
+                arc->visit(TAG);
+
+                Node<GT>* tgt = it.get_tgt_node();
+
+                if (tgt->is_visited(TAG))
+                    continue;
+
+                POT<GT, Distance>(arc) = plus(acc, distance(arc));
+
+                put_in_heap<GT, Distance>(arc, tgt, heap);
+            }
+        }
+
+        heap.clear();
+        destroy_node_info<GT, Distance>(g);
+        destroy_arc_info<GT, Distance>(g);
+
+        return tree;
+    }
+
+    template <class GT, class Distance, class Cmp, class Plus>
+    GT Dijkstra<GT, Distance, Cmp, Plus>::build_min_path_tree(const GT& g,
+                                                              Node<GT>* start)
+    {
+        g.reset_tag(TAG);
+        allocate_node_info<GT, Distance>(g);
+        allocate_arc_info<GT, Distance>(g);
+
+        GT tree;
+
+        start->visit(TAG);
+        ACC<GT, Distance>(start) = Distance::ZERO;
+        TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
+        TREE_NODE<GT, Distance>(start)->cookie() = start;
+
+        GetPot<GT, Distance> get_pot;
+        DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
+        PotHeap heap(arc_heap_cmp);
+
+        for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
+        {
+            Arc<GT>* arc = *it;
+
+            POT<GT, Distance>(arc) = distance(arc);
+            arc->visit(TAG);
+            put_in_heap<GT, Distance>(arc, arc->get_connected_node(start),
+                                      heap);
+        }
+
+        while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
+        {
+            Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
+            Node<GT>* g_src = g_arc->get_src_node();
+            Node<GT>* g_tgt = g_arc->get_tgt_node();
+
+            if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
+                continue;
+
+            Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
+
+            Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
+
+            TREE_NODE<GT, Distance>(new_node) = t_tgt;
+
+            new_node->visit(TAG);
+
+            Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
+                                             TREE_NODE<GT, Distance>(g_tgt),
+                                             g_arc->get_info());
+
+            TREE_ARC<GT, Distance>(g_arc) = t_arc;
+
+            ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
+
+            const DistanceType& acc = ACC<GT, Distance>(new_node);
+
+            for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
+            {
+                Arc<GT>* arc = *it;
+
+                if (arc->is_visited(TAG))
+                    continue;
+
+                arc->visit(TAG);
+
+                Node<GT>* tgt = it.get_tgt_node();
+
+                if (tgt->is_visited(TAG))
+                    continue;
+
+                POT<GT, Distance>(arc) = plus(acc, distance(arc));
+
+                put_in_heap<GT, Distance>(arc, tgt, heap);
+            }
+        }
+
+        heap.clear();
+        destroy_node_info<GT, Distance>(g);
+        destroy_arc_info<GT, Distance>(g);
+
+        return tree;
+    }
+
+    template <class GT, class Distance>
+    class DefaultHeuristic
+    {
+    public:
+        typename Distance::Type operator()(Node<GT>*, Node<GT>*)
+        {
+            return Distance::ZERO;
+        }
+    };
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Heuristic = DefaultHeuristic<GT, Distance>,
+              class Cmp = std::less<typename Distance::Type>,
+              class Plus = std::plus<typename Distance::Type>>
+    class Astar
+    {
+    public:
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+
+    private:
+        Distance& distance;
+        Heuristic& heuristic;
+        Cmp& cmp;
+        Plus& plus;
+
+        using DistanceType = typename Distance::Type;
+
+        static constexpr GraphTag TAG = GraphTag::ASTAR;
+
+        using PotHeap = ArcHeap<GT, GetPot<GT, Distance>, Cmp>;
+
+        GT build_partial_min_path_tree(const GT&, Node<GT>*, Node<GT>*);
+
+    public:
+        Astar(Distance& _distance, Heuristic& _heuristic, Cmp& _cmp,
+              Plus& _plus)
+            : distance(_distance), heuristic(_heuristic), cmp(_cmp), plus(_plus)
+        {
+            // empty
+        }
+
+        Astar(Distance&& _distance = Distance(),
+              Heuristic&& _heuristic = Heuristic(), Cmp&& _cmp = Cmp(),
+              Plus&& _plus = Plus())
+            : distance(_distance), heuristic(_heuristic), cmp(_cmp), plus(_plus)
+        {
+            // Empty
+        }
+
+        Path<GT> search_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+        {
+            GT tree = build_partial_min_path_tree(g, start, end);
+
+            Node<GT>* t_start = mapped_node<GT>(start);
+            Node<GT>* t_end = mapped_node<GT>(end);
+
+            Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
+            Path<GT> path(g);
+
+            if (t_path.is_empty())
+                return path;
+
+            path.init(start);
+
+            t_path.for_each(
+                [&](Node<GT>*, Arc<GT>* ptr_arc)
+                {
+                    if (ptr_arc == nullptr)
+                        return;
+
+                    Arc<GT>* arc = mapped_arc<GT>(ptr_arc);
+                    path.append(arc);
+                });
+
+            return path;
+        }
+
+        void paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+        {
+            Path<GT> path = search_min_path(g, start, end);
+
+            g.reset_tag(GraphTag::MIN_PATH);
+
+            path.for_each(
+                [](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
+                {
+                    ptr_node->visit(GraphTag::MIN_PATH);
+
+                    if (ptr_arc != nullptr)
+                        ptr_arc->visit(GraphTag::MIN_PATH);
+                });
+        }
+    };
+
+    template <class GT, class Distance, class Heuristic, class Cmp, class Plus>
+    GT Astar<GT, Distance, Heuristic, Cmp, Plus>::build_partial_min_path_tree(
+        const GT& g, Node<GT>* start, Node<GT>* end)
+    {
+        g.reset_tag(TAG);
+        allocate_node_info<GT, Distance>(g);
+        allocate_arc_info<GT, Distance>(g);
+
+        GT tree;
+
+        start->visit(TAG);
+        ACC<GT, Distance>(start) = Distance::ZERO;
+        TREE_NODE<GT, Distance>(start) = tree.insert_node(start->get_info());
+        TREE_NODE<GT, Distance>(start)->cookie() = start;
+
+        GetPot<GT, Distance> get_pot;
+        DistanceCmp<GT, GetPot<GT, Distance>, Cmp> arc_heap_cmp(get_pot, cmp);
+        PotHeap heap(arc_heap_cmp);
+
+        for (AdArcIt<GT> it(g, start); it.has_current(); it.next())
+        {
+            Arc<GT>* arc = *it;
+            POT<GT, Distance>(arc) =
+                plus(distance(arc), heuristic(it.get_tgt_node(), end));
+            arc->visit(TAG);
+            put_in_heap<GT, Distance>(arc, arc->get_connected_node(start),
+                                      heap);
+        }
+
+        while (!heap.is_empty() && tree.get_num_nodes() < g.get_num_nodes())
+        {
+            Arc<GT>* g_arc = get_from_heap<GT, Distance>(heap);
+            Node<GT>* g_src = g_arc->get_src_node();
+            Node<GT>* g_tgt = g_arc->get_tgt_node();
+
+            if (g_src->is_visited(TAG) && g_tgt->is_visited(TAG))
+                continue;
+
+            Node<GT>* new_node = g_src->is_visited(TAG) ? g_tgt : g_src;
+
+            Node<GT>* t_tgt = tree.insert_node(new_node->get_info());
+
+            TREE_NODE<GT, Distance>(new_node) = t_tgt;
+
+            new_node->visit(TAG);
+
+            Arc<GT>* t_arc = tree.insert_arc(TREE_NODE<GT, Distance>(g_src),
+                                             TREE_NODE<GT, Distance>(g_tgt),
+                                             g_arc->get_info());
+
+            TREE_ARC<GT, Distance>(g_arc) = t_arc;
+
+            if (new_node == end)
+                break;
+
+            ACC<GT, Distance>(new_node) = POT<GT, Distance>(g_arc);
+
+            const DistanceType& acc = ACC<GT, Distance>(new_node);
+
+            for (AdArcIt<GT> it(g, new_node); it.has_current(); it.next())
+            {
+                Arc<GT>* arc = *it;
+
+                if (arc->is_visited(TAG))
+                    continue;
+
+                arc->visit(TAG);
+
+                Node<GT>* tgt = it.get_tgt_node();
+
+                if (tgt->is_visited(TAG))
+                    continue;
+
+                POT<GT, Distance>(arc) =
+                    plus(plus(acc, distance(arc)),
+                         heuristic(it.get_tgt_node(), end));
+
+                put_in_heap<GT, Distance>(arc, tgt, heap);
+            }
+        }
+
+        heap.clear();
+        destroy_node_info<GT, Distance>(g);
+        destroy_arc_info<GT, Distance>(g);
+
+        return tree;
+    }
+
+    template <class GT, class Distance = DefaultDistance<GT>,
+              class Cmp = std::less<typename Distance::Type>,
+              class Plus = std::plus<typename Distance::Type>>
+    class BellmanFord
+    {
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+
+        Distance& distance;
+        Cmp& cmp;
+        Plus& plus;
+
+        struct BFNodeInfo
+        {
+            nat_t idx;
+            typename Distance::Type accum;
+        };
+
+        static BFNodeInfo*& BFNI(Node<GT>* p)
+        {
+            return (BFNodeInfo*&)p->cookie();
+        }
+
+        static typename Distance::Type& ACC(Node<GT>* p)
+        {
+            return BFNI(p)->accum;
+        }
+
+        static nat_t& IDX(Node<GT>* p)
+        {
+            return BFNI(p)->idx;
+        }
+
+        static void init_node_info(const GT& g, FixedArray<Node<GT>*>& pred,
+                                   FixedArray<Arc<GT>*>& arcs)
+        {
+            nat_t i = 0;
+
+            g.for_each_node(
+                [&](Node<GT>* p)
+                {
+                    pred[i] = nullptr;
+                    arcs[i] = nullptr;
+                    BFNI(p) = new BFNodeInfo;
+                    IDX(p) = i;
+                    ACC(p) = Distance::MAX;
+                    ++i;
+                });
+        }
+
+        static void destroy_node_info(const GT& g)
+        {
+            g.for_each_node(
+                [](Node<GT>* p)
+                {
+                    delete BFNI(p);
+                    BFNI(p) = nullptr;
+                });
+        }
+
+        bool relax(Arc<GT>* a, FixedArray<Node<GT>*>& pred,
+                   FixedArray<Arc<GT>*>& arcs)
+        {
+            Node<GT>* s = a->get_src_node();
+            Node<GT>* t = a->get_tgt_node();
+
+            if (ACC(s) == Distance::MAX)
+                return false;
+
+            typename Distance::Type sum = plus(ACC(s), distance(a));
+
+            if (cmp(sum, ACC(t)))
+            {
+                const nat_t& i = IDX(t);
+                pred[i] = s;
+                arcs[i] = a;
+                ACC(t) = sum;
+                return true;
+            }
+
+            return false;
+        }
+
+        bool generic_algorithm(const GT&, FixedArray<Node<GT>*>&,
+                               FixedArray<Arc<GT>*>&);
+
+    public:
+        BellmanFord(Distance& _distance, Cmp& _cmp, Plus& _plus)
+            : distance(_distance), cmp(_cmp), plus(_plus)
+        {
+            // empty
+        }
+
+        BellmanFord(Distance&& _distance = Distance(), Cmp&& _cmp = Cmp(),
+                    Plus&& _plus = Plus())
+            : distance(_distance), cmp(_cmp), plus(_plus)
+        {
+            // empty
+        }
+
+        std::tuple<bool, GT> build_min_path_tree(const GT&, Node<GT>*);
+
+        bool paint_min_path_tree(const GT& g, Node<GT>* start)
+        {
+            auto t = build_min_path_tree(g, start);
+
+            if (!std::get<0>(t))
+                return false;
+
+            g.reset_tag(GraphTag::MIN_SPANNING_TREE);
+
+            const GT& tree = std::get<1>(t);
+
+            tree.for_each_node(
+                [](Node<GT>* t_node)
+                {
+                    Node<GT>* ptr_g_node = mapped_node<GT>(t_node);
+                    ptr_g_node->visit(GraphTag::MIN_SPANNING_TREE);
+                    ptr_g_node->cookie() = nullptr;
+                });
+
+            tree.for_each_arc(
+                [](Arc<GT>* t_arc)
+                {
+                    Arc<GT>* ptr_g_arc = mapped_arc<GT>(t_arc);
+                    ptr_g_arc->visit(GraphTag::MIN_SPANNING_TREE);
+                    ptr_g_arc->cookie() = nullptr;
+                });
+            return true;
+        }
+
+        std::tuple<bool, Path<GT>> search_min_path(const GT& g, Node<GT>* start,
+                                                   Node<GT>* end)
+        {
+            auto t = build_min_path_tree(g, start, end);
+
+            if (!std::get<0>(t))
+                return make_tuple(false, Path<GT>());
+
+            const GT& tree = std::get<1>(t);
+
+            Node<GT>* t_start = mapped_node<GT>(start);
+            Node<GT>* t_end = mapped_node<GT>(end);
+
+            Path<GT> t_path = depth_first_search_path(tree, t_start, t_end);
+            Path<GT> path(g);
+
+            if (t_path.is_empty())
+                return path;
+
+            path.init(start);
+
+            t_path.for_each(
+                [&](Node<GT>*, Arc<GT>* ptr_arc)
+                {
+                    if (ptr_arc == nullptr)
+                        return;
+
+                    Arc<GT>* arc = mapped_arc<GT>(ptr_arc);
+                    path.append(arc);
+                });
+
+            return make_tuple(true, path);
+        }
+
+        bool paint_min_path(const GT& g, Node<GT>* start, Node<GT>* end)
+        {
+            auto t = search_min_path(g, start, end);
+
+            if (!std::get<0>(t))
+                return false;
+
+            Path<GT>& path = std::get<1>(t);
+
+            g.reset_tag(GraphTag::MIN_PATH);
+
+            path.for_each(
+                [](Node<GT>* ptr_node, Arc<GT>* ptr_arc)
+                {
+                    ptr_node->visit(GraphTag::MIN_PATH);
+
+                    if (ptr_arc != nullptr)
+                        ptr_arc->visit(GraphTag::MIN_PATH);
+                });
+
+            return true;
+        }
+    };
+
+    template <class GT, class Distance, class Cmp, class Plus>
+    bool BellmanFord<GT, Distance, Cmp, Plus>::generic_algorithm(
+        const GT& g, FixedArray<Node<GT>*>& pred, FixedArray<Arc<GT>*>& arcs)
+    {
+        nat_t n = g.get_num_nodes() - 1;
+
+        bool had_relaxation = true;
+
+        nat_t i;
+
+        for (i = 0; had_relaxation && i < n; ++i)
+        {
+            had_relaxation = false;
+
+            g.for_each_arc(
+                [&](Arc<GT>* a)
+                {
+                    if (relax(a, pred, arcs))
+                        had_relaxation = true;
+                });
+        }
+
+        if (i < n)
+            return true;
+
+        had_relaxation = false;
+
+        g.for_each_arc(
+            [&](Arc<GT>* a)
+            {
+                if (relax(a, pred, arcs))
+                    had_relaxation = true;
+            });
+
+        return !had_relaxation;
+    }
+
+    template <class GT, class Distance, class Cmp, class Plus>
+    std::tuple<bool, GT>
+    BellmanFord<GT, Distance, Cmp, Plus>::build_min_path_tree(const GT& g,
+                                                              Node<GT>* start)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        FixedArray<Node<GT>*> pred(g.get_num_nodes());
+        FixedArray<Arc<GT>*> arcs(g.get_num_nodes());
+
+        init_node_info(g, pred, arcs);
+
+        ACC(start) = Distance::ZERO;
+        bool result = generic_algorithm(g, pred, arcs);
+
+        destroy_node_info(g);
+
+        if (!result)
+            return std::make_tuple(false, GT());
+
+        GT tree;
+
+        for (nat_t i = 0; i < arcs.size(); ++i)
+        {
+            Arc<GT>* a = arcs[i];
+
+            if (a == nullptr)
+                continue;
+
+            Node<GT>* s = a->get_src_node();
+
+            Node<GT>* st = mapped_node<GT>(s);
+
+            if (st == nullptr)
+            {
+                st = tree.insert_node(s->get_info());
+                map_nodes<GT>(s, st);
+            }
+
+            Node<GT>* t = a->get_tgt_node();
+
+            Node<GT>* tt = mapped_node<GT>(t);
+
+            if (tt == nullptr)
+            {
+                tt = tree.insert_node(t->get_info());
+                map_nodes<GT>(t, tt);
+            }
+
+            Arc<GT>* at = tree.insert_arc(st, tt, a->get_info());
+            map_arcs<GT>(a, at);
+        }
+
+        return std::make_tuple(true, std::move(tree));
+    }
+
+    /* Randomized algorithms */
+
+    template <class GT>
+    class KargerMinCut
+    {
+        using NodeType = Node<GT>;
+        using ArcType = Arc<GT>;
+        using MNodeInfo = SLList<Node<GT>*>;
+        using MArcInfo = Arc<GT>*;
+        using MGraph = Graph<MNodeInfo, MArcInfo>;
+        using MNode = Node<MGraph>;
+        using MArc = Arc<MGraph>;
+        using ArcSet = TreeSet<MArc*>;
+
+        static constexpr real_t SQ_TWO = 1.414213562;
+
+        rng_t rng;
+
+        static nat_t num_iterations_hint(nat_t n)
+        {
+            return n * n * std::log10(n);
+        }
+
+        MGraph build_mgraph(const GT& g)
+        {
+            g.reset_nodes();
+            g.reset_arcs();
+
+            MGraph mg;
+
+            g.for_each_node(
+                [&](Node<GT>* p)
+                {
+                    MNode* mp = mg.insert_node();
+                    mp->get_info().append(p);
+                    map_nodes<GT, MGraph>(p, mp);
+                });
+
+            g.for_each_arc(
+                [&](Arc<GT>* a)
+                {
+                    Node<GT>* p = a->get_src_node();
+                    Node<GT>* q = a->get_tgt_node();
+
+                    MNode* mp = mapped_node<GT, MGraph>(p);
+                    MNode* mq = mapped_node<GT, MGraph>(q);
+
+                    mg.insert_arc(mp, mq, a);
+                });
+
+            return mg;
+        }
+
+        ArcSet build_arcs(MGraph& mg)
+        {
+            ArcSet ret;
+            mg.for_each_arc([&](MArc* a) { ret.insert(a); });
+            return ret;
+        }
+
+        void contract_arc(MGraph&, MNode*, MNode*, MNode*, ArcSet&);
+
+        void contract(MGraph&, ArcSet&, nat_t);
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut(MGraph&, nat_t);
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut(MGraph& mg)
+        {
+            return compute_min_cut(mg, num_iterations_hint(mg.get_num_nodes()));
+        }
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut_fast_rec(MGraph&);
+
+    public:
+        KargerMinCut(rng_seed_t seed) : rng(seed)
+        {
+            // empty
+        }
+
+        KargerMinCut() : KargerMinCut(get_random_seed())
+        {
+            // empty
+        }
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut(const GT& g, nat_t num_it)
+        {
+            if (g.get_num_arcs() == 0)
+                throw std::domain_error("Graph has not arcs");
+
+            MGraph mg = build_mgraph(g);
+            return compute_min_cut(mg, num_it);
+        }
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut(const GT& g)
+        {
+            return compute_min_cut(g, num_iterations_hint(g.get_num_nodes()));
+        }
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        compute_min_cut_fast(const GT& g)
+        {
+            MGraph mg = build_mgraph(g);
+            return compute_min_cut_fast_rec(mg);
+        }
+
+        std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
+        operator()(const GT& g)
+        {
+            return compute_min_cut_fast(g);
+        }
+    };
+
+    template <class GT>
+    void KargerMinCut<GT>::contract_arc(MGraph& mg, MNode* p, MNode* q,
+                                        MNode* r, ArcSet& arcs)
+    {
+        for (AdArcIt<MGraph> it(mg, p); it.has_current(); it.next())
+        {
+            MArc* a = it.get_current();
+            MNode* t = it.get_tgt_node();
+
+            arcs.remove(a);
+
+            if (t == q)
+                continue;
+
+            MArc* aa = mg.insert_arc(t, r, a->get_info());
+            arcs.insert(aa);
+        }
+    }
+
+    template <class GT>
+    void KargerMinCut<GT>::contract(MGraph& mg, ArcSet& arcs, nat_t limit)
+    {
+        while (mg.get_num_nodes() > limit)
+        {
+            auto i = random_uniform(rng, arcs.size());
+            MArc* ma = arcs.select(i);
+            arcs.remove(ma);
+
+            MNode* x = ma->get_src_node();
+            MNode* y = ma->get_tgt_node();
+
+            MNode* z = mg.insert_node();
+            z->get_info().swap(x->get_info());
+            z->get_info().concat(y->get_info());
+
+            contract_arc(mg, x, y, z, arcs);
+            contract_arc(mg, y, x, z, arcs);
+
+            mg.remove_node(x);
+            mg.remove_node(y);
+        }
+    }
+
+    template <class GT>
     std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut(MGraph&, nat_t);
+    KargerMinCut<GT>::compute_min_cut(MGraph& _mg, nat_t num_it)
+    {
+        nat_t min_cut = std::numeric_limits<nat_t>::max();
 
+        SLList<Node<GT>*> ss;
+        SLList<Node<GT>*> ts;
+        SLList<Arc<GT>*> cut;
+
+        for (int i = 0; i < num_it; ++i)
+        {
+            MGraph mg(_mg);
+            ArcSet arcs = build_arcs(mg);
+
+            contract(mg, arcs, 2);
+
+            if (mg.get_num_nodes() != 2)
+                throw std::logic_error(
+                    "KargerMinCut::compute_min_cut: contract() did not reduce "
+                    "the graph to exactly 2 nodes");
+
+            nat_t cut_size = mg.get_num_arcs();
+
+            if (cut_size >= min_cut)
+                continue;
+
+            SLList<Arc<GT>*> tmp_cut;
+
+            for (ArcIt<MGraph> it(mg); it.has_current(); it.next())
+                tmp_cut.append(it.get_current()->get_info());
+
+            cut.swap(tmp_cut);
+
+            MArc* first_arc = mg.get_first_arc();
+
+            MNode* src = first_arc->get_src_node();
+            ss.swap(src->get_info());
+
+            MNode* tgt = first_arc->get_tgt_node();
+            ts.swap(tgt->get_info());
+        }
+
+        return std::make_tuple(std::move(ss), std::move(ts), std::move(cut));
+    }
+
+    template <class GT>
     std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut(MGraph& mg)
+    KargerMinCut<GT>::compute_min_cut_fast_rec(MGraph& mg)
     {
-      return compute_min_cut(mg, num_iterations_hint(mg.get_num_nodes()));
+        nat_t n = mg.get_num_nodes();
+
+        if (n <= 6)
+            return compute_min_cut(mg);
+
+        nat_t t = std::ceil(1 + real_t(n) / SQ_TWO);
+
+        MGraph h1(mg);
+        ArcSet arcs1 = build_arcs(h1);
+        contract(h1, arcs1, t);
+        auto r1 = compute_min_cut_fast_rec(h1);
+
+        MGraph h2(mg);
+        ArcSet arcs2 = build_arcs(h2);
+        contract(h2, arcs2, t);
+        auto r2 = compute_min_cut_fast_rec(h2);
+
+        if (std::get<2>(r1).size() < std::get<2>(r2).size())
+            return r1;
+
+        return r2;
     }
 
-    std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut_fast_rec(MGraph&);
+    /* In-Out algorithms */
 
-  public:
-    KargerMinCut(rng_seed_t seed)
-        : rng(seed)
+    template <class GT, class NodeOutput = DftNodeOutput<GT>,
+              class ArcOutput = DftArcOutput<GT>,
+              class GraphOutput = DftGraphOutput<GT>>
+    class OutputGraph
     {
-      // empty
+        NodeOutput& node_out;
+        ArcOutput& arc_out;
+        GraphOutput& graph_out;
+
+        using Sz = typename GT::SetSizeType;
+
+    public:
+        OutputGraph(NodeOutput& _node_out, ArcOutput& _arc_out,
+                    GraphOutput& _graph_out)
+            : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
+        {
+            // empty
+        }
+
+        OutputGraph(NodeOutput&& _node_out = NodeOutput(),
+                    ArcOutput&& _arc_out = ArcOutput(),
+                    GraphOutput&& _graph_out = GraphOutput())
+            : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
+        {
+            // empty
+        }
+
+        void write_in_text_mode(const GT&, std::ostream&);
+
+        /** Writes raw struct bytes (ofstream::write on POD data), so `out`
+            must have been opened with `std::ios::binary` — without it,
+            Windows' text-mode translation rewrites embedded 0x0A bytes to
+            0x0D 0x0A on write (and the matching read_in_bin_mode() would
+            then treat an embedded 0x1A byte as an early EOF), corrupting
+            the byte layout the reader expects. */
+        void write_in_bin_mode(const GT&, std::ofstream&);
+
+        void operator()(const GT& g, std::ostream& out)
+        {
+            write_in_text_mode(g, out);
+        }
+
+        void operator()(const GT& g, std::ofstream& out)
+        {
+            write_in_bin_mode(g, out);
+        }
+    };
+
+    template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
+    void
+    OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::write_in_text_mode(
+        const GT& g, std::ostream& out)
+    {
+        if (g.is_digraph())
+            out << "di";
+        out << "graph\n";
+
+        out << g.get_num_nodes() << ' ' << g.get_num_arcs() << '\n';
+        graph_out(out, g);
+        out << '\n';
+
+        HashMap<Node<GT>*, Sz> map_nodes_pos;
+
+        Sz i = 0;
+
+        g.for_each_node(
+            [&](Node<GT>* p)
+            {
+                node_out(out, p);
+                out << '\n';
+                map_nodes_pos[p] = i++;
+            });
+
+        g.for_each_arc(
+            [&](const Arc<GT>* a)
+            {
+                Sz s = map_nodes_pos[a->get_src_node()];
+                Sz t = map_nodes_pos[a->get_tgt_node()];
+                out << s << ' ' << t << ' ';
+                arc_out(out, a);
+                out << '\n';
+            });
     }
 
-    KargerMinCut()
-        : KargerMinCut(get_random_seed())
+    template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
+    void OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::write_in_bin_mode(
+        const GT& g, std::ofstream& out)
     {
-      // empty
+        bool is_d = g.is_digraph();
+        out.write(reinterpret_cast<char*>(&is_d), sizeof(bool));
+
+        Sz num_nodes = g.get_num_nodes();
+        Sz num_arcs = g.get_num_arcs();
+
+        out.write(reinterpret_cast<char*>(&num_nodes), sizeof(Sz));
+        out.write(reinterpret_cast<char*>(&num_arcs), sizeof(Sz));
+
+        graph_out(out, g);
+
+        HashMap<Node<GT>*, Sz> map_nodes_pos;
+
+        Sz i = 0;
+
+        g.for_each_node(
+            [&](Node<GT>* p)
+            {
+                node_out(out, p);
+                map_nodes_pos[const_cast<Node<GT>*>(p)] = i++;
+            });
+
+        g.for_each_arc(
+            [&](Arc<GT>* a)
+            {
+                Sz* s = &map_nodes_pos[a->get_src_node()];
+                Sz* t = &map_nodes_pos[a->get_tgt_node()];
+                out.write(reinterpret_cast<char*>(s), sizeof(Sz));
+                out.write(reinterpret_cast<char*>(t), sizeof(Sz));
+                arc_out(out, a);
+            });
     }
 
-    std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut(const GT& g, nat_t num_it)
+    template <class GT, class NodeInput = DftNodeInput<GT>,
+              class ArcInput = DftArcInput<GT>,
+              class GraphInput = DftGraphInput<GT>>
+    class InputGraph
     {
-      if (g.get_num_arcs() == 0)
-        throw std::domain_error("Graph has not arcs");
+        NodeInput& node_in;
+        ArcInput& arc_in;
+        GraphInput& graph_in;
 
-      MGraph mg = build_mgraph(g);
-      return compute_min_cut(mg, num_it);
+        using Sz = typename GT::SetSizeType;
+
+    public:
+        InputGraph(NodeInput& _node_in, ArcInput& _arc_in,
+                   GraphInput& _graph_in)
+            : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
+        {
+            // empty
+        }
+
+        InputGraph(NodeInput&& _node_in = NodeInput(),
+                   ArcInput&& _arc_in = ArcInput(),
+                   GraphInput&& _graph_in = GraphInput())
+            : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
+        {
+            // empty
+        }
+
+        GT read_in_text_mode(std::istream&);
+
+        /** @see OutputGraph::write_in_bin_mode() — `in` must likewise have
+            been opened with `std::ios::binary`. */
+        GT read_in_bin_mode(std::ifstream&);
+
+        GT operator()(std::istream& in)
+        {
+            return read_in_text_mode(in);
+        }
+
+        GT operator()(std::ifstream& in)
+        {
+            return read_in_bin_mode(in);
+        }
+    };
+
+    template <class GT, class NodeInput, class ArcInput, class GraphInput>
+    GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::read_in_text_mode(
+        std::istream& in)
+    {
+        GT g;
+
+        std::string type;
+        in >> type;
+
+        if (g.is_digraph() xor (type == "digraph"))
+            throw std::logic_error(
+                "Conflict between directed and undirected graph");
+
+        Sz num_nodes;
+        Sz num_arcs;
+
+        in >> num_nodes >> num_arcs;
+        graph_in(in, g);
+
+        DynArray<Node<GT>*> nodes(num_nodes, nullptr);
+
+        for (Sz i = 0; i < num_nodes; ++i)
+        {
+            Node<GT>* p = g.insert_node();
+            node_in(in, p);
+            nodes[i] = p;
+        }
+
+        for (Sz i = 0; i < num_arcs; ++i)
+        {
+            Sz s;
+            in >> s;
+            Sz t;
+            in >> t;
+            Node<GT>* src = nodes[s];
+            Node<GT>* tgt = nodes[t];
+            Arc<GT>* a = g.insert_arc(src, tgt);
+            arc_in(in, a);
+        }
+
+        return g;
     }
 
-    std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut(const GT& g)
+    template <class GT, class NodeInput, class ArcInput, class GraphInput>
+    GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::read_in_bin_mode(
+        std::ifstream& in)
     {
-      return compute_min_cut(g, num_iterations_hint(g.get_num_nodes()));
+        GT g;
+
+        bool is_d;
+        in.read(reinterpret_cast<char*>(&is_d), sizeof(bool));
+
+        if (g.is_digraph() xor is_d)
+            throw std::logic_error(
+                "Conflict between directed and undirected graph");
+
+        Sz num_nodes;
+        Sz num_arcs;
+
+        in.read(reinterpret_cast<char*>(&num_nodes), sizeof(Sz));
+        in.read(reinterpret_cast<char*>(&num_arcs), sizeof(Sz));
+
+        graph_in(in, g);
+
+        DynArray<Node<GT>*> nodes(num_nodes, nullptr);
+
+        for (Sz i = 0; i < num_nodes; ++i)
+        {
+            Node<GT>* p = g.insert_node();
+            node_in(in, p);
+            nodes[i] = p;
+        }
+
+        for (Sz i = 0; i < num_arcs; ++i)
+        {
+            Sz s;
+            in.read(reinterpret_cast<char*>(&s), sizeof(Sz));
+            Sz t;
+            in.read(reinterpret_cast<char*>(&t), sizeof(Sz));
+            Node<GT>* src = nodes[s];
+            Node<GT>* tgt = nodes[t];
+            Arc<GT>* a = g.insert_arc(src, tgt);
+            arc_in(in, a);
+        }
+
+        return g;
     }
 
-    std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    compute_min_cut_fast(const GT& g)
+    template <class GT, class NodeAttr = DftDotNodeAttr<GT>,
+              class ArcAttr = DftDotArcAttr<GT>,
+              class GraphAttr = DftDotGraphAttr<GT>>
+    class DotGraph
     {
-      MGraph mg = build_mgraph(g);
-      return compute_min_cut_fast_rec(mg);
-    }
+        NodeAttr& node_attr;
+        ArcAttr& arc_attr;
+        GraphAttr& graph_attr;
 
-    std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-    operator()(const GT& g)
+        using Sz = typename GT::SetSizeType;
+
+    public:
+        DotGraph(NodeAttr& _node_attr, ArcAttr& _arc_attr,
+                 GraphAttr& _graph_attr)
+            : node_attr(_node_attr),
+              arc_attr(_arc_attr),
+              graph_attr(_graph_attr)
+        {
+            // empty
+        }
+
+        DotGraph(NodeAttr&& _node_attr = NodeAttr(),
+                 ArcAttr&& _arc_attr = ArcAttr(),
+                 GraphAttr&& _graph_attr = GraphAttr())
+            : node_attr(_node_attr),
+              arc_attr(_arc_attr),
+              graph_attr(_graph_attr)
+        {
+            // empty
+        }
+
+        void write_graph(const GT&, std::ofstream&,
+                         const std::string& rankdir = "LR");
+
+        void write_graph(const GT& g, const std::string& file_name)
+        {
+            std::ofstream file(file_name.c_str());
+            write_graph(g, file);
+            file.close();
+        }
+    };
+
+    template <class GT, class NodeAttr, class ArcAttr, class GraphAttr>
+    void DotGraph<GT, NodeAttr, ArcAttr, GraphAttr>::write_graph(
+        const GT& g, std::ofstream& output, const std::string& rankdir)
     {
-      return compute_min_cut_fast(g);
+        output << "// "
+               << "File generated automatically by write_graph in DotGraph"
+               << "\n\n";
+
+        if (g.is_digraph())
+            output << "di";
+
+        output << "graph\n"
+               << "{\n";
+
+        output << "  rankdir = " << rankdir << ";\n\n";
+
+        output << graph_attr(g) << "\n\n";
+
+        output << "  // Nodes \n\n";
+
+        HashMap<Node<GT>*, Sz> map;
+
+        const std::string arc_connector = g.is_digraph() ? "->" : "--";
+
+        Sz i = 0;
+
+        g.for_each_node(
+            [&](Node<GT>* node)
+            {
+                output << "  " << i << "[" << node_attr(node) << "];\n";
+                map[node] = i;
+                ++i;
+            });
+
+        output << "\n  // Arcs \n\n";
+
+        g.for_each_arc(
+            [&](Arc<GT>* arc)
+            {
+                Node<GT>* src_node = arc->get_src_node();
+                Node<GT>* tgt_node = arc->get_tgt_node();
+                Sz src_index = map[src_node];
+                Sz tgt_index = map[tgt_node];
+
+                output << "  " << src_index << arc_connector << tgt_index << "["
+                       << arc_attr(arc) << "];\n";
+            });
+
+        output << "}\n";
     }
-  };
-
-  template <class GT>
-  void KargerMinCut<GT>::contract_arc(MGraph& mg, MNode* p, MNode* q,
-                                      MNode* r, ArcSet& arcs)
-  {
-    for (AdArcIt<MGraph> it(mg, p); it.has_current(); it.next())
-    {
-      MArc* a = it.get_current();
-      MNode* t = it.get_tgt_node();
-
-      arcs.remove(a);
-
-      if (t == q)
-        continue;
-
-      MArc* aa = mg.insert_arc(t, r, a->get_info());
-      arcs.insert(aa);
-    }
-  }
-
-  template <class GT>
-  void KargerMinCut<GT>::contract(MGraph& mg, ArcSet& arcs, nat_t limit)
-  {
-    while (mg.get_num_nodes() > limit)
-    {
-      auto i = random_uniform(rng, arcs.size());
-      MArc* ma = arcs.select(i);
-      arcs.remove(ma);
-
-      MNode* x = ma->get_src_node();
-      MNode* y = ma->get_tgt_node();
-
-      MNode* z = mg.insert_node();
-      z->get_info().swap(x->get_info());
-      z->get_info().concat(y->get_info());
-
-      contract_arc(mg, x, y, z, arcs);
-      contract_arc(mg, y, x, z, arcs);
-
-      mg.remove_node(x);
-      mg.remove_node(y);
-    }
-  }
-
-  template <class GT>
-  std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-  KargerMinCut<GT>::compute_min_cut(MGraph& _mg, nat_t num_it)
-  {
-    nat_t min_cut = std::numeric_limits<nat_t>::max();
-
-    SLList<Node<GT>*> ss;
-    SLList<Node<GT>*> ts;
-    SLList<Arc<GT>*> cut;
-
-    for (int i = 0; i < num_it; ++i)
-    {
-      MGraph mg(_mg);
-      ArcSet arcs = build_arcs(mg);
-
-      contract(mg, arcs, 2);
-
-      if (mg.get_num_nodes() != 2)
-        throw std::logic_error(
-            "KargerMinCut::compute_min_cut: contract() did not reduce "
-            "the graph to exactly 2 nodes");
-
-      nat_t cut_size = mg.get_num_arcs();
-
-      if (cut_size >= min_cut)
-        continue;
-
-      SLList<Arc<GT>*> tmp_cut;
-
-      for (ArcIt<MGraph> it(mg); it.has_current(); it.next())
-        tmp_cut.append(it.get_current()->get_info());
-
-      cut.swap(tmp_cut);
-
-      MArc* first_arc = mg.get_first_arc();
-
-      MNode* src = first_arc->get_src_node();
-      ss.swap(src->get_info());
-
-      MNode* tgt = first_arc->get_tgt_node();
-      ts.swap(tgt->get_info());
-    }
-
-    return std::make_tuple(std::move(ss), std::move(ts), std::move(cut));
-  }
-
-  template <class GT>
-  std::tuple<SLList<Node<GT>*>, SLList<Node<GT>*>, SLList<Arc<GT>*>>
-  KargerMinCut<GT>::compute_min_cut_fast_rec(MGraph& mg)
-  {
-    nat_t n = mg.get_num_nodes();
-
-    if (n <= 6)
-      return compute_min_cut(mg);
-
-    nat_t t = std::ceil(1 + real_t(n) / SQ_TWO);
-
-    MGraph h1(mg);
-    ArcSet arcs1 = build_arcs(h1);
-    contract(h1, arcs1, t);
-    auto r1 = compute_min_cut_fast_rec(h1);
-
-    MGraph h2(mg);
-    ArcSet arcs2 = build_arcs(h2);
-    contract(h2, arcs2, t);
-    auto r2 = compute_min_cut_fast_rec(h2);
-
-    if (std::get<2>(r1).size() < std::get<2>(r2).size())
-      return r1;
-
-    return r2;
-  }
-
-  /* In-Out algorithms */
-
-  template <class GT,
-            class NodeOutput = DftNodeOutput<GT>,
-            class ArcOutput = DftArcOutput<GT>,
-            class GraphOutput = DftGraphOutput<GT>>
-  class OutputGraph
-  {
-    NodeOutput& node_out;
-    ArcOutput& arc_out;
-    GraphOutput& graph_out;
-
-    using Sz = typename GT::SetSizeType;
-
-  public:
-    OutputGraph(NodeOutput& _node_out, ArcOutput& _arc_out,
-                GraphOutput& _graph_out)
-        : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
-    {
-      // empty
-    }
-
-    OutputGraph(NodeOutput&& _node_out = NodeOutput(),
-                ArcOutput&& _arc_out = ArcOutput(),
-                GraphOutput&& _graph_out = GraphOutput())
-        : node_out(_node_out), arc_out(_arc_out), graph_out(_graph_out)
-    {
-      // empty
-    }
-
-    void write_in_text_mode(const GT&, std::ostream&);
-
-    /** Writes raw struct bytes (ofstream::write on POD data), so `out`
-        must have been opened with `std::ios::binary` — without it,
-        Windows' text-mode translation rewrites embedded 0x0A bytes to
-        0x0D 0x0A on write (and the matching read_in_bin_mode() would
-        then treat an embedded 0x1A byte as an early EOF), corrupting
-        the byte layout the reader expects. */
-    void write_in_bin_mode(const GT&, std::ofstream&);
-
-    void operator()(const GT& g, std::ostream& out)
-    {
-      write_in_text_mode(g, out);
-    }
-
-    void operator()(const GT& g, std::ofstream& out)
-    {
-      write_in_bin_mode(g, out);
-    }
-  };
-
-  template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
-  void OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::
-      write_in_text_mode(const GT& g, std::ostream& out)
-  {
-    if (g.is_digraph())
-      out << "di";
-    out << "graph\n";
-
-    out << g.get_num_nodes() << ' ' << g.get_num_arcs() << '\n';
-    graph_out(out, g);
-    out << '\n';
-
-    HashMap<Node<GT>*, Sz> map_nodes_pos;
-
-    Sz i = 0;
-
-    g.for_each_node([&](Node<GT>* p)
-                    {
-		      node_out(out, p);
-		      out << '\n';
-		      map_nodes_pos[p] = i++; });
-
-    g.for_each_arc([&](const Arc<GT>* a)
-                   {
-		     Sz s = map_nodes_pos[a->get_src_node()];
-		     Sz t = map_nodes_pos[a->get_tgt_node()];
-		     out << s << ' ' << t << ' ';
-		     arc_out(out, a);
-		     out << '\n'; });
-  }
-
-  template <class GT, class NodeOutput, class ArcOutput, class GraphOutput>
-  void OutputGraph<GT, NodeOutput, ArcOutput, GraphOutput>::
-      write_in_bin_mode(const GT& g, std::ofstream& out)
-  {
-    bool is_d = g.is_digraph();
-    out.write(reinterpret_cast<char*>(&is_d), sizeof(bool));
-
-    Sz num_nodes = g.get_num_nodes();
-    Sz num_arcs = g.get_num_arcs();
-
-    out.write(reinterpret_cast<char*>(&num_nodes), sizeof(Sz));
-    out.write(reinterpret_cast<char*>(&num_arcs), sizeof(Sz));
-
-    graph_out(out, g);
-
-    HashMap<Node<GT>*, Sz> map_nodes_pos;
-
-    Sz i = 0;
-
-    g.for_each_node([&](Node<GT>* p)
-                    {
-		      node_out(out, p);
-		      map_nodes_pos[const_cast<Node<GT> *>(p)] = i++; });
-
-    g.for_each_arc([&](Arc<GT>* a)
-                   {
-		     Sz * s = &map_nodes_pos[a->get_src_node()];
-		     Sz * t = &map_nodes_pos[a->get_tgt_node()];
-		     out.write(reinterpret_cast<char *>(s), sizeof(Sz));
-		     out.write(reinterpret_cast<char *>(t), sizeof(Sz));
-		     arc_out(out, a); });
-  }
-
-  template <class GT,
-            class NodeInput = DftNodeInput<GT>,
-            class ArcInput = DftArcInput<GT>,
-            class GraphInput = DftGraphInput<GT>>
-  class InputGraph
-  {
-    NodeInput& node_in;
-    ArcInput& arc_in;
-    GraphInput& graph_in;
-
-    using Sz = typename GT::SetSizeType;
-
-  public:
-    InputGraph(NodeInput& _node_in, ArcInput& _arc_in, GraphInput& _graph_in)
-        : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
-    {
-      // empty
-    }
-
-    InputGraph(NodeInput&& _node_in = NodeInput(),
-               ArcInput&& _arc_in = ArcInput(),
-               GraphInput&& _graph_in = GraphInput())
-        : node_in(_node_in), arc_in(_arc_in), graph_in(_graph_in)
-    {
-      // empty
-    }
-
-    GT read_in_text_mode(std::istream&);
-
-    /** @see OutputGraph::write_in_bin_mode() — `in` must likewise have
-        been opened with `std::ios::binary`. */
-    GT read_in_bin_mode(std::ifstream&);
-
-    GT operator()(std::istream& in)
-    {
-      return read_in_text_mode(in);
-    }
-
-    GT operator()(std::ifstream& in)
-    {
-      return read_in_bin_mode(in);
-    }
-  };
-
-  template <class GT, class NodeInput, class ArcInput, class GraphInput>
-  GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::
-      read_in_text_mode(std::istream& in)
-  {
-    GT g;
-
-    std::string type;
-    in >> type;
-
-    if (g.is_digraph() xor (type == "digraph"))
-      throw std::logic_error("Conflict between directed and undirected graph");
-
-    Sz num_nodes;
-    Sz num_arcs;
-
-    in >> num_nodes >> num_arcs;
-    graph_in(in, g);
-
-    DynArray<Node<GT>*> nodes(num_nodes, nullptr);
-
-    for (Sz i = 0; i < num_nodes; ++i)
-    {
-      Node<GT>* p = g.insert_node();
-      node_in(in, p);
-      nodes[i] = p;
-    }
-
-    for (Sz i = 0; i < num_arcs; ++i)
-    {
-      Sz s;
-      in >> s;
-      Sz t;
-      in >> t;
-      Node<GT>* src = nodes[s];
-      Node<GT>* tgt = nodes[t];
-      Arc<GT>* a = g.insert_arc(src, tgt);
-      arc_in(in, a);
-    }
-
-    return g;
-  }
-
-  template <class GT, class NodeInput, class ArcInput, class GraphInput>
-  GT InputGraph<GT, NodeInput, ArcInput, GraphInput>::
-      read_in_bin_mode(std::ifstream& in)
-  {
-    GT g;
-
-    bool is_d;
-    in.read(reinterpret_cast<char*>(&is_d), sizeof(bool));
-
-    if (g.is_digraph() xor is_d)
-      throw std::logic_error("Conflict between directed and undirected graph");
-
-    Sz num_nodes;
-    Sz num_arcs;
-
-    in.read(reinterpret_cast<char*>(&num_nodes), sizeof(Sz));
-    in.read(reinterpret_cast<char*>(&num_arcs), sizeof(Sz));
-
-    graph_in(in, g);
-
-    DynArray<Node<GT>*> nodes(num_nodes, nullptr);
-
-    for (Sz i = 0; i < num_nodes; ++i)
-    {
-      Node<GT>* p = g.insert_node();
-      node_in(in, p);
-      nodes[i] = p;
-    }
-
-    for (Sz i = 0; i < num_arcs; ++i)
-    {
-      Sz s;
-      in.read(reinterpret_cast<char*>(&s), sizeof(Sz));
-      Sz t;
-      in.read(reinterpret_cast<char*>(&t), sizeof(Sz));
-      Node<GT>* src = nodes[s];
-      Node<GT>* tgt = nodes[t];
-      Arc<GT>* a = g.insert_arc(src, tgt);
-      arc_in(in, a);
-    }
-
-    return g;
-  }
-
-  template <class GT,
-            class NodeAttr = DftDotNodeAttr<GT>,
-            class ArcAttr = DftDotArcAttr<GT>,
-            class GraphAttr = DftDotGraphAttr<GT>>
-  class DotGraph
-  {
-    NodeAttr& node_attr;
-    ArcAttr& arc_attr;
-    GraphAttr& graph_attr;
-
-    using Sz = typename GT::SetSizeType;
-
-  public:
-    DotGraph(NodeAttr& _node_attr, ArcAttr& _arc_attr,
-             GraphAttr& _graph_attr)
-        : node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
-    {
-      // empty
-    }
-
-    DotGraph(NodeAttr&& _node_attr = NodeAttr(),
-             ArcAttr&& _arc_attr = ArcAttr(),
-             GraphAttr&& _graph_attr = GraphAttr())
-        : node_attr(_node_attr), arc_attr(_arc_attr), graph_attr(_graph_attr)
-    {
-      // empty
-    }
-
-    void write_graph(const GT&, std::ofstream&,
-                     const std::string& rankdir = "LR");
-
-    void write_graph(const GT& g, const std::string& file_name)
-    {
-      std::ofstream file(file_name.c_str());
-      write_graph(g, file);
-      file.close();
-    }
-  };
-
-  template <class GT, class NodeAttr, class ArcAttr, class GraphAttr>
-  void DotGraph<GT, NodeAttr, ArcAttr, GraphAttr>::
-      write_graph(const GT& g, std::ofstream& output, const std::string& rankdir)
-  {
-    output << "// "
-           << "File generated automatically by write_graph in DotGraph"
-           << "\n\n";
-
-    if (g.is_digraph())
-      output << "di";
-
-    output << "graph\n"
-           << "{\n";
-
-    output << "  rankdir = " << rankdir << ";\n\n";
-
-    output << graph_attr(g) << "\n\n";
-
-    output << "  // Nodes \n\n";
-
-    HashMap<Node<GT>*, Sz> map;
-
-    const std::string arc_connector = g.is_digraph() ? "->" : "--";
-
-    Sz i = 0;
-
-    g.for_each_node([&](Node<GT>* node)
-                    {
-		      output << "  " << i << "[" << node_attr(node) << "];\n";
-		      map[node] = i;
-		      ++i; });
-
-    output << "\n  // Arcs \n\n";
-
-    g.for_each_arc([&](Arc<GT>* arc)
-                   {
-		     Node<GT> * src_node = arc->get_src_node();
-		     Node<GT> * tgt_node = arc->get_tgt_node();
-		     Sz src_index = map[src_node];
-		     Sz tgt_index = map[tgt_node];
-		     
-		     output << "  "
-			    << src_index << arc_connector << tgt_index
-			    << "["
-			    << arc_attr(arc)
-			    << "];\n"; });
-
-    output << "}\n";
-  }
 
 } // end namespace Designar

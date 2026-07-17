@@ -9,52 +9,51 @@
 namespace Designar
 {
 
-  CommonNodeArc::CommonNodeArc()
-      : tag(0), _counter(0), _cookie()
-  {
-    // empty
-  }
+    CommonNodeArc::CommonNodeArc() : tag(0), _counter(0), _cookie()
+    {
+        // empty
+    }
 
-  void CommonNodeArc::visit(GraphTag graph_tag)
-  {
-    tag |= nat_t(graph_tag);
-  }
+    void CommonNodeArc::visit(GraphTag graph_tag)
+    {
+        tag |= nat_t(graph_tag);
+    }
 
-  void CommonNodeArc::unvisit(GraphTag graph_tag)
-  {
-    tag &= ~nat_t(graph_tag);
-  }
+    void CommonNodeArc::unvisit(GraphTag graph_tag)
+    {
+        tag &= ~nat_t(graph_tag);
+    }
 
-  bool CommonNodeArc::is_visited(GraphTag graph_tag) const
-  {
-    return (tag & nat_t(graph_tag)) == nat_t(graph_tag);
-  }
+    bool CommonNodeArc::is_visited(GraphTag graph_tag) const
+    {
+        return (tag & nat_t(graph_tag)) == nat_t(graph_tag);
+    }
 
-  void*& CommonNodeArc::cookie()
-  {
-    return _cookie.ptr;
-  }
+    void*& CommonNodeArc::cookie()
+    {
+        return _cookie.ptr;
+    }
 
-  int_t& CommonNodeArc::cookie_as_int()
-  {
-    return _cookie.num;
-  }
+    int_t& CommonNodeArc::cookie_as_int()
+    {
+        return _cookie.num;
+    }
 
-  void CommonNodeArc::reset_tag()
-  {
-    tag = 0;
-  }
+    void CommonNodeArc::reset_tag()
+    {
+        tag = 0;
+    }
 
-  int_t& CommonNodeArc::counter()
-  {
-    return _counter;
-  }
+    int_t& CommonNodeArc::counter()
+    {
+        return _counter;
+    }
 
-  void CommonNodeArc::reset()
-  {
-    tag = 0;
-    _counter = 0;
-    _cookie.ptr = nullptr;
-  }
+    void CommonNodeArc::reset()
+    {
+        tag = 0;
+        _counter = 0;
+        _cookie.ptr = nullptr;
+    }
 
 } // end namespace Designar

@@ -14,32 +14,32 @@ using namespace Designar;
 
 int main()
 {
-  string text = "ababcababcabc";
-  string pattern = "abc";
+    string text = "ababcababcabc";
+    string pattern = "abc";
 
-  cout << "kmp_search matches at: ";
+    cout << "kmp_search matches at: ";
 
-  for (nat_t pos : kmp_search(text, pattern))
-  {
-    cout << pos << " ";
-  }
+    for (nat_t pos : kmp_search(text, pattern))
+    {
+        cout << pos << " ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  cout << "rabin_karp_search matches at: ";
+    cout << "rabin_karp_search matches at: ";
 
-  for (nat_t pos : rabin_karp_search(text, pattern))
-  {
-    cout << pos << " ";
-  }
+    for (nat_t pos : rabin_karp_search(text, pattern))
+    {
+        cout << pos << " ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  string a = "kitten";
-  string b = "sitting";
+    string a = "kitten";
+    string b = "sitting";
 
-  cout << "edit_distance(\"" << a << "\", \"" << b << "\"): "
-       << edit_distance(a, b) << endl;
+    cout << "edit_distance(\"" << a << "\", \"" << b
+         << "\"): " << edit_distance(a, b) << endl;
 
-  return 0;
+    return 0;
 }

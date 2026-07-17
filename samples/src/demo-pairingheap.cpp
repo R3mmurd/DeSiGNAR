@@ -14,23 +14,23 @@ using namespace Designar;
 
 int main()
 {
-  PairingHeap<int_t> heap;
+    PairingHeap<int_t> heap;
 
-  for (int_t v : {5, 3, 8, 1, 4, 7, 9})
-  {
-    heap.insert(v);
-  }
+    for (int_t v : {5, 3, 8, 1, 4, 7, 9})
+    {
+        heap.insert(v);
+    }
 
-  cout << "size: " << heap.size() << endl;
+    cout << "size: " << heap.size() << endl;
 
-  cout << "extract_min() in order: ";
+    cout << "extract_min() in order: ";
 
-  while (!heap.is_empty())
-  {
-    cout << heap.extract_min() << " ";
-  }
+    while (!heap.is_empty())
+    {
+        cout << heap.extract_min() << " ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  return 0;
+    return 0;
 }

@@ -16,28 +16,32 @@ using namespace Designar;
 
 int main()
 {
-  vector<string> tests = {"abb", "aabb", "babb", "ab", "abbb"};
+    vector<string> tests = {"abb", "aabb", "babb", "ab", "abbb"};
 
-  // Thompson's construction, straight from a regex — no NFA states or
-  // transitions written out by hand.
-  NFA<char> nfa = regex_to_nfa("(a|b)*abb");
+    // Thompson's construction, straight from a regex — no NFA states or
+    // transitions written out by hand.
+    NFA<char> nfa = regex_to_nfa("(a|b)*abb");
 
-  cout << "NFA \"(a|b)*abb\" (" << nfa.get_num_states() << " states):" << endl;
+    cout << "NFA \"(a|b)*abb\" (" << nfa.get_num_states()
+         << " states):" << endl;
 
-  for (const string& s : tests)
-  {
-    cout << "  accepts(\"" << s << "\"): " << (nfa.accepts(s) ? "yes" : "no") << endl;
-  }
+    for (const string& s : tests)
+    {
+        cout << "  accepts(\"" << s
+             << "\"): " << (nfa.accepts(s) ? "yes" : "no") << endl;
+    }
 
-  // The subset construction: same language, deterministic states.
-  DFA<char> dfa = nfa.to_dfa();
+    // The subset construction: same language, deterministic states.
+    DFA<char> dfa = nfa.to_dfa();
 
-  cout << "DFA after subset construction (" << dfa.get_num_states() << " states):" << endl;
+    cout << "DFA after subset construction (" << dfa.get_num_states()
+         << " states):" << endl;
 
-  for (const string& s : tests)
-  {
-    cout << "  accepts(\"" << s << "\"): " << (dfa.accepts(s) ? "yes" : "no") << endl;
-  }
+    for (const string& s : tests)
+    {
+        cout << "  accepts(\"" << s
+             << "\"): " << (dfa.accepts(s) ? "yes" : "no") << endl;
+    }
 
-  return 0;
+    return 0;
 }

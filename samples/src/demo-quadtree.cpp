@@ -14,26 +14,26 @@ using namespace Designar;
 
 int main()
 {
-  QuadTree<Point2D> qt(QuadTree<Point2D>::Boundary(Point2D(0., 0.), 100.));
+    QuadTree<Point2D> qt(QuadTree<Point2D>::Boundary(Point2D(0., 0.), 100.));
 
-  qt.insert(Point2D(10., 10.));
-  qt.insert(Point2D(-20., 30.));
-  qt.insert(Point2D(50., -50.));
-  qt.insert(Point2D(15., 12.));
+    qt.insert(Point2D(10., 10.));
+    qt.insert(Point2D(-20., 30.));
+    qt.insert(Point2D(50., -50.));
+    qt.insert(Point2D(15., 12.));
 
-  cout << "total points: " << qt.size() << endl;
+    cout << "total points: " << qt.size() << endl;
 
-  QuadTree<Point2D>::Boundary region(Point2D(12., 11.), 10.);
-  auto found = qt.query_range(region);
+    QuadTree<Point2D>::Boundary region(Point2D(12., 11.), 10.);
+    auto found = qt.query_range(region);
 
-  cout << "points within 10 units of (12, 11): ";
+    cout << "points within 10 units of (12, 11): ";
 
-  for (const Point2D& p : found)
-  {
-    cout << "(" << p.get_x() << ", " << p.get_y() << ") ";
-  }
+    for (const Point2D& p : found)
+    {
+        cout << "(" << p.get_x() << ", " << p.get_y() << ") ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  return 0;
+    return 0;
 }

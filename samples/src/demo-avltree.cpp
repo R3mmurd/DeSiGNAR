@@ -14,28 +14,29 @@ using namespace Designar;
 
 int main()
 {
-  AVLTree<int_t> tree;
+    AVLTree<int_t> tree;
 
-  for (int_t v : {5, 3, 8, 1, 4, 7, 9})
-  {
-    tree.insert(v);
-  }
+    for (int_t v : {5, 3, 8, 1, 4, 7, 9})
+    {
+        tree.insert(v);
+    }
 
-  cout << "In-order traversal: ";
+    cout << "In-order traversal: ";
 
-  for (int_t v : tree)
-  {
-    cout << v << " ";
-  }
+    for (int_t v : tree)
+    {
+        cout << v << " ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  cout << "search(4): " << (tree.search(4) != nullptr ? "found" : "not found") << endl;
+    cout << "search(4): " << (tree.search(4) != nullptr ? "found" : "not found")
+         << endl;
 
-  tree.remove(4);
+    tree.remove(4);
 
-  cout << "after remove(4), search(4): "
-       << (tree.search(4) != nullptr ? "found" : "not found") << endl;
+    cout << "after remove(4), search(4): "
+         << (tree.search(4) != nullptr ? "found" : "not found") << endl;
 
-  return 0;
+    return 0;
 }

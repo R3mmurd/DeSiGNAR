@@ -16,26 +16,25 @@ using namespace Designar;
 
 int main()
 {
-  ThreadPool pool(4);
+    ThreadPool pool(4);
 
-  cout << "worker count: " << pool.size() << endl;
+    cout << "worker count: " << pool.size() << endl;
 
-  vector<future<int_t>> results;
+    vector<future<int_t>> results;
 
-  for (int_t i = 1; i <= 10; ++i)
-  {
-    results.push_back(pool.submit([i]
-                                  { return i * i; }));
-  }
+    for (int_t i = 1; i <= 10; ++i)
+    {
+        results.push_back(pool.submit([i] { return i * i; }));
+    }
 
-  cout << "squares: ";
+    cout << "squares: ";
 
-  for (auto& f : results)
-  {
-    cout << f.get() << " ";
-  }
+    for (auto& f : results)
+    {
+        cout << f.get() << " ";
+    }
 
-  cout << endl;
+    cout << endl;
 
-  return 0;
+    return 0;
 }
