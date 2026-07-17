@@ -73,5 +73,24 @@ int main()
     assert(ek4.max_flow(s4, t4) == 0);
 
     cout << "EdmondsKarp: Everything ok!\n";
+
+    // Same graphs, but via the plain Ford-Fulkerson (DFS-augmenting-path)
+    // instantiation of the same method — both must agree on the max flow
+    // value, since the choice of *which* augmenting path to take never
+    // changes what the max flow *is*, only how many iterations it takes
+    // to find it.
+    FordFulkerson<GT> ff(g);
+    assert(ff.max_flow(s, t) == 23);
+
+    FordFulkerson<GT> ff2(g2);
+    assert(ff2.max_flow(ss, tt) == 10);
+
+    FordFulkerson<GT> ff3(g3);
+    assert(ff3.max_flow(s3, t3) == 3);
+
+    FordFulkerson<GT> ff4(g4);
+    assert(ff4.max_flow(s4, t4) == 0);
+
+    cout << "FordFulkerson: Everything ok!\n";
     return 0;
 }

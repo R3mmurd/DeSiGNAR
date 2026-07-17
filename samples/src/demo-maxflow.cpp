@@ -30,8 +30,10 @@ int main()
     g.insert_arc(b, t, 5);
 
     EdmondsKarp<GT> ek(g);
+    cout << "EdmondsKarp   max flow s -> t: " << ek.max_flow(s, t) << endl;
 
-    cout << "max flow s -> t: " << ek.max_flow(s, t) << endl;
+    FordFulkerson<GT> ff(g);
+    cout << "FordFulkerson max flow s -> t: " << ff.max_flow(s, t) << endl;
 
     return 0;
 }
