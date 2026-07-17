@@ -4,11 +4,22 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file sort.hpp
+    @brief Searching and sorting: binary/sequential search, and the
+    classic comparison sorts (insertion, selection, bubble, shell,
+    merge, quick, heap) plus the non-comparison counting/radix sorts,
+    on both arrays and linked lists where each algorithm's own shape
+    makes that a natural fit.
+    @ingroup Sorting
+*/
+
 #pragma once
 
 #include <array.hpp>
 #include <list.hpp>
 #include <typetraits.hpp>
+
+#include <type_traits>
 
 namespace Designar
 {
@@ -28,11 +39,26 @@ namespace Designar
   template <class ArrayType, class Cmp>
   void insertion_sort(ArrayType&, int_t, int_t, Cmp&);
 
+  template <class ArrayType, class Cmp>
+  void selection_sort(ArrayType&, int_t, int_t, Cmp&);
+
+  template <class ArrayType, class Cmp>
+  void bubble_sort(ArrayType&, int_t, int_t, Cmp&);
+
+  template <class ArrayType, class Cmp>
+  void shell_sort(ArrayType&, int_t, int_t, Cmp&);
+
   template <typename ArrayType, class Cmp>
   int_t partition(ArrayType&, int_t, int_t, Cmp&);
 
   template <typename ArrayType, class Cmp>
   void quicksort(ArrayType&, int_t, int_t, Cmp&);
+
+  template <class ArrayType, class Cmp>
+  void merge(ArrayType&, int_t, int_t, int_t, Cmp&);
+
+  template <class ArrayType, class Cmp>
+  void merge_sort(ArrayType&, int_t, int_t, Cmp&);
 
   template <typename T, class Cmp>
   void sift_up(T*, nat_t, nat_t, Cmp&);
@@ -40,12 +66,27 @@ namespace Designar
   template <typename T, class Cmp>
   void sift_down(T*, nat_t, nat_t, Cmp&);
 
+  template <class ArrayType, class Cmp>
+  void heap_sort(ArrayType&, int_t, int_t, Cmp&);
+
+  template <class ArrayType>
+  void counting_sort(ArrayType&, int_t, int_t, nat_t);
+
+  template <class ArrayType>
+  void radix_sort(ArrayType&, int_t, int_t);
+
   template <typename T, class Cmp>
   std::tuple<NodeSLList<T>, typename NodeSLList<T>::Node*, NodeSLList<T>>
   partition(NodeSLList<T>&, Cmp&);
 
   template <typename T, class Cmp>
   void quicksort(NodeSLList<T>&, Cmp&);
+
+  template <typename T, class Cmp>
+  NodeSLList<T> merge(NodeSLList<T>&, NodeSLList<T>&, Cmp&);
+
+  template <typename T, class Cmp>
+  void merge_sort(NodeSLList<T>&, Cmp&);
 
   template <class Cmp>
   std::tuple<DL, DL*, DL> partition(DL&, Cmp&);
@@ -200,6 +241,192 @@ namespace Designar
     insertion_sort<ArrayType, Cmp>(a, cmp);
   }
 
+  /** O(n^2), and — unlike insertion_sort/bubble_sort — never adaptive
+      (it always scans the whole unsorted remainder for a minimum, even
+      on an already-sorted array), but it makes at most n-1 swaps total,
+      the fewest of any of the O(n^2) sorts here — worth teaching
+      alongside insertion_sort specifically for that contrast (fewest
+      writes vs. fewest comparisons on nearly-sorted input). */
+  template <class ArrayType, class Cmp>
+  void selection_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    for (int_t i = l; i < r; ++i)
+    {
+      int_t min_pos = i;
+
+      for (int_t j = i + 1; j <= r; ++j)
+      {
+        if (cmp(a[j], a[min_pos]))
+        {
+          min_pos = j;
+        }
+      }
+
+      if (min_pos != i)
+      {
+        std::swap(a[i], a[min_pos]);
+      }
+    }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void selection_sort(ArrayType& a, int_t l, int_t r, Cmp&& cmp = Cmp())
+  {
+    selection_sort<ArrayType, Cmp>(a, l, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void selection_sort(ArrayType& a, int_t size, Cmp& cmp)
+  {
+    selection_sort(a, 0, size - 1, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void selection_sort(ArrayType& a, int_t size, Cmp&& cmp = Cmp())
+  {
+    selection_sort<ArrayType, Cmp>(a, size, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void selection_sort(ArrayType& a, Cmp& cmp)
+  {
+    selection_sort(a, a.size(), cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void selection_sort(ArrayType& a, Cmp&& cmp = Cmp())
+  {
+    selection_sort<ArrayType, Cmp>(a, cmp);
+  }
+
+  /** O(n^2); the one classic comparison sort here that is adaptive in
+      the strongest sense — it detects a fully-sorted array in a single
+      O(n) pass (the `swapped` flag below) and stops, rather than merely
+      running faster on nearly-sorted input the way insertion_sort
+      does. */
+  template <class ArrayType, class Cmp>
+  void bubble_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    for (int_t i = l; i < r; ++i)
+    {
+      bool swapped = false;
+
+      for (int_t j = l; j < r - (i - l); ++j)
+      {
+        if (cmp(a[j + 1], a[j]))
+        {
+          std::swap(a[j], a[j + 1]);
+          swapped = true;
+        }
+      }
+
+      if (!swapped)
+      {
+        break;
+      }
+    }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void bubble_sort(ArrayType& a, int_t l, int_t r, Cmp&& cmp = Cmp())
+  {
+    bubble_sort<ArrayType, Cmp>(a, l, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void bubble_sort(ArrayType& a, int_t size, Cmp& cmp)
+  {
+    bubble_sort(a, 0, size - 1, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void bubble_sort(ArrayType& a, int_t size, Cmp&& cmp = Cmp())
+  {
+    bubble_sort<ArrayType, Cmp>(a, size, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void bubble_sort(ArrayType& a, Cmp& cmp)
+  {
+    bubble_sort(a, a.size(), cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void bubble_sort(ArrayType& a, Cmp&& cmp = Cmp())
+  {
+    bubble_sort<ArrayType, Cmp>(a, cmp);
+  }
+
+  /** O(n log^2 n) to O(n^1.5) depending on the gap sequence — this uses
+      the simplest classic one (repeatedly halving the gap), which is
+      easy to reason about but not the asymptotically best known choice.
+      Conceptually a generalization of insertion_sort: insertion_sort is
+      exactly shell_sort with a single gap of 1, so pass a gap sequence
+      ending in 1 and this reduces to it (the innermost loop below is
+      literally insertion_sort's, parameterized by `gap` instead of the
+      literal 1). */
+  template <class ArrayType, class Cmp>
+  void shell_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    int_t n = r - l + 1;
+
+    for (int_t gap = n / 2; gap > 0; gap /= 2)
+    {
+      for (int_t i = l + gap; i <= r; ++i)
+      {
+        typename ArrayType::DataType data = std::move(a[i]);
+
+        int_t j = i;
+
+        for (; j >= l + gap && cmp(data, a[j - gap]); j -= gap)
+        {
+          a[j] = std::move(a[j - gap]);
+        }
+
+        a[j] = std::move(data);
+      }
+    }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void shell_sort(ArrayType& a, int_t l, int_t r, Cmp&& cmp = Cmp())
+  {
+    shell_sort<ArrayType, Cmp>(a, l, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void shell_sort(ArrayType& a, int_t size, Cmp& cmp)
+  {
+    shell_sort(a, 0, size - 1, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void shell_sort(ArrayType& a, int_t size, Cmp&& cmp = Cmp())
+  {
+    shell_sort<ArrayType, Cmp>(a, size, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void shell_sort(ArrayType& a, Cmp& cmp)
+  {
+    shell_sort(a, a.size(), cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void shell_sort(ArrayType& a, Cmp&& cmp = Cmp())
+  {
+    shell_sort<ArrayType, Cmp>(a, cmp);
+  }
+
   template <typename ArrayType, class Cmp>
   inline int_t select_pivot(ArrayType& a, int_t l, int_t r, Cmp& cmp)
   {
@@ -335,6 +562,111 @@ namespace Designar
     quicksort<T, Cmp>(a, cmp);
   }
 
+  /** Merges the two already-sorted runs `a[l..m]` and `a[m+1..r]` into
+      one sorted `a[l..r]`, via a temporary buffer — the one classic
+      comparison sort in this file that is not in-place, in exchange for
+      being the one that is stable and has a guaranteed O(n log n)
+      worst case (quicksort's worst case is O(n^2); merge_sort's never
+      is, regardless of input order or pivot choice). */
+  template <class ArrayType, class Cmp>
+  void merge(ArrayType& a, int_t l, int_t m, int_t r, Cmp& cmp)
+  {
+    using T = typename ArrayType::DataType;
+
+    DynArray<T> tmp;
+
+    int_t i = l;
+    int_t j = m + 1;
+
+    while (i <= m && j <= r)
+    {
+      if (cmp(a[j], a[i]))
+      {
+        tmp.append(std::move(a[j++]));
+      }
+      else
+      {
+        tmp.append(std::move(a[i++]));
+      }
+    }
+
+    while (i <= m)
+    {
+      tmp.append(std::move(a[i++]));
+    }
+
+    while (j <= r)
+    {
+      tmp.append(std::move(a[j++]));
+    }
+
+    for (nat_t k = 0; k < tmp.size(); ++k)
+    {
+      a[l + int_t(k)] = std::move(tmp[k]);
+    }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void merge(ArrayType& a, int_t l, int_t m, int_t r, Cmp&& cmp = Cmp())
+  {
+    merge<ArrayType, Cmp>(a, l, m, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  void merge_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    if (l >= r)
+    {
+      return;
+    }
+
+    if (r - l + 1 <= QuicksortThreshold)
+    {
+      insertion_sort(a, l, r, cmp);
+      return;
+    }
+
+    int_t m = l + (r - l) / 2;
+
+    merge_sort(a, l, m, cmp);
+    merge_sort(a, m + 1, r, cmp);
+    merge(a, l, m, r, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void merge_sort(ArrayType& a, int_t l, int_t r, Cmp&& cmp = Cmp())
+  {
+    merge_sort<ArrayType, Cmp>(a, l, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void merge_sort(ArrayType& a, int_t size, Cmp& cmp)
+  {
+    merge_sort(a, 0, size - 1, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void merge_sort(ArrayType& a, int_t size, Cmp&& cmp = Cmp())
+  {
+    merge_sort<ArrayType, Cmp>(a, size, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void merge_sort(ArrayType& a, Cmp& cmp)
+  {
+    merge_sort(a, a.size(), cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void merge_sort(ArrayType& a, Cmp&& cmp = Cmp())
+  {
+    merge_sort<ArrayType, Cmp>(a, cmp);
+  }
+
   /** `l`/`r` are 1-based (matching the classic heap formulas
       parent(i)=i/2, child(i)=i*2, which only stay this clean with
       1-based indices), but `a` itself is an ordinary 0-based array —
@@ -404,6 +736,222 @@ namespace Designar
     return sift_down<T, Cmp>(a, l, r, cmp);
   }
 
+  /** In-place, O(n log n) worst case guaranteed (like merge_sort, unlike
+      quicksort) but — unlike merge_sort — needs no extra buffer, at the
+      cost of not being stable and having noticeably worse cache
+      behavior in practice (the heap operations jump around the array
+      rather than scanning it). Reuses sift_up()/sift_down() above,
+      which is why it can be defined right here instead of needing its
+      own heap machinery — but those implement a *min*-heap with respect
+      to `cmp` (this library's established heap convention), and
+      extracting repeatedly from a min-heap would put the *smallest*
+      remaining element next to the already-sorted region each time —
+      exactly backwards from what an in-place sort needs (the extracted
+      extreme must go to the boundary being vacated, growing the sorted
+      region from that end). Flipping cmp's argument order turns
+      "smallest per cmp" into "largest per cmp", so the standard build
+      max-heap / repeatedly swap the root to the shrinking array's tail
+      heapsort algorithm falls out without a separate max-heap
+      implementation to duplicate and maintain. */
+  template <class ArrayType, class Cmp>
+  void heap_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    using T = typename ArrayType::DataType;
+
+    int_t n = r - l + 1;
+
+    if (n < 2)
+    {
+      return;
+    }
+
+    auto flipped = [&cmp](const T& x, const T& y)
+    { return cmp(y, x); };
+
+    T* base = &a[l];
+
+    for (nat_t i = 2; i <= nat_t(n); ++i)
+    {
+      sift_up(base, nat_t(1), i, flipped);
+    }
+
+    for (nat_t i = nat_t(n); i > 1; --i)
+    {
+      std::swap(base[0], base[i - 1]);
+      sift_down(base, nat_t(1), i - 1, flipped);
+    }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void heap_sort(ArrayType& a, int_t l, int_t r, Cmp&& cmp = Cmp())
+  {
+    heap_sort<ArrayType, Cmp>(a, l, r, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void heap_sort(ArrayType& a, int_t size, Cmp& cmp)
+  {
+    heap_sort(a, 0, size - 1, cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void heap_sort(ArrayType& a, int_t size, Cmp&& cmp = Cmp())
+  {
+    heap_sort<ArrayType, Cmp>(a, size, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  inline void heap_sort(ArrayType& a, Cmp& cmp)
+  {
+    heap_sort(a, a.size(), cmp);
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void heap_sort(ArrayType& a, Cmp&& cmp = Cmp())
+  {
+    heap_sort<ArrayType, Cmp>(a, cmp);
+  }
+
+  /** Non-comparison sorts: instead of deciding order via `cmp`
+      comparisons (subject to the Ω(n log n) lower bound every sort
+      above this point is stuck with), these work directly with integer
+      keys, and so can beat that bound — O(n + k) for counting_sort
+      (`k` the key range), O(d*(n + k)) for radix_sort (`d` the number
+      of digits) — in exchange for being far less general (integral
+      DataType only, non-negative keys only, and counting_sort needs the
+      key range known up front). */
+  template <class ArrayType>
+  void counting_sort(ArrayType& a, int_t l, int_t r, nat_t max_key)
+  {
+    using T = typename ArrayType::DataType;
+
+    static_assert(std::is_integral<T>::value,
+                  "counting_sort requires an integral DataType "
+                  "(non-negative keys in [0, max_key])");
+
+    if (l >= r)
+    {
+      return;
+    }
+
+    DynArray<nat_t> count(max_key + 1, nat_t(0));
+
+    for (int_t i = l; i <= r; ++i)
+    {
+      ++count[nat_t(a[i])];
+    }
+
+    for (nat_t k = 1; k <= max_key; ++k)
+    {
+      count[k] += count[k - 1];
+    }
+
+    DynArray<T> output(nat_t(r - l + 1), T());
+
+    for (int_t i = r; i >= l; --i)
+    {
+      nat_t key = nat_t(a[i]);
+      output[--count[key]] = a[i];
+    }
+
+    for (int_t i = l; i <= r; ++i)
+    {
+      a[i] = std::move(output[nat_t(i - l)]);
+    }
+  }
+
+  template <class ArrayType>
+  inline void counting_sort(ArrayType& a, int_t size, nat_t max_key)
+  {
+    counting_sort(a, 0, size - 1, max_key);
+  }
+
+  template <class ArrayType>
+  inline void counting_sort(ArrayType& a, nat_t max_key)
+  {
+    counting_sort(a, a.size(), max_key);
+  }
+
+  /** LSD (least-significant-digit) radix sort, base 10 for readability
+      — a base matching the machine word size (e.g. 256) is the usual
+      choice in practice, trading a larger per-pass counting array for
+      fewer passes (fewer digits to process). Each pass is exactly
+      counting_sort()'s algorithm specialized to one base-10 digit
+      (kept as its own self-contained loop below, rather than calling
+      counting_sort() directly, since the two differ slightly: the key
+      here is `(a[i] / exp) % 10`, not `a[i]` itself); stability across
+      passes — required for radix sort's correctness, since a later
+      (more-significant-digit) pass must not disturb the relative order
+      two elements were already placed in by an earlier tie — is what
+      makes this correct, and is exactly why counting_sort (itself
+      stable) rather than an unstable sort is the right subroutine here. */
+  template <class ArrayType>
+  void radix_sort(ArrayType& a, int_t l, int_t r)
+  {
+    using T = typename ArrayType::DataType;
+
+    static_assert(std::is_integral<T>::value,
+                  "radix_sort requires an integral DataType (non-negative keys)");
+
+    if (l >= r)
+    {
+      return;
+    }
+
+    T max_val = a[l];
+
+    for (int_t i = l + 1; i <= r; ++i)
+    {
+      if (a[i] > max_val)
+      {
+        max_val = a[i];
+      }
+    }
+
+    for (T exp = 1; max_val / exp > 0; exp *= 10)
+    {
+      DynArray<nat_t> count(nat_t(10), nat_t(0));
+
+      for (int_t i = l; i <= r; ++i)
+      {
+        ++count[nat_t((a[i] / exp) % 10)];
+      }
+
+      for (nat_t d = 1; d < 10; ++d)
+      {
+        count[d] += count[d - 1];
+      }
+
+      DynArray<T> output(nat_t(r - l + 1), T());
+
+      for (int_t i = r; i >= l; --i)
+      {
+        nat_t digit = nat_t((a[i] / exp) % 10);
+        output[--count[digit]] = a[i];
+      }
+
+      for (int_t i = l; i <= r; ++i)
+      {
+        a[i] = output[nat_t(i - l)];
+      }
+    }
+  }
+
+  template <class ArrayType>
+  inline void radix_sort(ArrayType& a, int_t size)
+  {
+    radix_sort(a, 0, size - 1);
+  }
+
+  template <class ArrayType>
+  inline void radix_sort(ArrayType& a)
+  {
+    radix_sort(a, a.size());
+  }
+
   template <typename T, class Cmp>
   std::tuple<NodeSLList<T>, typename NodeSLList<T>::Node*, NodeSLList<T>>
   partition(NodeSLList<T>& l, Cmp& cmp)
@@ -451,6 +999,74 @@ namespace Designar
   inline void quicksort(NodeSLList<T>& l, Cmp&& cmp = Cmp())
   {
     quicksort<T, Cmp>(l, cmp);
+  }
+
+  /** The classic linked-list sort — merge_sort's natural home is
+      arguably a list more than an array (splitting a list in two costs
+      nothing extra the way it does for an array, since there is no
+      contiguous storage to divide; merging two lists back together is
+      just relinking nodes, not copying into a temporary buffer the way
+      array-based merge() above needs to). Uses NodeSLList::split() to
+      halve `l` (round-robin, not front/back — either halving strategy
+      keeps the O(n log n) bound, and round-robin is what split() this
+      library already provides). */
+  template <typename T, class Cmp>
+  NodeSLList<T> merge(NodeSLList<T>& l, NodeSLList<T>& r, Cmp& cmp)
+  {
+    NodeSLList<T> result;
+
+    while (!l.is_empty() && !r.is_empty())
+    {
+      if (cmp(r.get_first()->get_item(), l.get_first()->get_item()))
+      {
+        result.append(r.remove_first());
+      }
+      else
+      {
+        result.append(l.remove_first());
+      }
+    }
+
+    while (!l.is_empty())
+    {
+      result.append(l.remove_first());
+    }
+
+    while (!r.is_empty())
+    {
+      result.append(r.remove_first());
+    }
+
+    return result;
+  }
+
+  template <typename T, class Cmp = std::less<T>>
+  inline NodeSLList<T> merge(NodeSLList<T>& l, NodeSLList<T>& r, Cmp&& cmp = Cmp())
+  {
+    return merge<T, Cmp>(l, r, cmp);
+  }
+
+  template <typename T, class Cmp>
+  void merge_sort(NodeSLList<T>& l, Cmp& cmp)
+  {
+    if (l.is_unitarian_or_empty())
+    {
+      return;
+    }
+
+    NodeSLList<T> left, right;
+    l.split(left, right);
+
+    merge_sort(left, cmp);
+    merge_sort(right, cmp);
+
+    l = merge(left, right, cmp);
+  }
+
+  template <typename T, class Cmp = std::less<T>>
+  inline void merge_sort(NodeSLList<T>& l, Cmp&& cmp = Cmp())
+  {
+    merge_sort<T, Cmp>(l, cmp);
   }
 
   template <class Cmp>
