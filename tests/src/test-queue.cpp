@@ -312,6 +312,65 @@ int main()
         assert(false);
     }
 
+    // DynQueue used to be built on FixedArray (eagerly default-/
+    // copy-constructing every slot up front, requiring T to be
+    // default-constructible just to declare an empty queue) -- now owns
+    // raw storage directly like DynArray. Exercised end to end with a
+    // type that has no default constructor and is move-only: put/get
+    // across several forced reallocations (both growth and, once mostly
+    // drained, shrink).
+    {
+        struct NoDefault
+        {
+            int_t value;
+
+            NoDefault() = delete;
+
+            explicit NoDefault(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            NoDefault(const NoDefault&) = delete;
+            NoDefault& operator=(const NoDefault&) = delete;
+            NoDefault(NoDefault&&) = default;
+            NoDefault& operator=(NoDefault&&) = default;
+        };
+
+        DynQueue<NoDefault> dq;
+
+        for (int_t i = 0; i < 200; ++i)
+        {
+            dq.put(NoDefault(i));
+        }
+
+        assert(dq.size() == 200);
+        assert(dq.front().value == 0);
+        assert(dq.rear().value == 199);
+
+        for (int_t i = 0; i < 190; ++i)
+        {
+            NoDefault v = dq.get();
+            assert(v.value == i);
+        }
+
+        assert(dq.size() == 10);
+        assert(dq.front().value == 190);
+
+        for (int_t i = 200; i < 300; ++i)
+        {
+            dq.put(NoDefault(i));
+        }
+
+        while (!dq.is_empty())
+        {
+            dq.get();
+        }
+
+        cout << "DynQueue: non-default-constructible, move-only type "
+                "Everything ok!\n";
+    }
+
     cout << "Everything ok!\n";
     return 0;
 }

@@ -9,6 +9,8 @@
 #include <array.hpp>
 #include <list.hpp>
 
+#include <new>
+
 namespace Designar
 {
 
@@ -195,53 +197,88 @@ namespace Designar
         r = num_items - 1;
     }
 
+    /** Owns its storage directly, exactly like DynArray (array.hpp) —
+        only `num_items` of the `cap` slots are ever live (the circular
+        range starting at `f`), growth/shrink move-constructs survivors
+        into the new buffer and destroys them in the old one, and
+        put()/get() placement-construct/destroy rather than assigning
+        into or out of pre-existing slots. This is what lets DynQueue hold
+        a `T` with no default constructor at all or a move-only `T`,
+        unlike the previous FixedArray-backed version (FixedArray
+        default- or copy-constructs every one of its slots up front,
+        requiring `T` to be default-constructible just to declare an empty
+        queue). FixedArray itself is untouched — it is still exactly right
+        for FixedQueue above, which really does want every slot eagerly
+        live. */
     template <typename T>
-    class DynQueue : private FixedArray<T>
+    class DynQueue
     {
-        using BaseArray = FixedArray<T>;
-
         static constexpr nat_t MIN_SIZE = 32;
         static constexpr real_t RESIZE_FACTOR = 0.4;
 
+        nat_t cap;
         nat_t num_items;
         nat_t f;
         nat_t r;
+        T* array_ptr;
 
-        void copy_queue(const DynQueue&);
+        static T* allocate(nat_t n)
+        {
+            return n == 0 ? nullptr
+                          : static_cast<T*>(::operator new(sizeof(T) * n));
+        }
+
+        static void deallocate(T* p)
+        {
+            ::operator delete(p);
+        }
+
+        void destroy_all()
+        {
+            nat_t idx = f;
+
+            for (nat_t i = 0; i < num_items; ++i)
+            {
+                array_ptr[idx].~T();
+                idx = (idx + 1) % cap;
+            }
+        }
 
         void swap(DynQueue& q)
         {
-            BaseArray::swap(q);
+            std::swap(cap, q.cap);
             std::swap(num_items, q.num_items);
             std::swap(f, q.f);
             std::swap(r, q.r);
+            std::swap(array_ptr, q.array_ptr);
         }
+
+        void copy_queue(const DynQueue&);
 
         void resize(nat_t);
 
         void resize_up()
         {
-            if (num_items < BaseArray::get_capacity())
+            if (num_items < cap)
             {
                 return;
             }
 
-            assert(BaseArray::get_capacity() * (1 + RESIZE_FACTOR) > num_items);
+            assert(cap * (1 + RESIZE_FACTOR) > num_items);
 
-            resize(BaseArray::get_capacity() * (1 + RESIZE_FACTOR));
+            resize(nat_t(cap * (1 + RESIZE_FACTOR)));
         }
 
         void resize_down()
         {
-            if (num_items > BaseArray::get_capacity() * RESIZE_FACTOR or
-                BaseArray::get_capacity() == MIN_SIZE)
+            if (num_items > cap * RESIZE_FACTOR or cap == MIN_SIZE)
             {
                 return;
             }
 
-            assert(BaseArray::get_capacity() * (1 - RESIZE_FACTOR) > num_items);
+            assert(cap * (1 - RESIZE_FACTOR) > num_items);
 
-            resize(BaseArray::get_capacity() * (1 - RESIZE_FACTOR));
+            resize(nat_t(cap * (1 - RESIZE_FACTOR)));
         }
 
     public:
@@ -251,20 +288,42 @@ namespace Designar
         using ValueType = T;
         using SizeType = nat_t;
 
-        DynQueue() : BaseArray(MIN_SIZE), num_items(0), f(0), r(MIN_SIZE - 1)
+        DynQueue()
+            : cap(MIN_SIZE),
+              num_items(0),
+              f(0),
+              r(MIN_SIZE - 1),
+              array_ptr(allocate(MIN_SIZE))
         {
             // empty
         }
 
+        /** `num_items` starts at 0 (not `q.num_items`) and is incremented
+            one element at a time by copy_queue() as each copy actually
+            succeeds — see DynArray's copy constructor for why (exception
+            safety: if some element's copy constructor throws partway
+            through, `num_items` still accurately reflects how many were
+            constructed, so ~DynQueue() destroys exactly those). */
         DynQueue(const DynQueue& q)
-            : BaseArray(q.get_capacity()), num_items(q.num_items)
+            : cap(q.cap),
+              num_items(0),
+              f(0),
+              r(cap - 1),
+              array_ptr(allocate(q.cap))
         {
             copy_queue(q);
         }
 
-        DynQueue(DynQueue&& q) : BaseArray(), num_items(0), f(0), r(0)
+        DynQueue(DynQueue&& q)
+            : cap(0), num_items(0), f(0), r(0), array_ptr(nullptr)
         {
             swap(q);
+        }
+
+        ~DynQueue()
+        {
+            destroy_all();
+            deallocate(array_ptr);
         }
 
         DynQueue& operator=(const DynQueue& q)
@@ -274,10 +333,8 @@ namespace Designar
                 return *this;
             }
 
-            BaseArray arr(q.get_capacity());
-            BaseArray::swap(arr);
-            num_items = q.num_items;
-            copy_queue(q);
+            DynQueue tmp(q);
+            swap(tmp);
 
             return *this;
         }
@@ -298,14 +355,21 @@ namespace Designar
             return num_items;
         }
 
+        nat_t get_capacity() const
+        {
+            return cap;
+        }
+
         void clear()
         {
+            destroy_all();
             num_items = 0;
 
-            if (BaseArray::get_capacity() != MIN_SIZE)
+            if (cap != MIN_SIZE)
             {
-                BaseArray new_array(MIN_SIZE);
-                BaseArray::swap(new_array);
+                deallocate(array_ptr);
+                cap = MIN_SIZE;
+                array_ptr = allocate(cap);
             }
 
             f = 0;
@@ -319,7 +383,7 @@ namespace Designar
                 throw std::underflow_error("Queue is empty");
             }
 
-            return BaseArray::at(f);
+            return array_ptr[f];
         }
 
         const T& front() const
@@ -329,7 +393,7 @@ namespace Designar
                 throw std::underflow_error("Queue is empty");
             }
 
-            return BaseArray::at(f);
+            return array_ptr[f];
         }
 
         T& rear()
@@ -339,7 +403,7 @@ namespace Designar
                 throw std::underflow_error("Queue is empty");
             }
 
-            return BaseArray::at(r);
+            return array_ptr[r];
         }
 
         const T& rear() const
@@ -349,25 +413,30 @@ namespace Designar
                 throw std::underflow_error("Queue is empty");
             }
 
-            return BaseArray::at(r);
+            return array_ptr[r];
         }
 
+        /** Always placement-constructs into `array_ptr[r]`, never
+            assigns: resize_up() keeps capacity strictly ahead of
+            num_items after every put(), so the slot about to be written
+            is always raw (never a leftover live object from an earlier
+            get()). */
         T& put(const T& item)
         {
-            r = (r + 1) % BaseArray::get_capacity();
-            BaseArray::at(r) = item;
+            r = (r + 1) % cap;
+            new (array_ptr + r) T(item);
             ++num_items;
             resize_up();
-            return BaseArray::at(r);
+            return array_ptr[r];
         }
 
         T& put(T&& item)
         {
-            r = (r + 1) % BaseArray::get_capacity();
-            BaseArray::at(r) = std::move(item);
+            r = (r + 1) % cap;
+            new (array_ptr + r) T(std::move(item));
             ++num_items;
             resize_up();
-            return BaseArray::at(r);
+            return array_ptr[r];
         }
 
         T get()
@@ -377,8 +446,9 @@ namespace Designar
                 throw std::underflow_error("Queue is empty");
             }
 
-            T ret_val = std::move(BaseArray::at(f));
-            f = (f + 1) % BaseArray::get_capacity();
+            T ret_val = std::move(array_ptr[f]);
+            array_ptr[f].~T();
+            f = (f + 1) % cap;
             --num_items;
             resize_down();
             return ret_val;
@@ -390,10 +460,10 @@ namespace Designar
     {
         nat_t ii = q.f;
 
-        for (nat_t i = 0; i < num_items; ++i)
+        for (; num_items < q.num_items; ++num_items)
         {
-            BaseArray::at(i) = q.at(ii);
-            ii = (ii + 1) % BaseArray::get_capacity();
+            new (array_ptr + num_items) T(q.array_ptr[ii]);
+            ii = (ii + 1) % q.cap;
         }
 
         f = 0;
@@ -408,17 +478,20 @@ namespace Designar
             sz = MIN_SIZE;
         }
 
-        BaseArray new_array(sz);
+        T* new_ptr = allocate(sz);
 
         nat_t ii = f;
 
         for (nat_t i = 0; i < num_items; ++i)
         {
-            new_array.at(i) = BaseArray::at(ii);
-            ii = (ii + 1) % BaseArray::get_capacity();
+            new (new_ptr + i) T(std::move(array_ptr[ii]));
+            array_ptr[ii].~T();
+            ii = (ii + 1) % cap;
         }
 
-        BaseArray::swap(new_array);
+        deallocate(array_ptr);
+        array_ptr = new_ptr;
+        cap = sz;
 
         f = 0;
         r = num_items - 1;
