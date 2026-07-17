@@ -146,7 +146,7 @@ namespace Designar
 
       array[num_items] = item;
       ++num_items;
-      sift_up(array, 1, num_items, cmp);
+      sift_up(array, 0, 1, num_items, cmp);
     }
 
     void insert(Key&& item)
@@ -158,7 +158,7 @@ namespace Designar
 
       array[num_items] = std::move(item);
       ++num_items;
-      sift_up(array, 1, num_items, cmp);
+      sift_up(array, 0, 1, num_items, cmp);
     }
 
     const Key& top() const
@@ -181,7 +181,7 @@ namespace Designar
       Key ret_val = std::move(array[0]);
       array[0] = std::move(array[num_items - 1]);
       --num_items;
-      sift_down(array, 1, num_items, cmp);
+      sift_down(array, 0, 1, num_items, cmp);
       return ret_val;
     }
   };
@@ -201,10 +201,6 @@ namespace Designar
   class DynHeap : private DefaultCmpHolder<Cmp>, private DynArray<Key>
   {
     using BaseArray = DynArray<Key>;
-
-    static void sift_up(BaseArray&, nat_t, nat_t, Cmp&);
-
-    static void sift_down(BaseArray&, nat_t, nat_t, Cmp&);
 
     Cmp& cmp;
 
@@ -308,13 +304,13 @@ namespace Designar
     void insert(const Key& item)
     {
       BaseArray::append(item);
-      sift_up(*this, 1, size(), cmp);
+      sift_up(static_cast<BaseArray&>(*this), 0, 1, size(), cmp);
     }
 
     void insert(Key&& item)
     {
       BaseArray::append(std::forward<Key>(item));
-      sift_up(*this, 1, size(), cmp);
+      sift_up(static_cast<BaseArray&>(*this), 0, 1, size(), cmp);
     }
 
     const Key& top() const
@@ -337,53 +333,10 @@ namespace Designar
       Key ret_val = std::move((*this)[0]);
       (*this)[0] = std::move(BaseArray::get_last());
       BaseArray::remove_last();
-      sift_down(*this, 1, size(), cmp);
+      sift_down(static_cast<BaseArray&>(*this), 0, 1, size(), cmp);
       return ret_val;
     }
   };
-
-  template <typename Key, class Cmp>
-  void DynHeap<Key, Cmp>::sift_up(BaseArray& a, nat_t l, nat_t r, Cmp& cmp)
-  {
-    nat_t i = r;
-
-    nat_t u = i / 2;
-
-    while (u >= l && cmp(a[i - 1], a[u - 1]))
-    {
-      std::swap(a[i - 1], a[u - 1]);
-      i = u;
-      u = i / 2;
-    }
-  }
-
-  template <typename Key, class Cmp>
-  void DynHeap<Key, Cmp>::sift_down(BaseArray& a, nat_t l, nat_t r, Cmp& cmp)
-  {
-    nat_t i = l;
-
-    nat_t c = i * 2;
-
-    while (c <= r)
-    {
-      if (c < r)
-      {
-        if (cmp(a[c], a[c - 1]))
-        {
-          ++c;
-        }
-      }
-
-      if (!cmp(a[c - 1], a[i - 1]))
-      {
-        break;
-      }
-
-      std::swap(a[c - 1], a[i - 1]);
-      i = c;
-      c = i * 2;
-    }
-  }
 
   template <typename Key>
   class HeapNode : public BaseBinTreeNode<Key, HeapNode<Key>, BinTreeNodeNullValue::NULLPTR>

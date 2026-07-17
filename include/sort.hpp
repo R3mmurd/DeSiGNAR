@@ -37,6 +37,9 @@ namespace Designar
                           int_t, int_t, Cmp&);
 
   template <class ArrayType, class Cmp>
+  void gapped_insertion_pass(ArrayType&, int_t, int_t, int_t, Cmp&);
+
+  template <class ArrayType, class Cmp>
   void insertion_sort(ArrayType&, int_t, int_t, Cmp&);
 
   template <class ArrayType, class Cmp>
@@ -60,11 +63,11 @@ namespace Designar
   template <class ArrayType, class Cmp>
   void merge_sort(ArrayType&, int_t, int_t, Cmp&);
 
-  template <typename T, class Cmp>
-  void sift_up(T*, nat_t, nat_t, Cmp&);
+  template <class ArrayType, class Cmp>
+  void sift_up(ArrayType&, int_t, nat_t, nat_t, Cmp&);
 
-  template <typename T, class Cmp>
-  void sift_down(T*, nat_t, nat_t, Cmp&);
+  template <class ArrayType, class Cmp>
+  void sift_down(ArrayType&, int_t, nat_t, nat_t, Cmp&);
 
   template <class ArrayType, class Cmp>
   void heap_sort(ArrayType&, int_t, int_t, Cmp&);
@@ -190,22 +193,45 @@ namespace Designar
     return sequential_search<T, ArrayType, Cmp>(a, k, cmp);
   }
 
+  /** The shared core of insertion_sort() and shell_sort(): moves a[i]
+      leftward `gap` positions at a time until it reaches its correct
+      place (per `cmp`) among the elements `gap` apart from it.
+      insertion_sort() is exactly this with gap=1 — a single pass over
+      immediate neighbors; shell_sort() runs this same pass once per
+      gap in a decreasing sequence ending in 1, so its last pass is
+      an ordinary insertion sort over an already-mostly-sorted array
+      (the earlier, larger-gap passes having moved far-out-of-place
+      elements most of the way home cheaply). */
   template <class ArrayType, class Cmp>
-  void insertion_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  void gapped_insertion_pass(ArrayType& a, int_t l, int_t r, int_t gap, Cmp& cmp)
   {
-    for (int_t i = l + 1; i <= r; ++i)
+    for (int_t i = l + gap; i <= r; ++i)
     {
       typename ArrayType::DataType data = std::move(a[i]);
 
       int_t j = i;
 
-      for (; j > l && cmp(data, a[j - 1]); --j)
+      for (; j >= l + gap && cmp(data, a[j - gap]); j -= gap)
       {
-        a[j] = std::move(a[j - 1]);
+        a[j] = std::move(a[j - gap]);
       }
 
       a[j] = std::move(data);
     }
+  }
+
+  template <class ArrayType,
+            class Cmp = std::less<typename ArrayType::DataType>>
+  inline void gapped_insertion_pass(ArrayType& a, int_t l, int_t r, int_t gap,
+                                    Cmp&& cmp = Cmp())
+  {
+    gapped_insertion_pass<ArrayType, Cmp>(a, l, r, gap, cmp);
+  }
+
+  template <class ArrayType, class Cmp>
+  void insertion_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
+  {
+    gapped_insertion_pass(a, l, r, 1, cmp);
   }
 
   template <class ArrayType,
@@ -366,11 +392,13 @@ namespace Designar
   /** O(n log^2 n) to O(n^1.5) depending on the gap sequence — this uses
       the simplest classic one (repeatedly halving the gap), which is
       easy to reason about but not the asymptotically best known choice.
-      Conceptually a generalization of insertion_sort: insertion_sort is
-      exactly shell_sort with a single gap of 1, so pass a gap sequence
-      ending in 1 and this reduces to it (the innermost loop below is
-      literally insertion_sort's, parameterized by `gap` instead of the
-      literal 1). */
+      Literally insertion_sort generalized: each pass is
+      gapped_insertion_pass() (insertion_sort()'s own core, above) run
+      with a larger-than-1 gap, and the final pass (gap=1) is exactly
+      insertion_sort() itself — over an array the earlier, larger-gap
+      passes have already moved close to sorted, which is what makes
+      that last full insertion-sort pass fast in practice despite its
+      own O(n^2) worst case. */
   template <class ArrayType, class Cmp>
   void shell_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
   {
@@ -378,19 +406,7 @@ namespace Designar
 
     for (int_t gap = n / 2; gap > 0; gap /= 2)
     {
-      for (int_t i = l + gap; i <= r; ++i)
-      {
-        typename ArrayType::DataType data = std::move(a[i]);
-
-        int_t j = i;
-
-        for (; j >= l + gap && cmp(data, a[j - gap]); j -= gap)
-        {
-          a[j] = std::move(a[j - gap]);
-        }
-
-        a[j] = std::move(data);
-      }
+      gapped_insertion_pass(a, l, r, gap, cmp);
     }
   }
 
@@ -667,43 +683,56 @@ namespace Designar
     merge_sort<ArrayType, Cmp>(a, cmp);
   }
 
-  /** `l`/`r` are 1-based (matching the classic heap formulas
+  /** Generic over any type indexable via operator[] — a raw `T*` (which
+      is how FixedHeap's fixed-size C array reaches this) and a proper
+      container reference such as `DynArray<Key>&` (how DynHeap and
+      heap_sort() below reach it) both qualify uniformly, so this one
+      implementation replaces what used to be two near-identical
+      copies: this function itself (raw-pointer-only) and DynHeap's own
+      private static sift_up(BaseArray&, ...).
+
+      `l`/`r` are 1-based (matching the classic heap formulas
       parent(i)=i/2, child(i)=i*2, which only stay this clean with
-      1-based indices), but `a` itself is an ordinary 0-based array —
-      every access below is `a[x - 1]`, not `a[x]`. An earlier version
-      of this function took 1-based indices literally by having callers
-      pass `array - 1` as the base pointer instead; forming a pointer to
-      the element *before* the start of an array is undefined behavior
-      in C++ (only "one past the end" is well-defined) regardless of
-      whether it is ever dereferenced, and UBSan's bounds instrumentation
-      correctly flagged it. Indexing with the `- 1` here instead keeps
-      the exact same 1-based formulas without ever forming an
-      out-of-bounds pointer. */
-  template <typename T, class Cmp>
-  void sift_up(T* a, nat_t l, nat_t r, Cmp& cmp)
+      1-based indices); `offset` is the *real* index that conceptual
+      position 1 corresponds to (0 for a heap occupying an entire
+      array, as FixedHeap/DynHeap do; the sub-range's own start index
+      for heap_sort() below, which runs this over a `[l, r]` slice of a
+      larger array) — every access is `a[offset + x - 1]`, not `a[x]`.
+      An earlier version of this function took 1-based indices
+      literally by having callers pass `array - 1` as the base pointer
+      instead of an offset; forming a pointer to the element *before*
+      the start of an array is undefined behavior in C++ (only "one
+      past the end" is well-defined) regardless of whether it is ever
+      dereferenced, and UBSan's bounds instrumentation correctly
+      flagged it. Folding the offset into the index expression instead
+      keeps the exact same 1-based formulas without ever forming an
+      out-of-bounds pointer — or needing a pointer at all, which is what
+      lets this same function serve both T* and a container reference. */
+  template <class ArrayType, class Cmp>
+  void sift_up(ArrayType& a, int_t offset, nat_t l, nat_t r, Cmp& cmp)
   {
     nat_t i = r;
 
     nat_t u = i / 2;
 
-    while (u >= l && cmp(a[i - 1], a[u - 1]))
+    while (u >= l && cmp(a[offset + int_t(i) - 1], a[offset + int_t(u) - 1]))
     {
-      std::swap(a[i - 1], a[u - 1]);
+      std::swap(a[offset + int_t(i) - 1], a[offset + int_t(u) - 1]);
       i = u;
       u = i / 2;
     }
   }
 
-  template <typename T, class Cmp>
-  inline void sift_up(T* a, nat_t l, nat_t r, Cmp&& cmp = Cmp())
+  template <class ArrayType, class Cmp>
+  inline void sift_up(ArrayType& a, int_t offset, nat_t l, nat_t r, Cmp&& cmp = Cmp())
   {
-    return sift_up<T, Cmp>(a, l, r, cmp);
+    return sift_up<ArrayType, Cmp>(a, offset, l, r, cmp);
   }
 
-  /** @see sift_up() above for why every access is `a[x - 1]` rather
-      than `a[x]`. */
-  template <typename T, class Cmp>
-  void sift_down(T* a, nat_t l, nat_t r, Cmp& cmp)
+  /** @see sift_up() above for why every access is `a[offset + x - 1]`
+      rather than `a[x]`, and for why `ArrayType` is generic. */
+  template <class ArrayType, class Cmp>
+  void sift_down(ArrayType& a, int_t offset, nat_t l, nat_t r, Cmp& cmp)
   {
     nat_t i = l;
 
@@ -713,27 +742,27 @@ namespace Designar
     {
       if (c < r)
       {
-        if (cmp(a[c], a[c - 1]))
+        if (cmp(a[offset + int_t(c)], a[offset + int_t(c) - 1]))
         {
           ++c;
         }
       }
 
-      if (!cmp(a[c - 1], a[i - 1]))
+      if (!cmp(a[offset + int_t(c) - 1], a[offset + int_t(i) - 1]))
       {
         break;
       }
 
-      std::swap(a[c - 1], a[i - 1]);
+      std::swap(a[offset + int_t(c) - 1], a[offset + int_t(i) - 1]);
       i = c;
       c = i * 2;
     }
   }
 
-  template <typename T, class Cmp>
-  inline void sift_down(T* a, nat_t l, nat_t r, Cmp&& cmp = Cmp())
+  template <class ArrayType, class Cmp>
+  inline void sift_down(ArrayType& a, int_t offset, nat_t l, nat_t r, Cmp&& cmp = Cmp())
   {
-    return sift_down<T, Cmp>(a, l, r, cmp);
+    return sift_down<ArrayType, Cmp>(a, offset, l, r, cmp);
   }
 
   /** In-place, O(n log n) worst case guaranteed (like merge_sort, unlike
@@ -752,7 +781,14 @@ namespace Designar
       "smallest per cmp" into "largest per cmp", so the standard build
       max-heap / repeatedly swap the root to the shrinking array's tail
       heapsort algorithm falls out without a separate max-heap
-      implementation to duplicate and maintain. */
+      implementation to duplicate and maintain.
+
+      Operates on `a` directly with `l` passed through as sift_up()/
+      sift_down()'s `offset` — no address-of/pointer-arithmetic step
+      needed (an earlier version of this function took `&a[l]` as a raw
+      base pointer, back when sift_up()/sift_down() only accepted one;
+      now that they take any indexable ArrayType plus an explicit
+      offset, `a`/`l` can be passed straight through). */
   template <class ArrayType, class Cmp>
   void heap_sort(ArrayType& a, int_t l, int_t r, Cmp& cmp)
   {
@@ -768,17 +804,15 @@ namespace Designar
     auto flipped = [&cmp](const T& x, const T& y)
     { return cmp(y, x); };
 
-    T* base = &a[l];
-
     for (nat_t i = 2; i <= nat_t(n); ++i)
     {
-      sift_up(base, nat_t(1), i, flipped);
+      sift_up(a, l, nat_t(1), i, flipped);
     }
 
     for (nat_t i = nat_t(n); i > 1; --i)
     {
-      std::swap(base[0], base[i - 1]);
-      sift_down(base, nat_t(1), i - 1, flipped);
+      std::swap(a[l], a[l + int_t(i) - 1]);
+      sift_down(a, l, nat_t(1), i - 1, flipped);
     }
   }
 
