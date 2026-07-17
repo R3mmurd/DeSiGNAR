@@ -117,6 +117,56 @@ int main()
                                                                           3, 4};
     assert(hs_double.equal({1, 2, 3, 4}));
 
+    // Every EMPTY/DELETED slot used to unconditionally hold a
+    // default-constructed Key, requiring Key to be default-constructible
+    // just to build an empty table at all — fixed by storing
+    // std::optional<Key> instead. This type has no default constructor
+    // and no copy constructor/assignment at all (move-only), exercising
+    // that fix end to end: building the table, growing it past its
+    // initial capacity (forcing rehash()), insert, search, and remove.
+    {
+        struct NoDefaultKey
+        {
+            int_t value;
+
+            NoDefaultKey() = delete;
+
+            explicit NoDefaultKey(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            NoDefaultKey(const NoDefaultKey&) = delete;
+            NoDefaultKey& operator=(const NoDefaultKey&) = delete;
+            NoDefaultKey(NoDefaultKey&&) = default;
+            NoDefaultKey& operator=(NoDefaultKey&&) = default;
+
+            bool operator==(const NoDefaultKey& o) const
+            {
+                return value == o.value;
+            }
+        };
+
+        LinearHashTable<NoDefaultKey> t(
+            8); // default hash: super_fast_hash<Key>,
+                // hashes the raw bytes of `value`
+
+        for (int_t i = 0; i < 100; ++i)
+        {
+            t.insert(NoDefaultKey(i));
+        }
+
+        assert(t.search(NoDefaultKey(5)) != nullptr);
+        assert(t.search(NoDefaultKey(500)) == nullptr);
+
+        t.remove(NoDefaultKey(5));
+        assert(t.search(NoDefaultKey(5)) == nullptr);
+        assert(t.search(NoDefaultKey(6)) != nullptr);
+
+        cout << "LinearHashTable: non-default-constructible, move-only Key "
+                "Everything ok!\n";
+    }
+
     cout << "All open-addressing tables ok!\n";
     return 0;
 }

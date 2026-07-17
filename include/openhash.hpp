@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <array.hpp>
 #include <containeralgorithms.hpp>
 #include <setalgorithms.hpp>
@@ -30,11 +32,20 @@ namespace Designar
         DELETED
     };
 
+    /** `key` is a `std::optional<Key>` rather than a plain `Key key{};` —
+        an EMPTY slot never actually needs a live `Key` at all, so
+        requiring `Key` to be default-constructible purely to have *some*
+        value sitting in every never-yet-used slot is unnecessary (the
+        same class of needless requirement DynArray used to impose on its
+        own element type). `std::optional<Key>` default-constructs to
+        "no value" regardless of whether `Key` itself is
+        default-constructible, which is exactly what an EMPTY/DELETED
+        slot means here. */
     template <typename Key>
     struct OAEntry
     {
         OAState state = OAState::EMPTY;
-        Key key{};
+        std::optional<Key> key;
     };
 
     /** probe(h1, h2, i, cap) returns the slot to examine on the i-th probe
@@ -153,6 +164,26 @@ namespace Designar
             return p;
         }
 
+        /** `cap` independently-default-constructed empty entries, built via
+            repeated append() rather than `DynArray<Entry>(cap, Entry())`
+            (which copy-*constructs* every slot from one shared `Entry()`)
+            — `Entry` is only ever default-constructible when `Key` is
+            move-only (its `std::optional<Key>` member has no copy
+            constructor then), so copying a single instance `cap` times
+            would needlessly require `Key` to be copyable just to build an
+            empty table. */
+        static DynArray<Entry> make_empty_table(nat_t cap)
+        {
+            DynArray<Entry> t(cap);
+
+            for (nat_t i = 0; i < cap; ++i)
+            {
+                t.append(Entry());
+            }
+
+            return t;
+        }
+
         /** A second, independent hash used only by DoubleHashing (see its
             comment); forced odd so it is always coprime with `cap` (a power
             of two), which is what guarantees every slot is eventually
@@ -177,7 +208,7 @@ namespace Designar
         {
             new_cap = next_pow2(new_cap);
 
-            DynArray<Entry> new_table(new_cap, Entry());
+            DynArray<Entry> new_table(make_empty_table(new_cap));
 
             DynArray<Entry> old_table;
             std::swap(table, old_table);
@@ -191,7 +222,7 @@ namespace Designar
             {
                 if (old_table[i].state == OAState::OCCUPIED)
                 {
-                    raw_insert(std::move(old_table[i].key));
+                    raw_insert(std::move(*old_table[i].key));
                 }
             }
 
@@ -212,8 +243,11 @@ namespace Designar
         /** Inserts `k`, assuming it is not already present and the table has
             room — used internally by rehash() (where both are already
             guaranteed) and by the public insert() after it has done the
-            duplicate check and possible grow_if_needed() itself. */
-        Key* raw_insert(const Key& k)
+            duplicate check and possible grow_if_needed() itself.
+            find_target_slot() does everything except actually writing `k`
+            in, so the const&/&& overloads below only differ in that one
+            assignment (copy vs move). */
+        nat_t find_target_slot(const Key& k)
         {
             nat_t cap = table.size();
             nat_t h1 = hash_fct(k) & (cap - 1);
@@ -236,9 +270,8 @@ namespace Designar
                     }
 
                     table[target].state = OAState::OCCUPIED;
-                    table[target].key = k;
                     ++num_items;
-                    return &table[target].key;
+                    return target;
                 }
 
                 if (e.state == OAState::DELETED)
@@ -255,6 +288,20 @@ namespace Designar
             throw std::logic_error(
                 "OpenAddressingHashTable: no empty slot found "
                 "(load factor invariant violated)");
+        }
+
+        Key* raw_insert(const Key& k)
+        {
+            nat_t target = find_target_slot(k);
+            table[target].key = k;
+            return &*table[target].key;
+        }
+
+        Key* raw_insert(Key&& k)
+        {
+            nat_t target = find_target_slot(k);
+            table[target].key = std::move(k);
+            return &*table[target].key;
         }
 
     public:
@@ -279,7 +326,7 @@ namespace Designar
 
         OpenAddressingHashTable(nat_t size, Cmp& _cmp, HashFctType fct,
                                 real_t _upper_alpha)
-            : table(next_pow2(size), Entry()),
+            : table(make_empty_table(next_pow2(size))),
               num_items(0),
               num_tombstones(0),
               cmp(_cmp),
@@ -301,7 +348,7 @@ namespace Designar
             copy-assignment (not move) is used for `default_cmp`. */
         OpenAddressingHashTable(nat_t size, Cmp&& _cmp = Cmp(),
                                 HashFctPtr fct = &super_fast_hash)
-            : table(next_pow2(size), Entry()),
+            : table(make_empty_table(next_pow2(size))),
               num_items(0),
               num_tombstones(0),
               cmp(this->default_cmp),
@@ -428,7 +475,7 @@ namespace Designar
                     return cap;
                 }
 
-                if (e.state == OAState::OCCUPIED && cmp(e.key, k))
+                if (e.state == OAState::OCCUPIED && cmp(*e.key, k))
                 {
                     return idx;
                 }
@@ -448,21 +495,37 @@ namespace Designar
             return raw_insert(k);
         }
 
+        Key* insert(Key&& k)
+        {
+            if (find_slot(k) != table.size())
+            {
+                return nullptr;
+            }
+
+            grow_if_needed();
+            return raw_insert(std::forward<Key>(k));
+        }
+
         Key* append(const Key& k)
         {
             return insert(k);
         }
 
+        Key* append(Key&& k)
+        {
+            return insert(std::forward<Key>(k));
+        }
+
         Key* search(const Key& k)
         {
             nat_t idx = find_slot(k);
-            return idx == table.size() ? nullptr : &table[idx].key;
+            return idx == table.size() ? nullptr : &*table[idx].key;
         }
 
         const Key* search(const Key& k) const
         {
             nat_t idx = find_slot(k);
-            return idx == table.size() ? nullptr : &table[idx].key;
+            return idx == table.size() ? nullptr : &*table[idx].key;
         }
 
         Key* search_or_insert(const Key& k)
@@ -476,6 +539,19 @@ namespace Designar
 
             grow_if_needed();
             return raw_insert(k);
+        }
+
+        Key* search_or_insert(Key&& k)
+        {
+            Key* found = search(k);
+
+            if (found != nullptr)
+            {
+                return found;
+            }
+
+            grow_if_needed();
+            return raw_insert(std::forward<Key>(k));
         }
 
         Key& find(const Key& k)
@@ -512,7 +588,7 @@ namespace Designar
             }
 
             table[idx].state = OAState::DELETED;
-            table[idx].key = Key();
+            table[idx].key.reset();
             --num_items;
             ++num_tombstones;
             return true;
@@ -579,7 +655,7 @@ namespace Designar
                     throw std::overflow_error("There is not current element");
                 }
 
-                return set_ptr->table[idx].key;
+                return *set_ptr->table[idx].key;
             }
 
             const Key& get_current() const
@@ -589,7 +665,7 @@ namespace Designar
                     throw std::overflow_error("There is not current element");
                 }
 
-                return set_ptr->table[idx].key;
+                return *set_ptr->table[idx].key;
             }
 
             void next()
