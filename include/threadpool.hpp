@@ -15,11 +15,11 @@
 #pragma once
 
 #include <queue.hpp>
+#include <array.hpp>
 
 #include <thread>
 #include <functional>
 #include <future>
-#include <vector>
 
 namespace Designar
 {
@@ -35,7 +35,7 @@ namespace Designar
     class ThreadPool
     {
         ConcurrentQueue<std::function<void()>> tasks;
-        std::vector<std::thread> workers;
+        DynArray<std::thread> workers;
 
         void worker_loop()
         {
@@ -70,7 +70,7 @@ namespace Designar
 
             for (nat_t i = 0; i < num_threads; ++i)
             {
-                workers.emplace_back([this] { worker_loop(); });
+                workers.append(std::thread([this] { worker_loop(); }));
             }
         }
 

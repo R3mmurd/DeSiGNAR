@@ -10,6 +10,8 @@
 #include <containeralgorithms.hpp>
 #include <iterator.hpp>
 
+#include <new>
+
 namespace Designar
 {
     template <class Derived, class ArrayType, typename T, bool RET_CPY>
@@ -397,12 +399,20 @@ namespace Designar
         }
     }
 
+    /** Unlike FixedArray (which eagerly default- or copy-constructs every
+        one of its `cap` slots, matching how the handful of files that use
+        it directly always write to every index before reading — see
+        `random_graph()` in buildgraph.hpp), DynArray owns raw, uninitialized
+        storage directly: only indices `[0, num_items)` ever hold a live `T`
+        object, exactly like `std::vector`. This is what lets DynArray hold
+        `T` with no default constructor at all (e.g. this library's own
+        `DFA<char>`) and `T` that is move-only (e.g. `std::future<void>`) —
+        growth move-constructs surviving elements into the new storage
+        rather than copy-assigning into already-constructed slots the way
+        FixedArray-backed growth would have to. */
     template <typename T>
-    class DynArray : private FixedArray<T>,
-                     public ContainerAlgorithms<DynArray<T>, T>
+    class DynArray : public ContainerAlgorithms<DynArray<T>, T>
     {
-        using BaseArray = FixedArray<T>;
-
     public:
         using ItemType = T;
         using KeyType = T;
@@ -414,9 +424,49 @@ namespace Designar
         static constexpr nat_t MIN_SIZE = 32;
         static constexpr real_t RESIZE_FACTOR = 0.4;
 
+        nat_t cap;
         nat_t num_items;
+        T* array_ptr;
 
-        void copy_array(const DynArray&);
+        static T* allocate(nat_t n)
+        {
+            return n == 0 ? nullptr
+                          : static_cast<T*>(::operator new(sizeof(T) * n));
+        }
+
+        static void deallocate(T* p)
+        {
+            ::operator delete(p);
+        }
+
+        void destroy_all()
+        {
+            for (nat_t i = 0; i < num_items; ++i)
+            {
+                array_ptr[i].~T();
+            }
+        }
+
+        /** Reallocates to `new_cap`, move-constructing every currently-live
+            element into the new storage and destroying it in the old one —
+            never copy- or move-*assigns* into a pre-existing slot the way
+            growing a FixedArray-backed array would, so `T` need only be
+            move-constructible (or copy-constructible, if not movable), not
+            copy-*assignable* nor default-constructible. */
+        void reallocate(nat_t new_cap)
+        {
+            T* new_ptr = allocate(new_cap);
+
+            for (nat_t i = 0; i < num_items; ++i)
+            {
+                new (new_ptr + i) T(std::move(array_ptr[i]));
+                array_ptr[i].~T();
+            }
+
+            deallocate(array_ptr);
+            array_ptr = new_ptr;
+            cap = new_cap;
+        }
 
         /** Grows capacity geometrically (by RESIZE_FACTOR) once the array is
             full. The naive `cap * (1 + RESIZE_FACTOR)` truncates back to `cap`
@@ -428,8 +478,6 @@ namespace Designar
             enough for the factor to matter. */
         void resize_up()
         {
-            nat_t cap = BaseArray::get_capacity();
-
             if (num_items < cap)
             {
                 return;
@@ -438,31 +486,34 @@ namespace Designar
             nat_t new_cap =
                 std::max<nat_t>(cap + 1, nat_t(cap * (1 + RESIZE_FACTOR)));
 
-            BaseArray::resize(new_cap);
+            reallocate(new_cap);
         }
 
         void resize_down()
         {
-            if (num_items > BaseArray::get_capacity() * RESIZE_FACTOR or
-                BaseArray::get_capacity() == MIN_SIZE)
+            if (num_items > cap * RESIZE_FACTOR or cap == MIN_SIZE)
             {
                 return;
             }
 
-            assert(BaseArray::get_capacity() * (1 - RESIZE_FACTOR) > num_items);
+            assert(cap * (1 - RESIZE_FACTOR) > num_items);
 
-            nat_t new_cap = std::max<real_t>(
-                BaseArray::get_capacity() * (1 - RESIZE_FACTOR), MIN_SIZE);
+            nat_t new_cap =
+                std::max<real_t>(cap * (1 - RESIZE_FACTOR), MIN_SIZE);
 
-            BaseArray::resize(new_cap);
+            reallocate(new_cap);
         }
 
-        void open_breach(nat_t);
+        void copy_array(const DynArray&);
 
-        void close_breach(nat_t);
+        nat_t item_to_pos(T& item)
+        {
+            return static_cast<nat_t>(&item - array_ptr);
+        }
 
     public:
-        DynArray(nat_t cap) : BaseArray(cap), num_items(0)
+        explicit DynArray(nat_t c)
+            : cap(c), num_items(0), array_ptr(allocate(c))
         {
             // empty
         }
@@ -477,8 +528,13 @@ namespace Designar
             append()/insert() would throw std::out_of_range instead of
             growing. */
         DynArray(nat_t n, const T& init_val)
-            : BaseArray(n, init_val), num_items(n)
+            : cap(n), num_items(0), array_ptr(allocate(n))
         {
+            for (; num_items < n; ++num_items)
+            {
+                new (array_ptr + num_items) T(init_val);
+            }
+
             resize_up();
         }
 
@@ -487,28 +543,55 @@ namespace Designar
             // empty
         }
 
+        /** `num_items` starts at 0 (not `a.num_items`) and is incremented
+            one element at a time by copy_array() as each copy actually
+            succeeds — if some element's copy constructor throws partway
+            through, `num_items` still accurately reflects how many were
+            constructed, so ~DynArray() (invoked while unwinding) destroys
+            exactly those and nothing more. */
         DynArray(const DynArray& a)
-            : BaseArray(a.get_capacity()), num_items(a.num_items)
+            : cap(a.cap), num_items(0), array_ptr(allocate(a.cap))
         {
             copy_array(a);
         }
 
-        DynArray(DynArray&& a) : BaseArray(), num_items(0)
+        DynArray(DynArray&& a) : cap(0), num_items(0), array_ptr(nullptr)
         {
             swap(a);
         }
 
         DynArray(const std::initializer_list<T>&);
 
+        ~DynArray()
+        {
+            destroy_all();
+            deallocate(array_ptr);
+        }
+
         void swap(DynArray& a)
         {
-            BaseArray::swap(a);
+            std::swap(cap, a.cap);
             std::swap(num_items, a.num_items);
+            std::swap(array_ptr, a.array_ptr);
         }
 
         nat_t get_capacity() const
         {
-            return BaseArray::get_capacity();
+            return cap;
+        }
+
+        /** Ensures at least `n` slots of capacity without constructing or
+            otherwise touching any element — the same guarantee
+            `std::vector::reserve()` makes, useful when the final size is
+            known ahead of a loop of append()/insert() calls so none of them
+            have to reallocate. A no-op if capacity is already >= `n`; never
+            shrinks (see clear()/resize_down() for that). */
+        void reserve(nat_t n)
+        {
+            if (n > cap)
+            {
+                reallocate(n);
+            }
         }
 
         nat_t size() const
@@ -523,12 +606,14 @@ namespace Designar
 
         void clear()
         {
+            destroy_all();
             num_items = 0;
 
-            if (BaseArray::get_capacity() != MIN_SIZE)
+            if (cap != MIN_SIZE)
             {
-                DynArray new_array(MIN_SIZE);
-                BaseArray::swap(new_array);
+                deallocate(array_ptr);
+                cap = MIN_SIZE;
+                array_ptr = allocate(cap);
             }
         }
 
@@ -539,7 +624,7 @@ namespace Designar
                 throw std::underflow_error("Array is empty");
             }
 
-            return BaseArray::at(0);
+            return array_ptr[0];
         }
 
         const T& get_first() const
@@ -549,7 +634,7 @@ namespace Designar
                 throw std::underflow_error("Array is empty");
             }
 
-            return BaseArray::at(0);
+            return array_ptr[0];
         }
 
         T& get_last()
@@ -559,7 +644,7 @@ namespace Designar
                 throw std::overflow_error("Array is empty");
             }
 
-            return BaseArray::at(num_items - 1);
+            return array_ptr[num_items - 1];
         }
 
         const T& get_last() const
@@ -569,9 +654,17 @@ namespace Designar
                 throw std::overflow_error("Array is empty");
             }
 
-            return BaseArray::at(num_items - 1);
+            return array_ptr[num_items - 1];
         }
 
+        /** Unlike the old FixedArray-backed insert() (which could shift
+            elements purely via move-*assignment*, since every slot up to
+            capacity was already a live object), the slot that becomes
+            available at `num_items` here is raw memory — the shift below
+            move-*constructs* into it first, then move-*assigns* the rest,
+            and only ever move/copy-*assigns* into `pos` itself (already
+            live) or *constructs* there directly when appending
+            (`pos == num_items`, nothing to shift). */
         T& insert(nat_t pos, const T& item)
         {
             if (pos > num_items)
@@ -579,23 +672,28 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            // resize_up() must run *before* open_breach(): open_breach() itself
-            // writes at index `num_items` (shifting the last element into the
-            // slot right after it) whenever pos < num_items, which requires
-            // that slot to already exist. Growing only after the write (the
-            // original order) left a window where the array's capacity could
-            // be exactly `num_items`, e.g. right after DynArray(n, init_val) or
-            // DynArray(0) followed immediately by an insert/append, and
-            // open_breach()/the write below would index one past the end.
             resize_up();
 
-            open_breach(pos);
+            if (pos == num_items)
+            {
+                new (array_ptr + pos) T(item);
+            }
+            else
+            {
+                new (array_ptr + num_items)
+                    T(std::move(array_ptr[num_items - 1]));
 
-            BaseArray::at(pos) = item;
+                for (nat_t i = num_items - 1; i > pos; --i)
+                {
+                    array_ptr[i] = std::move(array_ptr[i - 1]);
+                }
+
+                array_ptr[pos] = item;
+            }
 
             ++num_items;
 
-            return BaseArray::at(pos);
+            return array_ptr[pos];
         }
 
         T& insert(nat_t pos, T&& item)
@@ -605,16 +703,28 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            resize_up(); // see the const-ref overload above for why this must
-                         // come before open_breach()
+            resize_up();
 
-            open_breach(pos);
+            if (pos == num_items)
+            {
+                new (array_ptr + pos) T(std::move(item));
+            }
+            else
+            {
+                new (array_ptr + num_items)
+                    T(std::move(array_ptr[num_items - 1]));
 
-            BaseArray::at(pos) = std::move(item);
+                for (nat_t i = num_items - 1; i > pos; --i)
+                {
+                    array_ptr[i] = std::move(array_ptr[i - 1]);
+                }
+
+                array_ptr[pos] = std::move(item);
+            }
 
             ++num_items;
 
-            return BaseArray::at(pos);
+            return array_ptr[pos];
         }
 
         T& insert(const T& item)
@@ -629,23 +739,23 @@ namespace Designar
 
         T& append(const T& item)
         {
-            // resize_up() must run *before* the write below, not after: if
-            // capacity is currently exactly num_items (e.g. right after
-            // DynArray(n, init_val) or DynArray(0)), at(num_items) is already
-            // one past the end, so growing after attempting the write is too
-            // late.
             resize_up();
-            BaseArray::at(num_items++) = item;
-            return BaseArray::at(num_items - 1);
+            new (array_ptr + num_items) T(item);
+            return array_ptr[num_items++];
         }
 
         T& append(T&& item)
         {
-            resize_up(); // see the const-ref overload above
-            BaseArray::at(num_items++) = std::move(item);
-            return BaseArray::at(num_items - 1);
+            resize_up();
+            new (array_ptr + num_items) T(std::move(item));
+            return array_ptr[num_items++];
         }
 
+        /** Swap-with-last removal: `pos`'s value is moved out, the last
+            element (if it is not itself `pos`) is move-*assigned* over it
+            (both slots are live at that point), and finally the now-vacated
+            last slot is explicitly destroyed — the counterpart to
+            append()'s explicit construction. */
         T remove_pos(nat_t pos)
         {
             if (pos >= num_items)
@@ -653,14 +763,22 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            T ret_val = std::move(BaseArray::at(pos));
-            BaseArray::at(pos) = std::move(BaseArray::at(--num_items));
+            T ret_val = std::move(array_ptr[pos]);
+
+            if (pos != num_items - 1)
+            {
+                array_ptr[pos] = std::move(array_ptr[num_items - 1]);
+            }
+
+            array_ptr[num_items - 1].~T();
+            --num_items;
+
             return ret_val;
         }
 
         T remove(T& item)
         {
-            nat_t i = BaseArray::item_to_pos(item);
+            nat_t i = item_to_pos(item);
 
             if (i >= num_items)
             {
@@ -677,21 +795,24 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            T ret_val = std::move(BaseArray::at(pos));
+            T ret_val = std::move(array_ptr[pos]);
 
+            for (nat_t i = pos; i < num_items - 1; ++i)
+            {
+                array_ptr[i] = std::move(array_ptr[i + 1]);
+            }
+
+            array_ptr[num_items - 1].~T();
             --num_items;
-
-            close_breach(pos);
 
             resize_down();
 
             return ret_val;
-            ;
         }
 
         T remove_closing_breach(T& item)
         {
-            nat_t i = BaseArray::item_to_pos(item);
+            nat_t i = item_to_pos(item);
 
             if (i >= num_items)
             {
@@ -713,11 +834,23 @@ namespace Designar
 
         T remove_last()
         {
-            T ret_val = std::move(BaseArray::at(--num_items));
+            if (num_items == 0)
+            {
+                throw std::out_of_range("Index is out of range");
+            }
+
+            --num_items;
+            T ret_val = std::move(array_ptr[num_items]);
+            array_ptr[num_items].~T();
             resize_down();
             return ret_val;
         }
 
+        /** Copy-and-swap: builds a full temporary copy first (which can
+            throw, e.g. if some element's copy constructor throws, without
+            having touched `*this` at all) and only then swaps it in, so a
+            failed assignment leaves the original object completely
+            unmodified. */
         DynArray& operator=(const DynArray& a)
         {
             if (this == &a)
@@ -725,8 +858,8 @@ namespace Designar
                 return *this;
             }
 
-            (BaseArray&)* this = a;
-            num_items = a.num_items;
+            DynArray tmp(a);
+            swap(tmp);
             return *this;
         }
 
@@ -743,7 +876,7 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            return BaseArray::at(i);
+            return array_ptr[i];
         }
 
         const T& at(nat_t i) const
@@ -753,7 +886,7 @@ namespace Designar
                 throw std::out_of_range("Index is out of range");
             }
 
-            return BaseArray::at(i);
+            return array_ptr[i];
         }
 
         T& operator[](nat_t i)
@@ -817,27 +950,9 @@ namespace Designar
     template <typename T>
     void DynArray<T>::copy_array(const DynArray& a)
     {
-        for (nat_t i = 0; i < num_items; ++i)
+        for (; num_items < a.num_items; ++num_items)
         {
-            BaseArray::at(i) = a.at(i);
-        }
-    }
-
-    template <typename T>
-    void DynArray<T>::open_breach(nat_t p)
-    {
-        for (nat_t i = num_items; i > p; --i)
-        {
-            BaseArray::at(i) = std::move(BaseArray::at(i - 1));
-        }
-    }
-
-    template <typename T>
-    void DynArray<T>::close_breach(nat_t p)
-    {
-        for (nat_t i = p; i < num_items; ++i)
-        {
-            BaseArray::at(i) = std::move(BaseArray::at(i + 1));
+            new (array_ptr + num_items) T(a.array_ptr[num_items]);
         }
     }
 

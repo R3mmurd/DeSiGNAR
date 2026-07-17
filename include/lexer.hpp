@@ -22,7 +22,6 @@
 
 #include <stdexcept>
 #include <string>
-#include <vector>
 
 namespace Designar
 {
@@ -48,13 +47,7 @@ namespace Designar
             DFA<char> dfa;
         };
 
-        // DFA<char> has no default constructor (a DFA always needs at
-        // least one state), so DynArray (which resizes via `new T[]`,
-        // requiring default-constructibility) cannot hold it directly —
-        // std::vector, which move-constructs on growth instead, is used
-        // here for the same reason graphagent.hpp uses it for
-        // std::future.
-        std::vector<Rule> rules;
+        DynArray<Rule> rules;
 
     public:
         Lexer() = default;
@@ -70,7 +63,7 @@ namespace Designar
         void add_token(const std::string& name, const std::string& pattern)
         {
             NFA<char> nfa = regex_to_nfa(pattern);
-            rules.push_back(Rule{name, nfa.to_dfa()});
+            rules.append(Rule{name, nfa.to_dfa()});
         }
 
         /** Scans `input` left to right, greedily consuming the longest

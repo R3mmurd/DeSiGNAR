@@ -18,7 +18,6 @@
 #include <threadpool.hpp>
 
 #include <future>
-#include <vector>
 
 namespace Designar
 {
@@ -67,17 +66,12 @@ namespace Designar
             DynArray<Node<GT>*> nodes;
             graph.for_each_node([&](Node<GT>* node) { nodes.append(node); });
 
-            // std::future is move-only, so it cannot live in a DynArray (whose
-            // resize() copy-assigns elements into the new storage); a
-            // std::vector, which move-constructs on growth, has no such
-            // restriction.
-            std::vector<std::future<void>> pending;
-            pending.reserve(nodes.size());
+            DynArray<std::future<void>> pending;
 
             for (nat_t i = 0; i < nodes.size(); ++i)
             {
                 Node<GT>* node = nodes[i];
-                pending.push_back(pool.submit([node, &op] { op(node); }));
+                pending.append(pool.submit([node, &op] { op(node); }));
             }
 
             for (std::future<void>& task : pending)
@@ -94,13 +88,12 @@ namespace Designar
             DynArray<Arc<GT>*> arcs;
             graph.for_each_arc([&](Arc<GT>* arc) { arcs.append(arc); });
 
-            std::vector<std::future<void>> pending;
-            pending.reserve(arcs.size());
+            DynArray<std::future<void>> pending;
 
             for (nat_t i = 0; i < arcs.size(); ++i)
             {
                 Arc<GT>* arc = arcs[i];
-                pending.push_back(pool.submit([arc, &op] { op(arc); }));
+                pending.append(pool.submit([arc, &op] { op(arc); }));
             }
 
             for (std::future<void>& task : pending)

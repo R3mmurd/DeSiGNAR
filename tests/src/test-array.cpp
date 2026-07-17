@@ -356,6 +356,88 @@ int main()
         assert(filled.get_last() == 7);
     }
 
+    // DynArray must hold a type with no default constructor at all and no
+    // copy constructor/assignment either (move-only) — e.g. this library's
+    // own DFA<char>, or std::future<T> — since growth move-constructs
+    // surviving elements into new storage rather than copy-assigning into
+    // already-constructed slots. `MoveOnly` below intentionally deletes
+    // both the default constructor and the copy constructor/assignment to
+    // exercise exactly that: only construction-from-value and move are
+    // ever used, on an empty-started array, an array grown well past its
+    // initial capacity (forcing several reallocations), insert() at every
+    // position, and both removal styles.
+    {
+        struct MoveOnly
+        {
+            int_t value;
+
+            MoveOnly() = delete;
+
+            explicit MoveOnly(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            MoveOnly(const MoveOnly&) = delete;
+            MoveOnly& operator=(const MoveOnly&) = delete;
+
+            MoveOnly(MoveOnly&& o) : value(o.value)
+            {
+                o.value = -1;
+            }
+
+            MoveOnly& operator=(MoveOnly&& o)
+            {
+                value = o.value;
+                o.value = -1;
+                return *this;
+            }
+        };
+
+        DynArray<MoveOnly> mo; // starts empty: no default-constructed slots
+
+        for (int_t i = 0; i < 100; ++i)
+        {
+            mo.append(MoveOnly(i)); // forces several reallocations
+        }
+
+        assert(mo.size() == 100);
+
+        for (int_t i = 0; i < 100; ++i)
+        {
+            assert(mo[i].value == i);
+        }
+
+        mo.insert(0, MoveOnly(-100));
+        assert(mo.size() == 101);
+        assert(mo[0].value == -100);
+        assert(mo[1].value == 0);
+
+        mo.insert(mo.size(), MoveOnly(-200)); // insert at the very end
+        assert(mo.get_last().value == -200);
+
+        mo.insert(50, MoveOnly(-300)); // insert in the middle
+        assert(mo[50].value == -300);
+
+        int_t expected_last = mo.get_last().value;
+        MoveOnly popped_back = mo.remove_last();
+        assert(popped_back.value == expected_last);
+        assert(mo.size() == 102);
+
+        assert(mo[0].value == -100);
+        MoveOnly popped_pos = mo.remove_pos(0); // swap-with-last removal
+        assert(popped_pos.value == -100);
+        assert(mo.size() == 101);
+
+        int_t expected_front = mo[0].value;
+        MoveOnly popped_front = mo.remove_pos_closing_breach(0);
+        assert(popped_front.value == expected_front);
+        assert(mo.size() == 100);
+
+        cout << "DynArray: holds a non-default-constructible, move-only "
+                "type Everything ok!\n";
+    }
+
     cout << "Everything ok!\n";
 
     return 0;
