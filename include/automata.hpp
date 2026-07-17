@@ -402,7 +402,10 @@ namespace Designar
           dfa_accepting.append(false);
         }
 
-        const HashSet<StateId>& curr_set = discovered_sets[curr];
+        // A copy, not a reference: find_or_add() below may append to
+        // discovered_sets, reallocating its backing storage and
+        // invalidating any reference taken into it beforehand.
+        HashSet<StateId> curr_set = discovered_sets[curr];
 
         bool acc = false;
 
