@@ -160,6 +160,27 @@ int main()
 
     assert(reverse(ll).is_sorted([](auto x, auto y) { return x > y; }));
 
+    // Regression: DLNode's move constructor/assignment used to delegate
+    // to DLNode() (default-constructing `item`, needlessly requiring T to
+    // be default-constructible) and only ever swap the DL link part,
+    // silently leaving the source's item untouched instead of moved —
+    // dead code from DLList's own perspective (it moves whole lists by
+    // swapping the sentinel, never by moving individual nodes), but a
+    // real bug for any direct DLNode<T> user (see nodesdef.hpp).
+    {
+        DLNode<int_t> a(42);
+        DLNode<int_t> b(std::move(a));
+        assert(b.get_item() == 42);
+
+        DLNode<int_t> c(1);
+        DLNode<int_t> d(2);
+        d = std::move(c);
+        assert(d.get_item() == 1);
+
+        cout << "DLNode: move constructor/assignment actually move `item` "
+                "Everything ok!\n";
+    }
+
     cout << "Everything ok!\n";
 
     return 0;

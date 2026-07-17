@@ -427,7 +427,15 @@ namespace Designar
 
         DLNode(const DLNode&) = delete;
 
-        DLNode(DLNode&& n) : DLNode()
+        /** Moves `item` too, not just the DL link pointers — the previous
+            version delegated to DLNode() (default-constructing `item`,
+            needlessly requiring T to be default-constructible) and only
+            ever swapped the DL part, silently leaving `n.item` untouched
+            and this node's `item` default-constructed instead of moved.
+            Currently dead code (DLList moves whole lists by swapping its
+            sentinel, never by moving individual DLNodes), but a real bug
+            waiting for any direct DLNode<T> user. */
+        DLNode(DLNode&& n) : DL(), item(std::move(n.item))
         {
             DL::swap(n);
         }
@@ -436,6 +444,7 @@ namespace Designar
 
         DLNode& operator=(DLNode&& n)
         {
+            item = std::move(n.item);
             DL::swap(n);
             return *this;
         }
