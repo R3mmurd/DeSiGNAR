@@ -7,7 +7,7 @@
 /** @file pairingheap.hpp
     @brief PairingHeap: a self-adjusting mergeable min-heap (Fredman,
     Sedgewick, Sleator & Tarjan, 1986) supporting O(1) insert/get_min
-    and O(log n) amortized decrease_key/extract_min — the same
+    and O(lg n) amortized decrease_key/extract_min — the same
     asymptotic promises as a Fibonacci heap, with a dramatically simpler
     implementation and, in practice, better constant factors.
     @ingroup DataStructures
@@ -113,7 +113,7 @@ namespace Designar
             tree), then combine the resulting (about half as many) trees
             right to left into a single tree. This specific two-pass
             pattern (rather than e.g. melding strictly left to right) is
-            what gives the amortized O(log n) bound; melding naively in one
+            what gives the amortized O(lg n) bound; melding naively in one
             left-to-right pass can degrade to O(n) per extract_min on
             certain input sequences. */
         Node* merge_pairs(Node* first)
@@ -284,7 +284,7 @@ namespace Designar
 
         /** Lowers `n`'s key to `new_key` (which must not compare greater
             than its current key — this is a min-heap, so a "decrease") and
-            restores heap order in O(log n) amortized time by cutting `n`
+            restores heap order in O(lg n) amortized time by cutting `n`
             (with its whole subtree) away from its parent and melding it
             back in as a top-level tree, rather than sifting it up in
             place — a pairing heap's nodes don't keep a parent pointer to

@@ -21,7 +21,7 @@ namespace Designar
     /** Maintains a partition of a universe of keys into disjoint sets,
         supporting near-constant-amortized-time make_set()/find()/
         union_sets() via the classic union-by-rank + path-halving
-        combination (either alone gives O(log n) amortized; together they
+        combination (either alone gives O(lg n) amortized; together they
         give the (inverse-Ackermann) O(alpha(n)) bound covered in every
         algorithms course).
 
@@ -113,7 +113,7 @@ namespace Designar
         /** Merges the sets containing `a` and `b` (a no-op if they are
             already the same set). The smaller-rank tree's root is attached
             under the larger-rank tree's root, which is what keeps every
-            tree's height at O(log n) even without path compression's help. */
+            tree's height at O(lg n) even without path compression's help. */
         void union_sets(const Key& a, const Key& b)
         {
             nat_t ra = find_root(index_of_existing(a));

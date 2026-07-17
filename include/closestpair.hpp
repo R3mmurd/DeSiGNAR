@@ -26,7 +26,7 @@ namespace Designar
         number of its neighbors in that sorted strip, not the whole
         strip). This is the textbook-simple variant that re-sorts the
         strip by y at every level of the recursion (O(n log^2 n) overall)
-        rather than the fully optimized O(n log n) version, which instead
+        rather than the fully optimized O(n lg n) version, which instead
         merges pre-sorted-by-y subarrays alongside the by-x recursion the
         same way merge sort merges its halves — a meaningful constant-factor
         simplification, not an asymptotic one, and considerably easier to

@@ -85,7 +85,7 @@ namespace Designar
         The result: at all times, the tree's shape has *exactly* the
         probability distribution of a BST built by inserting its current
         keys in a uniformly random order — regardless of the actual
-        insertion/deletion history — which gives O(log n) expected height
+        insertion/deletion history — which gives O(lg n) expected height
         without storing any per-node priority (only a subtree-size count,
         needed for the biased coin flips themselves).
 

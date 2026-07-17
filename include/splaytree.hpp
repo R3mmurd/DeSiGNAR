@@ -36,7 +36,7 @@ namespace Designar
         explicit balance invariant at all — instead, *every* access
         (search, insert, or delete) restructures the tree via rotations so
         that the accessed key ends up at the root. That single rule gives
-        an amortized O(log n) bound per operation over any sequence of
+        an amortized O(lg n) bound per operation over any sequence of
         operations, without storing any extra per-node information
         (priority, height, color, size — this is the only tree in this
         library whose node carries nothing beyond the key and its two

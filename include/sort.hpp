@@ -623,7 +623,7 @@ namespace Designar
     /** Merges the two already-sorted runs `a[l..m]` and `a[m+1..r]` into
         one sorted `a[l..r]`, via a temporary buffer — the one classic
         comparison sort in this file that is not in-place, in exchange for
-        being the one that is stable and has a guaranteed O(n log n)
+        being the one that is stable and has a guaranteed O(n lg n)
         worst case (quicksort's worst case is O(n^2); merge_sort's never
         is, regardless of input order or pivot choice). */
     template <class ArrayType, class Cmp>
@@ -811,7 +811,7 @@ namespace Designar
         return sift_down<ArrayType, Cmp>(a, offset, l, r, cmp);
     }
 
-    /** In-place, O(n log n) worst case guaranteed (like merge_sort, unlike
+    /** In-place, O(n lg n) worst case guaranteed (like merge_sort, unlike
         quicksort) but — unlike merge_sort — needs no extra buffer, at the
         cost of not being stable and having noticeably worse cache
         behavior in practice (the heap operations jump around the array
@@ -895,7 +895,7 @@ namespace Designar
     }
 
     /** Non-comparison sorts: instead of deciding order via `cmp`
-        comparisons (subject to the Ω(n log n) lower bound every sort
+        comparisons (subject to the Ω(n lg n) lower bound every sort
         above this point is stuck with), these work directly with integer
         keys, and so can beat that bound — O(n + k) for counting_sort
         (`k` the key range), O(d*(n + k)) for radix_sort (`d` the number
@@ -1088,7 +1088,7 @@ namespace Designar
         just relinking nodes, not copying into a temporary buffer the way
         array-based merge() above needs to). Uses NodeSLList::split() to
         halve `l` (round-robin, not front/back — either halving strategy
-        keeps the O(n log n) bound, and round-robin is what split() this
+        keeps the O(n lg n) bound, and round-robin is what split() this
         library already provides). */
     template <typename T, class Cmp>
     NodeSLList<T> merge(NodeSLList<T>& l, NodeSLList<T>& r, Cmp& cmp)

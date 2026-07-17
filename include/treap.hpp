@@ -61,7 +61,7 @@ namespace Designar
         node closest to the root has the smallest priority value). Because
         the priorities are random, the resulting shape has the same
         probability distribution as a BST built by inserting the keys in
-        random order, which gives O(log n) expected height regardless of
+        random order, which gives O(lg n) expected height regardless of
         insertion order.
 
         This is the same balancing idea as RankedTreap (tree.hpp), minus

@@ -7,7 +7,7 @@
 /** @file skiplist.hpp
     @brief SkipList: a probabilistically-balanced ordered set, built from
     several stacked linked lists where each level is a random subset of
-    the level below it — giving expected O(log n) search/insert/remove
+    the level below it — giving expected O(lg n) search/insert/remove
     without any rotations at all (William Pugh, 1990).
     @ingroup DataStructures
 */

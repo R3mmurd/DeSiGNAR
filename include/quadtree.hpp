@@ -74,7 +74,7 @@ namespace Designar
 
     /** `NODE_CAPACITY` points fit in a node before it subdivides; every
         insert()/query_range() call is `O(NODE_CAPACITY * depth)`, and
-        depth stays `O(log n)` on average for spatially well-distributed
+        depth stays `O(lg n)` on average for spatially well-distributed
         points — the same way an unbalanced BST stays shallow on average
         for random insertion order despite having no explicit balancing.
         A deliberately adversarial input (e.g. many points at/near the

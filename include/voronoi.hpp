@@ -8,10 +8,10 @@
     @brief VoronoiDiagram: computes every site's Voronoi cell via
     half-plane intersection (Sutherland-Hodgman polygon clipping
     against every other site's perpendicular bisector) — O(n^2)
-    overall rather than Fortune's O(n log n) sweep, the same
+    overall rather than Fortune's O(n lg n) sweep, the same
     teaching-clarity-over-asymptotic-optimality trade-off ClosestPair
     makes by using the textbook-simple O(n log^2 n) divide-and-conquer
-    instead of the fully optimized O(n log n) merge variant: each
+    instead of the fully optimized O(n lg n) merge variant: each
     site's cell falls out of a short, direct geometric argument
     ("intersect every half-plane closer to me than to some other
     site") with no sweep-line event queue or circle-event bookkeeping
