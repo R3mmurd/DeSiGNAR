@@ -11,307 +11,366 @@ using namespace Designar;
 
 int main()
 {
-  FixedQueue<int_t, 10> fixed_queue;
+    FixedQueue<int_t, 10> fixed_queue;
 
-  assert(fixed_queue.is_empty());
-  assert(!fixed_queue.is_full());
-  assert(fixed_queue.size() == 0);
-  assert(fixed_queue.get_capacity() == 10);
+    assert(fixed_queue.is_empty());
+    assert(!fixed_queue.is_full());
+    assert(fixed_queue.size() == 0);
+    assert(fixed_queue.get_capacity() == 10);
 
-  fixed_queue.put(1);
+    fixed_queue.put(1);
 
-  assert(fixed_queue.front() == 1);
-  assert(fixed_queue.rear() == 1);
-  assert(fixed_queue.size() == 1);
-  assert(!fixed_queue.is_empty());
-  assert(!fixed_queue.is_full());
+    assert(fixed_queue.front() == 1);
+    assert(fixed_queue.rear() == 1);
+    assert(fixed_queue.size() == 1);
+    assert(!fixed_queue.is_empty());
+    assert(!fixed_queue.is_full());
 
-  fixed_queue.put(5);
+    fixed_queue.put(5);
 
-  assert(fixed_queue.front() == 1);
-  assert(fixed_queue.rear() == 5);
-  assert(fixed_queue.size() == 2);
+    assert(fixed_queue.front() == 1);
+    assert(fixed_queue.rear() == 5);
+    assert(fixed_queue.size() == 2);
 
-  int_t p = fixed_queue.get();
+    int_t p = fixed_queue.get();
 
-  assert(fixed_queue.front() == 5);
-  assert(fixed_queue.rear() == 5);
-  assert(fixed_queue.size() == 1);
-  assert(p == 1);
+    assert(fixed_queue.front() == 5);
+    assert(fixed_queue.rear() == 5);
+    assert(fixed_queue.size() == 1);
+    assert(p == 1);
 
-  fixed_queue.put(2);
-  fixed_queue.put(3);
-  fixed_queue.put(4);
-  fixed_queue.put(5);
-  fixed_queue.put(6);
-  fixed_queue.put(7);
-  fixed_queue.put(8);
-  fixed_queue.put(9);
-  fixed_queue.put(10);
+    fixed_queue.put(2);
+    fixed_queue.put(3);
+    fixed_queue.put(4);
+    fixed_queue.put(5);
+    fixed_queue.put(6);
+    fixed_queue.put(7);
+    fixed_queue.put(8);
+    fixed_queue.put(9);
+    fixed_queue.put(10);
 
-  assert(fixed_queue.is_full());
+    assert(fixed_queue.is_full());
 
-  try
-  {
-    fixed_queue.put(11);
-    assert(false);
-  }
-  catch (overflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    try
+    {
+        fixed_queue.put(11);
+        assert(false);
+    }
+    catch (const overflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-
-  FixedQueue<int_t, 10> fixed_queue_cpy = fixed_queue;
-
-  assert(fixed_queue_cpy.front() == 5);
-  assert(fixed_queue_cpy.rear() == 10);
-  assert(fixed_queue_cpy.size() == 6);
-
-  FixedQueue<int_t, 10> fixed_queue_mv = move(fixed_queue_cpy);
-
-  assert(fixed_queue_mv.front() == 5);
-  assert(fixed_queue_mv.rear() == 10);
-  assert(fixed_queue_mv.size() == 6);
-  assert(fixed_queue_cpy.is_empty());
-
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-  fixed_queue.get();
-
-  assert(fixed_queue.is_empty());
-
-  try
-  {
-    fixed_queue.front();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
-
-  try
-  {
     fixed_queue.get();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    fixed_queue.get();
+    fixed_queue.get();
+    fixed_queue.get();
 
-  DynQueue<int_t> array_queue;
+    FixedQueue<int_t, 10> fixed_queue_cpy = fixed_queue;
 
-  assert(array_queue.is_empty());
-  assert(array_queue.size() == 0);
+    assert(fixed_queue_cpy.front() == 5);
+    assert(fixed_queue_cpy.rear() == 10);
+    assert(fixed_queue_cpy.size() == 6);
 
-  array_queue.put(1);
+    FixedQueue<int_t, 10> fixed_queue_mv = std::move(fixed_queue_cpy);
 
-  assert(array_queue.front() == 1);
-  assert(array_queue.rear() == 1);
-  assert(array_queue.size() == 1);
-  assert(!array_queue.is_empty());
+    assert(fixed_queue_mv.front() == 5);
+    assert(fixed_queue_mv.rear() == 10);
+    assert(fixed_queue_mv.size() == 6);
+    assert(fixed_queue_cpy.is_empty());
 
-  array_queue.put(5);
+    fixed_queue.get();
+    fixed_queue.get();
+    fixed_queue.get();
+    fixed_queue.get();
+    fixed_queue.get();
+    fixed_queue.get();
 
-  assert(array_queue.front() == 1);
-  assert(array_queue.rear() == 5);
-  assert(array_queue.size() == 2);
+    assert(fixed_queue.is_empty());
 
-  p = array_queue.get();
+    try
+    {
+        fixed_queue.front();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 
-  assert(array_queue.front() == 5);
-  assert(array_queue.rear() == 5);
-  assert(array_queue.size() == 1);
-  assert(p == 1);
+    try
+    {
+        fixed_queue.get();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 
-  array_queue.put(2);
-  array_queue.put(3);
-  array_queue.put(4);
-  array_queue.put(5);
-  array_queue.put(6);
-  array_queue.put(7);
-  array_queue.put(8);
-  array_queue.put(9);
-  array_queue.put(10);
-  array_queue.put(11);
+    DynQueue<int_t> array_queue;
 
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
+    assert(array_queue.is_empty());
+    assert(array_queue.size() == 0);
 
-  DynQueue<int_t> array_queue_cpy = array_queue;
+    array_queue.put(1);
 
-  assert(array_queue_cpy.front() == 5);
-  assert(array_queue_cpy.rear() == 11);
-  assert(array_queue_cpy.size() == 7);
+    assert(array_queue.front() == 1);
+    assert(array_queue.rear() == 1);
+    assert(array_queue.size() == 1);
+    assert(!array_queue.is_empty());
 
-  DynQueue<int_t> array_queue_mv = move(array_queue_cpy);
+    array_queue.put(5);
 
-  assert(array_queue_mv.front() == 5);
-  assert(array_queue_mv.rear() == 11);
-  assert(array_queue_mv.size() == 7);
-  assert(array_queue_cpy.is_empty());
+    assert(array_queue.front() == 1);
+    assert(array_queue.rear() == 5);
+    assert(array_queue.size() == 2);
 
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
-  array_queue.get();
+    p = array_queue.get();
 
-  assert(array_queue.is_empty());
+    assert(array_queue.front() == 5);
+    assert(array_queue.rear() == 5);
+    assert(array_queue.size() == 1);
+    assert(p == 1);
 
-  try
-  {
-    array_queue.front();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    array_queue.put(2);
+    array_queue.put(3);
+    array_queue.put(4);
+    array_queue.put(5);
+    array_queue.put(6);
+    array_queue.put(7);
+    array_queue.put(8);
+    array_queue.put(9);
+    array_queue.put(10);
+    array_queue.put(11);
 
-  try
-  {
     array_queue.get();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
 
-  DynQueue<int_t> arr_queue;
+    DynQueue<int_t> array_queue_cpy = array_queue;
 
-  for (int_t i = 0; i < 10000; ++i)
-    arr_queue.put(i);
+    assert(array_queue_cpy.front() == 5);
+    assert(array_queue_cpy.rear() == 11);
+    assert(array_queue_cpy.size() == 7);
 
-  for (int_t i = 0; i < 10000; ++i)
-    assert(arr_queue.get() == i);
+    DynQueue<int_t> array_queue_mv = std::move(array_queue_cpy);
 
-  ListQueue<int_t> list_queue;
+    assert(array_queue_mv.front() == 5);
+    assert(array_queue_mv.rear() == 11);
+    assert(array_queue_mv.size() == 7);
+    assert(array_queue_cpy.is_empty());
 
-  assert(list_queue.is_empty());
-  assert(list_queue.size() == 0);
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
+    array_queue.get();
 
-  list_queue.put(1);
+    assert(array_queue.is_empty());
 
-  assert(list_queue.front() == 1);
-  assert(list_queue.rear() == 1);
-  assert(list_queue.size() == 1);
-  assert(!list_queue.is_empty());
+    try
+    {
+        array_queue.front();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 
-  list_queue.put(5);
+    try
+    {
+        array_queue.get();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 
-  assert(list_queue.front() == 1);
-  assert(list_queue.rear() == 5);
-  assert(list_queue.size() == 2);
+    DynQueue<int_t> arr_queue;
 
-  p = list_queue.get();
+    for (int_t i = 0; i < 10000; ++i)
+        arr_queue.put(i);
 
-  assert(list_queue.front() == 5);
-  assert(list_queue.rear() == 5);
-  assert(list_queue.size() == 1);
-  assert(p == 1);
+    for (int_t i = 0; i < 10000; ++i)
+        assert(arr_queue.get() == i);
 
-  list_queue.put(2);
-  list_queue.put(3);
-  list_queue.put(4);
-  list_queue.put(5);
-  list_queue.put(6);
-  list_queue.put(7);
-  list_queue.put(8);
-  list_queue.put(9);
-  list_queue.put(10);
-  list_queue.put(11);
+    ListQueue<int_t> list_queue;
 
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
+    assert(list_queue.is_empty());
+    assert(list_queue.size() == 0);
 
-  ListQueue<int_t> list_queue_cpy = list_queue;
+    list_queue.put(1);
 
-  assert(list_queue_cpy.front() == 5);
-  assert(list_queue_cpy.rear() == 11);
-  assert(list_queue_cpy.size() == 7);
+    assert(list_queue.front() == 1);
+    assert(list_queue.rear() == 1);
+    assert(list_queue.size() == 1);
+    assert(!list_queue.is_empty());
 
-  ListQueue<int_t> list_queue_mv = move(list_queue_cpy);
+    list_queue.put(5);
 
-  assert(list_queue_mv.front() == 5);
-  assert(list_queue_mv.rear() == 11);
-  assert(list_queue_mv.size() == 7);
-  assert(list_queue_cpy.is_empty());
+    assert(list_queue.front() == 1);
+    assert(list_queue.rear() == 5);
+    assert(list_queue.size() == 2);
 
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
-  list_queue.get();
+    p = list_queue.get();
 
-  assert(list_queue.is_empty());
+    assert(list_queue.front() == 5);
+    assert(list_queue.rear() == 5);
+    assert(list_queue.size() == 1);
+    assert(p == 1);
 
-  try
-  {
-    list_queue.front();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    list_queue.put(2);
+    list_queue.put(3);
+    list_queue.put(4);
+    list_queue.put(5);
+    list_queue.put(6);
+    list_queue.put(7);
+    list_queue.put(8);
+    list_queue.put(9);
+    list_queue.put(10);
+    list_queue.put(11);
 
-  try
-  {
     list_queue.get();
-    assert(false);
-  }
-  catch (underflow_error)
-  {
-    assert(true);
-  }
-  catch (...)
-  {
-    assert(false);
-  }
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
 
-  cout << "Everything ok!\n";
-  return 0;
+    ListQueue<int_t> list_queue_cpy = list_queue;
+
+    assert(list_queue_cpy.front() == 5);
+    assert(list_queue_cpy.rear() == 11);
+    assert(list_queue_cpy.size() == 7);
+
+    ListQueue<int_t> list_queue_mv = std::move(list_queue_cpy);
+
+    assert(list_queue_mv.front() == 5);
+    assert(list_queue_mv.rear() == 11);
+    assert(list_queue_mv.size() == 7);
+    assert(list_queue_cpy.is_empty());
+
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
+    list_queue.get();
+
+    assert(list_queue.is_empty());
+
+    try
+    {
+        list_queue.front();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+
+    try
+    {
+        list_queue.get();
+        assert(false);
+    }
+    catch (const underflow_error&)
+    {
+        assert(true);
+    }
+    catch (...)
+    {
+        assert(false);
+    }
+
+    // DynQueue used to be built on FixedArray (eagerly default-/
+    // copy-constructing every slot up front, requiring T to be
+    // default-constructible just to declare an empty queue) -- now owns
+    // raw storage directly like DynArray. Exercised end to end with a
+    // type that has no default constructor and is move-only: put/get
+    // across several forced reallocations (both growth and, once mostly
+    // drained, shrink).
+    {
+        struct NoDefault
+        {
+            int_t value;
+
+            NoDefault() = delete;
+
+            explicit NoDefault(int_t v) : value(v)
+            {
+                // empty
+            }
+
+            NoDefault(const NoDefault&) = delete;
+            NoDefault& operator=(const NoDefault&) = delete;
+            NoDefault(NoDefault&&) = default;
+            NoDefault& operator=(NoDefault&&) = default;
+        };
+
+        DynQueue<NoDefault> dq;
+
+        for (int_t i = 0; i < 200; ++i)
+        {
+            dq.put(NoDefault(i));
+        }
+
+        assert(dq.size() == 200);
+        assert(dq.front().value == 0);
+        assert(dq.rear().value == 199);
+
+        for (int_t i = 0; i < 190; ++i)
+        {
+            NoDefault v = dq.get();
+            assert(v.value == i);
+        }
+
+        assert(dq.size() == 10);
+        assert(dq.front().value == 190);
+
+        for (int_t i = 200; i < 300; ++i)
+        {
+            dq.put(NoDefault(i));
+        }
+
+        while (!dq.is_empty())
+        {
+            dq.get();
+        }
+
+        cout << "DynQueue: non-default-constructible, move-only type "
+                "Everything ok!\n";
+    }
+
+    cout << "Everything ok!\n";
+    return 0;
 }

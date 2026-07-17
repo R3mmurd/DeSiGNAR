@@ -9,9 +9,140 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run Cmake
-      run: 
-        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ../
+      run:
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDESIGNAR_WARNINGS_AS_ERRORS=ON ../
     - name: Build Library
       run: cd build && make all
     - name: Run tests
-      run: cd build && make test
+      run: cd build && ctest --output-on-failure
+
+  build_with_gcc:
+    name: Build with GCC
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run:
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DDESIGNAR_WARNINGS_AS_ERRORS=ON ../
+    - name: Build Library
+      run: cd build && make all
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+  # macOS ships AppleClang, not upstream Clang/LLVM; CMAKE_CXX_COMPILER_ID
+  # reports "AppleClang" there, which is why cmake/platform/unix/settings.cmake
+  # matches on the substring "Clang" rather than an exact compiler-id string.
+  build_on_macos:
+    name: Build on macOS
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run:
+        mkdir build && cd build && cmake -DDESIGNAR_WARNINGS_AS_ERRORS=ON ../
+    - name: Build Library
+      run: cd build && cmake --build . --parallel
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+  # Windows/MSVC: cmake/platform/windows/settings.cmake + cmake/compiler/msvc
+  # are the only platform-specific pieces this build exercises that the
+  # Linux/macOS jobs above never touch.
+  # MSVC's /W4 surfaces a large number of narrowing-conversion warnings
+  # (C4244) that GCC/Clang's -Wall -Wextra do not, on code that has so
+  # far only ever been warnings-as-errors-clean against GCC/Clang. Making
+  # MSVC equally warnings-as-errors-clean is a real, separate cleanup
+  # worth doing deliberately (each cast needs to be checked against an
+  # actual MSVC compiler, not guessed at from CI logs alone) rather than
+  # blocking this job in the meantime — so, unlike the other compilers,
+  # this job intentionally does not set DESIGNAR_WARNINGS_AS_ERRORS.
+  build_on_windows:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run:
+        mkdir build && cd build && cmake ../
+    - name: Build Library
+      run: cd build && cmake --build . --config Debug --parallel
+    - name: Run tests
+      run: cd build && ctest -C Debug --output-on-failure
+
+  # AddressSanitizer + UndefinedBehaviorSanitizer: catches dangling
+  # references, out-of-bounds access, use-after-free, signed overflow,
+  # null-pointer misuse, etc. at the exact point they happen, instead of
+  # (maybe) as a corrupted result several calls later. Several real bugs
+  # in this library were only found this way.
+  build_with_asan_ubsan:
+    name: Build with ASan + UBSan
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run:
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDESIGNAR_SANITIZE_ADDRESS_UB=ON ../
+    - name: Build Library
+      run: cd build && make all
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+  # ThreadSanitizer: data races (e.g. in ConcurrentQueue and anything else
+  # built on top of it). Mutually exclusive with ASan/UBSan in the same
+  # binary, hence its own job.
+  build_with_tsan:
+    name: Build with TSan
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Cmake
+      run:
+        mkdir build && cd build && cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DDESIGNAR_SANITIZE_THREAD=ON ../
+    - name: Build Library
+      run: cd build && make all
+    - name: Run tests
+      run: cd build && ctest --output-on-failure
+
+  # Builds the Doxygen HTML docs (see the Doxyfile at the repo root) and
+  # publishes them to GitHub Pages, so the generated API reference stays
+  # in sync with `main` automatically instead of being a manually-run,
+  # easily-stale local artifact.
+  #
+  # One-time repo setup this job depends on (cannot be done from the
+  # workflow file itself): in Settings -> Pages, set "Source" to
+  # "GitHub Actions". Until that is done, the deploy-pages step below
+  # will fail even though the build/upload steps succeed.
+  publish_docs:
+    name: Build & publish Doxygen docs
+    runs-on: ubuntu-latest
+    needs: [build_with_clang, build_with_gcc]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Doxygen
+      run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+    - name: Build English docs
+      run: doxygen Doxyfile
+    - name: Build Spanish docs
+      run: doxygen Doxyfile.es
+    # English at the site root, Spanish under /es/ — both editions share
+    # the same (English-only) API reference; only the main/landing page
+    # (README.md vs README.es.md) actually differs between them.
+    - name: Assemble combined site
+      run: |
+        mkdir -p site/es
+        cp -r en-doc/html/. site/
+        cp -r es-doc/html/. site/es/
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: site
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

@@ -1,0 +1,18 @@
+@PACKAGE_INIT@
+
+# Designar links its own compile-option/warning interface targets
+# PUBLICly (see the root CMakeLists.txt comment near
+# designar-warning-interface/designar-compile-option-interface for why:
+# changing that to PRIVATE would silently drop -Wall/-Werror coverage
+# from every test/sample built inside this repo's own CMake project).
+# A consequence of that choice a downstream consumer should know about:
+# linking against Designar::Designar via find_package(Designar) pulls in
+# this project's own warning flags (and, if the exporting build enabled
+# them, hardening/sanitizer flags) into the *consumer's* build too. This
+# is a deliberate, if opinionated, choice for a teaching-oriented
+# library — flag it in your own CMakeLists.txt if you'd rather not
+# inherit it, e.g. by not depending on the exported interface targets
+# directly.
+include("${CMAKE_CURRENT_LIST_DIR}/DesignarTargets.cmake")
+
+check_required_components(Designar)

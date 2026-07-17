@@ -9,18 +9,20 @@
 namespace Designar
 {
 
-  void DL::split(DL &l, DL &r)
-  {
-    assert(l.is_empty());
-    assert(r.is_empty());
-
-    while (!this->is_empty())
+    void DL::split(DL& l, DL& r)
     {
-      l.insert_prev(this->remove_next());
+        assert(l.is_empty());
+        assert(r.is_empty());
 
-      if (!this->is_empty())
-        r.insert_next(this->remove_prev());
+        while (!this->is_empty())
+        {
+            l.insert_prev(this->remove_next());
+
+            if (!this->is_empty())
+            {
+                r.insert_next(this->remove_prev());
+            }
+        }
     }
-  }
 
 } // end namespace Designar
