@@ -127,9 +127,7 @@ namespace Designar
 
         static Node* rotate_left(Node* h)
         {
-            Node* x = R(h);
-            R(h) = L(x);
-            L(x) = h;
+            Node* x = generic_rotate_left(h);
             COLOR(x) = COLOR(h);
             COLOR(h) = RBColor::RED;
             return x;
@@ -137,9 +135,7 @@ namespace Designar
 
         static Node* rotate_right(Node* h)
         {
-            Node* x = L(h);
-            L(h) = R(x);
-            R(x) = h;
+            Node* x = generic_rotate_right(h);
             COLOR(x) = COLOR(h);
             COLOR(h) = RBColor::RED;
             return x;

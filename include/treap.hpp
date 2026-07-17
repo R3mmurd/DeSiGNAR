@@ -107,18 +107,12 @@ namespace Designar
 
         static Node* rotate_left(Node* r)
         {
-            Node* q = R(r);
-            R(r) = L(q);
-            L(q) = r;
-            return q;
+            return generic_rotate_left(r);
         }
 
         static Node* rotate_right(Node* r)
         {
-            Node* q = L(r);
-            L(r) = R(q);
-            R(q) = r;
-            return q;
+            return generic_rotate_right(r);
         }
 
         static Node* exclusive_join(Node*&, Node*&);

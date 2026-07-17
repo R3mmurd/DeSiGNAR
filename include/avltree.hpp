@@ -125,9 +125,7 @@ namespace Designar
 
         static Node* rotate_left(Node* r)
         {
-            Node* q = R(r);
-            R(r) = L(q);
-            L(q) = r;
+            Node* q = generic_rotate_left(r);
             update_height(r);
             update_height(q);
             return q;
@@ -135,9 +133,7 @@ namespace Designar
 
         static Node* rotate_right(Node* r)
         {
-            Node* q = L(r);
-            L(r) = R(q);
-            R(q) = r;
+            Node* q = generic_rotate_right(r);
             update_height(r);
             update_height(q);
             return q;

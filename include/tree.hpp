@@ -1199,9 +1199,7 @@ namespace Designar
     typename RankedTreap<Key, Cmp>::Node*
     RankedTreap<Key, Cmp>::rotate_left(Node* r)
     {
-        Node* q = R(r);
-        R(r) = L(q);
-        L(q) = r;
+        Node* q = generic_rotate_left(r);
 
         COUNT(r) = COUNT(L(r)) + COUNT(R(r)) + 1;
         COUNT(q) = COUNT(L(q)) + COUNT(R(q)) + 1;
@@ -1213,9 +1211,7 @@ namespace Designar
     typename RankedTreap<Key, Cmp>::Node*
     RankedTreap<Key, Cmp>::rotate_right(Node* r)
     {
-        Node* q = L(r);
-        L(r) = R(q);
-        R(q) = r;
+        Node* q = generic_rotate_right(r);
 
         COUNT(r) = COUNT(L(r)) + COUNT(R(r)) + 1;
         COUNT(q) = COUNT(L(q)) + COUNT(R(q)) + 1;

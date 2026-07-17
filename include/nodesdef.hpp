@@ -1116,6 +1116,36 @@ namespace Designar
         return r;
     }
 
+    /** The pointer-relinking half of a BST rotation, shared by every tree
+        built on BaseBinTreeNode — AVLTree, RbTree, RandomizedTree,
+        RankedAVLTree, Treap, RankedTreap, and SplayTree all rotate their
+        nodes identically; only what *else* needs recomputing afterward
+        (AVL height, RB color, a subtree count, ...) differs per tree, so
+        that stays the caller's own responsibility rather than something
+        this shared step tries to guess at. A caller that has no such
+        metadata (SplayTree, Treap) can use this directly as its own
+        rotate_left(); one that does (AVLTree's height, RbTree's color,
+        RandomizedTree/RankedAVLTree/RankedTreap's count) wraps it,
+        calling this first and then updating its own metadata on both the
+        old and new subtree roots. */
+    template <class BinTreeNode>
+    BinTreeNode* generic_rotate_left(BinTreeNode* r)
+    {
+        BinTreeNode* q = R(r);
+        R(r) = L(q);
+        L(q) = r;
+        return q;
+    }
+
+    template <class BinTreeNode>
+    BinTreeNode* generic_rotate_right(BinTreeNode* r)
+    {
+        BinTreeNode* q = L(r);
+        L(r) = R(q);
+        R(q) = r;
+        return q;
+    }
+
     template <typename NodeInfo, class CommonGraphNodeArc>
     class BaseGraphNode : public CommonGraphNodeArc
     {
