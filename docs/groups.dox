@@ -68,8 +68,9 @@
 
 /**
  * @defgroup Compilers Compiler construction
- * @brief Formal grammars (with FIRST/FOLLOW set computation) and a lexer,
- * the front-end pieces of a small compiler/interpreter.
+ * @brief A lexer, formal grammars (with FIRST/FOLLOW set computation),
+ * and an LL(1) predictive parser built from them — the complete
+ * lex-then-parse front end of a small compiler/interpreter.
  */
 
 /**
