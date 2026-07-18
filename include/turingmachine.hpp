@@ -188,7 +188,7 @@ namespace Designar
             an accepting one). Throws if the machine still hasn't halted
             after `max_steps` — a Turing machine can genuinely loop forever
             (that undecidability is precisely the point of the model), so
-            unlike DFA::accepts()/NFA::accepts(), this cannot promise to
+            unlike DFA::accepts() or NFA::accepts(), this cannot promise to
             always return an answer; `max_steps` is this simulator's only
             way to give up gracefully instead of hanging. */
         template <class Sequence>

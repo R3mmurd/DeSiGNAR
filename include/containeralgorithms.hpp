@@ -4,12 +4,36 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file containeralgorithms.hpp
+    @brief CRTP mixin that gives any begin()/end()-providing container the
+    library's generic iterator-range algorithms for free.
+    @ingroup Algorithms
+*/
+
 #pragma once
 
 #include <italgorithms.hpp>
 
 namespace Designar
 {
+    /** A CRTP mixin: a container inherits from
+        `ContainerAlgorithms<ContainerType, T>` (passing itself as
+        `ContainerType`) to gain a whole suite of generic algorithms
+        (traversal, search, transformation, comparison, etc.) without
+        having to implement any of them itself. The private `me()` /
+        `const_me()` helpers downcast `this` back to `ContainerType*` /
+        `const ContainerType*`, which is what lets every member function
+        below call `me().begin()` / `me().end()` (or the const
+        equivalents) to obtain the container's own iterators and then
+        simply forward them to the corresponding free `..._it` function
+        in italgorithms.hpp.
+
+        Because the real work lives in those free functions, this class
+        contributes no per-container code of its own — DynArray, SLList,
+        DLList, the various tree types, etc. all derive from it and
+        thereby share one single implementation of `for_each`, `map`,
+        `filter`, `find`, `exists`, `equal`, and the rest, instead of
+        every container reimplementing them. */
     template <class ContainerType, typename T>
     class ContainerAlgorithms
     {
@@ -24,6 +48,7 @@ namespace Designar
         }
 
     public:
+        /** @brief Positional access to elements by index. */
         T* nth_ptr(nat_t i)
         {
             return nth_ptr_it<T>(me().begin(), me().end(), i);
@@ -39,6 +64,8 @@ namespace Designar
             return nth_it(const_me().begin(), const_me().end(), i);
         }
 
+        /** @brief Traversal: apply an operation to every element,
+            optionally paired with its position. */
         template <class Op>
         void for_each(Op& op) const
         {
@@ -65,6 +92,9 @@ namespace Designar
                              std::forward<Op>(op));
         }
 
+        /** @brief Transform: build a new container by selecting
+            (filter), converting (map), or both (map_if) the elements,
+            or by reducing them to a single value (fold). */
         template <class ContainerRet, class Pred>
         ContainerRet filter(Pred& pred) const
         {
@@ -156,6 +186,9 @@ namespace Designar
                                  std::forward<Op>(op));
         }
 
+        /** @brief Search/predicate: check whether all/some/none of the
+            elements satisfy a predicate, find one satisfying it, or
+            remove the ones that do. */
         template <class Pred>
         bool all(Pred& pred) const
         {
@@ -233,6 +266,9 @@ namespace Designar
             remove_if_it(me().begin(), me().end(), std::forward<Pred>(pred));
         }
 
+        /** @brief Comparison and pairing: check element-wise equality
+            with another container, whether this container is sorted, or
+            zip its elements together with another container's. */
         template <class ContainerType2 = ContainerType, class Eq>
         bool equal(const ContainerType2& c, Eq& eq) const
         {

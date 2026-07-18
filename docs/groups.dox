@@ -1,0 +1,98 @@
+/*
+  This file is part of Designar.
+
+  Author: Alejandro Mujica (aledrums@gmail.com)
+
+  Not a header: this file only exists to give Doxygen's @defgroup
+  declarations a title and a description, so the generated "Modules"
+  page is more than a bare list of names. Nothing here is compiled;
+  it is listed in Doxyfile's INPUT purely for the documentation build.
+*/
+
+/**
+ * @defgroup DataStructures Data structures
+ * @brief Container types beyond the basic array/list/stack/queue/heap/map/
+ * set family (which live directly under the library's root, undocumented
+ * top-level headers): B-trees, skip lists, tries, LRU caches, pairing
+ * heaps, bloom filters, and union-find.
+ */
+
+/**
+ * @defgroup Trees Balanced search trees
+ * @brief AVL, red-black, treap, splay, randomized BST, and ranked-AVL
+ * flavors of a self-balancing binary search tree, all sharing the same
+ * node layout and rotation primitives (see nodesdef.hpp).
+ */
+
+/**
+ * @defgroup Graphs Graphs and graph algorithms
+ * @brief Directed/undirected graph containers plus the classic algorithms
+ * built on top of them: shortest paths (all-pairs), max flow, bipartite
+ * matching, and bridge-finding.
+ */
+
+/**
+ * @defgroup Geometry Computational geometry
+ * @brief 2D points/vectors/segments/polygons/triangles and the algorithms
+ * that operate on them: closest-pair, quadtrees, and Voronoi diagrams.
+ */
+
+/**
+ * @defgroup Sorting Sorting
+ * @brief Comparison-based sorting algorithms and the heterogeneous
+ * (type-erased key) search helpers used by the map/set containers.
+ */
+
+/**
+ * @defgroup Algorithms Generic algorithms
+ * @brief Algorithms expressed over iterators or containers in general,
+ * independent of any specific data structure: string algorithms and the
+ * container/iterator algorithm mixins reused across the library.
+ */
+
+/**
+ * @defgroup Hashing Hash tables
+ * @brief Open-addressing and chained hash table implementations
+ * underlying HashMap/HashSet.
+ */
+
+/**
+ * @defgroup Concurrency Concurrency
+ * @brief Thread-safe building blocks: a thread pool, a concurrent map, and
+ * a graph agent/concurrent graph pair for parallel graph exploration.
+ */
+
+/**
+ * @defgroup Compilers Compiler construction
+ * @brief Formal grammars (with FIRST/FOLLOW set computation) and a lexer,
+ * the front-end pieces of a small compiler/interpreter.
+ */
+
+/**
+ * @defgroup Automata Automata theory
+ * @brief Finite automata (NFA/DFA, including subset construction) and a
+ * Turing machine simulator.
+ */
+
+/**
+ * @defgroup CellularAutomata Cellular automata
+ * @brief Dense and sparse grid representations for simulating cellular
+ * automata (e.g. Conway's Game of Life and similar rule sets).
+ */
+
+/**
+ * @defgroup LinearAlgebra Linear algebra
+ * @brief Vector and matrix types with the usual arithmetic operations.
+ */
+
+/**
+ * @defgroup ArtificialIntelligence Artificial intelligence
+ * @brief Game-playing search: minimax with alpha-beta pruning.
+ */
+
+/**
+ * @defgroup utils Utilities
+ * @brief Small cross-cutting helpers that do not belong to any one data
+ * structure or algorithm family: timing, string formatting, integer
+ * utilities, and the library's fundamental type aliases.
+ */

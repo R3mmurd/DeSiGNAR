@@ -12,7 +12,5 @@ lib/*.a
 obj/*.o
 samples/*~
 src/*~
-en-doc/*
-es-doc/*
 **.dot
 **.svg

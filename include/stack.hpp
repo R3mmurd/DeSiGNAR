@@ -4,6 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file stack.hpp
+    @brief Three stack (LIFO) implementations with different storage
+    strategies: fixed-capacity array, growable array, and linked list.
+    @ingroup DataStructures
+*/
+
 #pragma once
 
 #include <array.hpp>
@@ -12,6 +18,12 @@
 namespace Designar
 {
 
+    /** A stack backed by a fixed-size C array embedded directly in the
+        object, with capacity `CAP` fixed at compile time. It performs no
+        heap allocation at all, so it is the cheapest and most predictable
+        option when an upper bound on the number of items is known in
+        advance, but `push` throws once that hard ceiling is reached
+        instead of growing like DynStack or ListStack. */
     template <typename T, nat_t CAP = 100>
     class FixedStack
     {
@@ -184,6 +196,13 @@ namespace Designar
         }
     }
 
+    /** A stack backed by a DynArray<T> that grows on demand: unlike
+        FixedStack there is no compile-time capacity ceiling, and unlike
+        ListStack there is no per-element heap allocation, giving push/pop
+        amortized O(1) cost and the good cache locality of contiguous
+        storage. The tradeoff is that occasional reallocation-and-copy
+        steps triggered by growth can make an individual `push` call more
+        expensive than usual. */
     template <typename T>
     class DynStack : private DynArray<T>
     {
@@ -327,6 +346,13 @@ namespace Designar
         }
     }
 
+    /** A stack backed by a singly linked list (SLList<T>): every push
+        allocates one new node and every pop frees one, so there is no
+        capacity limit and no reallocation-driven latency spike the way
+        DynStack occasionally has — push/pop are always O(1), not just
+        amortized. The cost is a heap allocation per element and worse
+        cache locality than the contiguous storage used by FixedStack and
+        DynStack. */
     template <typename T>
     class ListStack : private SLList<T>
     {

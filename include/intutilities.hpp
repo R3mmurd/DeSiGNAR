@@ -4,24 +4,40 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file intutilities.hpp
+    @brief Free functions for integer arithmetic: ranged products,
+    factorial, permutations, and combinations.
+    @ingroup utils
+*/
+
 #pragma once
 
 #include <types.hpp>
 
 namespace Designar
 {
+    /** @brief Computes the product of all integers from `a` up to `b`
+        inclusive, ascending (a * (a+1) * ... * b). */
     template <typename T>
     T forward_prod(T, T);
 
+    /** @brief Computes the product of all integers from `a` down to `b`
+        inclusive, descending (a * (a-1) * ... * b). */
     template <typename T>
     T backward_prod(T, T);
 
+    /** @brief Computes n! via forward_prod. Throws std::domain_error if
+        n is negative. */
     template <typename T>
     T factorial(T);
 
+    /** @brief Computes the number of permutations of r elements taken
+        from a set of n elements (nPr = n! / (n - r)!). */
     template <typename T>
     T count_permutations(T, T);
 
+    /** @brief Computes the number of combinations of r elements taken
+        from a set of n elements (nCr = n! / (r! * (n - r)!)). */
     template <typename T>
     T count_combinations(T, T);
 

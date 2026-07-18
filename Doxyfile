@@ -1,4 +1,4 @@
-# Doxygen configuration for DeSiGNAR (English edition).
+# Doxygen configuration for DeSiGNAR.
 #
 # This is a curated subset of Doxygen's settings, not a full generated
 # file: any setting not listed here falls back to Doxygen's own default
@@ -7,19 +7,15 @@
 #
 #   doxygen Doxyfile
 #
-# HTML output is written to en-doc/html/index.html. See Doxyfile.es for
-# the Spanish edition (only the main/landing page — README.es.md — and
-# Doxygen's own UI strings are translated; the source code's own Doxygen
-# comments are English throughout, matching this library's established
-# convention).
+# HTML output is written to doc/html/index.html.
 
 PROJECT_NAME           = "DeSiGNAR"
 PROJECT_BRIEF           = "A C++ data structures and algorithms library for teaching"
 PROJECT_LOGO            = logo.png
-OUTPUT_DIRECTORY        = en-doc
+OUTPUT_DIRECTORY        = doc
 OUTPUT_LANGUAGE         = English
 
-INPUT                   = include README.md
+INPUT                   = include README.md docs/groups.dox
 FILE_PATTERNS           = *.hpp
 RECURSIVE               = YES
 USE_MDFILE_AS_MAINPAGE  = README.md
@@ -28,21 +24,10 @@ USE_MDFILE_AS_MAINPAGE  = README.md
 # that only resolves on GitHub, relative to the repo root) is found
 # and copied into the generated site instead of turning into a broken
 # image link. Points at docs/ (which holds its own copy of logo.png)
-# rather than the repo root: IMAGE_PATH's own recursive scan ignores
-# EXCLUDE/EXCLUDE_PATTERNS entirely, so pointing it at the repo root
-# would also find en-doc/html/logo.png once a previous build's output
-# already exists on disk (exactly what happens when this Doxyfile and
-# Doxyfile.es both run back to back in the same job, as
-# build_library.yml does) and report it as an ambiguous second match.
+# rather than the repo root, so IMAGE_PATH's own recursive scan (which
+# ignores EXCLUDE/EXCLUDE_PATTERNS entirely) never picks up a stale
+# doc/html/logo.png from a previous build sharing the same working tree.
 IMAGE_PATH              = docs
-
-# Injects a working English/Español switch link into every generated
-# page (see docs/doxygen-header-en.html) — the one inline in
-# README.md/README.es.md only works on GitHub, since it links to the
-# other file's raw .md path, which does not exist in the deployed
-# HTML site (English at the site root, Spanish under /es/, see
-# build_library.yml's publish_docs job).
-HTML_HEADER             = docs/doxygen-header-en.html
 
 # Every public class/function in this library is meant to be readable
 # documentation for students, including the ones that do not (yet) have
@@ -51,12 +36,33 @@ EXTRACT_ALL             = YES
 EXTRACT_PRIVATE         = NO
 EXTRACT_STATIC          = YES
 
-# Group related classes/functions together (several files already use
-# @ingroup, e.g. geometricalgorithms.hpp's Geometry group).
+# Group related classes/functions together under the @defgroup titles
+# declared in docs/groups.dox (e.g. geometricalgorithms.hpp's @ingroup
+# Geometry).
 DISTRIBUTE_GROUP_DOC    = YES
 
 GENERATE_HTML           = YES
 GENERATE_LATEX          = NO
+
+# Class diagrams, collaboration graphs, and include graphs via Graphviz
+# (installed alongside doxygen in the publish_docs CI job) — these turn
+# an otherwise text-only API reference into something that actually
+# shows how the containers/algorithms relate to and depend on each
+# other at a glance.
+HAVE_DOT                = YES
+DOT_IMAGE_FORMAT        = svg
+INTERACTIVE_SVG         = YES
+CLASS_GRAPH             = YES
+COLLABORATION_GRAPH     = YES
+INCLUDE_GRAPH           = YES
+INCLUDED_BY_GRAPH       = YES
+DOT_GRAPH_MAX_NODES     = 50
+
+# Lets readers jump from a documented declaration straight into its
+# implementation, and back from a definition to every call site.
+SOURCE_BROWSER          = YES
+REFERENCED_BY_RELATION  = YES
+REFERENCES_RELATION     = YES
 
 # Fail loudly (nonzero exit) on Doxygen warnings such as undocumented
 # parameters or broken @see/@ref links, so documentation rot is caught

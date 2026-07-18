@@ -4,6 +4,11 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file list.hpp
+    @brief Singly-linked (SLList) and doubly-linked (DLList) list containers.
+    @ingroup DataStructures
+*/
+
 #pragma once
 
 #include <nodesdef.hpp>
@@ -12,6 +17,13 @@
 namespace Designar
 {
 
+    /** The raw, node-level machinery behind SLList: it links and unlinks
+        bare `SLNode<T>*` nodes without owning them, tracking only head and
+        tail pointers. Insertion at the front and removal of the front are
+        O(1), but there is no O(1) way to remove a node given only a
+        pointer to it, since a singly-linked node has no predecessor link.
+        SLList builds its item-owning, size-tracking public API on top of
+        this class. */
     template <typename T>
     class NodeSLList
     {
@@ -188,6 +200,18 @@ namespace Designar
         }
     }
 
+    /** A singly-linked list: each node points only to its successor, so
+        insert() at the front and append() at the back (thanks to the
+        cached tail pointer) both run in O(1), and traversal is
+        forward-only. Because there is no predecessor link, deleting the
+        node currently under an iterator requires remembering the previous
+        node as the traversal goes (which Iterator::del() does internally)
+        rather than being a true O(1) operation given an arbitrary node
+        pointer, unlike DLList. Mixing in ContainerAlgorithms gives SLList
+        the generic, iterator-based algorithms (searching, mapping,
+        filtering, and the like) shared by every container in the
+        library, implemented once in terms of begin()/end() instead of
+        being reimplemented per container. */
     template <typename T>
     class SLList : public NodeSLList<T>,
                    public ContainerAlgorithms<SLList<T>, T>
@@ -357,6 +381,13 @@ namespace Designar
             return *this;
         }
 
+        /** A forward-only iterator over SLList: it walks the chain via
+            each node's `next` pointer, keeping track of the previously
+            visited node (`pred`) purely so that del() can splice the
+            current node out without needing a predecessor link on the
+            node itself. Being forward-only (it derives from
+            ForwardIterator, not BidirectionalIterator) mirrors the
+            singly-linked structure it walks over. */
         class Iterator : public ForwardIterator<Iterator, T>
         {
             friend class BasicIterator<Iterator, T>;
@@ -590,6 +621,18 @@ namespace Designar
         throw std::out_of_range("Index out of range");
     }
 
+    /** A doubly-linked list built on top of the intrusive DL base (each
+        node carries both `next` and `prev` links). The extra predecessor
+        pointer lets DLList do everything SLList does plus operations
+        SLList cannot offer in O(1): removing the last element
+        (remove_last()) and, given only an iterator sitting on a node,
+        unlinking that node directly without having to have tracked its
+        predecessor during traversal. That flexibility costs one extra
+        pointer per node and slightly more bookkeeping on every
+        insertion/removal than SLList needs. As with SLList,
+        ContainerAlgorithms supplies the generic iterator-based algorithms
+        (searching, mapping, filtering, and the like) on top of this
+        class's begin()/end(). */
     template <typename T>
     class DLList : public DL, public ContainerAlgorithms<DLList<T>, T>
     {
@@ -776,6 +819,12 @@ namespace Designar
             return *this;
         }
 
+        /** A bidirectional iterator over DLList, built directly on top of
+            DL::Iterator's next()/prev() traversal of the intrusive
+            doubly-linked chain. Unlike SLList::Iterator, it needs no
+            manually tracked predecessor: del() can unlink the current
+            node in O(1) because the node itself already knows its
+            neighbor on both sides. */
         class Iterator : public DL::Iterator,
                          public BidirectionalIterator<Iterator, T>
         {
