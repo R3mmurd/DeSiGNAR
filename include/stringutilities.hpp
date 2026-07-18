@@ -4,6 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file stringutilities.hpp
+    @brief Free functions for common string operations: quoting and
+    splitting/joining strings on a separator.
+    @ingroup utils
+*/
+
 #pragma once
 
 #include <types.hpp>
@@ -13,27 +19,39 @@ namespace Designar
     template <typename T>
     class DynArray;
 
+    /** @brief Wraps `s` between two copies of `b` (e.g. q("x", "*")
+        yields "*x*"). Used by sq() and dq() to implement quoting. */
     std::string q(const std::string& s, const std::string& b)
     {
         return b + s + b;
     }
 
+    /** @brief Wraps `s` in single quotes. */
     std::string sq(const std::string& s)
     {
         return q(s, "'");
     }
 
+    /** @brief Wraps `s` in double quotes. */
     std::string dq(const std::string& s)
     {
         return q(s, "\"");
     }
 
+    /** @brief Splits `str` on every occurrence of the literal separator
+        `sep`, returning the pieces in a container of type
+        ContainerType (DynArray<std::string> by default). */
     template <typename ContainerType = DynArray<std::string>>
     ContainerType split_string(const std::string&, const std::string&);
 
+    /** @brief Splits `str` on every match of the regular expression
+        `pattern`, returning the pieces in a container of type
+        ContainerType (DynArray<std::string> by default). */
     template <typename ContainerType = DynArray<std::string>>
     ContainerType split_string_re(const std::string&, const std::regex&);
 
+    /** @brief Joins the elements of `ss` into a single string, inserting
+        `sep` between consecutive elements. */
     template <typename ContainerType = DynArray<std::string>>
     std::string join_string(const std::string&, const ContainerType&);
 

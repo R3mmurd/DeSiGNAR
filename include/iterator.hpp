@@ -44,7 +44,7 @@ namespace Designar
             mutable — every mutable STL iterator (std::vector<T>::iterator
             included) keeps operator*()/operator->()/operator+ etc. as const
             member functions precisely so a `const Iterator` local variable,
-            or a `const Iterator&` parameter (both idioms <algorithm>
+            or a `const Iterator&` parameter (both idioms \<algorithm\>
             implementations use routinely, e.g. libc++/MSVC STL's sort()) can
             still dereference-and-write through it. get_current() itself is
             genuinely overloaded on constness (returning T& vs const T&) for

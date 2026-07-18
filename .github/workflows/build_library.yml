@@ -127,22 +127,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install Doxygen
       run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
-    - name: Build English docs
+    - name: Build docs
       run: doxygen Doxyfile
-    - name: Build Spanish docs
-      run: doxygen Doxyfile.es
-    # English at the site root, Spanish under /es/ — both editions share
-    # the same (English-only) API reference; only the main/landing page
-    # (README.md vs README.es.md) actually differs between them.
-    - name: Assemble combined site
-      run: |
-        mkdir -p site/es
-        cp -r en-doc/html/. site/
-        cp -r es-doc/html/. site/es/
     - name: Upload Pages artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: site
+        path: doc/html
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4

@@ -4,6 +4,13 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file graph.hpp
+    @brief Undirected (Graph) and directed (Digraph) graph containers, built
+    on a shared CRTP base (BaseGraph) that implements their common query
+    and traversal algorithms.
+    @ingroup Graphs
+*/
+
 #pragma once
 
 #include <nodesdef.hpp>
@@ -19,6 +26,12 @@ namespace Designar
     template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
     class Digraph;
 
+    /** The node storage type used internally by Graph: it wraps a
+        NodeInfo payload together with the bookkeeping fields (adjacency
+        list, tags, cookie, counter) provided by BaseGraphNode. Users of
+        this library never name GraphNode directly — they receive
+        `Graph<...>::Node*` pointers from insertion and traversal, and
+        interact with the NodeInfo payload through get_info(). */
     template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
     class GraphNode : public BaseGraphNode<NodeInfo, CommonNodeArc>
     {
@@ -28,6 +41,11 @@ namespace Designar
         using Base::Base;
     };
 
+    /** The node storage type used internally by Digraph. Structurally
+        identical to GraphNode (same base, same fields) — the two are kept
+        as distinct types only so that each is `friend`ed exclusively by
+        its own owning container and cannot be mixed up across the
+        undirected/directed graph APIs. */
     template <typename NodeInfo, typename ArcInfo, typename GraphInfo>
     class DigraphNode : public BaseGraphNode<NodeInfo, CommonNodeArc>
     {
@@ -37,6 +55,12 @@ namespace Designar
         using Base::Base;
     };
 
+    /** The arc (edge) storage type used internally by Graph: it wraps an
+        ArcInfo payload plus pointers to the source/target Node and, since
+        an undirected edge is registered in the adjacency list of *both*
+        endpoints, a pair of extra links (arc_in_src_node/arc_in_tgt_node)
+        so the arc can be unlinked from either node's adjacency list in
+        O(1) when it is removed. */
     template <class Node, typename NodeInfo, typename ArcInfo,
               typename GraphInfo>
     class GraphArc : public BaseGraphArc<Node, ArcInfo, CommonNodeArc>
@@ -51,6 +75,10 @@ namespace Designar
         DLNode<DLNode<GraphArc>*>* arc_in_tgt_node = nullptr;
     };
 
+    /** The arc storage type used internally by Digraph. Unlike GraphArc,
+        a directed arc is only ever registered in its *source* node's
+        adjacency list, so a single back-link (arc_in_arc_list) into the
+        digraph's global arc list is enough to support O(1) removal. */
     template <class Node, typename NodeInfo, typename ArcInfo,
               typename GraphInfo>
     class DigraphArc : public BaseGraphArc<Node, ArcInfo, CommonNodeArc>
@@ -64,6 +92,20 @@ namespace Designar
         DLNode<DLNode<DigraphArc>*>* arc_in_arc_list = nullptr;
     };
 
+    /** The CRTP base shared by Graph and Digraph: it implements every
+        generic node/arc query and traversal algorithm (for_each, map,
+        fold, filter, all/exists/none, search, remove_if, ...) once, in
+        terms only of the `nodes_begin()/nodes_end()` and
+        `arcs_begin()/arcs_end()` iterators that each derived class (GT)
+        provides. That is why so many of its member functions are
+        templates over a generic `Op` (an operation applied to each
+        element) or `Pred` (a predicate tested against each element)
+        instead of being hardcoded to one specific operation: BaseGraph
+        has no idea what a caller wants to do with a node or arc, only how
+        to iterate over them, and lets `Op`/`Pred` supply the rest. This
+        is what lets Graph and Digraph share one query/traversal
+        implementation despite their internal storage (bidirectional vs.
+        directed adjacency) being different. */
     template <class GT, class Node, class Arc, typename NodeInfoType,
               typename ArcInfoType>
     class BaseGraph
@@ -84,6 +126,16 @@ namespace Designar
     public:
         static void copy_graph(const GT&, GT&);
 
+        /** @name Node traversal and query helpers
+            The block below repeats the same handful of shapes
+            (for_each/enum_for_each, filter, map/map_if, fold,
+            all/exists/none, search, remove_first_if/remove_if) once per
+            container-of-nodes view, each simply forwarding to the
+            corresponding free function in italgorithms.hpp over
+            `nodes_begin()`/`nodes_end()`. Each has both an lvalue-ref and
+            an rvalue-ref (defaulted) overload of its `Op`/`Pred` parameter
+            so the same call works whether the caller passes a named
+            functor/lambda or a temporary. */
         Node* nth_node(nat_t i)
         {
             return nth_graph_element<Node>(const_me().nodes_begin(),
@@ -330,6 +382,10 @@ namespace Designar
                                      const_me().nodes_end());
         }
 
+        /** @name Arc traversal and query helpers
+            Same shapes as the node helpers above (for_each, filter, map,
+            fold, all/exists/none, search, remove_if, ...), this time over
+            every arc of the graph via `arcs_begin()`/`arcs_end()`. */
         Arc* nth_arc(nat_t i)
         {
             return nth_graph_element<Arc>(const_me().arcs_begin(),
@@ -558,6 +614,12 @@ namespace Designar
                                     const_me().arcs_end());
         }
 
+        /** @name Adjacent-arc traversal and query helpers
+            Once more the same shapes (for_each, filter, map, fold,
+            all/exists/none, search, remove_if, ...), but restricted to the
+            arcs incident to a single given node `p`, via
+            `arcs_begin(p)`/`arcs_end(p)`. This is the API used to walk a
+            node's neighborhood, e.g. during graph search algorithms. */
         Arc* nth_adjacent_arc(Node* p, nat_t i)
         {
             return nth_graph_element<Arc>(const_me().arcs_begin(p),
@@ -912,6 +974,29 @@ namespace Designar
         }
     }
 
+    /** An undirected graph: a set of nodes plus a set of arcs (edges),
+        where each arc connects two nodes (possibly the same one, forming
+        a self-loop) with no notion of direction — an arc between nodes
+        `a` and `b` is equally an arc from `a` to `b` and from `b` to `a`,
+        and it appears once in each endpoint's adjacency list.
+
+        `NodeInfo`, `ArcInfo` and `GraphInfo` are the payload types the
+        caller supplies: every inserted node carries a `NodeInfo` (via
+        `Node::get_info()`), every inserted arc carries an `ArcInfo` (via
+        `Arc::get_info()`), and the graph itself carries a single
+        `GraphInfo` (via `get_info()`) for whole-graph metadata. `ArcInfo`
+        and `GraphInfo` default to `EmptyClass` when the caller has no use
+        for them.
+
+        A `Graph` supports: insertion and removal of nodes (`insert_node`,
+        `remove_node`) and arcs (`insert_arc`, `remove_arc`); direct
+        lookup (`search_arc`, `nth_node`, `nth_arc`); iteration over all
+        nodes, all arcs, or the arcs adjacent to a given node via
+        `NodeIterator`/`ArcIterator`/`AdjacentArcIterator`; sorting of its
+        node/arc lists in place (`sort_nodes`, `sort_arcs`); and, inherited
+        from BaseGraph, the whole family of generic traversal/query helpers
+        (`for_each_node`, `map_arcs`, `exists_adjacent_arc`, ...) built on
+        top of those iterators. */
     template <typename NodeInfo, typename ArcInfo = EmptyClass,
               typename GraphInfo = EmptyClass>
     class Graph
@@ -1213,6 +1298,7 @@ namespace Designar
             remove_node(node);
         }
 
+        /** Bidirectional iterator over all nodes currently in the graph. */
         class NodeIterator
             : public DL::Iterator,
               public BidirectionalIterator<NodeIterator, Node*, true>
@@ -1301,6 +1387,7 @@ namespace Designar
             }
         };
 
+        /** Bidirectional iterator over every arc currently in the graph. */
         class ArcIterator
             : public DL::Iterator,
               public BidirectionalIterator<ArcIterator, Arc*, true>
@@ -1389,6 +1476,8 @@ namespace Designar
             }
         };
 
+        /** Bidirectional iterator over the arcs incident to a single given
+            node (that node's adjacency list). */
         class AdjacentArcIterator
             : public DL::Iterator,
               public BidirectionalIterator<AdjacentArcIterator, Arc*, true>
@@ -1643,6 +1732,30 @@ namespace Designar
         return nullptr;
     }
 
+    /** A directed graph: a set of nodes plus a set of arcs, where each arc
+        goes from a source node to a target node and is only ever
+        traversable in that direction — an arc from `a` to `b` says
+        nothing about an arc from `b` to `a`, and it appears only in `a`'s
+        adjacency list (not `b`'s).
+
+        `NodeInfo`, `ArcInfo` and `GraphInfo` are the payload types the
+        caller supplies: every inserted node carries a `NodeInfo` (via
+        `Node::get_info()`), every inserted arc carries an `ArcInfo` (via
+        `Arc::get_info()`), and the digraph itself carries a single
+        `GraphInfo` (via `get_info()`) for whole-graph metadata. `ArcInfo`
+        and `GraphInfo` default to `EmptyClass` when the caller has no use
+        for them.
+
+        A `Digraph` supports: insertion and removal of nodes
+        (`insert_node`, `remove_node`) and arcs (`insert_arc`,
+        `remove_arc`); direct lookup (`search_arc`, `nth_node`,
+        `nth_arc`); iteration over all nodes, all arcs, or the out-going
+        arcs of a given node via
+        `NodeIterator`/`ArcIterator`/`AdjacentArcIterator`; sorting of its
+        node/arc lists in place (`sort_nodes`, `sort_arcs`); and, inherited
+        from BaseGraph, the whole family of generic traversal/query helpers
+        (`for_each_node`, `map_arcs`, `exists_adjacent_arc`, ...) built on
+        top of those iterators. */
     template <typename NodeInfo, typename ArcInfo = EmptyClass,
               typename GraphInfo = EmptyClass>
     class Digraph
@@ -1926,6 +2039,8 @@ namespace Designar
             remove_node(node);
         }
 
+        /** Bidirectional iterator over all nodes currently in the
+            digraph. */
         class NodeIterator
             : public DL::Iterator,
               public BidirectionalIterator<NodeIterator, Node*, true>
@@ -2014,6 +2129,8 @@ namespace Designar
             }
         };
 
+        /** Bidirectional iterator over every arc currently in the
+            digraph. */
         class ArcIterator
             : public DL::Iterator,
               public BidirectionalIterator<ArcIterator, Arc*, true>
@@ -2102,6 +2219,8 @@ namespace Designar
             }
         };
 
+        /** Bidirectional iterator over the arcs outgoing from a single
+            given node (that node's adjacency list). */
         class AdjacentArcIterator
             : public DL::Iterator,
               public BidirectionalIterator<AdjacentArcIterator, Arc*, true>

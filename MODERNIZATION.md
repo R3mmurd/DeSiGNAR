@@ -1,5 +1,3 @@
-<em>Read this in other languages: <a href="MODERNIZATION.es.md">Español</a></em>
-
 # Possible modernizations with stable C++ standards
 
 DeSiGNAR currently targets C++17. This is a survey of what adopting a newer

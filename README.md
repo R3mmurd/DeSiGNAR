@@ -1,7 +1,5 @@
 ![logo](logo.png)
 
-<em>Read this in other languages: <a href="README.es.md">Español</a></em>
-
 # DeSiGNAR (Data Structures GeNeral librARy)
 
 A teaching-oriented C++17 library of generic data structures and algorithms:
@@ -9,6 +7,95 @@ arrays, lists, stacks/queues, several balanced-tree flavors (AVL, red-black,
 treap, splay, randomized BST), hash tables (chained and open-addressing),
 heaps, graphs and graph algorithms, geometry primitives, string algorithms,
 and a handful of concurrency-aware containers.
+
+Unlike a from-scratch student exercise, every container here is meant to be
+STL-compatible: standard iterator categories, move semantics, non-default-
+constructible/move-only value types where the underlying algorithm allows
+it, and heterogeneous (transparent) lookup on the ordered/hashed
+containers. The point isn't just to show *an* implementation of, say, a
+red-black tree — it's to show one you could actually drop into real code
+next to `std::vector` or `std::map` without it feeling like a toy.
+
+## Quick start
+
+```cpp
+#include <iostream>
+#include <avltree.hpp>
+
+using namespace Designar;
+
+int main()
+{
+    AVLTree<int_t> tree;
+
+    for (int_t v : {5, 3, 8, 1, 4, 7, 9})
+        tree.insert(v);
+
+    for (int_t v : tree)          // in-order traversal
+        std::cout << v << " ";
+    std::cout << "\n";
+
+    tree.remove(4);
+    std::cout << "search(4): "
+              << (tree.search(4) != nullptr ? "found" : "not found") << "\n";
+}
+```
+
+Every container/algorithm family has an equivalent runnable example under
+`samples/src/demo-*.cpp` — see the "Modules" section below for the full
+list grouped by topic, and "Documentation" for the full generated API
+reference covering everything each type exposes.
+
+## Modules
+
+The API reference groups everything into the following modules (this is
+also how the generated Doxygen site's "Modules" page is organized — see
+`docs/groups.dox`):
+
+| Module | Covers |
+| :----- | :----- |
+| Data structures | B-trees, skip lists, tries, LRU caches, pairing heaps, bloom filters, union-find, plus the foundational array/list/stack/queue/heap/map/set family at the top level of `include/`. |
+| Trees | AVL, red-black, treap, splay, randomized BST, ranked-AVL — balanced binary search trees sharing one node layout and rotation implementation. |
+| Graphs | `Graph`/`Digraph` containers, all-pairs shortest paths, max flow, bipartite matching, bridge-finding. |
+| Geometry | 2D points/vectors/segments/polygons/triangles, closest-pair, quadtrees, Voronoi diagrams. |
+| Sorting | Comparison sorts and the heterogeneous-key search helpers backing the map/set containers. |
+| Algorithms | Generic algorithms over iterators/containers: string algorithms, the container/iterator algorithm mixins reused everywhere else. |
+| Hashing | Open-addressing and chained hash tables underlying `HashMap`/`HashSet`. |
+| Concurrency | Thread pool, concurrent map, graph agent + concurrent graph for parallel graph exploration. |
+| Compilers | Grammars with FIRST/FOLLOW computation, a lexer. |
+| Automata | Finite automata (NFA/DFA, subset construction), a Turing machine simulator. |
+| Cellular automata | Dense and sparse grid representations for cellular-automaton simulation. |
+| Linear algebra | Vector and matrix types with the usual arithmetic. |
+| Artificial intelligence | Minimax search with alpha-beta pruning. |
+| Utilities | Timing, string formatting, integer helpers, and the library's fundamental type aliases (`nat_t`, `int_t`, `real_t`, ...). |
+
+## Design philosophy
+
+A few decisions that show up repeatedly across the codebase, in case they
+look surprising in isolation:
+
+- **CRTP mixins over inheritance-by-copy-paste.** `ContainerAlgorithms`
+  and `SetAlgorithms` (see the Algorithms module) give every container a
+  shared implementation of generic traversal/search/set-algebra
+  operations; a container opts in by inheriting the mixin and providing
+  `begin()`/`end()` (or the set-specific primitives), not by
+  reimplementing `for_each`/`map`/`find`/... itself.
+- **Shared node primitives, per-algorithm metadata.** Every balanced tree
+  (Trees module) is built on the same `BaseBinTreeNode` and the same
+  `generic_rotate_left`/`generic_rotate_right` pointer-relinking
+  functions; only the bookkeeping a given balancing scheme needs (AVL
+  height, red-black color, subtree count, ...) lives in that tree's own
+  code.
+- **`assert()` for internal invariants, exceptions at the boundary.**
+  Genuine usage errors (e.g. calling `top()` on an empty stack) throw;
+  invariants that should be impossible to violate from outside the
+  library are guarded by `assert()`, which is why `-DNDEBUG` builds and
+  `-DDESIGNAR_WARNINGS_AS_ERRORS=ON` don't mix cleanly for the test suite
+  (see the CMake options table below).
+- **Sanitizers as part of the test matrix, not an afterthought.** CI runs
+  the full suite under ASan+UBSan and separately under TSan (see the
+  `DESIGNAR_SANITIZE_*` options below) — several real bugs in this
+  library's history were only ever caught this way.
 
 ## Directory structure
 
@@ -138,21 +225,18 @@ contributors but have no reason to ship in a release archive.
 
 ## Documentation
 
-API documentation is generated with Doxygen — in both English (`Doxyfile`)
-and Spanish (`Doxyfile.es`) editions — and published automatically from
-`main`; see the `publish_docs` job in
+API documentation is generated with Doxygen (see `Doxyfile`) and published
+automatically from `main`; see the `publish_docs` job in
 `.github/workflows/build_library.yml` for how, and enable GitHub Pages
 ("Settings → Pages → Source: GitHub Actions") once on a fork to get your own
-copy. The two editions share the same generated API reference (this
-library's Doxygen comments are English throughout); what's translated is
-the getting-started/installation main page (this file, and its
-<a href="README.es.md">Spanish counterpart</a>).
+copy. This file (`README.md`) is the generated site's main page, and
+`docs/groups.dox` declares the module groups (Trees, Graphs, Geometry, etc.)
+used to organize the "Modules" page.
 
 To build the docs locally:
 
 ```shell
-doxygen Doxyfile      # output in en-doc/html/index.html
-doxygen Doxyfile.es   # output in es-doc/html/index.html
+doxygen Doxyfile   # output in doc/html/index.html
 ```
 
 ## License

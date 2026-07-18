@@ -4,6 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file buildgraph.hpp
+    @brief Generators that build canned graph shapes (complete, ring, grid,
+    and random) for testing and demos.
+    @ingroup Graphs
+*/
+
 #pragma once
 
 #include <graphalgorithms.hpp>
@@ -12,6 +18,23 @@
 
 namespace Designar
 {
+    /** Every generator in this file takes a `NodeInit` and an `ArcInit`
+        functor as customization hooks: right after a node or arc is
+        inserted into the graph being built, the corresponding functor is
+        called on it (`node_init(p)` / `arc_init(a)`, or, for grid
+        generators, `node_init(p, row, col)`) so callers can stamp a
+        payload onto it (a label, a weight, coordinates, etc.) without the
+        generator needing to know anything about that payload type. When
+        omitted, they default to `DftNodeInit`/`DftArcInit` (or, for grids,
+        `DftGridNodeInit`/`DftGridArcInit`), which simply do nothing. Each
+        generator has an lvalue-reference overload (taking `NodeInit&`,
+        `ArcInit&`) and a convenience overload taking rvalue references
+        with defaulted types so the initializers can be supplied inline as
+        temporaries; the rvalue overload just forwards to the lvalue one. */
+
+    /** @brief Builds a complete graph (every pair of nodes joined by an
+        arc) on `num_nodes` nodes; if `GT` is a digraph, arcs are inserted
+        in both directions between each pair. */
     template <class GT, class NodeInit, class ArcInit>
     GT full_graph(nat_t, NodeInit&, ArcInit&);
 
@@ -20,6 +43,10 @@ namespace Designar
     GT full_graph(nat_t, NodeInit&& node_init = NodeInit(),
                   ArcInit&& arc_init = ArcInit());
 
+    /** @brief Builds a ring lattice: `num_nodes` nodes arranged in a
+        cycle, each one joined to its `num_neighbors / 2` nearest
+        neighbors on each side (the classic Watts-Strogatz small-world
+        base topology, before rewiring). */
     template <class GT, class NodeInit, class ArcInit>
     GT ring_graph(nat_t, nat_t, NodeInit&, ArcInit&);
 
@@ -28,6 +55,12 @@ namespace Designar
     GT ring_graph(nat_t, nat_t, NodeInit&& node_init = NodeInit(),
                   ArcInit&& arc_init = ArcInit());
 
+    /** @brief Builds a `height` x `width` grid graph, connecting each cell
+        to its orthogonal neighbors and, depending on `type`
+        (`GridType::RECTANGULAR`, `TRIANGULAR`, `HEXAGONAL`, or
+        `OCTAGONAL`), adding or removing diagonal arcs to shape the cell
+        adjacency into that tiling. Node initializers for grids receive
+        the node's `(row, col)` position along with the node pointer. */
     template <class GT, class NodeInit, class ArcInit>
     GT build_grid(nat_t width, nat_t height, GridType type, NodeInit& node_init,
                   ArcInit& arc_init);
@@ -39,6 +72,10 @@ namespace Designar
                   NodeInit&& node_init = NodeInit(),
                   ArcInit&& arc_init = ArcInit());
 
+    /** @brief Builds a graph with `num_nodes` nodes and exactly
+        `num_arcs` arcs, each arc joining two nodes picked uniformly at
+        random (via `seed`, or an internally-generated seed if omitted),
+        skipping self-loops and repeated arcs. */
     template <class GT, class NodeInit, class ArcInit>
     GT random_graph(nat_t, nat_t, rng_seed_t, NodeInit&, ArcInit&);
 
@@ -52,6 +89,13 @@ namespace Designar
     GT random_graph(nat_t, nat_t, NodeInit&& node_init = NodeInit(),
                     ArcInit&& arc_init = ArcInit());
 
+    /** @brief Builds an Erdos-Renyi random graph on `num_nodes` nodes,
+        where every possible pair (both directions independently, if `GT`
+        is a digraph) is joined with independent probability `prob_arc`,
+        using `seed` (or an internally-generated seed if omitted). If
+        `grant_connectivity` is true, the resulting connected components
+        are additionally chained together with one arc each so the whole
+        graph ends up connected. */
     template <class GT, class NodeInit, class ArcInit>
     GT er_random_graph(nat_t, real_t, rng_seed_t, bool, NodeInit&, ArcInit&);
 

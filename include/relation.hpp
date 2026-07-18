@@ -4,6 +4,12 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
+/** @file relation.hpp
+    @brief A union-find (disjoint-set) structure for equivalence relations
+    over indices or arbitrary values.
+    @ingroup DataStructures
+*/
+
 #pragma once
 
 #include <map.hpp>
@@ -11,6 +17,15 @@
 namespace Designar
 {
 
+    /** A classic union-find (disjoint-set) data structure implementing an
+        equivalence relation over the indices `0` to `n - 1`: `join(p, q)`
+        merges the blocks containing `p` and `q`, and `are_connected(p, q)`
+        reports whether they currently belong to the same block. Union is
+        performed by size (the root of the smaller block is attached to the
+        root of the larger one, tracked in `sz`), which keeps the resulting
+        trees shallow; `find` walks parent links in `id` up to the root
+        without path compression, so lookups cost O(log n) rather than the
+        amortized O(1) achieved when both optimizations are combined. */
     class EquivalenceRelation
     {
         FixedArray<nat_t> id;
@@ -31,6 +46,17 @@ namespace Designar
         nat_t size() const;
     };
 
+    /** A thin adapter over EquivalenceRelation that lets callers build
+        equivalence classes over arbitrary values of type `T` instead of
+        raw `nat_t` indices. It keeps a hash table (`table`, a
+        `HashMap<T, nat_t, Equal>`) mapping each distinct `T` value seen so
+        far to the index EquivalenceRelation assigned it; `search_or_insert`
+        looks up that mapping, inserting a fresh index the first time a
+        value appears (throwing `std::overflow_error` once the underlying
+        relation's fixed capacity is exhausted). `join` and `are_connected`
+        translate their `T` arguments to indices through this table and
+        then delegate to the base class. Any type usable as a `HashMap` key
+        works as `T`, so `Equal` defaults to `std::equal_to<T>`. */
     template <typename T, class Equal = std::equal_to<T>>
     class TRelation : public EquivalenceRelation
     {

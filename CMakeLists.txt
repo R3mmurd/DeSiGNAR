@@ -228,8 +228,6 @@ set(CPACK_SOURCE_IGNORE_FILES
   "/\\\\.github/"
   "/build/"
   "/doc/"
-  "/en-doc/"
-  "/es-doc/"
   "/tests/"
   "/samples/"
   "/vcpkg/"
