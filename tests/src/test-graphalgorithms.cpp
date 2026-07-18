@@ -193,6 +193,74 @@ int main()
         assert(b_is_cut);
     }
 
+    // strongly_connected_components (Tarjan): the classic three-component
+    // digraph { a -> b -> c -> a, c -> d, d -> e -> d, f -> e }, giving SCCs
+    // {a, b, c}, {d, e}, {f} — cross-checked here against
+    // Kosaraju_compute_strong_connected_components, this library's
+    // other, already-existing SCC algorithm, since both must agree on
+    // any digraph.
+    {
+        using DGT = Digraph<int_t>;
+
+        DGT dg;
+        auto da = dg.insert_node(1);
+        auto db = dg.insert_node(2);
+        auto dc = dg.insert_node(3);
+        auto dd = dg.insert_node(4);
+        auto de = dg.insert_node(5);
+        auto df = dg.insert_node(6);
+
+        dg.insert_arc(da, db);
+        dg.insert_arc(db, dc);
+        dg.insert_arc(dc, da);
+        dg.insert_arc(dc, dd);
+        dg.insert_arc(dd, de);
+        dg.insert_arc(de, dd);
+        dg.insert_arc(df, de);
+
+        auto sccs = strongly_connected_components(dg);
+        assert(sccs.size() == 3);
+
+        auto find_component = [&](Node<DGT>* p) -> const DynArray<Node<DGT>*>&
+        {
+            for (const auto& comp : sccs)
+            {
+                if (comp.exists([&](Node<DGT>* q) { return q == p; }))
+                {
+                    return comp;
+                }
+            }
+
+            throw std::logic_error("node not found in any component");
+        };
+
+        assert(find_component(da).size() == 3);
+        assert(find_component(db).size() == 3);
+        assert(find_component(dc).size() == 3);
+        assert(find_component(dd).size() == 2);
+        assert(find_component(de).size() == 2);
+        assert(find_component(df).size() == 1);
+
+        auto kosaraju_sccs = Kosaraju_compute_strong_connected_components(dg);
+        assert(kosaraju_sccs.size() == sccs.size());
+
+        // Non-digraph argument must be rejected, same as Kosaraju's.
+        Graph<int_t> ug;
+        ug.insert_node(1);
+        bool threw = false;
+
+        try
+        {
+            strongly_connected_components(ug);
+        }
+        catch (const std::domain_error&)
+        {
+            threw = true;
+        }
+
+        assert(threw);
+    }
+
     cout << "Everything ok!\n";
 
     return 0;

@@ -564,7 +564,7 @@ namespace Designar
     }
 
     template <typename Key, typename Value, class Cmp = std::equal_to<Key>,
-              template <typename, class> class HashTableType = LHashTable>
+              template <typename, class> class HashTableType = SeparateChainingHashTable>
     class HashMap
         : public GenMap<Key, Value, Cmp,
                         HashSet<MapKey<Key, Value>, CmpWrapper<Key, Value, Cmp>,
@@ -572,7 +572,7 @@ namespace Designar
     {
         using CmpWrapperType = CmpWrapper<Key, Value, Cmp>;
         using Item = MapKey<Key, Value>;
-        using BaseHash = HashSet<Item, CmpWrapperType, LHashTable>;
+        using BaseHash = HashSet<Item, CmpWrapperType, SeparateChainingHashTable>;
         using BaseMap = GenMap<Key, Value, Cmp, BaseHash>;
         using HashFctPtr = nat_t (*)(const Key&);
         using HashFctType = std::function<nat_t(const Key&)>;

@@ -28,8 +28,9 @@ namespace Designar
     /** Helper base that owns a default-constructed `Cmp` instance.
 
         Several containers (GenArraySet, CmpWrapper, RankedTreap, the
-        heaps, LHashTable) intentionally store their comparator as a
-        reference (`Cmp &cmp`) rather than by value, so that a caller who
+        heaps, SeparateChainingHashTable) intentionally store their
+        comparator as a reference (`Cmp &cmp`) rather than by value, so
+        that a caller who
         wants a *stateful* comparator can pass one in by name and have the
         container observe (and be observed by) mutations to that same
         object for as long as both are alive. That design only works when

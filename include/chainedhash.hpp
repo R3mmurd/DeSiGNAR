@@ -1,0 +1,889 @@
+/*
+  This file is part of Designar.
+
+  Author: Alejandro Mujica (aledrums@gmail.com)
+*/
+
+/** @file chainedhash.hpp
+    @brief SeparateChainingHashTable: a hash table that resolves
+    collisions by keeping every key that hashes to the same bucket in
+    its own linked list — the textbook "separate chaining" strategy, as
+    opposed to openhash.hpp's OpenAddressingHashTable (which instead
+    probes for another slot within the same backing array).
+    @ingroup Hashing
+*/
+
+#pragma once
+
+#include <array.hpp>
+#include <list.hpp>
+#include <containeralgorithms.hpp>
+#include <setalgorithms.hpp>
+#include <iterator.hpp>
+#include <typetraits.hpp>
+#include <hash.hpp> // for super_fast_hash
+
+namespace Designar
+{
+    /** A hash table using separate chaining: every bucket in the
+        backing `FixedArray` is itself a `DLList<Key>`, so two keys that
+        hash to the same bucket simply become two entries in that
+        bucket's list rather than displacing each other — the load
+        factor can exceed 1 without correctness issues (only
+        performance, since a bucket's list grows unbounded), unlike
+        open addressing where the table is fundamentally full once
+        every slot holds something.
+
+        @see DefaultCmpHolder for why this class privately derives from
+        `DefaultCmpHolder<Cmp>`.
+        @see OpenAddressingHashTable (openhash.hpp) for the alternative
+        collision strategy. */
+    template <typename Key, class Cmp = std::equal_to<Key>>
+    class SeparateChainingHashTable
+        : private DefaultCmpHolder<Cmp>,
+          private FixedArray<DLList<Key>>,
+          public ContainerAlgorithms<SeparateChainingHashTable<Key, Cmp>, Key>,
+          public SetAlgorithms<SeparateChainingHashTable<Key, Cmp>, Key>
+    {
+        using List = DLList<Key>;
+        using BaseArray = FixedArray<List>;
+
+    public:
+        using ItemType = Key;
+        using KeyType = Key;
+        using DataType = Key;
+        using ValueType = Key;
+        using SizeType = nat_t;
+        using CmpType = Cmp;
+        using HashFctPtr = nat_t (*)(const Key&);
+        using HashFctType = std::function<nat_t(const Key&)>;
+
+        static constexpr nat_t DFT_SIZE = 32;
+        static constexpr real_t DFT_LOWER_ALPHA = 0.25;
+        static constexpr real_t DFT_UPPER_ALPHA = 0.75;
+
+    private:
+        nat_t num_items;
+        Cmp& cmp;
+        HashFctType hash_fct;
+        real_t lower_alpha;
+        real_t upper_alpha;
+
+        void clear_lists();
+
+        void resize(nat_t);
+
+        Key* search_in_list(List& list, const Key& k)
+        {
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
+        const Key* search_in_list(const List& list, const Key& k) const
+        {
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
+        nat_t h(const Key& item) const
+        {
+            return hash_fct(item) % BaseArray::get_capacity();
+        }
+
+        /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
+            logic and the same reason it is needed. */
+        static Cmp& cmp_for_copy(SeparateChainingHashTable& self,
+                                const SeparateChainingHashTable& h)
+        {
+            if (&h.cmp == &h.default_cmp)
+            {
+                self.default_cmp = h.default_cmp;
+                return self.default_cmp;
+            }
+
+            return h.cmp;
+        }
+
+    public:
+        SeparateChainingHashTable(nat_t size, Cmp& _cmp, HashFctType fct,
+                                  real_t _lower_alpha, real_t _upper_alpha)
+            : BaseArray(size),
+              num_items(0),
+              cmp(_cmp),
+              hash_fct(fct),
+              lower_alpha(_lower_alpha),
+              upper_alpha(_upper_alpha)
+        {
+            // empty
+        }
+
+        /** The rvalue-accepting counterpart of the constructor above: takes
+            a comparator by value (or none, via a chain of default
+            arguments) and copies it into the owned `default_cmp` slot rather
+            than binding `cmp` to this constructor's own
+            temporary/default-argument parameter (which is destroyed at the
+            end of the call — see DefaultCmpHolder). Every other `Cmp &&`
+            overload below must delegate here with `std::forward<Cmp>(_cmp)`
+            rather than a bare `_cmp`: a named `Cmp &&` parameter is an
+            lvalue expression, so a bare `_cmp` would silently resolve to the
+            *lvalue* overload above and bind `cmp` straight to that
+            overload's own about-to-be-destroyed parameter — reintroducing
+            the same dangling-reference bug one delegation level down. */
+        SeparateChainingHashTable(nat_t size, Cmp&& _cmp, HashFctType fct,
+                                  real_t _lower_alpha, real_t _upper_alpha)
+            : BaseArray(size),
+              num_items(0),
+              cmp(this->default_cmp),
+              hash_fct(fct),
+              lower_alpha(_lower_alpha),
+              upper_alpha(_upper_alpha)
+        {
+            this->default_cmp = _cmp;
+        }
+
+        SeparateChainingHashTable(nat_t size, Cmp& _cmp, HashFctType fct)
+            : SeparateChainingHashTable(size, _cmp, fct, DFT_LOWER_ALPHA,
+                                        DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(nat_t size, Cmp&& _cmp, HashFctType fct)
+            : SeparateChainingHashTable(size, std::forward<Cmp>(_cmp), fct,
+                                        DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(nat_t size, Cmp& _cmp,
+                                  HashFctPtr fct = &super_fast_hash)
+            : SeparateChainingHashTable(size, _cmp, fct, DFT_LOWER_ALPHA,
+                                        DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(nat_t size, Cmp&& _cmp = Cmp(),
+                                  HashFctPtr fct = &super_fast_hash)
+            : SeparateChainingHashTable(size, std::forward<Cmp>(_cmp), fct,
+                                        DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(Cmp& _cmp, HashFctType fct)
+            : SeparateChainingHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA,
+                                        DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(Cmp&& _cmp, HashFctType fct)
+            : SeparateChainingHashTable(DFT_SIZE, std::forward<Cmp>(_cmp), fct,
+                                        DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(Cmp& _cmp, HashFctPtr fct = &super_fast_hash)
+            : SeparateChainingHashTable(DFT_SIZE, _cmp, fct, DFT_LOWER_ALPHA,
+                                        DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(Cmp&& _cmp = Cmp(),
+                                  HashFctPtr fct = &super_fast_hash)
+            : SeparateChainingHashTable(DFT_SIZE, std::forward<Cmp>(_cmp), fct,
+                                        DFT_LOWER_ALPHA, DFT_UPPER_ALPHA)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(const SeparateChainingHashTable& h)
+            : BaseArray(h),
+              num_items(h.num_items),
+              cmp(cmp_for_copy(*this, h)),
+              hash_fct(h.hash_fct),
+              lower_alpha(h.lower_alpha),
+              upper_alpha(h.upper_alpha)
+        {
+            // empty
+        }
+
+        SeparateChainingHashTable(SeparateChainingHashTable&& h)
+            : SeparateChainingHashTable()
+        {
+            swap(h);
+        }
+
+        SeparateChainingHashTable(const std::initializer_list<Key>&);
+
+        SeparateChainingHashTable& operator=(const SeparateChainingHashTable& h)
+        {
+            if (this == &h)
+            {
+                return *this;
+            }
+
+            (BaseArray&)* this = h;
+            num_items = h.num_items;
+            cmp = h.cmp;
+            hash_fct = h.hash_fct;
+            lower_alpha = h.lower_alpha;
+            upper_alpha = h.upper_alpha;
+
+            return *this;
+        }
+
+        SeparateChainingHashTable& operator=(SeparateChainingHashTable&& h)
+        {
+            swap(h);
+            return *this;
+        }
+
+        void swap(SeparateChainingHashTable& h)
+        {
+            BaseArray::swap(h);
+            std::swap(num_items, h.num_items);
+            std::swap(cmp, h.cmp);
+            std::swap(hash_fct, h.hash_fct);
+            std::swap(lower_alpha, h.lower_alpha);
+            std::swap(upper_alpha, h.upper_alpha);
+        }
+
+        Cmp& get_cmp()
+        {
+            return cmp;
+        }
+
+        const Cmp& get_cmp() const
+        {
+            return cmp;
+        }
+
+        const HashFctType& get_hash_fct() const
+        {
+            return hash_fct;
+        }
+
+        real_t get_lower_alpha() const
+        {
+            return lower_alpha;
+        }
+
+        real_t get_upper_alpha() const
+        {
+            return upper_alpha;
+        }
+
+        void set_lower_alpha(real_t value)
+        {
+            lower_alpha = value;
+        }
+
+        void set_upper_alpha(real_t value)
+        {
+            upper_alpha = value;
+        }
+
+        void reset_alpha_values()
+        {
+            lower_alpha = DFT_LOWER_ALPHA;
+            upper_alpha = DFT_UPPER_ALPHA;
+        }
+
+        real_t alpha() const
+        {
+            return real_t(num_items) / real_t(BaseArray::get_capacity());
+        }
+
+        bool is_empty() const
+        {
+            return num_items == 0;
+        }
+
+        nat_t size() const
+        {
+            return num_items;
+        }
+
+        nat_t N() const
+        {
+            return size();
+        }
+
+        nat_t M() const
+        {
+            return BaseArray::get_capacity();
+        }
+
+        void clear()
+        {
+            clear_lists();
+            num_items = 0;
+        }
+
+        Key* insert(const Key& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (!list.is_empty() && search_in_list(list, item) != nullptr)
+            {
+                return nullptr;
+            }
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.append(item);
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(item);
+        }
+
+        Key* insert(Key&& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (!list.is_empty() && search_in_list(list, item) != nullptr)
+            {
+                return nullptr;
+            }
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.insert(std::forward<Key>(item));
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(std::forward<Key>(item));
+        }
+
+        Key* insert_dup(const Key& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.append(item);
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(item);
+        }
+
+        Key* insert_dup(Key&& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.insert(std::forward<Key>(item));
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(std::forward<Key>(item));
+        }
+
+        Key* append(const Key& k)
+        {
+            return insert(k);
+        }
+
+        Key* append(Key&& k)
+        {
+            return insert(std::forward<Key>(k));
+        }
+
+        Key* append_dup(const Key& k)
+        {
+            return insert_dup(k);
+        }
+
+        Key* append_dup(Key&& k)
+        {
+            return insert_dup(std::forward<Key>(k));
+        }
+
+        Key* search(const Key& k)
+        {
+            nat_t i = h(k);
+
+            List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return search_in_list(list, k);
+        }
+
+        const Key* search(const Key& k) const
+        {
+            nat_t i = h(k);
+
+            const List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return search_in_list(list, k);
+        }
+
+        /** Heterogeneous lookup: probes with a bare `k` of any type `K`
+            that only *compares* like a stored `Key` (via `cmp`), not one
+            that has to actually construct a full `Key`. Unlike the BST
+            trees' search_by() (nodesdef.hpp's generic_bst_search_by,
+            which only ever needed a heterogeneous *comparator*), a hash
+            table also needs to *hash* the probe to find its bucket, and
+            this table's own `hash_fct` is fixed to hash a full `Key` —
+            so the caller must supply a `key_hash_fct` that hashes `K` the
+            same way `hash_fct` would hash a `Key` built from it (see
+            GenMap::search()/HashMap's own `fct` member in map.hpp, which
+            is exactly the un-wrapped per-mapped-Key hash function
+            `hash_fct` was built from). */
+        template <typename K, class KeyHashFct>
+        Key* search_by(const K& k, KeyHashFct&& key_hash_fct)
+        {
+            nat_t i = key_hash_fct(k) % BaseArray::get_capacity();
+            List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
+        template <typename K, class KeyHashFct>
+        const Key* search_by(const K& k, KeyHashFct&& key_hash_fct) const
+        {
+            nat_t i = key_hash_fct(k) % BaseArray::get_capacity();
+            const List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return nullptr;
+            }
+
+            return list.search_ptr([&k, this](const auto& item)
+                                   { return cmp(k, item); });
+        }
+
+        Key* search_or_insert(const Key& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (!list.is_empty())
+            {
+                Key* result = search_in_list(list, item);
+
+                if (result != nullptr)
+                {
+                    return result;
+                }
+            }
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.insert(item);
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(item);
+        }
+
+        Key* search_or_insert(Key&& item)
+        {
+            nat_t i = h(item);
+
+            List& list = BaseArray::at(i);
+
+            if (!list.is_empty())
+            {
+                Key* result = search_in_list(list, item);
+
+                if (result != nullptr)
+                {
+                    return result;
+                }
+            }
+
+            if (alpha() < upper_alpha)
+            {
+                ++num_items;
+                return &list.insert(std::forward<Key>(item));
+            }
+
+            resize(BaseArray::get_capacity() * 2);
+            i = h(item);
+            ++num_items;
+            return &BaseArray::at(i).insert(std::forward<Key>(item));
+        }
+
+        Key& find(const Key& k)
+        {
+            Key* ptr = search(k);
+
+            if (ptr == nullptr)
+            {
+                throw std::domain_error("Key does not exists");
+            }
+
+            return *ptr;
+        }
+
+        const Key& find(const Key& k) const
+        {
+            const Key* ptr = search(k);
+
+            if (ptr == nullptr)
+            {
+                throw std::domain_error("Key does not exists");
+            }
+
+            return *ptr;
+        }
+
+        bool remove(const Key& k)
+        {
+            nat_t i = h(k);
+
+            List& list = BaseArray::at(i);
+
+            if (list.is_empty())
+            {
+                return false;
+            }
+
+            bool result = list.remove_first_if([&k, this](const auto& item)
+                                               { return cmp(k, item); });
+
+            if (!result)
+            {
+                return false;
+            }
+
+            --num_items;
+
+            nat_t min_size = DFT_SIZE;
+
+            if (BaseArray::get_capacity() == min_size || alpha() > lower_alpha)
+            {
+                return true;
+            }
+
+            nat_t new_size = std::max(min_size, BaseArray::get_capacity() / 2);
+            resize(new_size);
+
+            return true;
+        }
+
+        class Iterator : public BidirectionalIterator<Iterator, Key>
+        {
+            friend class SeparateChainingHashTable;
+            friend class BasicIterator<Iterator, Key>;
+
+            SeparateChainingHashTable* set_ptr;
+            int_t set_pos;
+            typename List::Iterator list_it;
+            int_t pos;
+
+            void locate_end();
+
+            void locate_prev(nat_t);
+
+            void locate_next(nat_t);
+
+        protected:
+            int_t get_location() const
+            {
+                return pos;
+            }
+
+            Iterator(const SeparateChainingHashTable& h, int)
+                : set_ptr(&const_cast<SeparateChainingHashTable&>(h)),
+                  set_pos(h.M()),
+                  list_it(),
+                  pos(h.N())
+            {
+                locate_end();
+            }
+
+        public:
+            Iterator() : set_ptr(nullptr), set_pos(-1), list_it(), pos(-1)
+            {
+                // empty
+            }
+
+            Iterator(const SeparateChainingHashTable& h)
+                : set_ptr(&const_cast<SeparateChainingHashTable&>(h)),
+                  set_pos(0),
+                  list_it(),
+                  pos(0)
+            {
+                locate_next(set_pos);
+            }
+
+            Iterator(const Iterator& it)
+                : set_ptr(it.set_ptr),
+                  set_pos(it.set_pos),
+                  list_it(it.list_it),
+                  pos(it.pos)
+            {
+                // empty
+            }
+
+            Iterator(Iterator&& it) : Iterator()
+            {
+                swap(it);
+            }
+
+            Iterator& operator=(const Iterator& it)
+            {
+                if (this == &it)
+                {
+                    return *this;
+                }
+
+                set_ptr = it.set_ptr;
+                set_pos = it.set_pos;
+                list_it = it.list_it;
+                pos = it.pos;
+
+                return *this;
+            }
+
+            Iterator& operator=(Iterator&& it)
+            {
+                swap(it);
+                return *this;
+            }
+
+            void swap(Iterator& it)
+            {
+                std::swap(set_ptr, it.set_ptr);
+                std::swap(set_pos, it.set_pos);
+                std::swap(list_it, it.list_it);
+                std::swap(pos, it.pos);
+            }
+
+            void reset_first()
+            {
+                pos = 0;
+                locate_next(0);
+            }
+
+            void reset_last()
+            {
+                pos = set_ptr->N();
+                locate_end();
+                prev();
+            }
+
+            bool has_current() const
+            {
+                return set_pos >= 0 && set_pos < set_ptr->get_capacity();
+            }
+
+            Key& get_current()
+            {
+                if (!has_current())
+                {
+                    throw std::overflow_error("There is not current element");
+                }
+
+                return list_it.get_current();
+            }
+
+            const Key& get_current() const
+            {
+                if (!has_current())
+                {
+                    throw std::overflow_error("There is not current element");
+                }
+
+                return list_it.get_current();
+            }
+
+            void next()
+            {
+                if (!has_current())
+                {
+                    return;
+                }
+
+                ++pos;
+
+                list_it.next();
+
+                if (!list_it.has_current())
+                {
+                    locate_next(set_pos + 1);
+                }
+            }
+
+            void prev()
+            {
+                if (pos == 0)
+                {
+                    return;
+                }
+
+                --pos;
+
+                if (set_pos == set_ptr->M() ||
+                    list_it == set_ptr->at(set_pos).begin())
+                {
+                    locate_prev(set_pos);
+                }
+
+                list_it.prev();
+            }
+        };
+
+        Iterator begin()
+        {
+            return Iterator(*this);
+        }
+
+        Iterator begin() const
+        {
+            return Iterator(*this);
+        }
+
+        Iterator end()
+        {
+            return Iterator(*this, 0);
+        }
+
+        Iterator end() const
+        {
+            return Iterator(*this, 0);
+        }
+    };
+
+    template <typename Key, class Cmp>
+    void SeparateChainingHashTable<Key, Cmp>::clear_lists()
+    {
+        for (nat_t i = 0; i < BaseArray::get_capacity(); ++i)
+        {
+            BaseArray::at(i).clear();
+        }
+    }
+
+    template <typename Key, class Cmp>
+    void SeparateChainingHashTable<Key, Cmp>::resize(nat_t sz)
+    {
+        SeparateChainingHashTable new_hash_set(sz, cmp, hash_fct, lower_alpha,
+                                               upper_alpha);
+
+        for (Key& item : *this)
+        {
+            new_hash_set.append(std::move(item));
+        }
+
+        swap(new_hash_set);
+    }
+
+    template <typename Key, class Cmp>
+    SeparateChainingHashTable<Key, Cmp>::SeparateChainingHashTable(
+        const std::initializer_list<Key>& l)
+        : SeparateChainingHashTable()
+    {
+        for (const Key& item : l)
+        {
+            append(item);
+        }
+    }
+
+    template <typename Key, class Cmp>
+    void SeparateChainingHashTable<Key, Cmp>::Iterator::locate_end()
+    {
+        while (set_pos > 0 && set_ptr->at(set_pos - 1).is_empty())
+        {
+            --set_pos;
+        }
+
+        if (set_pos > 0)
+        {
+            list_it = set_ptr->at(set_pos - 1).end();
+        }
+    }
+
+    template <typename Key, class Cmp>
+    void SeparateChainingHashTable<Key, Cmp>::Iterator::locate_next(nat_t i)
+    {
+        if (set_ptr->is_empty())
+        {
+            return;
+        }
+
+        while (i < set_ptr->get_capacity() and set_ptr->at(i).is_empty())
+        {
+            ++i;
+        }
+
+        if (i < set_ptr->get_capacity())
+        {
+            assert(!set_ptr->at(i).is_empty());
+            list_it = set_ptr->at(i).begin();
+        }
+
+        set_pos = i;
+    }
+
+    template <typename Key, class Cmp>
+    void SeparateChainingHashTable<Key, Cmp>::Iterator::locate_prev(nat_t i)
+    {
+        if (set_ptr->is_empty())
+        {
+            return;
+        }
+
+        while (i > 0 && set_ptr->at(i - 1).is_empty())
+        {
+            --i;
+        }
+
+        if (i > 0)
+        {
+            assert(!set_ptr->at(i - 1).is_empty());
+            list_it = set_ptr->at(i - 1).end();
+        }
+
+        set_pos = i - 1;
+    }
+
+} // end namespace Designar

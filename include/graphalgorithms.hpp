@@ -1292,6 +1292,90 @@ namespace Designar
         return ret;
     }
 
+    /** Tarjan's strongly-connected-components algorithm: a single DFS pass
+        that discovers every SCC without ever building the inverted graph
+        Kosaraju's algorithm above needs. It reuses `df<GT>()`/`low<GT>()`
+        (graphutilities.hpp — the very same slots `compute_cut_nodes_rec`
+        uses for its lowlink computation) plus an explicit `DynStack` that
+        tracks which visited nodes have not yet been assigned to a
+        component: a node `p` roots an SCC exactly when `low(p) == df(p)`,
+        at which point every node above `p` still on the stack belongs to
+        that same component and gets popped off. `GraphTag::TARJAN_ON_STACK`
+        marks stack membership so the `else if` branch below can tell "back
+        edge to a node in a different, already-closed-off component"
+        (ignored) apart from "back edge to a node in the current, still-
+        open component" (folds into this node's `low`). */
+    template <class GT>
+    void tarjan_scc_rec(const GT& g, Node<GT>* p, int_t& index_counter,
+                        DynStack<Node<GT>*>& stack,
+                        DynArray<DynArray<Node<GT>*>>& components)
+    {
+        df<GT>(p) = low<GT>(p) = index_counter++;
+        p->visit(GraphTag::DEPTH_FIRST);
+        p->visit(GraphTag::TARJAN_ON_STACK);
+        stack.push(p);
+
+        for (AdArcIt<GT> it(g, p); it.has_current(); it.next())
+        {
+            Node<GT>* q = it.get_tgt_node();
+
+            if (!q->is_visited(GraphTag::DEPTH_FIRST))
+            {
+                tarjan_scc_rec(g, q, index_counter, stack, components);
+                low<GT>(p) = std::min(low<GT>(p), low<GT>(q));
+            }
+            else if (q->is_visited(GraphTag::TARJAN_ON_STACK))
+            {
+                low<GT>(p) = std::min(low<GT>(p), df<GT>(q));
+            }
+        }
+
+        if (low<GT>(p) != df<GT>(p))
+            return;
+
+        DynArray<Node<GT>*> component;
+        Node<GT>* w;
+
+        do
+        {
+            w = stack.pop();
+            w->unvisit(GraphTag::TARJAN_ON_STACK);
+            component.append(w);
+        } while (w != p);
+
+        components.append(std::move(component));
+    }
+
+    template <class GT>
+    DynArray<DynArray<Node<GT>*>> strongly_connected_components(const GT& g)
+    {
+        if (!g.is_digraph())
+            throw std::domain_error("Argument must be a directed graph");
+
+        g.reset_tag(GraphTag::DEPTH_FIRST);
+        g.reset_tag(GraphTag::TARJAN_ON_STACK);
+
+        g.for_each_node(
+            [](Node<GT>* p)
+            {
+                df<GT>(p) = -1;
+                low<GT>(p) = -1;
+            });
+
+        int_t index_counter = 0;
+        DynStack<Node<GT>*> stack;
+        DynArray<DynArray<Node<GT>*>> components;
+
+        g.for_each_node(
+            [&](Node<GT>* p)
+            {
+                if (!p->is_visited(GraphTag::DEPTH_FIRST))
+                    tarjan_scc_rec(g, p, index_counter, stack, components);
+            });
+
+        return components;
+    }
+
     template <class GT>
     SLList<Node<GT>*> df_topological_sort(const GT& g)
     {
