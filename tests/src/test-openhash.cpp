@@ -104,7 +104,7 @@ int main()
     test_table<DoubleHashingTable>("DoubleHashingTable");
 
     // Every open-addressing flavor must also work as HashSet's pluggable
-    // HashTableType, the same way LHashTable (separate chaining) does.
+    // HashTableType, the same way SeparateChainingHashTable does.
     HashSet<int_t, std::equal_to<int_t>, LinearHashTable> hs_linear = {1, 2, 3,
                                                                        4};
     assert(hs_linear.equal({1, 2, 3, 4}));

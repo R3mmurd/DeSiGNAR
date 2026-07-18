@@ -15,10 +15,10 @@ using namespace std;
 using namespace Designar;
 
 /** Exercises the common Set-like contract (insert/search/remove/min/
-    max/copy/move/inorder-iteration) shared by every balanced BST in
-    this library: Treap, AVLTree, RbTree, RandomizedTree (ABBA),
-    and SplayTree. RankedTreap and RankedAVLTree add order-statistics
-    on top of this and are tested separately below. */
+    max/copy/move/inorder-iteration) shared by every BST in this
+    library: Tree, Treap, AVLTree, RbTree, RandomizedTree (ABBA), and
+    SplayTree. The Ranked* trees add order-statistics on top of this and
+    are tested separately below. */
 template <template <typename, class> class TreeType>
 void test_common_tree_contract(const char* name)
 {
@@ -92,9 +92,10 @@ void test_common_tree_contract(const char* name)
 }
 
 /** Exercises select()/position()/operator[] (order-statistics) shared
-    by RankedTreap and RankedAVLTree. */
+    by every order-statistics-capable tree in this library: RankedTree,
+    RankedAVLTree, RankedRBTree, RankedTreap, and RandomizedTree. */
 template <template <typename, class> class TreeType>
-void test_ranked_tree_contract(const char* name)
+void test_order_statistics_contract(const char* name)
 {
     TreeType<int_t, std::less<int_t>> t;
 
@@ -111,24 +112,102 @@ void test_ranked_tree_contract(const char* name)
         assert(t[i] == (int_t)i);
     }
 
+    cout << name << ": order-statistics contract ok!\n";
+}
+
+/** Exercises split_pos(): across many random (tree size, split position)
+    combinations, the two resulting trees must partition the original
+    keyset exactly at the given rank and each still satisfy its own
+    verify() — the main defense against subtle join-algorithm bugs (see
+    RankedAVLTree's AVL-height-based join, this session's
+    hardest-to-get-right piece). Shared by every tree in this library
+    that offers split_pos: RankedTree, RankedAVLTree, RankedRBTree,
+    RankedTreap, and RandomizedTree. */
+template <template <typename, class> class TreeType>
+void test_split_pos_contract(const char* name)
+{
+    rng_t rng(20260718);
+
+    for (int_t trial = 0; trial < 200; ++trial)
+    {
+        nat_t N = 1 + random_uniform(rng, 300);
+        TreeType<int_t, std::less<int_t>> t;
+
+        DynArray<int_t> keys;
+        for (nat_t i = 0; i < N; ++i)
+            keys.append((int_t)i);
+
+        for (nat_t i = keys.size() - 1; i > 0; --i)
+        {
+            nat_t j = random_uniform(rng, i + 1);
+            std::swap(keys[i], keys[j]);
+        }
+
+        for (int_t k : keys)
+            t.insert(k);
+
+        assert(t.verify());
+
+        nat_t pos = random_uniform(rng, N);
+        auto [left, right] = t.split_pos(pos);
+
+        assert(left.verify());
+        assert(right.verify());
+        assert(left.size() == pos);
+        assert(right.size() == N - pos);
+
+        for (nat_t i = 0; i < pos; ++i)
+            assert(left.select(i) == (int_t)i);
+        for (nat_t i = 0; i < right.size(); ++i)
+            assert(right.select(i) == (int_t)(pos + i));
+    }
+
+    cout << name << ": split_pos contract ok!\n";
+}
+
+/** Exercises remove_pos() (delete-by-rank): shared only by RankedTreap
+    and RankedAVLTree — RankedRBTree deliberately doesn't have it (see
+    its class doc comment in rbtree.hpp for why). */
+template <template <typename, class> class TreeType>
+void test_remove_pos_contract(const char* name)
+{
+    TreeType<int_t, std::less<int_t>> t;
+
+    constexpr nat_t N = 800;
+    for (int_t i = 0; i < (int_t)N; ++i)
+        t.insert(i);
+
     auto removed = t.remove_pos(N / 2);
     assert(removed == (int_t)(N / 2));
     assert(t.size() == N - 1);
     assert(t.search((int_t)(N / 2)) == nullptr);
 
-    cout << name << ": ranked contract ok!\n";
+    cout << name << ": remove_pos contract ok!\n";
 }
 
 int main()
 {
+    test_common_tree_contract<Tree>("Tree");
     test_common_tree_contract<Treap>("Treap");
     test_common_tree_contract<AVLTree>("AVLTree");
     test_common_tree_contract<RbTree>("RbTree");
     test_common_tree_contract<RandomizedTree>("RandomizedTree (ABBA)");
     test_common_tree_contract<SplayTree>("SplayTree");
 
-    test_ranked_tree_contract<RankedTreap>("RankedTreap");
-    test_ranked_tree_contract<RankedAVLTree>("RankedAVLTree");
+    test_order_statistics_contract<RankedTree>("RankedTree");
+    test_order_statistics_contract<RankedAVLTree>("RankedAVLTree");
+    test_order_statistics_contract<RankedRBTree>("RankedRBTree");
+    test_order_statistics_contract<RankedTreap>("RankedTreap");
+    test_order_statistics_contract<RandomizedTree>("RandomizedTree (ABBA)");
+
+    test_split_pos_contract<RankedTree>("RankedTree");
+    test_split_pos_contract<RankedAVLTree>("RankedAVLTree");
+    test_split_pos_contract<RankedRBTree>("RankedRBTree");
+    test_split_pos_contract<RankedTreap>("RankedTreap");
+    test_split_pos_contract<RandomizedTree>("RandomizedTree (ABBA)");
+
+    test_remove_pos_contract<RankedTreap>("RankedTreap");
+    test_remove_pos_contract<RankedAVLTree>("RankedAVLTree");
 
     // Regression: the very first bug that motivated verify()-style checks
     // in this session — every one of these trees must satisfy its own

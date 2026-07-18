@@ -13,22 +13,28 @@
  * @defgroup DataStructures Data structures
  * @brief Container types beyond the basic array/list/stack/queue/heap/map/
  * set family (which live directly under the library's root, undocumented
- * top-level headers): B-trees, skip lists, tries, LRU caches, pairing
- * heaps, bloom filters, and union-find.
+ * top-level headers): B-trees, B+ trees, skip lists, tries, LRU caches,
+ * pairing heaps, bloom filters, and union-find.
  */
 
 /**
- * @defgroup Trees Balanced search trees
- * @brief AVL, red-black, treap, splay, randomized BST, and ranked-AVL
- * flavors of a self-balancing binary search tree, all sharing the same
- * node layout and rotation primitives (see nodesdef.hpp).
+ * @defgroup Trees Binary search trees
+ * @brief Tree (plain, unbalanced) and RankedTree (the same, plus
+ * order-statistics support) are the foundational, unbalanced BSTs;
+ * AVL, red-black, treap, splay, and randomized BST are the balancing
+ * strategies layered on top, each pairing a plain flavor with its
+ * order-statistics-capable `Ranked*` sibling where one exists — all
+ * sharing the same node layout and rotation primitives (see
+ * nodesdef.hpp).
  */
 
 /**
  * @defgroup Graphs Graphs and graph algorithms
  * @brief Directed/undirected graph containers plus the classic algorithms
  * built on top of them: shortest paths (all-pairs), max flow, bipartite
- * matching, and bridge-finding.
+ * matching, bridge-finding, and strongly-connected-components (both
+ * Kosaraju's two-pass algorithm and Tarjan's single-DFS-pass algorithm,
+ * kept side by side for comparison).
  */
 
 /**
@@ -46,14 +52,21 @@
 /**
  * @defgroup Algorithms Generic algorithms
  * @brief Algorithms expressed over iterators or containers in general,
- * independent of any specific data structure: string algorithms and the
- * container/iterator algorithm mixins reused across the library.
+ * independent of any specific data structure: string algorithms, the
+ * container/iterator algorithm mixins reused across the library,
+ * elementary number theory (gcd, modular exponentiation/inverse), and
+ * the classic randomized algorithms (randomized order statistics,
+ * Miller-Rabin primality testing, reservoir sampling, Karger's min-cut).
  */
 
 /**
- * @defgroup Hashing Hash tables
- * @brief Open-addressing and chained hash table implementations
- * underlying HashMap/HashSet.
+ * @defgroup Hashing Hashing
+ * @brief Open-addressing (OpenAddressingHashTable) and separate-chaining
+ * (SeparateChainingHashTable) hash table implementations underlying
+ * HashMap/HashSet; the hash-function collection backing them
+ * (super_fast_hash) plus MD5/SHA-1/SHA-256 for real security use; and
+ * HashChain, the classic iterated hash chain used by one-time-password
+ * schemes and simple blockchain-style structures.
  */
 
 /**
@@ -64,8 +77,9 @@
 
 /**
  * @defgroup Compilers Compiler construction
- * @brief Formal grammars (with FIRST/FOLLOW set computation) and a lexer,
- * the front-end pieces of a small compiler/interpreter.
+ * @brief A lexer, formal grammars (with FIRST/FOLLOW set computation),
+ * and an LL(1) predictive parser built from them — the complete
+ * lex-then-parse front end of a small compiler/interpreter.
  */
 
 /**
@@ -87,7 +101,11 @@
 
 /**
  * @defgroup ArtificialIntelligence Artificial intelligence
- * @brief Game-playing search: minimax with alpha-beta pruning.
+ * @brief Game-playing search (minimax with alpha-beta pruning);
+ * metaheuristics for optimization and complex-systems modeling —
+ * genetic algorithms, ant colony optimization, artificial bee colony,
+ * particle swarm optimization, and simulated annealing; and a
+ * feedforward neural network trained by backpropagation.
  */
 
 /**

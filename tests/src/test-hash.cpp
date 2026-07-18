@@ -4,169 +4,74 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-#include <set.hpp>
-#include <sort.hpp>
+#include <cassert>
+#include <hash.hpp>
 
-using namespace std;
 using namespace Designar;
 
 int main()
 {
-    HashSet<int_t> hash_set;
+    // super_fast_hash: not a cryptographic hash, but it must at least be
+    // deterministic within a run and actually distinguish different
+    // inputs (see chainedhash.hpp/openhash.hpp for it in actual use as a
+    // table hash).
+    assert(super_fast_hash("hello") == super_fast_hash("hello"));
+    assert(super_fast_hash("hello") != super_fast_hash("world"));
+    assert(super_fast_hash(std::string("hello")) ==
+           super_fast_hash("hello"));
 
-    for (int_t i = 0; i < 10; ++i)
-        assert(hash_set.insert(i + 1) != nullptr);
+    // MD5/SHA-1/SHA-256 against the standard published test vectors —
+    // FIPS 180-4's "abc"/56-character examples and RFC 1321's MD5
+    // vectors. The 56-character message is deliberately chosen: it's the
+    // shortest input that pushes the algorithm into a *second* 64-byte
+    // block, exercising the padding/bit-length-suffix logic that a
+    // single-block message (like "" or "abc") never touches.
+    const std::string fips_msg =
+        "abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq";
 
-    assert(hash_set.insert(5) == nullptr);
+    assert(to_hex(md5(std::string(""))) ==
+           "d41d8cd98f00b204e9800998ecf8427e");
+    assert(to_hex(md5(std::string("abc"))) ==
+           "900150983cd24fb0d6963f7d28e17f72");
+    assert(to_hex(md5(fips_msg)) == "8215ef0796a20bcaaae116d3876c664a");
+    assert(md5(std::string("")).size() == 16);
 
-    assert(hash_set.search(4) != nullptr);
-    assert(hash_set.search(6) != nullptr);
-    assert(hash_set.search(15) == nullptr);
+    assert(to_hex(sha1(std::string(""))) ==
+           "da39a3ee5e6b4b0d3255bfef95601890afd80709");
+    assert(to_hex(sha1(std::string("abc"))) ==
+           "a9993e364706816aba3e25717850c26c9cd0d89d");
+    assert(to_hex(sha1(fips_msg)) ==
+           "84983e441c3bd26ebaae4aa1f95129e5e54670f1");
+    assert(sha1(std::string("")).size() == 20);
 
-    assert(hash_set.remove(6));
-    assert(!hash_set.remove(15));
+    assert(to_hex(sha256(std::string(""))) ==
+           "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+    assert(to_hex(sha256(std::string("abc"))) ==
+           "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+    assert(to_hex(sha256(fips_msg)) ==
+           "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1");
+    assert(sha256(std::string("")).size() == 32);
 
-    assert(hash_set.search(4) != nullptr);
-    assert(hash_set.search(6) == nullptr);
-    assert(hash_set.search(15) == nullptr);
+    // Every algorithm here is deterministic and distinguishes different
+    // inputs — the bare minimum any hash function needs, cryptographic
+    // or not.
+    assert(to_hex(sha256(std::string("abc"))) !=
+           to_hex(sha256(std::string("abd"))));
 
-    HashSet<int_t> another_hash_set = {1, 2, 3, 4, 5};
+    // The const void*/nat_t overload and the std::string overload must
+    // agree.
+    std::string s = "designar";
+    assert(to_hex(sha256(s.data(), s.size())) == to_hex(sha256(s)));
 
-    assert(another_hash_set.size() == 5);
+    // to_hex() round-trips through a known digest length: 2 hex
+    // characters per byte, always lowercase.
+    std::string hex = to_hex(sha256(std::string("designar")));
+    assert(hex.size() == 64);
 
-    assert(!another_hash_set.all([](auto item) { return item % 2 == 0; }));
-    assert(another_hash_set.exists([](auto item) { return item % 2 == 0; }));
-
-    auto fhash =
-        another_hash_set.filter([](auto item) { return item % 2 == 0; });
-
-    assert(sort(fhash).equal({2, 4}));
-
-    auto mhash = another_hash_set.map([](auto item) { return item * 2; });
-
-    assert(mhash.size() == 5);
-    assert(sort(mhash).equal({2, 4, 6, 8, 10}));
-
-    int_t sum = another_hash_set.fold(0, [](auto item, auto acc)
-                                      { return item + acc; });
-
-    assert(sum == 15);
-
-    int_t prod = another_hash_set.fold(1, [](auto item, auto acc)
-                                       { return item * acc; });
-
-    assert(prod == 120);
-
-    HashSet<int_t> another_hash_set_cpy = another_hash_set;
-
-    assert(another_hash_set_cpy.size() == 5);
-    assert(another_hash_set_cpy.size() == another_hash_set.size());
-
-    HashSet<int_t> another_hash_set_mv = std::move(another_hash_set_cpy);
-    assert(another_hash_set_cpy.is_empty());
-
-    HashSet<int_t> hs;
-
-    for (int_t i = 0; i < 100000; ++i)
-        hs.append(i + 1);
-
-    assert(hs.size() == 100000);
-
-    for (int_t i = 0; i < 100000; ++i)
-        hs.remove(i + 1);
-
-    assert(hs.size() == 0);
-
-    HashSet<int_t> s1 = {1, 2, 3, 4};
-    HashSet<int_t> s2 = {3, 4, 5, 6};
-
-    auto js1s2 = s1.join(s2).to_array();
-
-    assert(sort(js1s2).equal({1, 2, 3, 4, 5, 6}));
-
-    auto is1s2 = s1.intersect(s2).to_array();
-    assert(sort(is1s2).equal({3, 4}));
-
-    auto ds1s2 = s1.difference(s2).to_array();
-    assert(sort(ds1s2).equal({1, 2}));
-
-    auto cs1s2 = s1.cartesian_product(s2);
-
-    assert(sort(cs1s2,
-                [](auto p, auto q)
-                {
-                    if (p.first < q.first)
-                        return true;
-
-                    if (p.first > q.first)
-                        return false;
-
-                    return p.second < q.second;
-                })
-               .equal({{1, 3},
-                       {1, 4},
-                       {1, 5},
-                       {1, 6},
-                       {2, 3},
-                       {2, 4},
-                       {2, 5},
-                       {2, 6},
-                       {3, 3},
-                       {3, 4},
-                       {3, 5},
-                       {3, 6},
-                       {4, 3},
-                       {4, 4},
-                       {4, 5},
-                       {4, 6}}));
-
-    // Regression: LHashTable's default comparator constructor used to bind
-    // `Cmp &cmp` straight to a temporary/default-argument destroyed at the
-    // end of the constructor call (see hash.hpp / typetraits.hpp's
-    // DefaultCmpHolder). Every HashSet used above is already exercised via
-    // that default-argument path; this also checks that an explicit
-    // *stateful* external comparator is genuinely shared.
+    for (char c : hex)
     {
-        struct CountingEqual
-        {
-            nat_t count = 0;
-
-            bool operator()(int_t a, int_t b)
-            {
-                ++count;
-                return a == b;
-            }
-        };
-
-        CountingEqual cmp;
-        HashSet<int_t, CountingEqual> counting_hash(cmp);
-
-        counting_hash.append(3);
-        counting_hash.append(1);
-        counting_hash.append(3);
-
-        assert(cmp.count > 0);
-        assert(counting_hash.size() == 2);
+        assert((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f'));
     }
-
-    // Regression: LHashTable::clear() (and, through it, HashSet::clear()/
-    // HashMap::clear()) called a nonexistent FixedArray::clear() after
-    // clear_lists() had already emptied every bucket in place — a
-    // compile error that had never been hit because nothing in this
-    // suite had called clear() on any HashSet/HashMap before now.
-    {
-        HashSet<int_t> hs = {1, 2, 3, 4, 5};
-        assert(hs.size() == 5);
-        hs.clear();
-        assert(hs.is_empty());
-        assert(hs.size() == 0);
-        assert(hs.search(1) == nullptr);
-        hs.append(42);
-        assert(hs.size() == 1);
-        assert(hs.search(42) != nullptr);
-    }
-
-    cout << "Everything ok!\n";
 
     return 0;
 }

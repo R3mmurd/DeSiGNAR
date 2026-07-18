@@ -8,13 +8,13 @@
 
 #include <array.hpp>
 #include <tree.hpp>
+#include <rankedtree.hpp>
 #include <treap.hpp>
 #include <avltree.hpp>
-#include <rankedavltree.hpp>
 #include <rbtree.hpp>
 #include <randomizedtree.hpp>
 #include <splaytree.hpp>
-#include <hash.hpp>
+#include <chainedhash.hpp>
 #include <openhash.hpp>
 #include <sort.hpp>
 #include <typetraits.hpp>
@@ -696,7 +696,7 @@ namespace Designar
     };
 
     template <typename Key, class Cmp = std::equal_to<Key>,
-              template <typename, class> class HashTableType = LHashTable>
+              template <typename, class> class HashTableType = SeparateChainingHashTable>
     class HashSet : public HashTableType<Key, Cmp>
     {
         using Base = HashTableType<Key, Cmp>;
