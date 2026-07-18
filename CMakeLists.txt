@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(Designar VERSION 3.0.2)
+project(Designar VERSION 3.1.0)
 
 # Set C++ Required version
 SET(CMAKE_CXX_STANDARD 17)
