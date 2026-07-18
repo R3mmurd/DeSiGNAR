@@ -30,7 +30,8 @@ namespace Designar
         CUT = 512,
         PATH = 1024,
         MIN_PATH = 2048,
-        MIN_PATH_TREE = 4096
+        MIN_PATH_TREE = 4096,
+        TARJAN_ON_STACK = 8192
     };
 
     /** `cookie()` is a general-purpose scratch slot every node/arc carries,

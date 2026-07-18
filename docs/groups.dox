@@ -32,7 +32,9 @@
  * @defgroup Graphs Graphs and graph algorithms
  * @brief Directed/undirected graph containers plus the classic algorithms
  * built on top of them: shortest paths (all-pairs), max flow, bipartite
- * matching, and bridge-finding.
+ * matching, bridge-finding, and strongly-connected-components (both
+ * Kosaraju's two-pass algorithm and Tarjan's single-DFS-pass algorithm,
+ * kept side by side for comparison).
  */
 
 /**
@@ -50,14 +52,21 @@
 /**
  * @defgroup Algorithms Generic algorithms
  * @brief Algorithms expressed over iterators or containers in general,
- * independent of any specific data structure: string algorithms and the
- * container/iterator algorithm mixins reused across the library.
+ * independent of any specific data structure: string algorithms, the
+ * container/iterator algorithm mixins reused across the library,
+ * elementary number theory (gcd, modular exponentiation/inverse), and
+ * the classic randomized algorithms (randomized order statistics,
+ * Miller-Rabin primality testing, reservoir sampling, Karger's min-cut).
  */
 
 /**
- * @defgroup Hashing Hash tables
- * @brief Open-addressing and chained hash table implementations
- * underlying HashMap/HashSet.
+ * @defgroup Hashing Hashing
+ * @brief Open-addressing (OpenAddressingHashTable) and separate-chaining
+ * (SeparateChainingHashTable) hash table implementations underlying
+ * HashMap/HashSet; the hash-function collection backing them
+ * (super_fast_hash) plus MD5/SHA-1/SHA-256 for real security use; and
+ * HashChain, the classic iterated hash chain used by one-time-password
+ * schemes and simple blockchain-style structures.
  */
 
 /**

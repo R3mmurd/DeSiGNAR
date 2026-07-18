@@ -8,7 +8,7 @@
     @brief Open-addressing hash tables: a single generic implementation
     parameterized by pluggable probe-sequence policies (linear probing,
     quadratic probing, double hashing), as an alternative collision
-    strategy to hash.hpp's separate-chaining LHashTable.
+    strategy to chainedhash.hpp's SeparateChainingHashTable.
     @ingroup Hashing
 */
 
@@ -93,8 +93,9 @@ namespace Designar
         }
     };
 
-    /** A hash table using open addressing: unlike hash.hpp's LHashTable
-        (which resolves collisions by chaining a linked list per bucket),
+    /** A hash table using open addressing: unlike chainedhash.hpp's
+        SeparateChainingHashTable (which resolves collisions by chaining
+        a linked list per bucket),
         every key here lives directly in the backing array itself, and a
         collision is resolved by probing a sequence of alternative slots
         (determined by `Probing`) until an empty one is found. Deletions
@@ -106,7 +107,8 @@ namespace Designar
 
         @see DefaultCmpHolder for why this class privately derives from
         `DefaultCmpHolder<Cmp>` and why that must be its first base.
-        @see LHashTable (hash.hpp) for the separate-chaining alternative.
+        @see SeparateChainingHashTable (chainedhash.hpp) for the
+        separate-chaining alternative.
     */
     template <typename Key, class Cmp = std::equal_to<Key>,
               class Probing = LinearProbing>
