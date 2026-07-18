@@ -10,6 +10,7 @@
 using namespace std;
 
 #include <antcolony.hpp>
+#include <math.hpp>
 
 using namespace Designar;
 
@@ -23,7 +24,7 @@ int main()
 
     for (nat_t i = 0; i < N; ++i)
     {
-        real_t theta = 2.0 * M_PI * i / N;
+        real_t theta = 2.0 * PI * i / N;
         xs.append(std::cos(theta));
         ys.append(std::sin(theta));
     }
