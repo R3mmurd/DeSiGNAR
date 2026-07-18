@@ -15,6 +15,7 @@
 
 PROJECT_NAME           = "DeSiGNAR"
 PROJECT_BRIEF           = "A C++ data structures and algorithms library for teaching"
+PROJECT_LOGO            = logo.png
 OUTPUT_DIRECTORY        = en-doc
 OUTPUT_LANGUAGE         = English
 
@@ -22,6 +23,26 @@ INPUT                   = include README.md
 FILE_PATTERNS           = *.hpp
 RECURSIVE               = YES
 USE_MDFILE_AS_MAINPAGE  = README.md
+
+# So the `![logo](logo.png)` image at the top of README.md (a path
+# that only resolves on GitHub, relative to the repo root) is found
+# and copied into the generated site instead of turning into a broken
+# image link. Points at docs/ (which holds its own copy of logo.png)
+# rather than the repo root: IMAGE_PATH's own recursive scan ignores
+# EXCLUDE/EXCLUDE_PATTERNS entirely, so pointing it at the repo root
+# would also find en-doc/html/logo.png once a previous build's output
+# already exists on disk (exactly what happens when this Doxyfile and
+# Doxyfile.es both run back to back in the same job, as
+# build_library.yml does) and report it as an ambiguous second match.
+IMAGE_PATH              = docs
+
+# Injects a working English/Español switch link into every generated
+# page (see docs/doxygen-header-en.html) — the one inline in
+# README.md/README.es.md only works on GitHub, since it links to the
+# other file's raw .md path, which does not exist in the deployed
+# HTML site (English at the site root, Spanish under /es/, see
+# build_library.yml's publish_docs job).
+HTML_HEADER             = docs/doxygen-header-en.html
 
 # Every public class/function in this library is meant to be readable
 # documentation for students, including the ones that do not (yet) have

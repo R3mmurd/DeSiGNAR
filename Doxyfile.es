@@ -17,6 +17,7 @@
 
 PROJECT_NAME           = "DeSiGNAR"
 PROJECT_BRIEF           = "Una biblioteca de estructuras de datos y algoritmos en C++ con fines didacticos"
+PROJECT_LOGO            = logo.png
 OUTPUT_DIRECTORY        = es-doc
 OUTPUT_LANGUAGE         = Spanish
 
@@ -24,6 +25,10 @@ INPUT                   = include README.es.md
 FILE_PATTERNS           = *.hpp
 RECURSIVE               = YES
 USE_MDFILE_AS_MAINPAGE  = README.es.md
+
+# @see Doxyfile's matching comment.
+IMAGE_PATH              = docs
+HTML_HEADER             = docs/doxygen-header-es.html
 
 EXTRACT_ALL             = YES
 EXTRACT_PRIVATE         = NO
