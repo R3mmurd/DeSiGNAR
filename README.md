@@ -54,8 +54,8 @@ also how the generated Doxygen site's "Modules" page is organized — see
 
 | Module | Covers |
 | :----- | :----- |
-| Data structures | B-trees, skip lists, tries, LRU caches, pairing heaps, bloom filters, union-find, plus the foundational array/list/stack/queue/heap/map/set family at the top level of `include/`. |
-| Trees | AVL, red-black, treap, splay, randomized BST, ranked-AVL — balanced binary search trees sharing one node layout and rotation implementation. |
+| Data structures | B-trees, B+ trees, skip lists, tries, LRU caches, pairing heaps, bloom filters, union-find, plus the foundational array/list/stack/queue/heap/map/set family at the top level of `include/`. |
+| Trees | Tree/RankedTree (plain/unbalanced), AVL, red-black, treap, splay, randomized BST — each pairing a plain flavor with its order-statistics-capable `Ranked*` sibling where one exists, all sharing one node layout and rotation implementation. |
 | Graphs | `Graph`/`Digraph` containers, all-pairs shortest paths, max flow, bipartite matching, bridge-finding. |
 | Geometry | 2D points/vectors/segments/polygons/triangles, closest-pair, quadtrees, Voronoi diagrams. |
 | Sorting | Comparison sorts and the heterogeneous-key search helpers backing the map/set containers. |

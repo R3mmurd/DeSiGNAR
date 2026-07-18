@@ -5,7 +5,8 @@
 */
 
 /** @file rbtree.hpp
-    @brief A left-leaning red-black tree set implementation (Sedgewick's
+    @brief RbTree (plain) and RankedRBTree (order-statistics) set
+    implementations: a left-leaning red-black tree (Sedgewick's
     formulation, isomorphic to 2-3 trees).
     @ingroup Trees
 */
@@ -1013,6 +1014,1094 @@ namespace Designar
             // less than KEY(h); after the possible rotate_right() above, `h`
             // may have changed, so KEY(h) below is deliberately re-read fresh
             // rather than reusing a value captured before the rotation.
+            if (!cmp(KEY(h), k) && R(h) == Node::null)
+            {
+                ret_val = h;
+                h = Node::null;
+                return ret_val;
+            }
+
+            if (!is_red(R(h)) && !is_red(L(R(h))))
+            {
+                h = move_red_right(h);
+            }
+
+            if (!cmp(KEY(h), k))
+            {
+                Node* succ = min(R(h));
+                std::swap(KEY(h), KEY(succ));
+                ret_val = delete_min(R(h));
+            }
+            else
+            {
+                ret_val = remove(R(h), k, cmp);
+            }
+        }
+
+        h = balance(h);
+        return ret_val;
+    }
+
+    template <typename Key>
+    class RbRkNode : public BaseBinTreeNode<Key, RbRkNode<Key>,
+                                            BinTreeNodeNullValue::SENTINEL>
+    {
+        using BaseNode = BaseBinTreeNode<Key, RbRkNode<Key>,
+                                         BinTreeNodeNullValue::SENTINEL>;
+
+        RBColor color;
+        nat_t count;
+
+    public:
+        RbRkNode() : BaseNode()
+        {
+            // empty
+        }
+
+        RbRkNode(const Key& k) : BaseNode(k), color(RBColor::RED), count(1)
+        {
+            // empty
+        }
+
+        RbRkNode(Key&& k)
+            : BaseNode(std::forward<Key>(k)), color(RBColor::RED), count(1)
+        {
+            // empty
+        }
+
+        /** @see RbNode's matching constructor for why the sentinel fixes
+            `color` at BLACK; `count` is fixed at 0 for the same reason
+            every other Ranked* tree's sentinel is (so COUNT(Node::null)
+            reads as 0 with no branch needed). */
+        RbRkNode(BinTreeNodeCtor ctor)
+            : BaseNode(ctor), color(RBColor::BLACK), count(0)
+        {
+            // empty
+        }
+
+        RBColor& get_color()
+        {
+            return color;
+        }
+
+        nat_t& get_count()
+        {
+            return count;
+        }
+    };
+
+    /** RbTree (above) plus a per-node subtree-size count, giving it the
+        same order-statistics operations as RankedAVLTree/RankedTreap/
+        RankedTree — select(i)/position(k)/split_pos(i) — with the same
+        left-leaning red-black balancing as RbTree.
+
+        Unlike RankedAVLTree's `split_pos` (an O(lg n) `join`-based
+        split), this tree's `split_pos` rebuilds each half from scratch
+        via ordinary `insert()` calls — see its own doc comment for why:
+        a `join` primitive for a *left-leaning* red-black tree needs
+        dedicated rebalancing logic distinct from the `balance()` used
+        by insert/remove (whose fixup implicitly assumes the node being
+        checked is black on entry, an assumption a freshly-grafted join
+        node can't always satisfy), which turned out to be enough of a
+        departure from every other join-based split in this library that
+        it isn't worth the added risk here. This class also deliberately
+        does not add a `remove_pos` (delete-by-position): unlike
+        RankedAVLTree/RankedTreap's removal (a plain successor-swap,
+        trivially adapted to descend by count instead of by key),
+        red-black deletion's move_red_left/move_red_right restructuring
+        changes the very subtree-size
+        thresholds a position-based descent would need to compare
+        against mid-recursion, which is a meaningfully different (and
+        substantially more error-prone) algorithm than the key-based
+        remove() below — removal by key plus split_pos/select/position
+        already covers this tree's order-statistics use cases.
+
+        @see DefaultCmpHolder for why this class privately derives from
+        `DefaultCmpHolder<Cmp>` and why that must be its first base. */
+    template <typename Key, class Cmp = std::less<Key>>
+    class RankedRBTree
+        : private DefaultCmpHolder<Cmp>,
+          public ContainerAlgorithms<RankedRBTree<Key, Cmp>, Key>,
+          public SetAlgorithms<RankedRBTree<Key, Cmp>, Key>
+    {
+    public:
+        using Node = RbRkNode<Key>;
+
+    private:
+        Node head;
+        Node*& root;
+        Cmp& cmp;
+
+        /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
+            logic and the same reason it is needed. */
+        static Cmp& cmp_for_copy(RankedRBTree& self, const RankedRBTree& t)
+        {
+            if (&t.cmp == &t.default_cmp)
+            {
+                self.default_cmp = t.default_cmp;
+                return self.default_cmp;
+            }
+
+            return t.cmp;
+        }
+
+        static Node* update(Node* r)
+        {
+            COUNT(r) = COUNT(L(r)) + COUNT(R(r)) + 1;
+            return r;
+        }
+
+        static Node* copy(Node*);
+
+        static void destroy(Node*&);
+
+        static Node* rotate_left(Node* h)
+        {
+            Node* x = generic_rotate_left(h);
+            COLOR(x) = COLOR(h);
+            COLOR(h) = RBColor::RED;
+            update(h);
+            update(x);
+            return x;
+        }
+
+        static Node* rotate_right(Node* h)
+        {
+            Node* x = generic_rotate_right(h);
+            COLOR(x) = COLOR(h);
+            COLOR(h) = RBColor::RED;
+            update(h);
+            update(x);
+            return x;
+        }
+
+        static void flip(Node* h)
+        {
+            COLOR(h) = is_red(h) ? RBColor::BLACK : RBColor::RED;
+        }
+
+        static void flip_colors(Node* h)
+        {
+            flip(h);
+            flip(L(h));
+            flip(R(h));
+        }
+
+        static Node* balance(Node* h)
+        {
+            update(h);
+
+            if (is_red(R(h)) && !is_red(L(h)))
+            {
+                h = rotate_left(h);
+            }
+
+            if (is_red(L(h)) && is_red(L(L(h))))
+            {
+                h = rotate_right(h);
+            }
+
+            if (is_red(L(h)) && is_red(R(h)))
+            {
+                flip_colors(h);
+            }
+
+            return h;
+        }
+
+        static Node* insert(Node*&, Node*, Cmp&);
+
+        static Node* insert_dup(Node*&, Node*, Cmp&);
+
+        static Node* search(Node*, const Key&, Cmp&);
+
+        static Node* search_or_insert(Node*&, Node*, Cmp&);
+
+        static Node* move_red_left(Node* h)
+        {
+            flip_colors(h);
+
+            if (is_red(L(R(h))))
+            {
+                R(h) = rotate_right(R(h));
+                h = rotate_left(h);
+                flip_colors(h);
+            }
+
+            return h;
+        }
+
+        static Node* move_red_right(Node* h)
+        {
+            flip_colors(h);
+
+            if (is_red(L(L(h))))
+            {
+                h = rotate_right(h);
+                flip_colors(h);
+            }
+
+            return h;
+        }
+
+        static Node* delete_min(Node*& h)
+        {
+            if (L(h) == Node::null)
+            {
+                Node* ret_val = h;
+                h = Node::null;
+                return ret_val;
+            }
+
+            if (!is_red(L(h)) && !is_red(L(L(h))))
+            {
+                h = move_red_left(h);
+            }
+
+            Node* ret_val = delete_min(L(h));
+            h = balance(h);
+            return ret_val;
+        }
+
+        static Node* remove(Node*&, const Key&, Cmp&);
+
+        static Node* min(Node* r)
+        {
+            while (L(r) != Node::null)
+            {
+                r = L(r);
+            }
+
+            return r;
+        }
+
+        static Node* max(Node* r)
+        {
+            while (R(r) != Node::null)
+            {
+                r = R(r);
+            }
+
+            return r;
+        }
+
+        Key* insert(Node* p)
+        {
+            if (insert(root, p, cmp) == Node::null)
+            {
+                delete p;
+                return nullptr;
+            }
+
+            COLOR(root) = RBColor::BLACK;
+            return &KEY(p);
+        }
+
+        Key* insert_dup(Node* p)
+        {
+            insert_dup(root, p, cmp);
+            COLOR(root) = RBColor::BLACK;
+            return &KEY(p);
+        }
+
+        Key* search_or_insert(Node* p)
+        {
+            Node* result = search_or_insert(root, p, cmp);
+            COLOR(root) = RBColor::BLACK;
+
+            if (p != result)
+            {
+                delete p;
+            }
+
+            return &KEY(result);
+        }
+
+    public:
+        using ItemType = Key;
+        using KeyType = Key;
+        using DataType = Key;
+        using ValueType = Key;
+        using SizeType = nat_t;
+        using CmpType = Cmp;
+
+        /** @see RbTree::verify() — same checks, plus COUNT consistency. */
+        bool verify() const
+        {
+            if (root != Node::null && is_red(root))
+            {
+                return false;
+            }
+
+            bool ok = true;
+            check_black_height(root, ok);
+
+            if (!ok)
+            {
+                return false;
+            }
+
+            return verify_order(root, cmp) && verify_no_red_right(root) &&
+                   verify_count(root);
+        }
+
+        static nat_t check_black_height(Node* r, bool& ok)
+        {
+            if (r == Node::null)
+            {
+                return 0;
+            }
+
+            if (is_red(r) && (is_red(L(r)) || is_red(R(r))))
+            {
+                ok = false;
+            }
+
+            nat_t lh = check_black_height(L(r), ok);
+            nat_t rh = check_black_height(R(r), ok);
+
+            if (lh != rh)
+            {
+                ok = false;
+            }
+
+            return lh + (is_red(r) ? 0 : 1);
+        }
+
+        static bool verify_order(Node* r, Cmp& cmp)
+        {
+            if (r == Node::null)
+            {
+                return true;
+            }
+
+            if (L(r) != Node::null && !cmp(KEY(L(r)), KEY(r)))
+            {
+                return false;
+            }
+
+            if (R(r) != Node::null && !cmp(KEY(r), KEY(R(r))))
+            {
+                return false;
+            }
+
+            return verify_order(L(r), cmp) && verify_order(R(r), cmp);
+        }
+
+        static bool verify_no_red_right(Node* r)
+        {
+            if (r == Node::null)
+            {
+                return true;
+            }
+
+            if (is_red(R(r)))
+            {
+                return false;
+            }
+
+            return verify_no_red_right(L(r)) && verify_no_red_right(R(r));
+        }
+
+        static bool verify_count(Node* r)
+        {
+            if (r == Node::null)
+            {
+                return true;
+            }
+
+            return COUNT(r) == COUNT(L(r)) + COUNT(R(r)) + 1 &&
+                   verify_count(L(r)) && verify_count(R(r));
+        }
+
+        RankedRBTree(Cmp& _cmp) : head(), root(L(&head)), cmp(_cmp)
+        {
+            // empty
+        }
+
+        /** @see RankedTreap's matching constructor (treap.hpp) for why
+            this cannot simply delegate to the Cmp& overload above, and
+            why copy-assignment (not move) is used for `default_cmp`. */
+        RankedRBTree(Cmp&& _cmp = Cmp())
+            : head(), root(L(&head)), cmp(this->default_cmp)
+        {
+            this->default_cmp = _cmp;
+        }
+
+        RankedRBTree(const RankedRBTree& t)
+            : head(), root(L(&head)), cmp(cmp_for_copy(*this, t))
+        {
+            root = copy(t.root);
+        }
+
+        RankedRBTree(RankedRBTree&& t) : RankedRBTree()
+        {
+            swap(t);
+        }
+
+        RankedRBTree(const std::initializer_list<Key>&);
+
+        ~RankedRBTree()
+        {
+            clear();
+        }
+
+        RankedRBTree& operator=(const RankedRBTree& t)
+        {
+            if (this == &t)
+            {
+                return *this;
+            }
+
+            clear();
+            root = copy(t.root);
+            cmp = t.cmp;
+            return *this;
+        }
+
+        RankedRBTree& operator=(RankedRBTree&& t)
+        {
+            swap(t);
+            return *this;
+        }
+
+        void swap(RankedRBTree& t)
+        {
+            std::swap(root, t.root);
+            std::swap(cmp, t.cmp);
+        }
+
+        bool is_empty() const
+        {
+            return root == Node::null;
+        }
+
+        bool is_sorted() const
+        {
+            return true;
+        }
+
+        nat_t size() const
+        {
+            return COUNT(root);
+        }
+
+        void clear()
+        {
+            destroy(root);
+        }
+
+        Cmp& get_cmp()
+        {
+            return cmp;
+        }
+
+        const Cmp& get_cmp() const
+        {
+            return cmp;
+        }
+
+        Key* insert(const Key& k)
+        {
+            return insert(new Node(k));
+        }
+
+        Key* insert(Key&& k)
+        {
+            return insert(new Node(std::forward<Key>(k)));
+        }
+
+        Key* insert_dup(const Key& k)
+        {
+            return insert_dup(new Node(k));
+        }
+
+        Key* insert_dup(Key&& k)
+        {
+            return insert_dup(new Node(std::forward<Key>(k)));
+        }
+
+        Key* append(const Key& k)
+        {
+            return insert(k);
+        }
+
+        Key* append(Key&& k)
+        {
+            return insert(std::forward<Key>(k));
+        }
+
+        Key* append_dup(const Key& k)
+        {
+            return insert_dup(k);
+        }
+
+        Key* append_dup(Key&& k)
+        {
+            return insert_dup(std::forward<Key>(k));
+        }
+
+        Key* search(const Key& k)
+        {
+            Node* result = search(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
+        const Key* search(const Key& k) const
+        {
+            Node* result = search(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
+        /** @see generic_bst_search_by (nodesdef.hpp) for why this exists:
+            heterogeneous lookup by anything comparable to `Key` via
+            `cmp`, not necessarily `Key` itself. */
+        template <typename K>
+        Key* search_by(const K& k)
+        {
+            Node* result = generic_bst_search_by<Node>(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
+        template <typename K>
+        const Key* search_by(const K& k) const
+        {
+            Node* result = generic_bst_search_by<Node>(root, k, cmp);
+            return result == Node::null ? nullptr : &KEY(result);
+        }
+
+        Key* search_or_insert(const Key& k)
+        {
+            return search_or_insert(new Node(k));
+        }
+
+        Key* search_or_insert(Key&& k)
+        {
+            return search_or_insert(new Node(std::forward<Key>(k)));
+        }
+
+        Key& find(const Key& k)
+        {
+            Key* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key not found");
+            }
+
+            return *result;
+        }
+
+        const Key& find(const Key& k) const
+        {
+            const Key* result = search(k);
+
+            if (result == nullptr)
+            {
+                throw std::domain_error("Key not found");
+            }
+
+            return *result;
+        }
+
+        bool remove(const Key& k)
+        {
+            if (search(root, k, cmp) == Node::null)
+            {
+                return false;
+            }
+
+            if (!is_red(L(root)) && !is_red(R(root)))
+            {
+                COLOR(root) = RBColor::RED;
+            }
+
+            Node* result = remove(root, k, cmp);
+
+            if (root != Node::null)
+            {
+                COLOR(root) = RBColor::BLACK;
+            }
+
+            delete result;
+            return true;
+        }
+
+        const Key& min() const
+        {
+            if (is_empty())
+            {
+                throw std::underflow_error("Tree is empty");
+            }
+
+            return KEY(min(root));
+        }
+
+        const Key& max() const
+        {
+            if (is_empty())
+            {
+                throw std::underflow_error("Tree is empty");
+            }
+
+            return KEY(max(root));
+        }
+
+        Key& select(nat_t i)
+        {
+            if (i >= size())
+            {
+                throw std::out_of_range("Infix position is out of range");
+            }
+
+            return KEY(generic_select(root, i));
+        }
+
+        const Key& select(nat_t i) const
+        {
+            if (i >= size())
+            {
+                throw std::out_of_range("Infix position is out of range");
+            }
+
+            return KEY(generic_select(root, i));
+        }
+
+        int_t position(const Key& k) const
+        {
+            return generic_position(root, k, cmp);
+        }
+
+        Key& operator[](nat_t i)
+        {
+            return select(i);
+        }
+
+        const Key& operator[](nat_t i) const
+        {
+            return select(i);
+        }
+
+        /** Splits into "the smallest `i` elements" / "the rest". Unlike
+            RankedAVLTree's `split_pos` (an O(lg n) `join`-based split),
+            this one rebuilds each half from scratch via ordinary
+            `insert()` calls, in O(n lg n): a `join(left, mid, right)`
+            primitive for a *left-leaning* red-black tree needs its own
+            dedicated rebalancing logic distinct from the `balance()`
+            used by insert/remove (which assumes the node being fixed up
+            is black on entry — an assumption a freshly-grafted join
+            node can't always satisfy), enough of a departure from every
+            other join-based split in this library that it isn't worth
+            the added risk here; a plain rebuild is unambiguously correct
+            and this operation is not on any other operation's hot
+            path. */
+        std::tuple<RankedRBTree, RankedRBTree> split_pos(nat_t i)
+        {
+            if (i >= size())
+            {
+                throw std::out_of_range("Infix position is out of range");
+            }
+
+            RankedRBTree ts, tg;
+            nat_t idx = 0;
+
+            for (const Key& k : *this)
+            {
+                if (idx < i)
+                {
+                    ts.insert(k);
+                }
+                else
+                {
+                    tg.insert(k);
+                }
+
+                ++idx;
+            }
+
+            clear();
+            return std::make_tuple(std::move(ts), std::move(tg));
+        }
+
+        class InorderIterator
+        {
+            friend class RankedRBTree;
+
+            RankedRBTree* set_ptr = nullptr;
+            DynStack<Node*> stack;
+            Node* root = Node::null;
+            Node* curr = Node::null;
+
+            Node* search_min(Node* r)
+            {
+                while (L(r) != Node::null)
+                {
+                    stack.push(r);
+                    r = L(r);
+                }
+
+                return r;
+            }
+
+            Node* search_max(Node* r)
+            {
+                while (R(r) != Node::null)
+                {
+                    r = R(r);
+                }
+
+                return r;
+            }
+
+            void init()
+            {
+                if (root == Node::null)
+                {
+                    return;
+                }
+
+                curr = search_min(root);
+            }
+
+        protected:
+            InorderIterator(const RankedRBTree& t, int)
+                : set_ptr(const_cast<RankedRBTree*>(&t)),
+                  root(set_ptr->root),
+                  curr(Node::null)
+            {
+                // empty
+            }
+
+            Node* get_location() const
+            {
+                return curr;
+            }
+
+        public:
+            InorderIterator(const RankedRBTree& t)
+                : set_ptr(const_cast<RankedRBTree*>(&t)), root(set_ptr->root)
+            {
+                init();
+            }
+
+            InorderIterator(const InorderIterator& it)
+                : set_ptr(it.set_ptr),
+                  stack(it.stack),
+                  root(it.root),
+                  curr(it.curr)
+            {
+                // empty
+            }
+
+            InorderIterator(InorderIterator&& it)
+            {
+                swap(it);
+            }
+
+            InorderIterator& operator=(const InorderIterator& it)
+            {
+                if (this == &it)
+                {
+                    return *this;
+                }
+
+                stack = it.stack;
+                root = it.root;
+                curr = it.curr;
+
+                return *this;
+            }
+
+            InorderIterator& operator=(InorderIterator&& it)
+            {
+                swap(it);
+                return *this;
+            }
+
+            void swap(InorderIterator& it)
+            {
+                std::swap(stack, it.stack);
+                std::swap(root, it.root);
+                std::swap(curr, it.curr);
+            }
+
+            void reset_first()
+            {
+                stack.clear();
+                init();
+            }
+
+            void reset_last()
+            {
+                stack.clear();
+                curr = search_max(root);
+            }
+
+            bool has_current() const
+            {
+                return curr != Node::null;
+            }
+
+            Key& get_current()
+            {
+                if (!has_current())
+                {
+                    throw std::overflow_error("There is not current element");
+                }
+
+                return KEY(curr);
+            }
+
+            const Key& get_current() const
+            {
+                if (!has_current())
+                {
+                    throw std::overflow_error("There is not current element");
+                }
+
+                return KEY(curr);
+            }
+
+            void next()
+            {
+                if (!has_current())
+                {
+                    throw std::overflow_error("There is not current element");
+                }
+
+                curr = R(curr);
+
+                if (curr != Node::null)
+                {
+                    curr = search_min(curr);
+                }
+                else if (!stack.is_empty())
+                {
+                    curr = stack.pop();
+                }
+            }
+
+            Key del()
+            {
+                if (!has_current())
+                {
+                    throw std::logic_error("There is not current element");
+                }
+
+                Key to_remove = KEY(curr);
+                next();
+                set_ptr->remove(to_remove);
+
+                return to_remove;
+            }
+        };
+
+        class Iterator : public InorderIterator,
+                         public ForwardIterator<Iterator, Key>
+        {
+            friend class RankedRBTree;
+            friend class BasicIterator<Iterator, Key>;
+            using Base = InorderIterator;
+            using Base::Base;
+        };
+
+        Iterator begin()
+        {
+            return Iterator(*this);
+        }
+
+        Iterator begin() const
+        {
+            return Iterator(*this);
+        }
+
+        Iterator end()
+        {
+            return Iterator(*this, 0);
+        }
+
+        Iterator end() const
+        {
+            return Iterator(*this, 0);
+        }
+    };
+
+    template <typename Key, class Cmp>
+    RankedRBTree<Key, Cmp>::RankedRBTree(const std::initializer_list<Key>& l)
+        : RankedRBTree()
+    {
+        for (const auto& item : l)
+        {
+            append(item);
+        }
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node* RankedRBTree<Key, Cmp>::copy(Node* r)
+    {
+        if (r == Node::null)
+        {
+            return Node::null;
+        }
+
+        Node* p = new Node(KEY(r));
+        COLOR(p) = COLOR(r);
+        L(p) = copy(L(r));
+        R(p) = copy(R(r));
+        update(p);
+        return p;
+    }
+
+    template <typename Key, class Cmp>
+    void RankedRBTree<Key, Cmp>::destroy(Node*& r)
+    {
+        if (r == Node::null)
+        {
+            return;
+        }
+
+        destroy(L(r));
+        destroy(R(r));
+        delete r;
+        r = Node::null;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node*
+    RankedRBTree<Key, Cmp>::insert(Node*& h, Node* p, Cmp& cmp)
+    {
+        if (h == Node::null)
+        {
+            h = p;
+            return p;
+        }
+
+        Node* result;
+
+        if (cmp(KEY(p), KEY(h)))
+        {
+            result = insert(L(h), p, cmp);
+
+            if (result == Node::null)
+            {
+                return Node::null;
+            }
+        }
+        else if (cmp(KEY(h), KEY(p)))
+        {
+            result = insert(R(h), p, cmp);
+
+            if (result == Node::null)
+            {
+                return Node::null;
+            }
+        }
+        else
+        {
+            return Node::null;
+        }
+
+        h = balance(h);
+        return result;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node*
+    RankedRBTree<Key, Cmp>::insert_dup(Node*& h, Node* p, Cmp& cmp)
+    {
+        if (h == Node::null)
+        {
+            h = p;
+            return p;
+        }
+
+        Node* result;
+
+        if (cmp(KEY(p), KEY(h)))
+        {
+            result = insert_dup(L(h), p, cmp);
+        }
+        else
+        {
+            result = insert_dup(R(h), p, cmp);
+        }
+
+        h = balance(h);
+        return result;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node*
+    RankedRBTree<Key, Cmp>::search(Node* r, const Key& k, Cmp& cmp)
+    {
+        if (r == Node::null)
+        {
+            return Node::null;
+        }
+
+        if (cmp(k, KEY(r)))
+        {
+            return search(L(r), k, cmp);
+        }
+        else if (cmp(KEY(r), k))
+        {
+            return search(R(r), k, cmp);
+        }
+
+        return r;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node*
+    RankedRBTree<Key, Cmp>::search_or_insert(Node*& h, Node* p, Cmp& cmp)
+    {
+        if (h == Node::null)
+        {
+            h = p;
+            return p;
+        }
+
+        Node* result;
+
+        if (cmp(KEY(p), KEY(h)))
+        {
+            result = search_or_insert(L(h), p, cmp);
+        }
+        else if (cmp(KEY(h), KEY(p)))
+        {
+            result = search_or_insert(R(h), p, cmp);
+        }
+        else
+        {
+            return h;
+        }
+
+        h = balance(h);
+        return result;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedRBTree<Key, Cmp>::Node*
+    RankedRBTree<Key, Cmp>::remove(Node*& h, const Key& k, Cmp& cmp)
+    {
+        Node* ret_val;
+
+        if (cmp(k, KEY(h)))
+        {
+            if (!is_red(L(h)) && !is_red(L(L(h))))
+            {
+                h = move_red_left(h);
+            }
+
+            ret_val = remove(L(h), k, cmp);
+        }
+        else
+        {
+            if (is_red(L(h)))
+            {
+                h = rotate_right(h);
+            }
+
             if (!cmp(KEY(h), k) && R(h) == Node::null)
             {
                 ret_val = h;

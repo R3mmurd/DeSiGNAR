@@ -8,13 +8,13 @@
 
 using namespace std;
 
-#include <avltree.hpp>
+#include <rbtree.hpp>
 
 using namespace Designar;
 
 int main()
 {
-    RankedAVLTree<int_t> tree;
+    RankedRBTree<int_t> tree;
 
     for (int_t v : {5, 3, 8, 1, 4, 7, 9})
     {
@@ -35,6 +35,22 @@ int main()
     cout << "select(0) (smallest): " << tree.select(0) << endl;
     cout << "select(3) (4th smallest): " << tree.select(3) << endl;
     cout << "position(8): " << tree.position(8) << endl;
+
+    auto [left, right] = tree.split_pos(3);
+
+    cout << "split_pos(3):" << endl;
+    cout << "  left  (smallest 3): ";
+    for (int_t v : left)
+    {
+        cout << v << " ";
+    }
+    cout << endl;
+    cout << "  right (the rest):  ";
+    for (int_t v : right)
+    {
+        cout << v << " ";
+    }
+    cout << endl;
 
     return 0;
 }
