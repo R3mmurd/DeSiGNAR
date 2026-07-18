@@ -13,15 +13,19 @@
  * @defgroup DataStructures Data structures
  * @brief Container types beyond the basic array/list/stack/queue/heap/map/
  * set family (which live directly under the library's root, undocumented
- * top-level headers): B-trees, skip lists, tries, LRU caches, pairing
- * heaps, bloom filters, and union-find.
+ * top-level headers): B-trees, B+ trees, skip lists, tries, LRU caches,
+ * pairing heaps, bloom filters, and union-find.
  */
 
 /**
- * @defgroup Trees Balanced search trees
- * @brief AVL, red-black, treap, splay, randomized BST, and ranked-AVL
- * flavors of a self-balancing binary search tree, all sharing the same
- * node layout and rotation primitives (see nodesdef.hpp).
+ * @defgroup Trees Binary search trees
+ * @brief Tree (plain, unbalanced) and RankedTree (the same, plus
+ * order-statistics support) are the foundational, unbalanced BSTs;
+ * AVL, red-black, treap, splay, and randomized BST are the balancing
+ * strategies layered on top, each pairing a plain flavor with its
+ * order-statistics-capable `Ranked*` sibling where one exists — all
+ * sharing the same node layout and rotation primitives (see
+ * nodesdef.hpp).
  */
 
 /**

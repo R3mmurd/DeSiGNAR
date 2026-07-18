@@ -4,61 +4,53 @@
   Author: Alejandro Mujica (aledrums@gmail.com)
 */
 
-/** @file rankedavltree.hpp
-    @brief An AVL tree set implementation with order-statistics support
-    (select-by-rank, position-of-key), the AVL counterpart of
-    RankedTreap.
-    @see avltree.hpp for the plain (unranked) AVL tree this builds on.
-    @see tree.hpp for RankedTreap, the same order-statistics interface
-    on top of randomized (priority-based) balancing instead.
+/** @file rankedtree.hpp
+    @brief RankedTree: a plain, unbalanced binary search tree set
+    implementation augmented with a per-node subtree count, giving it
+    order-statistics support (select-by-rank, position-of-key,
+    split-by-position) on top of Tree's ordinary set operations.
+    @see tree.hpp for Tree, the unranked sibling of this tree.
+    @see avltree.hpp (RankedAVLTree), rbtree.hpp (RankedRBTree), treap.hpp
+    (RankedTreap) for the balanced order-statistics trees in this
+    library.
     @ingroup Trees
 */
 
 #pragma once
 
-#include <avltree.hpp> // for HEIGHT<>()
-#include <tree.hpp>    // for COUNT<>()
+#include <tree.hpp> // for the shared node/tree scaffolding it pulls in
 
 namespace Designar
 {
     template <typename Key>
-    class AVLRkNode : public BaseBinTreeNode<Key, AVLRkNode<Key>,
-                                             BinTreeNodeNullValue::SENTINEL>
+    class RankedTreeNode
+        : public BaseBinTreeNode<Key, RankedTreeNode<Key>,
+                                 BinTreeNodeNullValue::SENTINEL>
     {
-        using BaseNode = BaseBinTreeNode<Key, AVLRkNode<Key>,
+        using BaseNode = BaseBinTreeNode<Key, RankedTreeNode<Key>,
                                          BinTreeNodeNullValue::SENTINEL>;
 
-        int_t height;
         nat_t count;
 
     public:
-        AVLRkNode() : BaseNode()
+        RankedTreeNode() : BaseNode()
         {
             // empty
         }
 
-        AVLRkNode(const Key& k) : BaseNode(k), height(0), count(1)
+        RankedTreeNode(const Key& k) : BaseNode(k), count(1)
         {
             // empty
         }
 
-        AVLRkNode(Key&& k) : BaseNode(std::forward<Key>(k)), height(0), count(1)
+        RankedTreeNode(Key&& k) : BaseNode(std::forward<Key>(k)), count(1)
         {
             // empty
         }
 
-        /** @see AVLNode's matching constructor for why the sentinel fixes
-            `height` at -1; `count` is fixed at 0 for the same reason
-            RankedTreap's sentinel is (so COUNT(Node::null) reads as 0 with
-            no branch needed). */
-        AVLRkNode(BinTreeNodeCtor ctor) : BaseNode(ctor), height(-1), count(0)
+        RankedTreeNode(BinTreeNodeCtor ctor) : BaseNode(ctor), count(0)
         {
             // empty
-        }
-
-        int_t& get_height()
-        {
-            return height;
         }
 
         nat_t& get_count()
@@ -67,22 +59,27 @@ namespace Designar
         }
     };
 
-    /** An AVL tree (see avltree.hpp) that additionally maintains a
-        subtree-size count per node, giving it the same order-statistics
-        operations as RankedTreap (tree.hpp) — select(i)/position(k)/
-        operator[] — but with deterministic height-based balancing instead
-        of randomized-priority balancing.
+    /** `Tree` (tree.hpp) plus a per-node subtree-size count, giving it
+        `select(i)` (the `i`-th smallest key), `position(k)` (the in-order
+        rank of `k`), and `split_pos(i)` (split into "smallest `i`
+        elements" / "the rest") — the same order-statistics operations
+        every `Ranked*` tree in this library offers, but with no
+        balancing at all, exactly like `Tree` has none. `split_pos` needs
+        no rebalancing step here (unlike RankedAVLTree/RankedRBTree's
+        join-based split): with no invariant to preserve beyond the
+        count itself, cutting the tree at the split boundary and
+        reattaching the two halves is already correct on its own.
 
         @see DefaultCmpHolder for why this class privately derives from
         `DefaultCmpHolder<Cmp>` and why that must be its first base. */
     template <typename Key, class Cmp = std::less<Key>>
-    class RankedAVLTree
+    class RankedTree
         : private DefaultCmpHolder<Cmp>,
-          public ContainerAlgorithms<RankedAVLTree<Key, Cmp>, Key>,
-          public SetAlgorithms<RankedAVLTree<Key, Cmp>, Key>
+          public ContainerAlgorithms<RankedTree<Key, Cmp>, Key>,
+          public SetAlgorithms<RankedTree<Key, Cmp>, Key>
     {
     public:
-        using Node = AVLRkNode<Key>;
+        using Node = RankedTreeNode<Key>;
 
     private:
         Node head;
@@ -91,7 +88,7 @@ namespace Designar
 
         /** @see GenArraySet::cmp_for_copy — same ownership-preserving copy
             logic and the same reason it is needed. */
-        static Cmp& cmp_for_copy(RankedAVLTree& self, const RankedAVLTree& t)
+        static Cmp& cmp_for_copy(RankedTree& self, const RankedTree& t)
         {
             if (&t.cmp == &t.default_cmp)
             {
@@ -102,66 +99,11 @@ namespace Designar
             return t.cmp;
         }
 
+        static bool verify(Node*, Cmp&);
+
         static Node* copy(Node*);
 
         static void destroy(Node*&);
-
-        static Node* update(Node* r)
-        {
-            HEIGHT(r) = 1 + std::max(HEIGHT(L(r)), HEIGHT(R(r)));
-            COUNT(r) = COUNT(L(r)) + COUNT(R(r)) + 1;
-            return r;
-        }
-
-        static int_t balance_factor(Node* r)
-        {
-            return HEIGHT(L(r)) - HEIGHT(R(r));
-        }
-
-        static Node* rotate_left(Node* r)
-        {
-            Node* q = generic_rotate_left(r);
-            update(r);
-            update(q);
-            return q;
-        }
-
-        static Node* rotate_right(Node* r)
-        {
-            Node* q = generic_rotate_right(r);
-            update(r);
-            update(q);
-            return q;
-        }
-
-        static Node* balance(Node* r)
-        {
-            update(r);
-
-            int_t bf = balance_factor(r);
-
-            if (bf > 1)
-            {
-                if (balance_factor(L(r)) < 0)
-                {
-                    L(r) = rotate_left(L(r));
-                }
-
-                return rotate_right(r);
-            }
-
-            if (bf < -1)
-            {
-                if (balance_factor(R(r)) > 0)
-                {
-                    R(r) = rotate_right(R(r));
-                }
-
-                return rotate_left(r);
-            }
-
-            return r;
-        }
 
         static Node* insert(Node*&, Node*, Cmp&);
 
@@ -170,6 +112,8 @@ namespace Designar
         static Node* search(Node*, const Key&, Cmp&);
 
         static Node* search_or_insert(Node*&, Node*, Cmp&);
+
+        static void split_pos(Node*, nat_t, Node*&, Node*&);
 
         static Node* remove_min(Node*& r)
         {
@@ -181,17 +125,11 @@ namespace Designar
             }
 
             Node* ret_val = remove_min(L(r));
-            r = balance(r);
+            --COUNT(r);
             return ret_val;
         }
 
         static Node* remove(Node*&, const Key&, Cmp&);
-
-        static Node* remove_pos(Node*&, nat_t);
-
-        static Node* select(Node*, nat_t);
-
-        static int_t position(Node*, const Key&, Cmp&);
 
         static Node* min(Node* r)
         {
@@ -212,6 +150,15 @@ namespace Designar
 
             return r;
         }
+
+        template <class Op>
+        static void preorder_rec(Node*, Op&);
+
+        template <class Op>
+        static void inorder_rec(Node*, Op&);
+
+        template <class Op>
+        static void postorder_rec(Node*, Op&);
 
         Key* insert(Node* p)
         {
@@ -250,39 +197,44 @@ namespace Designar
         using SizeType = nat_t;
         using CmpType = Cmp;
 
-        RankedAVLTree(Cmp& _cmp) : head(), root(L(&head)), cmp(_cmp)
+        bool verify() const
+        {
+            return verify(root, cmp);
+        }
+
+        RankedTree(Cmp& _cmp) : head(), root(L(&head)), cmp(_cmp)
         {
             // empty
         }
 
-        /** @see RankedTreap's matching constructor for why this cannot
-            simply delegate to the Cmp& overload above, and why
-            copy-assignment (not move) is used for `default_cmp`. */
-        RankedAVLTree(Cmp&& _cmp = Cmp())
+        /** @see RankedTreap's matching constructors (treap.hpp) for why
+            this cannot simply delegate to the Cmp& overload above, and
+            why copy-assignment (not move) is used for `default_cmp`. */
+        RankedTree(Cmp&& _cmp = Cmp())
             : head(), root(L(&head)), cmp(this->default_cmp)
         {
             this->default_cmp = _cmp;
         }
 
-        RankedAVLTree(const RankedAVLTree& t)
+        RankedTree(const RankedTree& t)
             : head(), root(L(&head)), cmp(cmp_for_copy(*this, t))
         {
             root = copy(t.root);
         }
 
-        RankedAVLTree(RankedAVLTree&& t) : RankedAVLTree()
+        RankedTree(RankedTree&& t) : RankedTree()
         {
             swap(t);
         }
 
-        RankedAVLTree(const std::initializer_list<Key>&);
+        RankedTree(const std::initializer_list<Key>&);
 
-        ~RankedAVLTree()
+        ~RankedTree()
         {
             clear();
         }
 
-        RankedAVLTree& operator=(const RankedAVLTree& t)
+        RankedTree& operator=(const RankedTree& t)
         {
             if (this == &t)
             {
@@ -295,13 +247,13 @@ namespace Designar
             return *this;
         }
 
-        RankedAVLTree& operator=(RankedAVLTree&& t)
+        RankedTree& operator=(RankedTree&& t)
         {
             swap(t);
             return *this;
         }
 
-        void swap(RankedAVLTree& t)
+        void swap(RankedTree& t)
         {
             std::swap(root, t.root);
             std::swap(cmp, t.cmp);
@@ -453,19 +405,6 @@ namespace Designar
             return true;
         }
 
-        Key remove_pos(nat_t i)
-        {
-            if (i >= size())
-            {
-                throw std::out_of_range("Infix position is out of range");
-            }
-
-            Node* result = remove_pos(root, i);
-            Key ret_val = std::move(KEY(result));
-            delete result;
-            return ret_val;
-        }
-
         const Key& min() const
         {
             if (is_empty())
@@ -493,7 +432,7 @@ namespace Designar
                 throw std::out_of_range("Infix position is out of range");
             }
 
-            return KEY(select(root, i));
+            return KEY(generic_select(root, i));
         }
 
         const Key& select(nat_t i) const
@@ -503,12 +442,12 @@ namespace Designar
                 throw std::out_of_range("Infix position is out of range");
             }
 
-            return KEY(select(root, i));
+            return KEY(generic_select(root, i));
         }
 
         int_t position(const Key& k) const
         {
-            return position(root, k, cmp);
+            return generic_position(root, k, cmp);
         }
 
         Key& operator[](nat_t i)
@@ -521,11 +460,60 @@ namespace Designar
             return select(i);
         }
 
+        std::tuple<RankedTree, RankedTree> split_pos(nat_t i)
+        {
+            if (i >= size())
+            {
+                throw std::out_of_range("Infix position is out of range");
+            }
+
+            RankedTree ts, tg;
+            split_pos(root, i, ts.root, tg.root);
+            root = Node::null;
+            return std::make_tuple(std::move(ts), std::move(tg));
+        }
+
+        template <class Op>
+        void for_each_preorder(Op& op)
+        {
+            preorder_rec<Op>(root, op);
+        }
+
+        template <class Op>
+        void for_each_preorder(Op&& op = Op())
+        {
+            for_each_preorder<Op>(op);
+        }
+
+        template <class Op>
+        void for_each_inorder(Op& op)
+        {
+            inorder_rec<Op>(root, op);
+        }
+
+        template <class Op>
+        void for_each_inorder(Op&& op = Op())
+        {
+            for_each_inorder<Op>(op);
+        }
+
+        template <class Op>
+        void for_each_postorder(Op& op)
+        {
+            postorder_rec<Op>(root, op);
+        }
+
+        template <class Op>
+        void for_each_postorder(Op&& op = Op())
+        {
+            for_each_postorder<Op>(op);
+        }
+
         class InorderIterator
         {
-            friend class RankedAVLTree;
+            friend class RankedTree;
 
-            RankedAVLTree* set_ptr = nullptr;
+            RankedTree* set_ptr = nullptr;
             DynStack<Node*> stack;
             Node* root = Node::null;
             Node* curr = Node::null;
@@ -562,8 +550,8 @@ namespace Designar
             }
 
         protected:
-            InorderIterator(const RankedAVLTree& t, int)
-                : set_ptr(const_cast<RankedAVLTree*>(&t)),
+            InorderIterator(const RankedTree& t, int)
+                : set_ptr(const_cast<RankedTree*>(&t)),
                   root(set_ptr->root),
                   curr(Node::null)
             {
@@ -576,8 +564,8 @@ namespace Designar
             }
 
         public:
-            InorderIterator(const RankedAVLTree& t)
-                : set_ptr(const_cast<RankedAVLTree*>(&t)), root(set_ptr->root)
+            InorderIterator(const RankedTree& t)
+                : set_ptr(const_cast<RankedTree*>(&t)), root(set_ptr->root)
             {
                 init();
             }
@@ -697,7 +685,7 @@ namespace Designar
         class Iterator : public InorderIterator,
                          public ForwardIterator<Iterator, Key>
         {
-            friend class RankedAVLTree;
+            friend class RankedTree;
             friend class BasicIterator<Iterator, Key>;
             using Base = InorderIterator;
             using Base::Base;
@@ -725,8 +713,8 @@ namespace Designar
     };
 
     template <typename Key, class Cmp>
-    RankedAVLTree<Key, Cmp>::RankedAVLTree(const std::initializer_list<Key>& l)
-        : RankedAVLTree()
+    RankedTree<Key, Cmp>::RankedTree(const std::initializer_list<Key>& l)
+        : RankedTree()
     {
         for (const auto& item : l)
         {
@@ -735,8 +723,38 @@ namespace Designar
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::copy(Node* r)
+    bool RankedTree<Key, Cmp>::verify(Node* r, Cmp& cmp)
+    {
+        if (r == Node::null)
+        {
+            return true;
+        }
+
+        Node* lc = L(r);
+        Node* rc = R(r);
+
+        if (!verify(lc, cmp) || !verify(rc, cmp))
+        {
+            return false;
+        }
+
+        bool test = COUNT(r) == (COUNT(lc) + COUNT(rc) + 1);
+
+        if (lc != Node::null)
+        {
+            test = test && cmp(KEY(lc), KEY(r));
+        }
+
+        if (rc != Node::null)
+        {
+            test = test && cmp(KEY(r), KEY(rc));
+        }
+
+        return test;
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedTree<Key, Cmp>::Node* RankedTree<Key, Cmp>::copy(Node* r)
     {
         if (r == Node::null)
         {
@@ -744,14 +762,14 @@ namespace Designar
         }
 
         Node* p = new Node(KEY(r));
+        COUNT(p) = COUNT(r);
         L(p) = copy(L(r));
         R(p) = copy(R(r));
-        update(p);
         return p;
     }
 
     template <typename Key, class Cmp>
-    void RankedAVLTree<Key, Cmp>::destroy(Node*& r)
+    void RankedTree<Key, Cmp>::destroy(Node*& r)
     {
         if (r == Node::null)
         {
@@ -765,8 +783,8 @@ namespace Designar
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::insert(Node*& r, Node* p, Cmp& cmp)
+    typename RankedTree<Key, Cmp>::Node*
+    RankedTree<Key, Cmp>::insert(Node*& r, Node* p, Cmp& cmp)
     {
         if (r == Node::null)
         {
@@ -779,33 +797,27 @@ namespace Designar
         if (cmp(KEY(p), KEY(r)))
         {
             result = insert(L(r), p, cmp);
-
-            if (result == Node::null)
-            {
-                return Node::null;
-            }
         }
         else if (cmp(KEY(r), KEY(p)))
         {
             result = insert(R(r), p, cmp);
-
-            if (result == Node::null)
-            {
-                return Node::null;
-            }
         }
         else
         {
             return Node::null;
         }
 
-        r = balance(r);
+        if (result != Node::null)
+        {
+            ++COUNT(r);
+        }
+
         return result;
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::insert_dup(Node*& r, Node* p, Cmp& cmp)
+    typename RankedTree<Key, Cmp>::Node*
+    RankedTree<Key, Cmp>::insert_dup(Node*& r, Node* p, Cmp& cmp)
     {
         if (r == Node::null)
         {
@@ -813,24 +825,15 @@ namespace Designar
             return r;
         }
 
-        Node* result;
-
-        if (cmp(KEY(p), KEY(r)))
-        {
-            result = insert_dup(L(r), p, cmp);
-        }
-        else
-        {
-            result = insert_dup(R(r), p, cmp);
-        }
-
-        r = balance(r);
+        Node* result = cmp(KEY(p), KEY(r)) ? insert_dup(L(r), p, cmp)
+                                           : insert_dup(R(r), p, cmp);
+        ++COUNT(r);
         return result;
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::search(Node* r, const Key& k, Cmp& cmp)
+    typename RankedTree<Key, Cmp>::Node*
+    RankedTree<Key, Cmp>::search(Node* r, const Key& k, Cmp& cmp)
     {
         if (r == Node::null)
         {
@@ -850,8 +853,8 @@ namespace Designar
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::search_or_insert(Node*& r, Node* p, Cmp& cmp)
+    typename RankedTree<Key, Cmp>::Node*
+    RankedTree<Key, Cmp>::search_or_insert(Node*& r, Node* p, Cmp& cmp)
     {
         if (r == Node::null)
         {
@@ -874,145 +877,142 @@ namespace Designar
             return r;
         }
 
-        r = balance(r);
+        if (result == p)
+        {
+            ++COUNT(r);
+        }
+
         return result;
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::remove(Node*& r, const Key& k, Cmp& cmp)
+    void RankedTree<Key, Cmp>::split_pos(Node* r, nat_t i, Node*& ts,
+                                         Node*& tg)
+    {
+        nat_t left_count = COUNT(L(r));
+
+        if (i == left_count)
+        {
+            ts = L(r);
+            tg = r;
+            L(tg) = Node::null;
+            COUNT(tg) -= COUNT(ts);
+            return;
+        }
+
+        if (i < left_count)
+        {
+            split_pos(L(r), i, ts, L(r));
+            tg = r;
+            COUNT(r) -= COUNT(ts);
+        }
+        else
+        {
+            split_pos(R(r), i - left_count - 1, R(r), tg);
+            ts = r;
+            COUNT(r) -= COUNT(tg);
+        }
+    }
+
+    template <typename Key, class Cmp>
+    typename RankedTree<Key, Cmp>::Node*
+    RankedTree<Key, Cmp>::remove(Node*& r, const Key& k, Cmp& cmp)
     {
         if (r == Node::null)
         {
             return Node::null;
         }
 
-        Node* ret_val;
-
         if (cmp(k, KEY(r)))
         {
-            ret_val = remove(L(r), k, cmp);
+            Node* result = remove(L(r), k, cmp);
 
-            if (ret_val == Node::null)
+            if (result != Node::null)
             {
-                return Node::null;
+                --COUNT(r);
             }
+
+            return result;
         }
         else if (cmp(KEY(r), k))
         {
-            ret_val = remove(R(r), k, cmp);
+            Node* result = remove(R(r), k, cmp);
 
-            if (ret_val == Node::null)
+            if (result != Node::null)
             {
-                return Node::null;
+                --COUNT(r);
             }
+
+            return result;
         }
-        else
+
+        Node* ret_val = r;
+
+        if (L(r) == Node::null)
         {
-            ret_val = r;
-
-            if (L(r) == Node::null)
-            {
-                r = R(r);
-                return ret_val;
-            }
-
-            if (R(r) == Node::null)
-            {
-                r = L(r);
-                return ret_val;
-            }
-
-            Node* succ = remove_min(R(r));
-            std::swap(KEY(r), KEY(succ));
-            ret_val = succ;
+            r = R(r);
+            return ret_val;
         }
 
-        r = balance(r);
-        return ret_val;
+        if (R(r) == Node::null)
+        {
+            r = L(r);
+            return ret_val;
+        }
+
+        // Two children: splice out the in-order successor (the minimum of
+        // the right subtree, which has at most one child) and move its
+        // key into `r`, so the node actually freed is the (now key-less)
+        // successor rather than `r` itself — same technique as Tree's
+        // remove, plus the count decrement remove_min() already applies
+        // along the successor's path, plus one more for `r` itself now
+        // that its subtree has one fewer node overall.
+        Node* succ = remove_min(R(r));
+        std::swap(KEY(r), KEY(succ));
+        --COUNT(r);
+        return succ;
     }
 
     template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::remove_pos(Node*& r, nat_t i)
-    {
-        Node* ret_val;
-
-        if (COUNT(L(r)) == i)
-        {
-            ret_val = r;
-
-            if (L(r) == Node::null)
-            {
-                r = R(r);
-                return ret_val;
-            }
-
-            if (R(r) == Node::null)
-            {
-                r = L(r);
-                return ret_val;
-            }
-
-            Node* succ = remove_min(R(r));
-            std::swap(KEY(r), KEY(succ));
-            ret_val = succ;
-        }
-        else if (i < COUNT(L(r)))
-        {
-            ret_val = remove_pos(L(r), i);
-        }
-        else
-        {
-            ret_val = remove_pos(R(r), i - COUNT(L(r)) - 1);
-        }
-
-        r = balance(r);
-        return ret_val;
-    }
-
-    template <typename Key, class Cmp>
-    typename RankedAVLTree<Key, Cmp>::Node*
-    RankedAVLTree<Key, Cmp>::select(Node* r, nat_t i)
-    {
-        if (COUNT(L(r)) == i)
-        {
-            return r;
-        }
-
-        if (i < COUNT(L(r)))
-        {
-            return select(L(r), i);
-        }
-
-        return select(R(r), i - COUNT(L(r)) - 1);
-    }
-
-    template <typename Key, class Cmp>
-    int_t RankedAVLTree<Key, Cmp>::position(Node* r, const Key& k, Cmp& cmp)
+    template <class Op>
+    void RankedTree<Key, Cmp>::preorder_rec(Node* r, Op& op)
     {
         if (r == Node::null)
         {
-            return -1;
+            return;
         }
 
-        if (cmp(k, KEY(r)))
+        op(KEY(r));
+        preorder_rec(L(r), op);
+        preorder_rec(R(r), op);
+    }
+
+    template <typename Key, class Cmp>
+    template <class Op>
+    void RankedTree<Key, Cmp>::inorder_rec(Node* r, Op& op)
+    {
+        if (r == Node::null)
         {
-            return position(L(r), k, cmp);
+            return;
         }
-        else if (cmp(KEY(r), k))
+
+        inorder_rec(L(r), op);
+        op(KEY(r));
+        inorder_rec(R(r), op);
+    }
+
+    template <typename Key, class Cmp>
+    template <class Op>
+    void RankedTree<Key, Cmp>::postorder_rec(Node* r, Op& op)
+    {
+        if (r == Node::null)
         {
-            int_t p = position(R(r), k, cmp);
-
-            if (p == -1)
-            {
-                return p;
-            }
-
-            return p + COUNT(L(r)) + 1;
+            return;
         }
 
-        return COUNT(L(r));
+        postorder_rec(L(r), op);
+        postorder_rec(R(r), op);
+        op(KEY(r));
     }
 
 } // end namespace Designar

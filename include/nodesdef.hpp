@@ -1083,9 +1083,78 @@ namespace Designar
         return p->get_rchild();
     }
 
+    /** The subtree-size (a.k.a. rank/count) of an order-statistics node —
+        shared by every "Ranked" tree (RankedTree, RankedAVLTree,
+        RankedRBTree, RankedTreap, RandomizedTree), each of which stores a
+        `count` member and exposes it via `get_count()`. Requiring only
+        that member (not a common base class) is what lets this work
+        uniformly across trees whose node types otherwise share nothing
+        but `BaseBinTreeNode`. */
+    template <class RkNode>
+    inline nat_t& COUNT(RkNode* p)
+    {
+        return p->get_count();
+    }
+
+    /** Order-statistics select-by-rank: the `i`-th smallest key (0-based)
+        in the subtree rooted at `r`, found by walking left/right
+        comparing `i` against the left subtree's `COUNT` — identical
+        across every ranked tree regardless of *how* that tree stays
+        balanced, since balancing never changes the meaning of `COUNT`,
+        only when rotations happen. `i` must be `< COUNT(r)`; callers
+        range-check before calling this (see e.g. RankedTree::select). */
+    template <class RkNode>
+    RkNode* generic_select(RkNode* r, nat_t i)
+    {
+        nat_t left_count = COUNT(L(r));
+
+        if (left_count == i)
+        {
+            return r;
+        }
+
+        if (i < left_count)
+        {
+            return generic_select(L(r), i);
+        }
+
+        return generic_select(R(r), i - left_count - 1);
+    }
+
+    /** Order-statistics position-of-key: the in-order rank of `k` (0-based),
+        or -1 if `k` isn't present — the exact mirror image of
+        generic_select, and just as balancing-agnostic. */
+    template <class RkNode, typename K, class Cmp>
+    int_t generic_position(RkNode* r, const K& k, Cmp& cmp)
+    {
+        if (r == RkNode::null)
+        {
+            return -1;
+        }
+
+        if (cmp(k, KEY(r)))
+        {
+            return generic_position(L(r), k, cmp);
+        }
+        else if (cmp(KEY(r), k))
+        {
+            int_t p = generic_position(R(r), k, cmp);
+
+            if (p == -1)
+            {
+                return p;
+            }
+
+            return p + COUNT(L(r)) + 1;
+        }
+
+        return COUNT(L(r));
+    }
+
     /** Plain BST descent, shared by every tree built on BaseBinTreeNode
-        (AVLTree, RbTree, SplayTree, RandomizedTree, RankedAVLTree, Treap,
-        RankedTreap) — search is the one tree operation that never needs
+        (Tree, RankedTree, AVLTree, RbTree, RankedRBTree, SplayTree,
+        RandomizedTree, RankedAVLTree, Treap, RankedTreap) — search is the
+        one tree operation that never needs
         any of what makes those trees differ from each other
         (rebalancing, coloring, priorities, counts), so a single generic
         version here serves all of them. Heterogeneous in the probe type
@@ -1117,15 +1186,16 @@ namespace Designar
     }
 
     /** The pointer-relinking half of a BST rotation, shared by every tree
-        built on BaseBinTreeNode — AVLTree, RbTree, RandomizedTree,
-        RankedAVLTree, Treap, RankedTreap, and SplayTree all rotate their
-        nodes identically; only what *else* needs recomputing afterward
-        (AVL height, RB color, a subtree count, ...) differs per tree, so
-        that stays the caller's own responsibility rather than something
-        this shared step tries to guess at. A caller that has no such
-        metadata (SplayTree, Treap) can use this directly as its own
-        rotate_left(); one that does (AVLTree's height, RbTree's color,
-        RandomizedTree/RankedAVLTree/RankedTreap's count) wraps it,
+        built on BaseBinTreeNode — Tree, RankedTree, AVLTree, RbTree,
+        RankedRBTree, RandomizedTree, RankedAVLTree, Treap, RankedTreap,
+        and SplayTree all rotate their nodes identically; only what
+        *else* needs recomputing afterward (AVL height, RB color, a
+        subtree count, ...) differs per tree, so that stays the caller's
+        own responsibility rather than something this shared step tries
+        to guess at. A caller that has no such metadata (Tree, SplayTree,
+        Treap) can use this directly as its own rotate_left(); one that
+        does (AVLTree/RankedAVLTree's height, RbTree/RankedRBTree's
+        color, RandomizedTree/RankedTree/RankedTreap's count) wraps it,
         calling this first and then updating its own metadata on both the
         old and new subtree roots. */
     template <class BinTreeNode>

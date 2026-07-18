@@ -8,13 +8,13 @@
 
 using namespace std;
 
-#include <avltree.hpp>
+#include <tree.hpp>
 
 using namespace Designar;
 
 int main()
 {
-    RankedAVLTree<int_t> tree;
+    Tree<int_t> tree;
 
     for (int_t v : {5, 3, 8, 1, 4, 7, 9})
     {
@@ -30,11 +30,13 @@ int main()
 
     cout << endl;
 
-    // The whole point of a ranked tree: order-statistic queries in
-    // O(log n), on top of everything a plain search tree already does.
-    cout << "select(0) (smallest): " << tree.select(0) << endl;
-    cout << "select(3) (4th smallest): " << tree.select(3) << endl;
-    cout << "position(8): " << tree.position(8) << endl;
+    cout << "search(4): " << (tree.search(4) != nullptr ? "found" : "not found")
+         << endl;
+
+    tree.remove(4);
+
+    cout << "after remove(4), search(4): "
+         << (tree.search(4) != nullptr ? "found" : "not found") << endl;
 
     return 0;
 }

@@ -5,9 +5,11 @@
 */
 
 /** @file randomizedtree.hpp
-    @brief ABBA — Árbol Binario de Búsqueda Aleatorizado (Martínez &
-    Roura's randomized binary search tree), which balances via biased
-    random choices made at insertion/deletion time rather than a
+    @brief RandomizedTree: a randomized binary search tree set
+    implementation (Martínez & Roura, 1997/1998; the authors' own name
+    for it, "ABBA" — Árbol Binario de Búsqueda Aleatorizado — is kept
+    here as the term this algorithm is cited by), which balances via
+    biased random choices made at insertion/deletion time rather than a
     per-node priority (Treap) or a structural invariant (AVL,
     red-black).
     @ingroup Trees
@@ -15,7 +17,12 @@
 
 #pragma once
 
-#include <tree.hpp> // for COUNT<>()
+#include <nodesdef.hpp>
+#include <containeralgorithms.hpp>
+#include <setalgorithms.hpp>
+#include <stack.hpp>
+#include <iterator.hpp>
+#include <typetraits.hpp>
 #include <random.hpp>
 
 namespace Designar
@@ -57,8 +64,8 @@ namespace Designar
         }
     };
 
-    /** ABBA — "Árbol Binario de Búsqueda Aleatorizado" (Randomized Binary
-        Search Tree, Martínez & Roura, 1997/1998).
+    /** A randomized binary search tree (Martínez & Roura, 1997/1998; the
+        authors call it "ABBA" — Árbol Binario de Búsqueda Aleatorizado).
 
         Unlike Treap (which balances via a random priority assigned once
         per node and never touched again) or AVL/red-black (which balance
@@ -350,6 +357,8 @@ namespace Designar
             r = join(L(r), R(r));
             return ret_val;
         }
+
+        static void split_pos(Node*, nat_t, Node*&, Node*&);
 
         static Node* min(Node* r)
         {
@@ -714,6 +723,38 @@ namespace Designar
             return const_cast<RandomizedTree*>(this)->select(i);
         }
 
+        int_t position(const Key& k) const
+        {
+            return generic_position(root, k, cmp);
+        }
+
+        /** Splits into "the smallest `i` elements" / "the rest". Unlike
+            `remove()`, which re-randomizes via `join()` after cutting a
+            single key out, this just cuts the tree along the search
+            path for position `i` and reattaches the two sides directly
+            — the same technique RankedTreap's `split_pos` uses, and for
+            the same reason it needs no rebalancing here either: neither
+            tree's balance invariant is a *structural* property of the
+            post-split shape (Treap's is a per-node priority; this tree
+            has no per-node balancing data at all, only `COUNT`), so
+            simply partitioning the existing structure at the cut point
+            already leaves both sides exactly as valid as the whole tree
+            was. Every operation performed on either half afterward
+            (insert/remove) re-randomizes exactly as it always does,
+            regardless of how that half's current shape came to be. */
+        std::tuple<RandomizedTree, RandomizedTree> split_pos(nat_t i)
+        {
+            if (i >= size())
+            {
+                throw std::out_of_range("Infix position is out of range");
+            }
+
+            RandomizedTree ts, tg;
+            split_pos(root, i, ts.root, tg.root);
+            root = Node::null;
+            return std::make_tuple(std::move(ts), std::move(tg));
+        }
+
         Key& operator[](nat_t i)
         {
             return select(i);
@@ -966,6 +1007,35 @@ namespace Designar
         destroy(R(r));
         delete r;
         r = Node::null;
+    }
+
+    template <typename Key, class Cmp>
+    void RandomizedTree<Key, Cmp>::split_pos(Node* r, nat_t i, Node*& ts,
+                                             Node*& tg)
+    {
+        nat_t left_count = COUNT(L(r));
+
+        if (i == left_count)
+        {
+            ts = L(r);
+            tg = r;
+            L(tg) = Node::null;
+            COUNT(tg) -= COUNT(ts);
+            return;
+        }
+
+        if (i < left_count)
+        {
+            split_pos(L(r), i, ts, L(r));
+            tg = r;
+            COUNT(r) -= COUNT(ts);
+        }
+        else
+        {
+            split_pos(R(r), i - left_count - 1, R(r), tg);
+            ts = r;
+            COUNT(r) -= COUNT(tg);
+        }
     }
 
 } // end namespace Designar

@@ -9,6 +9,12 @@
 using namespace std;
 using namespace Designar;
 
+// Exercises the default TreeSet (backed by RankedTreap, treap.hpp) and
+// specifically RankedTreap's own extras that no other test file covers:
+// select/position/operator[], split_key/split_key_dup, exclusive_join/
+// join_dup, insert_dup/verify_dup. The plain (unranked) Tree class
+// (tree.hpp) and every other Ranked* tree's shared order-statistics
+// operations are covered generically by test-trees.cpp instead.
 int main()
 {
     TreeSet<int_t> tree = {2, 4, 6, 8, 10};

@@ -8,9 +8,9 @@
 
 #include <array.hpp>
 #include <tree.hpp>
+#include <rankedtree.hpp>
 #include <treap.hpp>
 #include <avltree.hpp>
-#include <rankedavltree.hpp>
 #include <rbtree.hpp>
 #include <randomizedtree.hpp>
 #include <splaytree.hpp>
