@@ -87,7 +87,11 @@
 
 /**
  * @defgroup ArtificialIntelligence Artificial intelligence
- * @brief Game-playing search: minimax with alpha-beta pruning.
+ * @brief Game-playing search (minimax with alpha-beta pruning);
+ * metaheuristics for optimization and complex-systems modeling —
+ * genetic algorithms, ant colony optimization, artificial bee colony,
+ * particle swarm optimization, and simulated annealing; and a
+ * feedforward neural network trained by backpropagation.
  */
 
 /**
