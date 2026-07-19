@@ -62,7 +62,7 @@ also how the generated Doxygen site's "Modules" page is organized — see
 | Algorithms | Generic algorithms over iterators/containers: string algorithms, the container/iterator algorithm mixins reused everywhere else, elementary number theory (gcd, modular exponentiation/inverse), and the classic randomized algorithms (randomized order statistics, Miller-Rabin primality testing, reservoir sampling, Karger's min-cut). |
 | Hashing | `SeparateChainingHashTable`/`OpenAddressingHashTable` underlying `HashMap`/`HashSet`, a hash-function collection (including MD5/SHA-1/SHA-256 for security use), and `HashChain` for iterated hash-chain (S/KEY-style OTP) verification. |
 | Concurrency | Thread pool, concurrent map, graph agent + concurrent graph for parallel graph exploration. |
-| Compilers | Grammars with FIRST/FOLLOW computation, a lexer, an LL(1) predictive parsing table and parser. |
+| Compilers | Grammars with FIRST/FOLLOW computation and optional operator precedence/associativity declarations, a lexer, an LL(1) predictive parser, and the full LR family (SLR(1), canonical LR(1), LALR(1)) — the LR family drives yacc-style semantic actions live during the parse to build a real, typed AST, suitable for an interpreter or a translator. |
 | Automata | Finite automata (NFA/DFA, subset construction), a Turing machine simulator. |
 | Cellular automata | Dense and sparse grid representations for cellular-automaton simulation. |
 | Linear algebra | Vector and matrix types with the usual arithmetic. |

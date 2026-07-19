@@ -17,6 +17,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include <array.hpp>
 #include <set.hpp>
@@ -51,10 +52,25 @@ namespace Designar
             always contains. */
         static const Symbol END_OF_INPUT;
 
+        /** How a terminal's declared precedence level breaks a tie
+            between two competing actions of *equal* precedence — the
+            yacc/bison `%left`/`%right`/`%nonassoc` convention, consumed
+            by lrparser.hpp's bottom-up parsers to resolve shift/reduce
+            conflicts correctly between operators of different binding
+            strength (not just within one operator's own associativity,
+            which blanket shift-preference alone already gets right). */
+        enum class Associativity
+        {
+            LEFT,
+            RIGHT,
+            NONASSOC
+        };
+
     private:
         Symbol start_symbol;
         HashSet<Symbol> nonterminals;
         HashMap<Symbol, DynArray<Sequence>> productions;
+        HashMap<Symbol, std::pair<nat_t, Associativity>> precedence;
 
         static HashSet<Symbol>
         first_of_symbol(const Symbol& sym,
@@ -134,6 +150,31 @@ namespace Designar
         const DynArray<Sequence>* get_productions(const Symbol& lhs) const
         {
             return productions.search(lhs);
+        }
+
+        /** Declares `terminal`'s precedence `level` (higher binds
+            tighter) and associativity — entirely optional: a grammar
+            with no precedence declarations at all still builds a table
+            via lrparser.hpp's blanket shift-preference convention, this
+            is only consulted for a shift/reduce conflict where *both*
+            the competing production (via its rightmost terminal, the
+            standard yacc rule) and the lookahead terminal have a
+            declared precedence, letting different operators (e.g. `+`
+            vs `*`) resolve correctly instead of just falling back to
+            "prefer shift", which only gets one operator's own
+            associativity right, not precedence between two different
+            ones. Calling this again for the same `terminal` overwrites
+            its previous declaration. */
+        void set_precedence(const Symbol& terminal, nat_t level,
+                            Associativity assoc)
+        {
+            precedence[terminal] = std::make_pair(level, assoc);
+        }
+
+        const std::pair<nat_t, Associativity>*
+        get_precedence(const Symbol& terminal) const
+        {
+            return precedence.search(terminal);
         }
 
         /** FIRST of `seq[from..)` — the union of FIRST(seq[from]),
