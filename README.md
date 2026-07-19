@@ -55,18 +55,18 @@ also how the generated Doxygen site's "Modules" page is organized — see
 | Module | Covers |
 | :----- | :----- |
 | Data structures | B-trees, B+ trees, skip lists, tries, LRU caches, pairing heaps, bloom filters, union-find, plus the foundational array/list/stack/queue/heap/map/set family at the top level of `include/`. |
-| Trees | Tree/RankedTree (plain/unbalanced), AVL, red-black, treap, splay, randomized BST — each pairing a plain flavor with its order-statistics-capable `Ranked*` sibling where one exists, all sharing one node layout and rotation implementation. |
-| Graphs | `Graph`/`Digraph` containers, all-pairs shortest paths, max flow, bipartite matching, bridge-finding. |
+| Trees | Tree/RankedTree (plain/unbalanced), AVL, red-black, treap, splay, randomized BST, plus `BPlusTree` and `RankedRBTree` — each pairing a plain flavor with its order-statistics-capable `Ranked*` sibling where one exists, all sharing one node layout and rotation implementation. |
+| Graphs | `Graph`/`Digraph` containers, all-pairs shortest paths, max flow, bipartite matching, bridge-finding, strongly-connected components (Kosaraju's and Tarjan's algorithms). |
 | Geometry | 2D points/vectors/segments/polygons/triangles, closest-pair, quadtrees, Voronoi diagrams. |
 | Sorting | Comparison sorts and the heterogeneous-key search helpers backing the map/set containers. |
-| Algorithms | Generic algorithms over iterators/containers: string algorithms, the container/iterator algorithm mixins reused everywhere else. |
-| Hashing | Open-addressing and chained hash tables underlying `HashMap`/`HashSet`. |
+| Algorithms | Generic algorithms over iterators/containers: string algorithms, the container/iterator algorithm mixins reused everywhere else, elementary number theory (gcd, modular exponentiation/inverse), and the classic randomized algorithms (randomized order statistics, Miller-Rabin primality testing, reservoir sampling, Karger's min-cut). |
+| Hashing | `SeparateChainingHashTable`/`OpenAddressingHashTable` underlying `HashMap`/`HashSet`, a hash-function collection (including MD5/SHA-1/SHA-256 for security use), and `HashChain` for iterated hash-chain (S/KEY-style OTP) verification. |
 | Concurrency | Thread pool, concurrent map, graph agent + concurrent graph for parallel graph exploration. |
-| Compilers | Grammars with FIRST/FOLLOW computation, a lexer. |
+| Compilers | Grammars with FIRST/FOLLOW computation, a lexer, an LL(1) predictive parsing table and parser. |
 | Automata | Finite automata (NFA/DFA, subset construction), a Turing machine simulator. |
 | Cellular automata | Dense and sparse grid representations for cellular-automaton simulation. |
 | Linear algebra | Vector and matrix types with the usual arithmetic. |
-| Artificial intelligence | Minimax search with alpha-beta pruning. |
+| Artificial intelligence | Minimax search with alpha-beta pruning, plus a collection of metaheuristics (genetic algorithm, ant colony/artificial bee colony/particle swarm optimization, simulated annealing) and a feedforward neural network. |
 | Utilities | Timing, string formatting, integer helpers, and the library's fundamental type aliases (`nat_t`, `int_t`, `real_t`, ...). |
 
 ## Design philosophy
@@ -200,7 +200,7 @@ target_link_libraries(your_target PRIVATE Designar::Designar)
 ### vcpkg
 
 A port lives in-tree at `vcpkg/ports/designar` (not yet in the curated
-vcpkg registry, since this project has no tagged release yet):
+vcpkg registry):
 
 ```shell
 vcpkg install designar --overlay-ports=/path/to/DeSiGNAR/vcpkg/ports
