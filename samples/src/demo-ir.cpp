@@ -9,31 +9,27 @@
     recursive `factorial`, a `store_and_load` function that exercises
     address-taken locals (memorylayout.hpp/ir.hpp's ADDR_OF/LOAD/STORE),
     and a `compute_answer` function built specifically to show
-    constant_fold() (ir.hpp) at work — then lowers the whole module to
-    real x86-64 System V assembly text via X86_64CodeGenerator
-    (x86_64codegen.hpp), assembles + links + *runs* it with the host's
-    own `as`/`ld` if this is an x86-64 Linux host with both available,
-    and reports whether the machine code actually computed what the IR
-    said it should. This is this project's own end-to-end proof of the
-    Phase 1 pipeline described in ir.hpp's file comment: IR -> one
-    optimization pass -> memory layout -> x86-64 codegen -> real,
-    runnable machine code — not a mockup of any of those steps. */
+    constant_fold() (ir.hpp) at work — prints the IR before and after
+    running that one optimization pass, and then computes and prints
+    each function's target-parametrized stack-frame layout
+    (memorylayout.hpp's compute_frame_layout()) against two different
+    architectures side by side, so the effect of target-parametrization
+    on frame size/alignment is directly visible.
 
-#include <cstdlib>
-#include <fstream>
+    This demo does no code generation, assembly, or execution of any
+    kind: there is no code generator in this codebase. It is a
+    demonstration of exactly three things — the IR, one optimization
+    pass over it, and target-parametrized memory layout — and nothing
+    more. */
+
 #include <iostream>
-#include <sstream>
 #include <string>
-
-#include <sys/wait.h>
-#include <unistd.h>
 
 using namespace std;
 
 #include <ir.hpp>
 #include <memorylayout.hpp>
 #include <target.hpp>
-#include <x86_64codegen.hpp>
 
 using namespace Designar;
 
@@ -72,10 +68,9 @@ namespace
         `address_taken` precisely because `emit_addr_of()` is called
         against it: see memorylayout.hpp's FrameLayout/LocalSlot comment
         for why a local an ADDR_OF is ever taken against must live in
-        real memory (a register has no address at all), and
-        x86_64codegen.hpp's ADDR_OF lowering (a real `lea`) for how that
-        address actually gets computed and used by the matching
-        LOAD/STORE. Expected result for `x = 9` is `10`. */
+        real memory (a register has no address at all). Expected result
+        for `x = 9` is `10`, if this IR were ever executed — this demo
+        never executes it, only lays it out. */
     void build_store_and_load(IRModule& module)
     {
         IRFunction& function =
@@ -107,10 +102,7 @@ namespace
         this pass folds one instruction's *own* two operands, it does
         not also propagate an already-folded value into every later
         instruction that reads it (that would be constant *propagation*,
-        a related but separate optimization this project has not built).
-        Expected result either way is `25`, computed correctly at run
-        time regardless of whether the addition itself was ever folded
-        at compile time. */
+        a related but separate optimization this project has not built). */
     void build_compute_answer(IRModule& module)
     {
         IRFunction& function =
@@ -126,21 +118,33 @@ namespace
         builder.emit_ret(t2);
     }
 
-    /** Runs `command` and returns true iff the shell reports it exited
-        with status 0 — used both to probe for `as`/`ld` on this host
-        and to check the assemble/link steps below actually succeeded,
-        never to interpret the *generated program's* own exit code
-        (see run_and_check_exit_code() for that, which needs the raw
-        status, not a collapsed bool). */
-    bool run_ok(const string& command)
+    /** Prints `function`'s frame layout under `target`, one LocalSlot per
+        declared local plus the function's total, aligned
+        `frame_size_bytes` — the concrete demonstration of
+        memorylayout.hpp's compute_frame_layout() actually running. */
+    void print_frame_layout(const IRFunction& function, const TargetInfo& target)
     {
-        return system(command.c_str()) == 0;
+        FrameLayout layout = compute_frame_layout(function, target);
+
+        cout << "  target " << to_string(target.architecture)
+             << " (pointer_size_bytes=" << target.pointer_size_bytes
+             << ", stack_alignment_bytes=" << target.stack_alignment_bytes
+             << "):\n";
+
+        for (const auto& kv : function.locals)
+        {
+            const LocalSlot* slot = layout.slot_for(kv.second.name);
+            cout << "    " << slot->name << ": size_bytes=" << slot->size_bytes
+                 << ", frame_offset=" << slot->frame_offset << "\n";
+        }
+
+        cout << "    frame_size_bytes=" << layout.frame_size_bytes << "\n";
     }
 }
 
 int main()
 {
-    cout << "=== Designar IR / x86-64 codegen demo ===\n\n";
+    cout << "=== Designar IR / optimization / memory-layout demo ===\n\n";
 
     IRModule module("demo");
     build_factorial(module);
@@ -168,124 +172,23 @@ int main()
             "detection — see target.hpp): "
          << to_string(host_architecture()) << "\n";
 
-    X86_64CodeGenerator codegen;
-    string assembly = codegen.generate_module(module);
+    cout << "\n--- Frame layout (compute_frame_layout(), memorylayout.hpp) "
+            "---\n";
+    cout << "Laid out against both the host architecture and AArch64, side "
+            "by side, to make target-parametrization concrete: the same "
+            "IRFunction's frame size/alignment depends on which target it "
+            "is laid out for, even though no code generator in this "
+            "codebase consumes either layout yet.\n\n";
 
-    cout << "\n--- Generated x86-64 (Intel syntax) assembly ---\n";
-    cout << assembly;
+    TargetInfo host_target = target_info_for(host_architecture());
+    TargetInfo aarch64_target = target_info_for(Architecture::AARCH64);
 
-    if (host_architecture() != Architecture::X86_64)
+    for (const IRFunction& function : module.functions)
     {
-        cout << "\nThis host is not x86-64 (host_architecture() == "
-             << to_string(host_architecture())
-             << "), so the assembly above was only generated, not "
-                "assembled or executed — running x86-64 machine code "
-                "directly requires an x86-64 host. Cross-generating for "
-                "x86-64 while running elsewhere is exactly what "
-                "generate_module() above just did; actually *running* "
-                "the result would need an x86-64 machine (or an "
-                "emulator) instead of this one.\n";
-        return 0;
-    }
-
-    if (!run_ok("which as > /dev/null 2>&1") ||
-        !run_ok("which ld > /dev/null 2>&1"))
-    {
-        cout << "\n`as`/`ld` were not both found on this host, so the "
-                "generated assembly above was only syntactically "
-                "produced, not assembled/linked/executed. Install "
-                "binutils to get the full end-to-end verification this "
-                "demo is written to perform.\n";
-        return 0;
-    }
-
-    /** A tiny, hand-written `_start` that calls straight into the
-        machine code X86_64CodeGenerator produced above, with no libc
-        and no `main`/crt0 involved at all — the generated functions'
-        own calling convention (System V integer args in rdi/rsi/.../
-        return in rax) is exactly what a hand-written caller needs to
-        respect, and respecting it here from ordinary hand-written
-        assembly is itself a small, independent check that
-        x86_64codegen.hpp's lowering really did produce a
-        System-V-conformant callee: `factorial`/`store_and_load` receive
-        their one argument in `rdi` and return in `rax` exactly the way
-        this driver calls them, with no adapter code of any kind in
-        between. Exits 0 if every one of the three functions above
-        returned exactly the value hand-computed for it, 1 otherwise —
-        so a single process exit code is this demo's complete,
-        machine-checkable verdict on whether the generated code is
-        correct, not just "it assembled". */
-    ostringstream driver;
-    driver << assembly;
-    driver << "\n";
-    driver << ".global _start\n";
-    driver << "_start:\n";
-    driver << "    mov rdi, 5\n";
-    driver << "    call factorial\n";
-    driver << "    cmp rax, 120\n";
-    driver << "    jne fail\n";
-    driver << "    mov rdi, 9\n";
-    driver << "    call store_and_load\n";
-    driver << "    cmp rax, 10\n";
-    driver << "    jne fail\n";
-    driver << "    call compute_answer\n";
-    driver << "    cmp rax, 25\n";
-    driver << "    jne fail\n";
-    driver << "    mov rdi, 0\n";
-    driver << "    mov rax, 60\n";
-    driver << "    syscall\n";
-    driver << "fail:\n";
-    driver << "    mov rdi, 1\n";
-    driver << "    mov rax, 60\n";
-    driver << "    syscall\n";
-
-    string base = "/tmp/designar-demo-ir-" + to_string((nat_t)getpid());
-    string asm_path = base + ".s";
-    string obj_path = base + ".o";
-    string exe_path = base + ".elf";
-
-    ofstream asm_file(asm_path);
-    asm_file << driver.str();
-    asm_file.close();
-
-    cout << "\n--- Assembling, linking, and running the generated code "
-            "(no libc; `_start` calls straight into it) ---\n";
-
-    if (!run_ok("as -o " + obj_path + " " + asm_path))
-    {
-        cerr << "Assembling the generated code with `as` failed — this "
-                "would mean X86_64CodeGenerator produced syntactically "
-                "invalid assembly, a real bug.\n";
-        return 1;
-    }
-
-    if (!run_ok("ld -o " + exe_path + " " + obj_path))
-    {
-        cerr << "Linking the assembled object with `ld` failed.\n";
-        return 1;
-    }
-
-    int status = system(exe_path.c_str());
-    int exit_code = WIFEXITED(status) ? WEXITSTATUS(status) : -1;
-
-    remove(asm_path.c_str());
-    remove(obj_path.c_str());
-    remove(exe_path.c_str());
-
-    if (exit_code == 0)
-    {
-        cout << "\nSuccess: the generated machine code actually ran and "
-                "computed factorial(5) == 120, store_and_load(9) == 10, "
-                "and compute_answer() == 25, exactly as the IR says it "
-                "should.\n";
-    }
-    else
-    {
-        cerr << "\nFAILED: the generated machine code exited with code "
-             << exit_code
-             << " instead of 0 — at least one of the three functions "
-                "computed the wrong result.\n";
-        return 1;
+        cout << "function " << function.name << ":\n";
+        print_frame_layout(function, host_target);
+        print_frame_layout(function, aarch64_target);
+        cout << "\n";
     }
 
     return 0;

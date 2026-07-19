@@ -190,10 +190,11 @@ int main()
     }
 
     // constant_fold() never folds a division/modulo by a constant zero
-    // — that is undefined behavior for int_t at compile time, and
-    // x86_64codegen.hpp's own DIV/MOD lowering must still reach a real
-    // `idiv` so the compiled program's own runtime fault behavior is
-    // preserved (see ir.hpp's own comment on this).
+    // — that is undefined behavior for int_t at compile time, and any
+    // future consumer lowering/executing this IR must still reach the
+    // real division-by-zero fault/trap, so folding it away would
+    // silently change the described program's own runtime behavior
+    // (see ir.hpp's own comment on this).
     {
         IRFunction function("div_by_zero", IRType::INT);
         IRBuilder builder(function);

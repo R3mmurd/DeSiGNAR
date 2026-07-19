@@ -8,47 +8,40 @@
     @brief A three-address-code intermediate representation (IRValue,
     IRInstruction, IRBasicBlock, IRFunction, IRModule), a small builder
     API (IRBuilder) for emitting it, and one IR-level optimization pass
-    (constant_fold()) — the foundation a future code-generation initiative
-    is built on top of.
+    (constant_fold()).
 
-    This is Phase 1 of a larger, explicitly multi-phase plan: intermediate
-    representation, memory organization, optimization, and code
-    generation targeting real CPU architectures. Only this one pass gets
-    built all the way through in this pass of the project: the IR defined
-    here, one optimization pass over it (constant_fold(), below), the
-    memory-layout computation that maps its locals to stack storage
-    (memorylayout.hpp), and one real backend lowering it to runnable
-    assembly (x86_64codegen.hpp, targeting x86-64 System V). What is
-    deliberately *not* attempted here — named explicitly, so a future
-    contributor knows it was a choice, not an oversight — is: static
-    single assignment form (SSA, with its phi nodes, is a real added
-    layer of complexity over the plain three-address code below, useful
-    for optimizations this project has not built yet), a pass *pipeline*
-    (constant_fold() is written to the same `IRFunction& -> bool changed`
-    shape a pipeline driver would need, but no driver exists yet — see
-    that function's own comment), a real register allocator (the x86-64
-    backend's baseline is deliberately "spill everything to memory,
-    reload into a scratch register per instruction" — correct, not fast;
-    see x86_64codegen.hpp), and AArch64/RISC-V backends (target.hpp names
-    both architectures and gives them a real seam — TargetInfo — to
-    plug into later, but only x86-64 has an actual implementation).
+    This IR is designed to be a natural lowering target for an AST built
+    some other way — a Parser<NodeType>-driven semantic action, most
+    likely (see parser.hpp) — to walk and emit IRBuilder calls from, and a
+    natural input both to further IR-level optimization passes (only
+    constant_fold(), below, is implemented so far) and to memorylayout.
+    hpp's frame-layout computation, which maps this IR's declared locals
+    to concrete stack storage. Wiring an actual `Parser<NodeType>`
+    integration up is explicitly out of scope here; nothing below
+    references parser.hpp or grammar.hpp at all. Nothing about this IR's
+    shape assumes a particular downstream consumer either: a code
+    generator is one hypothetical future consumer among others (an
+    interpreter directly executing the IR is another), not a committed
+    next step for this project.
+
+    What is deliberately *not* attempted here — named explicitly, so a
+    future contributor knows it was a choice, not an oversight — is:
+    static single assignment form (SSA, with its phi nodes, is a real
+    added layer of complexity over the plain three-address code below,
+    useful for optimizations this project has not built yet) and a pass
+    *pipeline* (constant_fold() is written to the same `IRFunction& ->
+    bool changed` shape a pipeline driver would need, but no driver
+    exists yet — see that function's own comment; one pass alone has
+    nothing to form a pipeline with).
 
     Three-address code, not a stack machine or a direct-threaded
     interpretation of an AST, because it is the standard, most teachable
-    intermediate form for exactly the two things this project ultimately
-    wants to do with it — optimize and generate machine code — and
-    because it is naturally close to real assembly (each IRInstruction
-    below has at most one operator and a small, fixed number of operands,
-    the same shape a real machine instruction has), which is exactly what
-    keeps x86_64codegen.hpp's lowering from instruction to instruction
-    simple and mechanical rather than requiring some intermediate
-    "linearization" step of its own. This is deliberately a *natural
-    lowering target* for a caller building an AST some other way (a
-    Parser<NodeType>-driven semantic action, most likely — see
-    parser.hpp) to walk and emit IRBuilder calls from, but wiring an
-    actual `Parser<NodeType>` integration up is explicitly out of scope
-    for this pass; nothing below references parser.hpp or grammar.hpp at
-    all.
+    intermediate form for optimization and for staying naturally close to
+    real assembly (each IRInstruction below has at most one operator and
+    a small, fixed number of operands, the same shape a real machine
+    instruction has) — a shape that would keep a hypothetical future
+    code generator's lowering simple and mechanical, without this file
+    committing to building one.
 
     Basic blocks are first-class here (IRBasicBlock, holding a flat
     DynArray<IRInstruction> that always ends in exactly one *terminator*
@@ -114,10 +107,13 @@ namespace Designar
         an instruction's *operand* kind alone cannot always disambiguate
         it — e.g. a MOVE between two virtual registers says nothing about
         whether the value flowing through them is an int_t or a real_t,
-        but a backend lowering that MOVE absolutely needs to know (an
-        x86-64 backend moves an INT through a general-purpose register,
-        a REAL through an SSE register — see x86_64codegen.hpp's own
-        comment on why REAL lowering is, honestly, not implemented yet). */
+        but any future code generator lowering that MOVE would absolutely
+        need to know — a typical machine moves an INT through a
+        general-purpose register and a REAL through a dedicated
+        floating-point register, two different instructions with no way
+        to pick between them from the MOVE's operands alone). No
+        lowering of `REAL` exists in this codebase yet; there is no
+        backend of any kind here to lower it. */
     enum class IRType
     {
         INT,
@@ -339,12 +335,10 @@ namespace Designar
             passing is modeled here purely as "here is the ordered list
             of IRValues this call passes" (`IRInstruction::call_args`)
             with no calling-convention detail (which register/stack slot
-            each argument lands in) anywhere in this file — exactly the
-            "abstracted from any specific calling convention" split this
-            file's own comment promises: assigning arguments to physical
-            registers/stack slots per some real ABI is entirely
-            x86_64codegen.hpp's job (or a future AArch64/RISC-V backend's
-            own job), never this IR's. */
+            each argument lands in) anywhere in this file — assigning
+            arguments to physical registers/stack slots per some real ABI
+            is entirely a hypothetical future code generator's job, never
+            this IR's. */
         CALL,
 
         /** Unconditional jump to `true_label` (the basic block boundary
@@ -557,12 +551,13 @@ namespace Designar
     /** One declared local or parameter of an IRFunction: a name, its
         IRType, whether it is one of the function's own parameters
         (`is_parameter`, in the order IRFunction::parameter_order records
-        — this is how memorylayout.hpp/x86_64codegen.hpp know which
-        locals need their *incoming* value copied out of an argument
-        register/stack slot at function entry, rather than starting out
-        uninitialized), and `address_taken` — see memorylayout.hpp's
-        FrameLayout/LocalSlot comment for exactly what that flag forces a
-        memory-layout computation to do and why. */
+        — this is how memorylayout.hpp knows which locals would need
+        their *incoming* value copied out of an argument register/stack
+        slot at function entry, rather than starting out uninitialized,
+        if a future code generator existed to do that copying), and
+        `address_taken` — see memorylayout.hpp's FrameLayout/LocalSlot
+        comment for exactly what that flag forces a memory-layout
+        computation to do and why. */
     struct IRLocal
     {
         std::string name;
@@ -574,14 +569,14 @@ namespace Designar
             it) whenever an ADDR_OF instruction is ever going to be
             emitted against this local. A local with this flag left
             false is only ever a *candidate* for a register in some
-            future, smarter allocator — this pass's actual x86-64
-            backend puts every local in memory regardless (see
-            x86_64codegen.hpp's own comment on its deliberately baseline
-            register allocator), so right now this flag only changes
-            what compute_frame_layout() records, not what the backend
-            does with it; it is here so that changes purely by adding a
-            smarter allocator later, with memorylayout.hpp already
-            recording everything such an allocator would need to know. */
+            hypothetical future register allocator — no such allocator
+            exists in this codebase, so right now this flag only changes
+            what compute_frame_layout() records (see memorylayout.hpp:
+            it currently gives every local, `address_taken` or not, a
+            real memory slot); it is recorded here so that a future
+            allocator, were one ever written, would have everything it
+            needs to know already tracked rather than needing this
+            struct extended retroactively. */
         bool address_taken = false;
     };
 
@@ -707,8 +702,7 @@ namespace Designar
         /** A full, human-readable dump of every block/instruction —
             purely diagnostic (demo-ir.cpp prints this both before and
             after running constant_fold(), so the pass's effect is
-            visible, and test-ir.cpp/test-x86_64codegen.cpp use it for
-            failure messages). */
+            visible, and test-ir.cpp uses it for failure messages). */
         std::string to_string() const
         {
             std::ostringstream out;
@@ -1139,9 +1133,9 @@ namespace Designar
             why: exact floating-point equality is usually a sign of a
             bug). It is not one here: constant-folding CMP_EQ/CMP_NE
             must compute *exactly* what the un-folded instruction's own
-            runtime comparison would have (x86_64codegen.hpp lowers
-            CMP_EQ/CMP_NE with `sete`/`setne` off the raw IEEE-754
-            equality flag, no tolerance of any kind) — silently swapping
+            runtime comparison would have (a real machine compares
+            IRType::REAL operands against the raw IEEE-754 equality
+            flag, with no tolerance of any kind) — silently swapping
             in an approximate/epsilon comparison here to satisfy the
             warning would make the *optimized* program's semantics
             subtly diverge from the un-optimized one, which is a far
@@ -1208,13 +1202,14 @@ namespace Designar
         by zero is undefined behavior for int_t at compile time (this
         function runs in the optimizer, a C++ program, and triggering
         real UB while compiling someone else's program is never
-        acceptable) and, more importantly, is part of the *target
-        program's own observable semantics* — a real x86-64 `idiv` by
-        zero raises `#DE` (a hardware fault) at run time, which is
-        exactly what the unfolded DIV/MOD instruction still correctly
-        leads to once x86_64codegen.hpp lowers it; folding it away at
-        compile time would silently change what the compiled program
-        does. */
+        acceptable) and, more importantly, is part of the *program this
+        IR describes* own observable semantics — division/modulo by zero
+        is a real, defined-to-be-undefined-or-trapping operation on every
+        real machine (e.g. x86-64's `idiv` raises `#DE`, a hardware fault,
+        at run time), and leaving the unfolded DIV/MOD instruction in
+        place preserves that; folding it away at compile time would
+        silently change what the described program does, on any future
+        consumer that actually executes or lowers it. */
     inline bool constant_fold(IRFunction& function)
     {
         bool changed = false;

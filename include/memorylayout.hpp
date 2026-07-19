@@ -7,18 +7,16 @@
 /** @file memorylayout.hpp
     @brief compute_frame_layout(): maps an IRFunction's declared locals/
     parameters (ir.hpp) to concrete stack-frame storage, parametrized by
-    a TargetInfo (target.hpp) — the "memory organization" piece of this
-    project's larger IR/optimization/codegen initiative (see ir.hpp's
-    file comment for the full phasing story).
+    a TargetInfo (target.hpp).
 
     Split out of ir.hpp into its own file, rather than folded into
     IRFunction itself, for the same reason target.hpp is its own file
-    rather than a few structs sitting inside x86_64codegen.hpp: this is
-    substantial enough — and, more importantly, *architecture-dependent*
-    enough (x86-64 System V's 16-byte call-site alignment is not a
-    universal constant; AArch64/RISC-V have their own rules) — to deserve
-    being read and reasoned about on its own, independent of any one
-    backend's instruction-selection concerns.
+    rather than a few structs sitting inside ir.hpp: this is substantial
+    enough — and, more importantly, *architecture-dependent* enough
+    (x86-64 System V's 16-byte call-site alignment is not a universal
+    constant; AArch64/RISC-V have their own rules) — to deserve being
+    read and reasoned about on its own, independent of the IR's own
+    structural concerns.
 
     Why frame-slot assignment is a function of a *target*, not a fixed
     algorithm run once: computing "where does each local live, relative
@@ -51,11 +49,13 @@ namespace Designar
     /** Where one local/parameter actually lives once compute_frame_layout()
         has run: its byte size, and its offset from the frame base.
 
-        `frame_offset` is signed (`int_t`, not `nat_t`) and, for every
-        target this project actually implements (x86-64 System V, via
-        x86_64codegen.hpp), is *negative* — the standard "locals live
-        below the saved frame pointer" convention a `push rbp; mov rbp,
-        rsp; sub rsp, N` prologue sets up, where a local's address is
+        `frame_offset` is signed (`int_t`, not `nat_t`) and, for the
+        convention this function's own arithmetic follows (see
+        compute_frame_layout() below), is *negative* — the standard
+        "locals live below the saved frame pointer" convention a `push
+        rbp; mov rbp, rsp; sub rsp, N` prologue sets up on x86-64 (and
+        the equivalent frame-pointer convention on AArch64/RISC-V), where
+        a local's address is
         `rbp + frame_offset` with `frame_offset < 0`. This struct itself
         does not hardcode that sign convention as a rule (a hypothetical
         target that grows its frame the other way could produce positive
@@ -109,17 +109,16 @@ namespace Designar
         slot, for `target`'s ABI.
 
         Deliberately assigns *every* local a real memory slot,
-        register-candidate or not: this project's only implemented
-        backend (x86_64codegen.hpp) uses a deliberately baseline register
-        allocator ("spill everything to its own stack slot, reload into a
-        scratch register only around each instruction that touches it" —
-        see that file's own comment on why, and on graph-coloring/linear-
-        scan allocation being the documented, deferred next step), so
-        *nothing* actually lives only in a register in this pass's
-        generated code regardless of `IRLocal::address_taken`. This
-        function still records the flag faithfully on the way in — a
-        future smarter allocator, built without changing this function's
-        signature or FrameLayout's shape, is exactly what would start
+        register-candidate or not: this file implements no register
+        allocator at all (there is no code generator in this codebase for
+        one to serve), so the only honest thing compute_frame_layout()
+        can do is give every declared local real, addressable storage —
+        anything less would silently claim a local can live in a register
+        it might never actually be assigned to by any future consumer.
+        This function still records `IRLocal::address_taken` faithfully
+        on the way in — a future smarter allocator, built without
+        changing this function's signature or FrameLayout's shape, is
+        exactly what would start
         actually honoring `!address_taken` by putting some locals in
         `LocalSlot::in_register == true` slots instead of memory. What
         can never change, for *any* future allocator, is that an
@@ -133,14 +132,15 @@ namespace Designar
         keep respecting, not merely this pass's own default.
 
         Every declared local (parameter or not) gets `target.
-        pointer_size_bytes` (8, for x86-64) worth of stack space
-        regardless of whether it is `IRType::INT` or `IRType::REAL`: both
-        `int_t` and `real_t` (types.hpp) are 8 bytes on every target this
-        project's TargetInfo actually describes, so a single fixed slot
-        size keeps this function simple without yet needing a per-IRType
-        size table — a real concern only once a target with a genuinely
-        different word size shows up, which is explicitly out of scope
-        here (see target.hpp: only x86-64 is implemented).
+        pointer_size_bytes` (8, on every architecture target.hpp
+        currently describes) worth of stack space regardless of whether
+        it is `IRType::INT` or `IRType::REAL`: both `int_t` and `real_t`
+        (types.hpp) are 8 bytes on every target this project's TargetInfo
+        actually describes, so a single fixed slot size keeps this
+        function simple without yet needing a per-IRType size table — a
+        real concern only once a target with a genuinely different word
+        size is added to target.hpp, which none of the three currently
+        described architectures need.
 
         Slots are laid out in `IRFunction::locals`' HashMap iteration
         order, each one frame_offset = -(running_total) after adding its

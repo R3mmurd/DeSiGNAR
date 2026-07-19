@@ -5,43 +5,39 @@
 */
 
 /** @file target.hpp
-    @brief The seam every code-generation backend (x86_64codegen.hpp today;
-    an AArch64 and a RISC-V equivalent are the deliberately-deferred future
-    work this file's own doc comments keep pointing at) is written against:
-    `Architecture`, `host_architecture()`, and `TargetInfo`.
+    @brief The target-parametrized ABI facts memorylayout.hpp's frame-layout
+    computation needs: `Architecture`, `host_architecture()`, and
+    `TargetInfo`.
 
-    This is Phase 1 of a multi-pass code-generation initiative — see
-    ir.hpp's file comment for the full phasing story (IR design, one
-    optimization pass, memory layout, one real backend). This particular
-    file's job is narrow: name the architectures this project knows about,
-    say which one *this* translation unit was compiled for, and describe,
-    in backend-agnostic terms, the handful of facts a code generator needs
-    about whichever architecture it targets (pointer width, integer
-    argument/return registers, which registers a callee must preserve,
-    required stack alignment). Only `Architecture::X86_64` has a real
-    `TargetInfo` behind it right now (see target_info_for() below);
-    `AARCH64` and `RISCV64` are named here — and only here — so that
-    x86_64codegen.hpp's *interface* (and any future aarch64codegen.hpp/
-    riscv64codegen.hpp written against this same TargetInfo shape) needs
-    no restructuring when a real implementation for either shows up later,
-    only a new backend file plus a new branch in target_info_for()'s
-    switch.
+    Code generation — turning this project's IR (ir.hpp) into runnable
+    machine code for some real architecture — is a distinct concern from
+    memory layout, and is not currently planned as part of this codebase:
+    no instruction-selecting backend exists here, for any architecture, and
+    this file makes no attempt to provide what one would need (register
+    names, calling-convention lowering rules, and so on). What
+    compute_frame_layout() (memorylayout.hpp) actually needs from a target
+    is narrow — how many bytes a pointer/machine word occupies, and what
+    alignment the stack must have at its final size — and `TargetInfo`
+    below describes exactly that and nothing more. If a code generator is
+    ever written against this codebase, it would need a substantially
+    richer per-architecture description than `TargetInfo` provides (registers,
+    argument-passing rules, callee-saved sets, ...); deliberately, none of
+    that is attempted here.
 
     Host vs. target, and why "host detection" here means a compile-time
-    macro check, not a runtime CPUID probe: a compiler (or, here, a
-    code-generation library playing that role) always targets *some*
-    machine, chosen independently of whatever machine happens to be
-    running the compiler itself — that is precisely what makes
-    cross-compilation ("build on x86-64, emit AArch64") a meaningful,
-    supported thing for a real compiler to do, via an explicit `-target`/
-    `--march` flag. The *default*, absent such a flag, is universally "the
-    same architecture this compiler binary itself runs on" — not because
-    that is the only sensible target, but because it is the only default
-    a compiler can pick with no other information at all, and it is by far
-    the common case (`gcc`/`clang` with no `-target` emit code for the
-    host they run on). host_architecture() below answers exactly that
-    "what does *this build* target by default" question, and it can only
-    be answered at compile time: it inspects the predefined macros the
+    macro check, not a runtime CPUID probe: a program's build can always be
+    read as targeting *some* machine, chosen independently of whatever
+    machine happens to be running the toolchain itself — that is precisely
+    what makes cross-compilation ("build on x86-64, target AArch64") a
+    meaningful, supported thing to reason about, via an explicit `-target`/
+    `--march` flag in a real compiler. The *default*, absent such a flag, is
+    universally "the same architecture this toolchain binary itself runs
+    on" — not because that is the only sensible target, but because it is
+    the only default a build can pick with no other information at all, and
+    it is by far the common case (`gcc`/`clang` with no `-target` emit code
+    for the host they run on). host_architecture() below answers exactly
+    that "what does *this build* target by default" question, and it can
+    only be answered at compile time: it inspects the predefined macros the
     compiler invoked *for this translation unit* already defines
     (`__x86_64__`/`_M_X64`, `__aarch64__`/`_M_ARM64`, `__riscv` combined
     with `__riscv_xlen == 64`), because those macros are exactly what
@@ -51,16 +47,17 @@
     CPUID probe answers a different, unrelated question ("what does the
     processor this program happens to be executing on support *right
     now*", relevant to runtime dispatch between multiple precompiled code
-    paths) — not "what architecture should this code generator emit code
-    for by default", which is a build-time decision, not a run-time one.
-    Overriding the default (cross-codegen: emit AArch64 while running on
-    an x86-64 host) is an explicit, opt-in call to
-    `target_info_for(Architecture::AARCH64)` instead of
-    `target_info_for(host_architecture())` — exactly the `-target`-flag
-    shape a real compiler offers, and exactly why `host_architecture()`
+    paths) — not "what architecture is this build's default target", which
+    is a build-time fact, not a run-time one. Asking for a *different*
+    architecture's `TargetInfo` than the host's own (e.g. to see how the
+    same IRFunction would lay out its frame on AArch64 while running this
+    on an x86-64 host, exactly what demo-ir.cpp does) is an explicit call
+    to `target_info_for(Architecture::AARCH64)` instead of
+    `target_info_for(host_architecture())` — exactly why `host_architecture()`
     and `target_info_for()` are two separate calls rather than one: a
-    caller who wants the host's own architecture asks for it explicitly;
-    a caller cross-compiling never calls host_architecture() at all.
+    caller who wants the host's own architecture asks for it explicitly; a
+    caller wanting some other architecture's ABI facts never calls
+    host_architecture() at all.
     @ingroup Compilers
 */
 
@@ -70,15 +67,12 @@
 #include <string>
 
 #include <types.hpp>
-#include <array.hpp>
 
 namespace Designar
 {
-    /** The real, physical instruction set architectures this project's
-        code generation aims at (see this file's own comment above for
-        why "real ISAs, not a toy one" was a deliberate choice made before
-        any of this code was written). Spelled the way this codebase
-        spells other closed, small enumerations (Grammar::Associativity,
+    /** The real, physical instruction set architectures this file
+        describes ABI facts for. Spelled the way this codebase spells
+        other closed, small enumerations (Grammar::Associativity,
         ParserKind in parser.hpp): plain enum-class values, no trailing
         underscores, no "ARCHITECTURE_" prefix repetition. */
     enum class Architecture
@@ -88,9 +82,8 @@ namespace Designar
         RISCV64
     };
 
-    /** Human-readable name for `a`, used in diagnostics (an
-        "unimplemented target" exception message needs to name the
-        architecture it is complaining about) and in demo/test output. */
+    /** Human-readable name for `a`, used in diagnostics and in demo/test
+        output. */
     inline std::string to_string(Architecture a)
     {
         switch (a)
@@ -120,9 +113,9 @@ namespace Designar
         for at all fails to *compile* (via `#error` below) rather than
         silently guessing or returning some default — an unrecognized
         host is exactly the situation where guessing would be actively
-        dangerous (emitting code for the wrong architecture by default,
-        with no diagnostic at all, is far worse than a build failure that
-        tells a contributor precisely what to add and where). */
+        dangerous (silently reporting the wrong architecture, with no
+        diagnostic at all, is far worse than a build failure that tells a
+        contributor precisely what to add and where). */
     constexpr Architecture host_architecture() noexcept
     {
 #if defined(__x86_64__) || defined(_M_X64)
@@ -134,38 +127,34 @@ namespace Designar
 #else
 #error "Designar target.hpp: host_architecture() has no macro-based " \
        "mapping for whatever compiler/architecture combination is " \
-       "compiling this translation unit. This project's code generation " \
-       "only knows about Architecture::X86_64/AARCH64/RISCV64 so far " \
-       "(see target.hpp's file comment); add a new predefined-macro " \
-       "check here (and, eventually, a TargetInfo and a codegen backend) " \
-       "before targeting a fourth architecture."
+       "compiling this translation unit. This file only knows about " \
+       "Architecture::X86_64/AARCH64/RISCV64 so far (see target.hpp's " \
+       "file comment); add a new predefined-macro check here before " \
+       "targeting a fourth architecture."
 #endif
     }
 
-    /** The backend-agnostic facts a code generator needs about whichever
-        concrete architecture it is asked to target — the generic seam
-        every per-architecture backend (only x86_64codegen.hpp exists so
-        far) is written against, so that adding an AArch64 or RISC-V
-        backend later means filling in one more of these plus a new
-        lowering file, not redesigning this struct's shape.
+    /** The target-parametrized ABI facts memorylayout.hpp's
+        compute_frame_layout() actually needs about whichever architecture
+        it is laying out a frame for: how wide a pointer/machine word is,
+        and what alignment the stack must have at its final size.
 
-        Deliberately plain data, not a polymorphic interface: nothing
-        here needs virtual dispatch (a `TargetInfo` is a fully-described,
-        static snapshot of one architecture's ABI-relevant facts, not a
-        live object a backend calls methods on), and a plain aggregate is
-        exactly this library's existing precedent for this kind of "bag
-        of per-flavor facts a shared algorithm consults" role (compare
-        LRProduction's `lhs`/`rhs` pair in lrparser.hpp, or `TargetInfo`'s
-        own near-neighbor `LRConflict`).
+        This is deliberately narrower than a real "target info for code
+        generation" would need to be — there is no code generator in this
+        codebase to serve, so nothing here describes registers, argument-
+        passing rules, or any other calling-convention lowering detail;
+        adding those would be overclaiming what this file actually
+        supports. If a code generator is ever added to this project later,
+        it would need a materially richer per-architecture description
+        than this struct, built at that time.
 
-        Every register name below is architecture-specific ABI text
-        (`"rdi"`, `"x0"`, `"a0"`, ...), stored as `std::string` rather
-        than some architecture-neutral enum, precisely because there is
-        no architecture-neutral register numbering that would mean
-        anything: a backend's own lowering code is the only thing that
-        ever interprets these strings, so they can be exactly the
-        mnemonics that backend already knows how to emit into assembly
-        text, with zero translation layer in between. */
+        Deliberately plain data, not a polymorphic interface: nothing here
+        needs virtual dispatch (a `TargetInfo` is a fully-described, static
+        snapshot of a couple of ABI facts, not a live object anything calls
+        methods on), and a plain aggregate is exactly this library's
+        existing precedent for this kind of "bag of per-flavor facts a
+        shared algorithm consults" role (compare LRProduction's `lhs`/`rhs`
+        pair in lrparser.hpp). */
     struct TargetInfo
     {
         Architecture architecture;
@@ -180,94 +169,69 @@ namespace Designar
 
         /** The alignment, in bytes, the stack pointer must have at the
             point of a `call` instruction on this target — 16 for the
-            x86-64 System V ABI (the ABI this project actually
-            implements; see x86_64codegen.hpp), also 16 for AArch64's
-            AAPCS64 and RISC-V's calling convention, though this project
-            does not implement either yet. Deliberately a per-target
-            field rather than a hardcoded constant anywhere alignment is
-            computed (see memorylayout.hpp's compute_frame_layout()),
-            since a future target with a different rule only has to set
-            this field correctly, not touch the layout algorithm
-            itself. */
+            x86-64 System V ABI, also 16 for AArch64's AAPCS64 and for
+            RISC-V's own calling convention (all three are genuine,
+            citable ABI facts, independent of whether any code generator
+            for the architecture exists in this codebase). Deliberately a
+            per-target field rather than a hardcoded constant anywhere
+            alignment is computed (see memorylayout.hpp's
+            compute_frame_layout()), since a future target with a
+            different rule only has to set this field correctly, not
+            touch the layout algorithm itself. */
         nat_t stack_alignment_bytes;
-
-        /** Integer/pointer argument registers, in the exact order this
-            target's calling convention assigns them to a callee's first,
-            second, third, ... integer/pointer parameter — `{"rdi", "rsi",
-            "rdx", "rcx", "r8", "r9"}` for x86-64 System V. A parameter
-            beyond this list's length is passed on the stack by every
-            real calling convention this project knows about; this
-            project's baseline x86-64 backend does not implement that
-            overflow case yet (see x86_64codegen.hpp), a deliberately
-            scoped-down limitation documented there, not here. */
-        DynArray<std::string> integer_argument_registers;
-
-        /** The register an integer/pointer return value comes back in —
-            `"rax"` for x86-64 System V. */
-        std::string integer_return_register;
-
-        /** Registers a callee must save and restore if it uses them at
-            all (the caller is entitled to assume they still hold
-            whatever they held before the call) — `{"rbx", "r12", "r13",
-            "r14", "r15", "rbp"}` for x86-64 System V. This project's
-            baseline register allocator (see x86_64codegen.hpp) never
-            actually allocates a value to one of these across a call
-            boundary in a way that would require saving them (its "spill
-            everything to its own stack slot" strategy keeps every value
-            live in memory, not in a callee-saved register, precisely
-            because that sidesteps needing to emit any save/restore code
-            for this list at all) — the field is still recorded here,
-            for a future smarter allocator that *does* want to keep a
-            long-lived value in a callee-saved register across a call. */
-        DynArray<std::string> callee_saved_registers;
-
-        /** Registers free for a backend to use as short-lived scratch
-            space without saving/restoring them (caller-saved registers
-            not already spoken for by `integer_argument_registers`/
-            `integer_return_register`) — what this project's baseline
-            "load into a scratch register only around each instruction"
-            allocator (see x86_64codegen.hpp) actually uses. */
-        DynArray<std::string> scratch_registers;
     };
 
-    /** The one real implementation in this file: System V x86-64's
-        integer-register ABI facts, exactly what x86_64codegen.hpp's
-        lowering and memorylayout.hpp's frame-size rounding consult. */
+    /** System V x86-64 ABI facts: 8-byte pointers, 16-byte call-site stack
+        alignment. */
     inline TargetInfo x86_64_sysv_target_info()
     {
         TargetInfo t;
         t.architecture = Architecture::X86_64;
         t.pointer_size_bytes = 8;
         t.stack_alignment_bytes = 16;
-        t.integer_argument_registers =
-            DynArray<std::string>({"rdi", "rsi", "rdx", "rcx", "r8", "r9"});
-        t.integer_return_register = "rax";
-        t.callee_saved_registers =
-            DynArray<std::string>({"rbx", "r12", "r13", "r14", "r15", "rbp"});
-        /** r10/r11 only: every other caller-saved register is already
-            spoken for above by argument passing or the return value,
-            and x86_64codegen.hpp's baseline lowering needs at most two
-            scratch registers live at once (one per operand of a binary
-            instruction) plus `rax` itself for results/`idiv`'s dividend,
-            which is already available since it is the return register,
-            not a third scratch slot. */
-        t.scratch_registers = DynArray<std::string>({"r10", "r11"});
         return t;
     }
 
-    /** Looks up the `TargetInfo` for `a` — the one function every caller
-        (memorylayout.hpp, x86_64codegen.hpp, demo-ir.cpp) actually calls,
-        whether `a` came from `host_architecture()` (the default, "target
-        what this build itself runs on" case) or was supplied explicitly
-        by a caller doing cross-codegen ("emit for a different
-        architecture than the one running this code"). Throws for
-        `AARCH64`/`RISCV64` rather than returning a half-filled
-        `TargetInfo`: this project's honest, current state is that only
-        x86-64 has a real backend behind it (see this file's own comment
-        and x86_64codegen.hpp), and a `TargetInfo` with plausible-looking
-        but made-up register names would silently misrepresent that,
-        exactly the kind of overclaiming the project's docs are required
-        to avoid. */
+    /** AArch64 AAPCS64 ABI facts: 8-byte pointers, 16-byte call-site stack
+        alignment. Only these two fields are filled in — see this file's
+        own comment on why `TargetInfo` deliberately stops there; no
+        AArch64 code generator exists in this codebase to need anything
+        more. */
+    inline TargetInfo aarch64_target_info()
+    {
+        TargetInfo t;
+        t.architecture = Architecture::AARCH64;
+        t.pointer_size_bytes = 8;
+        t.stack_alignment_bytes = 16;
+        return t;
+    }
+
+    /** RISC-V (RV64) calling-convention ABI facts: 8-byte pointers,
+        16-byte call-site stack alignment. Only these two fields are
+        filled in — see this file's own comment on why `TargetInfo`
+        deliberately stops there; no RISC-V code generator exists in this
+        codebase to need anything more. */
+    inline TargetInfo riscv64_target_info()
+    {
+        TargetInfo t;
+        t.architecture = Architecture::RISCV64;
+        t.pointer_size_bytes = 8;
+        t.stack_alignment_bytes = 16;
+        return t;
+    }
+
+    /** Looks up the `TargetInfo` for `a` — the one function memorylayout.
+        hpp/demo-ir.cpp actually call, whether `a` came from
+        host_architecture() (the default, "describe what this build itself
+        runs on" case) or was supplied explicitly by a caller that wants to
+        see the same IRFunction laid out for a different architecture
+        (exactly what demo-ir.cpp does, side by side, to make the
+        target-parametrization concrete). Returns a real, complete
+        `TargetInfo` for all three `Architecture` values — unlike a
+        hypothetical "target info for code generation", the two ABI facts
+        this struct actually claims to describe (pointer size, stack
+        alignment) are equally real and citable for x86-64, AArch64, and
+        RISC-V, so there is nothing to defer here. */
     inline TargetInfo target_info_for(Architecture a)
     {
         switch (a)
@@ -275,17 +239,9 @@ namespace Designar
         case Architecture::X86_64:
             return x86_64_sysv_target_info();
         case Architecture::AARCH64:
-            throw std::logic_error(
-                "target_info_for(Architecture::AARCH64): no AArch64 "
-                "backend exists yet — this is deliberately deferred "
-                "future work (see target.hpp's file comment); only "
-                "Architecture::X86_64 is implemented so far.");
+            return aarch64_target_info();
         case Architecture::RISCV64:
-            throw std::logic_error(
-                "target_info_for(Architecture::RISCV64): no RISC-V "
-                "backend exists yet — this is deliberately deferred "
-                "future work (see target.hpp's file comment); only "
-                "Architecture::X86_64 is implemented so far.");
+            return riscv64_target_info();
         }
 
         throw std::logic_error("target_info_for: unhandled Architecture value");
