@@ -59,7 +59,8 @@ namespace
             return EvalNode{false, 0, t.lexeme};
         }
 
-        NodeType reduce(const Grammar::Symbol&, DynArray<NodeType>&& c) const
+        NodeType reduce(const Grammar::Symbol&, const Grammar::Sequence& rhs,
+                        DynArray<NodeType>&& c) const
         {
             if (c.size() == 1)
             {
@@ -68,7 +69,7 @@ namespace
 
             if (c.size() == 3)
             {
-                if (!c[0].is_value && c[0].op == "(")
+                if (rhs[0] == "LPAREN")
                 {
                     return c[1]; // E -> ( E )
                 }
@@ -319,7 +320,8 @@ int main()
                 return t.name == "NUM" ? std::stod(t.lexeme) : 0;
             }
 
-            real_t reduce(const Grammar::Symbol&, DynArray<real_t>&& c) const
+            real_t reduce(const Grammar::Symbol&, const Grammar::Sequence&,
+                         DynArray<real_t>&& c) const
             {
                 if (c.size() == 1)
                 {

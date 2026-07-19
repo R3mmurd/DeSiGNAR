@@ -11,14 +11,17 @@
     representation and one shift-reduce-goto driver (LRParserBase), so
     only *how each flavor's ACTION/GOTO table gets built* differs between
     them, the same "shared mechanism, per-algorithm differences only
-    where needed" shape as this library's tree/graph algorithms. Unlike
-    LLParser (which stops at a generic parse tree and leaves AST
-    construction to the caller), every flavor here drives an
-    `ASTBuilder` functor live during the parse — one callback per shift,
-    one per reduce — so the parser can hand back a real, typed AST
-    directly, suitable for driving an interpreter or a translator; a
-    default builder producing a generic parse tree (llparser.hpp's
-    ParseTreeNode) is provided for callers who just want that instead.
+    where needed" shape as this library's tree/graph algorithms. Every
+    flavor here drives an `ASTBuilder` functor live during the parse —
+    one callback per shift, one per reduce — so the parser can hand back
+    a real, typed AST directly, suitable for driving an interpreter or a
+    translator; a default builder producing a generic parse tree
+    (llparser.hpp's ParseTreeNode) is provided for callers who just want
+    that instead. LLParser (llparser.hpp) offers the very same
+    `ASTBuilder` mechanism over its top-down table-driven parse, via a
+    "semantic stack" technique fitted to LL's different stack shape —
+    see llparser.hpp's own file-level and class comments for why that
+    needs a different technique than the one below.
     @ingroup Compilers
 */
 
@@ -148,47 +151,6 @@ namespace Designar
             to name, since shift has no production index at all), so
             this field is only meaningful for REDUCE_REDUCE. */
         nat_t losing_production;
-    };
-
-    /** The default ASTBuilder: reduces to a generic parse tree, reusing
-        llparser.hpp's ParseTreeNode/ParseNodeInfo rather than inventing a
-        second tree type — a caller who just wants what LLParser::parse()
-        already gives them gets exactly that, for free. Also models the
-        `destroy(NodeType&)` half of the ASTBuilder concept (see
-        LRParserBase::parse()'s doc comment): every custom builder must
-        supply one too, even if a no-op, so the driver can clean up
-        already-built nodes still sitting on its stack if a syntax error
-        throws partway through a parse — a plain-value NodeType (e.g. a
-        `real_t` produced by an evaluating builder) needs nothing done,
-        but a heap-allocated one like ParseTreeNode* would otherwise leak
-        exactly the way LLParser::parse() already guards against with its
-        own try/catch. */
-    struct DefaultLRTreeBuilder
-    {
-        using NodeType = ParseTreeNode*;
-
-        NodeType make_leaf(const Token& t) const
-        {
-            return new ParseTreeNode(ParseNodeInfo{t.name, t.lexeme});
-        }
-
-        NodeType reduce(const Grammar::Symbol& lhs,
-                        DynArray<NodeType>&& children) const
-        {
-            ParseTreeNode* node = new ParseTreeNode(ParseNodeInfo{lhs, ""});
-
-            for (NodeType c : children)
-            {
-                node->append_child(c);
-            }
-
-            return node;
-        }
-
-        void destroy(NodeType& node) const
-        {
-            ParseTreeNode::destroy_tree(node);
-        }
     };
 
     /** Sorts `state` and removes adjacent duplicates in place — the
@@ -821,18 +783,30 @@ namespace Designar
 
         /** `ASTBuilder`: a type exposing `using NodeType = ...;` plus
             `NodeType make_leaf(const Token&) const` (called on every
-            shift), `NodeType reduce(const Grammar::Symbol& lhs,
-            DynArray<NodeType>&& children) const` (called on every
-            reduce, `children` already in left-to-right order), and
-            `void destroy(NodeType&) const` — the yacc-style mechanism
-            this whole file exists to offer: the builder is invoked live
-            during the parse, so whatever `NodeType` it produces (a
-            real, typed AST node — not necessarily a tree at all) comes
-            back directly from this call, ready to hand to an
-            interpreter or a translator. `destroy()` exists purely for
-            the error path: if a syntax error throws partway through a
-            parse, every `NodeType` still sitting on the internal node
-            stack is passed to it before the exception propagates, so a
+            shift), `NodeType reduce(const Grammar::Symbol& lhs, const
+            Grammar::Sequence& rhs, DynArray<NodeType>&& children) const`
+            (called on every reduce, `children` already in left-to-right
+            order), and `void destroy(NodeType&) const` — the yacc-style
+            mechanism this whole file exists to offer: the builder is
+            invoked live during the parse, so whatever `NodeType` it
+            produces (a real, typed AST node — not necessarily a tree at
+            all) comes back directly from this call, ready to hand to an
+            interpreter or a translator. `reduce()` is given `rhs` (the
+            exact right-hand side that fired, not just `lhs`) because
+            `lhs` plus a child count alone often cannot tell two
+            productions of the same nonterminal apart — e.g. `E -> E +
+            E` and `E -> E * E` both have lhs `E` and three children;
+            without `rhs` a builder is forced to inspect the *content* of
+            an already-built child to recover which operator fired,
+            which stops working the moment children aren't tagged with
+            something to inspect (exactly the situation a facade handing
+            out one callback per production, like parser.hpp's `Parser`,
+            is in) — with `rhs` in hand a builder can instead dispatch on
+            the `(lhs, rhs)` pair directly, unambiguously, before ever
+            looking at a child. `destroy()` exists purely for the error
+            path: if a syntax error throws partway through a parse,
+            every `NodeType` still sitting on the internal node stack is
+            passed to it before the exception propagates, so a
             heap-allocated `NodeType` (like DefaultLRTreeBuilder's
             `ParseTreeNode*`) doesn't leak — a plain-value `NodeType`
             (like a `real_t` an evaluating builder produces) can just
@@ -914,7 +888,7 @@ namespace Designar
                         }
 
                         NodeType reduced =
-                            builder.reduce(p.lhs, std::move(children));
+                            builder.reduce(p.lhs, p.rhs, std::move(children));
 
                         nat_t prev_state = state_stack.top();
                         const nat_t* goto_target =

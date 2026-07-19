@@ -88,7 +88,15 @@ namespace
         collapses a unit production through unchanged (`E -> NUM`),
         unwraps a parenthesized one (freeing both OP_TAG bookends), or
         builds a real ExprNode::BINARY_OP node from a completed `E -> E
-        op E` (freeing the now-consumed OP_TAG in the middle). */
+        op E` (freeing the now-consumed OP_TAG in the middle). Which of
+        the two three-child shapes fired is told apart by inspecting
+        `rhs` directly (`rhs[0] == "LPAREN"` vs. not) rather than by
+        peeking at an already-built child's `.kind`/`.op` the way an
+        older version of this builder had to when `reduce()` only
+        received `lhs` — `rhs` disambiguates unambiguously and up front,
+        which is exactly what lets a facade like parser.hpp's `Parser`
+        key one action per production without needing to know anything
+        about what a child node looks like on the inside. */
     struct ExprASTBuilder
     {
         using NodeType = ExprNode*;
@@ -105,15 +113,15 @@ namespace
                                 nullptr};
         }
 
-        NodeType reduce(const Grammar::Symbol&, DynArray<NodeType>&& c) const
+        NodeType reduce(const Grammar::Symbol&, const Grammar::Sequence& rhs,
+                        DynArray<NodeType>&& c) const
         {
-            if (c.size() == 1)
+            if (rhs.size() == 1) // E -> NUM
             {
                 return c[0];
             }
 
-            // E -> ( E )
-            if (c[0]->kind == ExprNode::OP_TAG && c[0]->op == "(")
+            if (rhs[0] == "LPAREN") // E -> ( E )
             {
                 delete c[0];
                 delete c[2];
