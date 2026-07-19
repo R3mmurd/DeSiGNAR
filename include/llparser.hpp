@@ -9,7 +9,15 @@
     Grammar's FIRST/FOLLOW sets (grammar.hpp) and drives a table-driven
     parse over a token stream (lexer.hpp's Token), producing a parse
     tree — the piece FIRST/FOLLOW were computed for in the first place,
-    completing the lex -> parse front-end pipeline.
+    completing the lex -> parse front-end pipeline. Like lrparser.hpp's
+    LR family, LLParser::parse() can also drive an `ASTBuilder` functor
+    live during the parse instead of only ever building the generic
+    ParseTreeNode below, so a caller who wants a real, typed AST straight
+    out of a top-down parse (rather than a parse tree to simplify
+    afterwards) doesn't have to switch to a bottom-up parser just to get
+    that — see LLParser's own class comment for why driving an
+    ASTBuilder top-down needs a slightly different technique than
+    lrparser.hpp's naturally bottom-up stack does.
     @ingroup Compilers
 */
 
@@ -17,6 +25,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <utility>
 
 #include <array.hpp>
 #include <stack.hpp>
@@ -46,9 +55,93 @@ namespace Designar
         library (e.g. test-mtreenode.cpp) already follows. */
     using ParseTreeNode = MTreeNode<ParseNodeInfo>;
 
+    /** The default ASTBuilder: reduces to a generic parse tree, reusing
+        ParseTreeNode/ParseNodeInfo above rather than inventing a second
+        tree type — a caller who just wants what LLParser::parse()
+        already gives them gets exactly that, for free, and
+        lrparser.hpp's LR family reuses this same builder (via its own
+        `#include <llparser.hpp>`) so a caller switching from one parser
+        flavor to another for the same grammar can get the same generic
+        tree shape back from either. Also models the `destroy(NodeType&)`
+        half of the ASTBuilder concept (see the comment above LLParser
+        and LRParserBase::parse() in lrparser.hpp): every custom builder
+        must supply one too, even if a no-op, so a driver can clean up
+        already-built nodes still sitting on its internal stack(s) if a
+        syntax error throws partway through a parse — a plain-value
+        NodeType (e.g. a `real_t` produced by an evaluating builder) needs
+        nothing done, but a heap-allocated one like this builder's own
+        `ParseTreeNode*` would otherwise leak. */
+    struct DefaultLRTreeBuilder
+    {
+        using NodeType = ParseTreeNode*;
+
+        NodeType make_leaf(const Token& t) const
+        {
+            return new ParseTreeNode(ParseNodeInfo{t.name, t.lexeme});
+        }
+
+        NodeType reduce(const Grammar::Symbol& lhs, const Grammar::Sequence&,
+                        DynArray<NodeType>&& children) const
+        {
+            ParseTreeNode* node = new ParseTreeNode(ParseNodeInfo{lhs, ""});
+
+            for (NodeType c : children)
+            {
+                node->append_child(c);
+            }
+
+            return node;
+        }
+
+        void destroy(NodeType& node) const
+        {
+            ParseTreeNode::destroy_tree(node);
+        }
+    };
+
     /** Builds its LL(1) table once at construction time (via `grammar`'s
         own compute_first()/compute_follow()) and can then parse()
-        any number of token streams against it. */
+        any number of token streams against it.
+
+        Like LRParserBase in lrparser.hpp, `parse()` can drive an
+        `ASTBuilder` functor live during the parse (see the templated
+        `parse()` overload's own comment for the exact concept:
+        `NodeType`, `make_leaf()`, `reduce()`, `destroy()`) instead of
+        only ever producing a generic ParseTreeNode. The two parsers
+        need genuinely different plumbing to do it, though, because of
+        the direction each one builds in: an LR parser's control stack
+        already *is* a bottom-up construction — by the time something
+        is popped off it to be reduced, every symbol of that
+        production's right-hand side has already been shifted or
+        reduced onto the node stack in order, so LRParserBase::parse()
+        just pops `rhs.size()` already-built NodeTypes straight off it.
+        LLParser's control stack runs the other way: predicting
+        `A -> X Y Z` for a nonterminal `A` pushes `X`, `Y`, `Z` so they
+        get *matched against input* in that order, but none of them has
+        been "built" yet — the plain ParseTreeNode version below
+        sidesteps this entirely by pre-allocating each child node before
+        descending into it and filling it in along the way, which works
+        because ParseTreeNode is mutable and cheap to allocate as an
+        empty shell. An arbitrary ASTBuilder::NodeType is neither (it
+        might be a plain `real_t`, with no "empty shell" state at all,
+        and building it is exactly the point of calling `reduce()`), so
+        there is nothing to pre-allocate. Instead, a second "semantic
+        stack" of NodeTypes accumulates values as terminals are matched
+        (via `make_leaf`) and nonterminals fully expand (via nested
+        `reduce` calls), and the control stack carries an extra kind of
+        entry beyond "a symbol still waiting to be matched/expanded": a
+        reduce marker carrying `(lhs, rhs)`, pushed *underneath* `X Y Z`
+        when `A` is predicted (i.e. popped only after all three have
+        been fully processed) so that by the time it is popped, exactly
+        `rhs.size()` values — one per symbol of `X Y Z`, each already
+        built bottom-up by its own nested expansion — are sitting on top
+        of the semantic stack, ready to be popped off and handed to
+        `builder.reduce(lhs, rhs, ...)`; the result is pushed back onto
+        the semantic stack in `A`'s place, exactly mirroring what the LR
+        driver gets for free from its stack's natural shape. When the
+        control stack finally empties (the start symbol's own reduce
+        marker having fired), the one value left on the semantic stack
+        is the whole parse's result. */
     class LLParser
     {
         const Grammar& grammar;
@@ -168,16 +261,46 @@ namespace Designar
             to match the grammar's terminal names); pass a different
             callback (e.g. one returning `token.lexeme`) for a grammar
             whose terminals are spelled as literal text instead, like
-            `demo-grammar.cpp`'s bare `"+"`/`"*"`. */
+            `demo-grammar.cpp`'s bare `"+"`/`"*"`. Delegates to the
+            three-argument `parse()` overload below with
+            DefaultLRTreeBuilder, so this keeps returning exactly the
+            same generic ParseTreeNode it always has. */
         ParseTreeNode* parse(const DynArray<Token>& tokens) const
         {
-            return parse(tokens, [](const Token& t) { return t.name; });
+            return parse(tokens, [](const Token& t) { return t.name; },
+                        DefaultLRTreeBuilder());
         }
 
         template <class TokenSymbolFn>
         ParseTreeNode* parse(const DynArray<Token>& tokens,
                             TokenSymbolFn&& token_symbol) const
         {
+            return parse(tokens, std::forward<TokenSymbolFn>(token_symbol),
+                        DefaultLRTreeBuilder());
+        }
+
+        /** `ASTBuilder`: a type exposing `using NodeType = ...;` plus
+            `NodeType make_leaf(const Token&) const` (called for every
+            terminal matched against the input), `NodeType reduce(const
+            Grammar::Symbol& lhs, const Grammar::Sequence& rhs,
+            DynArray<NodeType>&& children) const` (called once per
+            nonterminal fully expanded, `children` already in
+            left-to-right order and `rhs` the exact production the LL(1)
+            table selected — letting the builder tell apart two
+            productions of the same `lhs` that happen to produce the
+            same number of children, the same reason lrparser.hpp's
+            `ASTBuilder::reduce()` takes `rhs` too), and `void
+            destroy(NodeType&) const` for the error path (see the class
+            comment above for the "semantic stack" mechanism this
+            drives, and LRParserBase::parse()'s own comment in
+            lrparser.hpp for why `destroy()` exists at all). */
+        template <class TokenSymbolFn, class ASTBuilder>
+        typename std::decay_t<ASTBuilder>::NodeType
+        parse(const DynArray<Token>& tokens, TokenSymbolFn&& token_symbol,
+              ASTBuilder&& builder) const
+        {
+            using NodeType = typename std::decay_t<ASTBuilder>::NodeType;
+
             auto current_symbol = [&](nat_t pos) -> Grammar::Symbol
             {
                 return pos < tokens.size() ? token_symbol(tokens[pos])
@@ -195,60 +318,77 @@ namespace Designar
                                          : tokens[tokens.size() - 1].position;
             };
 
-            ParseTreeNode* root =
-                new ParseTreeNode(ParseNodeInfo{grammar.get_start_symbol(),
-                                                ""});
-            ParseTreeNode* eof_marker =
-                new ParseTreeNode(ParseNodeInfo{Grammar::END_OF_INPUT, ""});
+            /** One control-stack entry: either a single grammar symbol
+                still waiting to be matched (a terminal) or expanded (a
+                nonterminal), or a reduce marker recording the `(lhs,
+                rhs)` of a nonterminal whose entire right-hand side has
+                already been pushed above it — see the class comment
+                above for why LL needs this second kind of entry that
+                LR's naturally bottom-up stack never has to. */
+            struct ControlEntry
+            {
+                bool is_reduce_marker;
+                Grammar::Symbol symbol; // meaningful iff !is_reduce_marker
+                Grammar::Symbol lhs;    // meaningful iff is_reduce_marker
+                Grammar::Sequence rhs;  // meaningful iff is_reduce_marker
+            };
 
-            DynStack<ParseTreeNode*> stack;
-            stack.push(eof_marker);
-            stack.push(root);
+            DynStack<ControlEntry> control_stack;
+            DynStack<NodeType> value_stack;
+
+            control_stack.push(ControlEntry{
+                false, grammar.get_start_symbol(), Grammar::Symbol(),
+                Grammar::Sequence()});
 
             nat_t pos = 0;
 
             try
             {
-                while (!stack.is_empty())
+                while (!control_stack.is_empty())
                 {
-                    ParseTreeNode* top = stack.pop();
-                    const Grammar::Symbol& top_symbol =
-                        top->get_key().symbol;
-                    Grammar::Symbol lookahead = current_symbol(pos);
+                    ControlEntry top = control_stack.pop();
 
-                    if (top_symbol == Grammar::END_OF_INPUT)
+                    if (top.is_reduce_marker)
                     {
-                        if (lookahead != Grammar::END_OF_INPUT)
+                        DynArray<NodeType> reversed_children;
+
+                        for (nat_t i = 0; i < top.rhs.size(); ++i)
                         {
-                            throw std::runtime_error(
-                                "LLParser: expected end of input at "
-                                "position " +
-                                std::to_string(current_position(pos)) +
-                                ", found '" + lookahead + "'");
+                            reversed_children.append(value_stack.pop());
                         }
 
-                        delete top;
-                        break;
+                        DynArray<NodeType> children;
+
+                        for (nat_t i = reversed_children.size(); i-- > 0;)
+                        {
+                            children.append(std::move(reversed_children[i]));
+                        }
+
+                        value_stack.push(builder.reduce(
+                            top.lhs, top.rhs, std::move(children)));
+                        continue;
                     }
 
-                    if (grammar.is_terminal(top_symbol))
+                    Grammar::Symbol lookahead = current_symbol(pos);
+
+                    if (grammar.is_terminal(top.symbol))
                     {
-                        if (top_symbol != lookahead)
+                        if (top.symbol != lookahead)
                         {
                             throw std::runtime_error(
                                 "LLParser: unexpected token '" + lookahead +
                                 "' at position " +
                                 std::to_string(current_position(pos)) +
-                                " (expected '" + top_symbol + "')");
+                                " (expected '" + top.symbol + "')");
                         }
 
-                        top->get_key().lexeme = tokens[pos].lexeme;
+                        value_stack.push(builder.make_leaf(tokens[pos]));
                         ++pos;
                         continue;
                     }
 
                     const HashMap<Grammar::Symbol, Grammar::Sequence>* row =
-                        table.search(top_symbol);
+                        table.search(top.symbol);
                     const Grammar::Sequence* rhs =
                         row != nullptr ? row->search(lookahead) : nullptr;
 
@@ -258,33 +398,41 @@ namespace Designar
                             "LLParser: unexpected token '" + lookahead +
                             "' at position " +
                             std::to_string(current_position(pos)) +
-                            " while parsing '" + top_symbol + "'");
+                            " while parsing '" + top.symbol + "'");
                     }
 
-                    DynArray<ParseTreeNode*> children;
+                    control_stack.push(
+                        ControlEntry{true, Grammar::Symbol(), top.symbol,
+                                    *rhs});
 
-                    for (nat_t i = 0; i < rhs->size(); ++i)
+                    for (nat_t i = rhs->size(); i-- > 0;)
                     {
-                        ParseTreeNode* child = new ParseTreeNode(
-                            ParseNodeInfo{(*rhs)[i], ""});
-                        top->append_child(child);
-                        children.append(child);
-                    }
-
-                    for (nat_t i = children.size(); i-- > 0;)
-                    {
-                        stack.push(children[i]);
+                        control_stack.push(ControlEntry{
+                            false, (*rhs)[i], Grammar::Symbol(),
+                            Grammar::Sequence()});
                     }
                 }
+
+                if (current_symbol(pos) != Grammar::END_OF_INPUT)
+                {
+                    throw std::runtime_error(
+                        "LLParser: expected end of input at position " +
+                        std::to_string(current_position(pos)) + ", found '" +
+                        current_symbol(pos) + "'");
+                }
+
+                return value_stack.pop();
             }
             catch (...)
             {
-                ParseTreeNode::destroy_tree(root);
-                delete eof_marker;
+                while (!value_stack.is_empty())
+                {
+                    NodeType node = value_stack.pop();
+                    builder.destroy(node);
+                }
+
                 throw;
             }
-
-            return root;
         }
     };
 

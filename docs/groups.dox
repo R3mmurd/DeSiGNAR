@@ -77,9 +77,14 @@
 
 /**
  * @defgroup Compilers Compiler construction
- * @brief A lexer, formal grammars (with FIRST/FOLLOW set computation),
- * and an LL(1) predictive parser built from them — the complete
- * lex-then-parse front end of a small compiler/interpreter.
+ * @brief A lexer, formal grammars (with FIRST/FOLLOW set computation and
+ * optional operator precedence/associativity declarations), an LL(1)
+ * predictive parser, and the full LR family bottom-up parsers built from
+ * them — SLRParser, LRParser (canonical LR(1)), and LALRParser (LR(1)
+ * states merged by core). Unlike the LL(1) parser (which stops at a
+ * generic parse tree), every LR-family parser drives yacc-style semantic
+ * actions live during the parse to build a real, typed AST directly —
+ * the piece an interpreter or a translator is actually built on.
  */
 
 /**
