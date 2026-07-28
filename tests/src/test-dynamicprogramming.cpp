@@ -164,6 +164,41 @@ int main()
         assert(threw);
     }
 
+    // knapsack_fractional: the classic textbook example — items
+    // (weight, value) = (10,60), (20,100), (30,120), capacity 50; ratio
+    // order is 6, 5, 4, so greedy takes all of the first two and 2/3 of
+    // the third, for a known-optimal total value of 240.
+    {
+        DynArray<nat_t> weights = {10, 20, 30};
+        DynArray<nat_t> values = {60, 100, 120};
+
+        auto result = knapsack_fractional(weights, values, 50);
+        assert(std::abs(result.max_value - 240.0) < 1e-9);
+        assert(std::abs(result.fraction[0] - 1.0) < 1e-9);
+        assert(std::abs(result.fraction[1] - 1.0) < 1e-9);
+        assert(std::abs(result.fraction[2] - (2.0 / 3.0)) < 1e-9);
+
+        // The fractional relaxation's optimum is always >= the 0/1
+        // problem's — it has strictly more freedom (any fraction, not
+        // just 0 or 1) on the exact same instance.
+        auto result_01 = knapsack_01(weights, values, 50);
+        assert(result.max_value >= real_t(result_01.max_value) - 1e-9);
+
+        bool threw = false;
+
+        try
+        {
+            DynArray<nat_t> mismatched_values = {1, 2};
+            knapsack_fractional(weights, mismatched_values, 50);
+        }
+        catch (const std::invalid_argument&)
+        {
+            threw = true;
+        }
+
+        assert(threw);
+    }
+
     cout << "Everything ok!\n";
 
     return 0;

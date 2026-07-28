@@ -250,9 +250,9 @@ namespace Designar
 
     /** 0/1 knapsack: choose a subset of items (each either fully taken
         or left out entirely — the "0/1", as opposed to the fractional
-        version a greedy by-ratio choice solves optimally instead, see
-        tsp.hpp/knapsack_fractional in the heuristics module) maximizing
-        total value subject to a weight capacity. `dp[i][w]` is the best
+        version knapsack_fractional() below solves optimally instead, a
+        greedy by-ratio choice) maximizing total value subject to a
+        weight capacity. `dp[i][w]` is the best
         value achievable using only the first `i` items with capacity
         `w`: item `i` either isn't used, or (only when it fits) is —
         whichever of those two choices leaves the larger value. */
@@ -302,6 +302,78 @@ namespace Designar
         }
 
         return KnapsackResult{dp[n][capacity], std::move(chosen)};
+    }
+
+    struct FractionalKnapsackResult
+    {
+        real_t max_value;
+
+        /** `fraction[i]` is how much of item `i` (0 = none, 1 = all of
+            it) the optimal selection takes. */
+        DynArray<real_t> fraction;
+    };
+
+    /** The fractional relaxation of 0/1 knapsack: items can be broken
+        into any fraction, which — unlike the 0/1 version — a plain
+        greedy choice solves *optimally*, not just approximately: sort
+        by value/weight ratio descending, then take as much of each item
+        as the remaining capacity allows, highest ratio first. This is
+        the textbook contrast the two knapsack variants are usually
+        taught side by side for: the same-looking problem is solvable
+        by two entirely different techniques (DP vs. greedy) depending
+        on one modeling choice (divisible or not), and only one of them
+        stays optimal once that choice is "not divisible". */
+    inline FractionalKnapsackResult
+    knapsack_fractional(const DynArray<nat_t>& weights,
+                        const DynArray<nat_t>& values, nat_t capacity)
+    {
+        if (weights.size() != values.size())
+        {
+            throw std::invalid_argument(
+                "knapsack_fractional: weights and values must have the "
+                "same size");
+        }
+
+        nat_t n = weights.size();
+
+        DynArray<nat_t> order(n, nat_t(0));
+
+        for (nat_t i = 0; i < n; ++i)
+        {
+            order[i] = i;
+        }
+
+        std::sort(order.begin(), order.end(),
+                 [&](nat_t a, nat_t b)
+                 {
+                     return real_t(values[a]) * real_t(weights[b]) >
+                            real_t(values[b]) * real_t(weights[a]);
+                 });
+
+        DynArray<real_t> fraction(n, real_t(0));
+        real_t remaining = real_t(capacity);
+        real_t total_value = real_t(0);
+
+        for (nat_t idx = 0; idx < n && remaining > real_t(0); ++idx)
+        {
+            nat_t i = order[idx];
+
+            if (real_t(weights[i]) <= remaining)
+            {
+                fraction[i] = real_t(1);
+                remaining -= real_t(weights[i]);
+                total_value += real_t(values[i]);
+            }
+            else if (weights[i] > 0)
+            {
+                real_t taken = remaining / real_t(weights[i]);
+                fraction[i] = taken;
+                total_value += taken * real_t(values[i]);
+                remaining = real_t(0);
+            }
+        }
+
+        return FractionalKnapsackResult{total_value, std::move(fraction)};
     }
 
 } // end namespace Designar
