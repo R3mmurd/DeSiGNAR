@@ -31,10 +31,12 @@
 /**
  * @defgroup Graphs Graphs and graph algorithms
  * @brief Directed/undirected graph containers plus the classic algorithms
- * built on top of them: shortest paths (all-pairs), max flow, bipartite
- * matching, bridge-finding, and strongly-connected-components (both
- * Kosaraju's two-pass algorithm and Tarjan's single-DFS-pass algorithm,
- * kept side by side for comparison).
+ * built on top of them: shortest paths, both single-source
+ * (Dijkstra/Bellman-Ford/A*) and all-pairs (FloydWarshall and Johnson,
+ * kept side by side as the dense- vs. sparse-graph-friendly choice), max
+ * flow, bipartite matching, bridge-finding, and strongly-connected-
+ * components (both Kosaraju's two-pass algorithm and Tarjan's
+ * single-DFS-pass algorithm, kept side by side for comparison).
  */
 
 /**
@@ -57,8 +59,18 @@
  * elementary number theory (gcd, modular exponentiation/inverse, the
  * Chinese remainder theorem), the classic randomized algorithms
  * (randomized order statistics, Miller-Rabin primality testing,
- * reservoir sampling, Karger's min-cut), and textbook RSA public-key
- * cryptography built on top of Miller-Rabin/modular arithmetic.
+ * reservoir sampling, Karger's min-cut), textbook RSA public-key
+ * cryptography built on top of Miller-Rabin/modular arithmetic, a
+ * generic backtracking search (with N-Queens as the canonical
+ * application), the classic dynamic-programming examples (matrix-chain
+ * multiplication order, longest common subsequence, optimal polygon
+ * triangulation, 0/1 knapsack), and — for two classic NP-hard
+ * problems — both an exact/DP technique and a heuristic side by side:
+ * fractional knapsack's optimal greedy solution next to 0/1 knapsack's
+ * DP one, and the traveling salesman problem's nearest-neighbor
+ * heuristic (no guarantee) next to its MST-based 2-approximation
+ * (proven bound, metric instances), plus greedy graph coloring
+ * (Welsh-Powell).
  */
 
 /**
