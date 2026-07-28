@@ -31,10 +31,12 @@
 /**
  * @defgroup Graphs Graphs and graph algorithms
  * @brief Directed/undirected graph containers plus the classic algorithms
- * built on top of them: shortest paths (all-pairs), max flow, bipartite
- * matching, bridge-finding, and strongly-connected-components (both
- * Kosaraju's two-pass algorithm and Tarjan's single-DFS-pass algorithm,
- * kept side by side for comparison).
+ * built on top of them: shortest paths, both single-source
+ * (Dijkstra/Bellman-Ford/A*) and all-pairs (FloydWarshall and Johnson,
+ * kept side by side as the dense- vs. sparse-graph-friendly choice), max
+ * flow, bipartite matching, bridge-finding, and strongly-connected-
+ * components (both Kosaraju's two-pass algorithm and Tarjan's
+ * single-DFS-pass algorithm, kept side by side for comparison).
  */
 
 /**

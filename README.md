@@ -56,7 +56,7 @@ also how the generated Doxygen site's "Modules" page is organized — see
 | :----- | :----- |
 | Data structures | B-trees, B+ trees, skip lists, tries, LRU caches, pairing heaps, bloom filters, union-find, plus the foundational array/list/stack/queue/heap/map/set family at the top level of `include/`. |
 | Trees | Tree/RankedTree (plain/unbalanced), AVL, red-black, treap, splay, randomized BST, plus `BPlusTree` and `RankedRBTree` — each pairing a plain flavor with its order-statistics-capable `Ranked*` sibling where one exists, all sharing one node layout and rotation implementation. |
-| Graphs | `Graph`/`Digraph` containers, all-pairs shortest paths, max flow, bipartite matching, bridge-finding, strongly-connected components (Kosaraju's and Tarjan's algorithms). |
+| Graphs | `Graph`/`Digraph` containers, single-source shortest paths (Dijkstra/Bellman-Ford/A*), all-pairs shortest paths (`FloydWarshall` and `Johnson`), max flow, bipartite matching, bridge-finding, strongly-connected components (Kosaraju's and Tarjan's algorithms). |
 | Geometry | 2D points/vectors/segments/polygons/triangles, closest-pair, quadtrees, Voronoi diagrams. |
 | Sorting | Comparison sorts and the heterogeneous-key search helpers backing the map/set containers. |
 | Algorithms | Generic algorithms over iterators/containers: string algorithms, the container/iterator algorithm mixins reused everywhere else, elementary number theory (gcd, modular exponentiation/inverse), and the classic randomized algorithms (randomized order statistics, Miller-Rabin primality testing, reservoir sampling, Karger's min-cut). |
