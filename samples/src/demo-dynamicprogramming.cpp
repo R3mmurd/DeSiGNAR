@@ -58,5 +58,22 @@ int main()
 
     cout << endl;
 
+    // knapsack_fractional: the same-looking problem, but with items
+    // divisible — a greedy by-ratio choice is optimal here, unlike 0/1.
+    DynArray<nat_t> fw = {10, 20, 30};
+    DynArray<nat_t> fv = {60, 100, 120};
+    auto fks = knapsack_fractional(fw, fv, 50);
+
+    cout << "\nknapsack_fractional (capacity 50): max_value = "
+         << fks.max_value << ", fractions taken: ";
+
+    for (nat_t i = 0; i < fw.size(); ++i)
+    {
+        cout << "(w=" << fw[i] << ", v=" << fv[i] << ", " << fks.fraction[i]
+             << ") ";
+    }
+
+    cout << endl;
+
     return 0;
 }
