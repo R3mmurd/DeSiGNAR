@@ -61,10 +61,12 @@ int main()
     DynArray<Point2D> star;
     real_t outer_r = 4.0;
     real_t inner_r = 1.5;
+    real_t pi = std::acos(-1.0); // M_PI isn't standard C++ (MSVC needs
+                                 // _USE_MATH_DEFINES for it)
 
     for (int i = 0; i < 10; ++i)
     {
-        real_t angle = i * M_PI / 5.0;
+        real_t angle = i * pi / 5.0;
         real_t radius = (i % 2 == 0) ? outer_r : inner_r;
         star.append(
             Point2D(radius * std::cos(angle), radius * std::sin(angle)));
