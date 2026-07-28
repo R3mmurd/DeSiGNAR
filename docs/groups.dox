@@ -14,7 +14,8 @@
  * @brief Container types beyond the basic array/list/stack/queue/heap/map/
  * set family (which live directly under the library's root, undocumented
  * top-level headers): B-trees, B+ trees, skip lists, tries, LRU caches,
- * pairing heaps, bloom filters, and union-find.
+ * bloom filters, union-find, the double-ended queue (Deque), and the
+ * mergeable-heap family (pairing, leftist, binomial, Fibonacci).
  */
 
 /**
@@ -47,8 +48,9 @@
 
 /**
  * @defgroup Sorting Sorting
- * @brief Comparison-based sorting algorithms and the heterogeneous
- * (type-erased key) search helpers used by the map/set containers.
+ * @brief Comparison-based sorting algorithms, the non-comparison
+ * counting/radix/bucket sorts, and the heterogeneous (type-erased key)
+ * search helpers used by the map/set containers.
  */
 
 /**
@@ -75,12 +77,14 @@
 
 /**
  * @defgroup Hashing Hashing
- * @brief Open-addressing (OpenAddressingHashTable) and separate-chaining
- * (SeparateChainingHashTable) hash table implementations underlying
- * HashMap/HashSet; the hash-function collection backing them
- * (super_fast_hash) plus MD5/SHA-1/SHA-256 for real security use; and
- * HashChain, the classic iterated hash chain used by one-time-password
- * schemes and simple blockchain-style structures.
+ * @brief Open-addressing (OpenAddressingHashTable), separate-chaining
+ * (SeparateChainingHashTable), and extendible (ExtendibleHashTable —
+ * directory-of-buckets, splitting/doubling on overflow) hash table
+ * implementations, the first two underlying HashMap/HashSet; the
+ * hash-function collection backing them (super_fast_hash) plus
+ * MD5/SHA-1/SHA-256 for real security use; and HashChain, the classic
+ * iterated hash chain used by one-time-password schemes and simple
+ * blockchain-style structures.
  */
 
 /**
