@@ -28,5 +28,12 @@ int main()
     cout << "mod_inverse(3, 11) = " << inv << " (check: 3*" << inv
          << " mod 11 = " << (3 * inv) % 11 << ")" << endl;
 
+    // chinese_remainder_theorem: x = 2 (mod 3), x = 3 (mod 5), x = 2 (mod 7)
+    DynArray<int_t> remainders = {2, 3, 2};
+    DynArray<int_t> moduli = {3, 5, 7};
+    int_t crt_result = chinese_remainder_theorem(remainders, moduli);
+    cout << "chinese_remainder_theorem({2,3,2}, {3,5,7}) = " << crt_result
+         << endl;
+
     return 0;
 }

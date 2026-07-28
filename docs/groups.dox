@@ -58,10 +58,12 @@
  * @brief Algorithms expressed over iterators or containers in general,
  * independent of any specific data structure: string algorithms, the
  * container/iterator algorithm mixins reused across the library,
- * elementary number theory (gcd, modular exponentiation/inverse), the
- * classic randomized algorithms (randomized order statistics,
- * Miller-Rabin primality testing, reservoir sampling, Karger's min-cut),
- * a generic backtracking search (with N-Queens as the canonical
+ * elementary number theory (gcd, modular exponentiation/inverse, the
+ * Chinese remainder theorem), the classic randomized algorithms
+ * (randomized order statistics, Miller-Rabin primality testing,
+ * reservoir sampling, Karger's min-cut), textbook RSA public-key
+ * cryptography built on top of Miller-Rabin/modular arithmetic, a
+ * generic backtracking search (with N-Queens as the canonical
  * application), the classic dynamic-programming examples (matrix-chain
  * multiplication order, longest common subsequence, optimal polygon
  * triangulation, 0/1 knapsack), and — for two classic NP-hard
@@ -117,7 +119,12 @@
 
 /**
  * @defgroup LinearAlgebra Linear algebra
- * @brief Vector and matrix types with the usual arithmetic operations.
+ * @brief Vector and matrix types with the usual arithmetic operations,
+ * plus Strassen's algorithm (matrix multiplication via 7 recursive
+ * multiplications instead of 8, asymptotically faster than the naive
+ * approach) and `Polynomial`/the Fast Fourier Transform (`fft`/`ifft`,
+ * and the FFT-based polynomial multiplication built on them, O(n lg n)
+ * instead of the naive O(n^2) convolution).
  */
 
 /**
