@@ -7,9 +7,10 @@
 /** @file numbertheory.hpp
     @brief Elementary number theory (CLRS ch. 31): the greatest common
     divisor, the extended Euclidean algorithm (Bezout coefficients),
-    modular exponentiation, and modular inverse — the building blocks
-    randomizedalgorithms.hpp's Miller-Rabin primality test is built on,
-    and generally useful anywhere else modular arithmetic comes up.
+    modular exponentiation, modular inverse, and the Chinese remainder
+    theorem — the building blocks randomizedalgorithms.hpp's
+    Miller-Rabin primality test (and rsa.hpp's textbook RSA) are built
+    on, and generally useful anywhere else modular arithmetic comes up.
     @ingroup Algorithms
 */
 
@@ -17,6 +18,7 @@
 
 #include <stdexcept>
 
+#include <array.hpp>
 #include <types.hpp>
 
 namespace Designar
@@ -128,6 +130,61 @@ namespace Designar
         }
 
         return ((x % modulus) + modulus) % modulus;
+    }
+
+    /** The Chinese remainder theorem: given `x mod moduli[i] ==
+        remainders[i]` for every `i`, with the `moduli` pairwise
+        coprime, returns the unique `x` in `[0, product of moduli)`
+        satisfying every congruence at once — via the standard explicit
+        construction (`x = sum(remainders[i] * M_i * (M_i^-1 mod
+        moduli[i]))`, where `M_i` is the product of every modulus
+        *except* `moduli[i]`), reducing modulo the running product `M`
+        after every term to keep intermediate values from growing
+        needlessly, though the same plain-`T`-multiplication overflow
+        caveat as mod_pow()/mod_inverse() still applies for large
+        moduli. Throws if `remainders`/`moduli` are empty, mismatched in
+        size, or any pair of moduli isn't actually coprime (the case
+        this construction assumes away). */
+    template <typename T>
+    T chinese_remainder_theorem(const DynArray<T>& remainders,
+                                const DynArray<T>& moduli)
+    {
+        if (remainders.is_empty() || remainders.size() != moduli.size())
+        {
+            throw std::invalid_argument(
+                "chinese_remainder_theorem: remainders and moduli must be "
+                "non-empty and the same size");
+        }
+
+        T big_m = T(1);
+
+        for (nat_t i = 0; i < moduli.size(); ++i)
+        {
+            for (nat_t j = i + 1; j < moduli.size(); ++j)
+            {
+                if (gcd(moduli[i], moduli[j]) != T(1))
+                {
+                    throw std::invalid_argument(
+                        "chinese_remainder_theorem: moduli must be pairwise "
+                        "coprime");
+                }
+            }
+
+            big_m *= moduli[i];
+        }
+
+        T x = T(0);
+
+        for (nat_t i = 0; i < moduli.size(); ++i)
+        {
+            T m_i = big_m / moduli[i];
+            T y_i = mod_inverse(m_i % moduli[i], moduli[i]);
+            T term = ((m_i % big_m) * (y_i % big_m)) % big_m;
+            term = (term * (remainders[i] % big_m)) % big_m;
+            x = (x + term) % big_m;
+        }
+
+        return ((x % big_m) + big_m) % big_m;
     }
 
 } // end namespace Designar

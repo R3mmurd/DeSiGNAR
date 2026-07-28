@@ -537,4 +537,168 @@ namespace Designar
         return result;
     }
 
+    namespace detail
+    {
+        /** Extracts the `half x half` quadrant of `m` starting at
+            `(row_off, col_off)` — the four calls in
+            strassen_multiply_square() below split a matrix into its
+            four quadrants exactly this way. */
+        template <typename T>
+        Matrix<T> submatrix(const Matrix<T>& m, nat_t row_off, nat_t col_off,
+                            nat_t half)
+        {
+            Matrix<T> result(half, half, T());
+
+            for (nat_t i = 0; i < half; ++i)
+            {
+                for (nat_t j = 0; j < half; ++j)
+                {
+                    result(i, j) = m(row_off + i, col_off + j);
+                }
+            }
+
+            return result;
+        }
+
+        /** Strassen's algorithm (assumes `A`/`B` are already square,
+            `n x n`, with `n` a power of two — strassen_multiply() below
+            handles padding any input up to that shape first): splits
+            each into four `n/2 x n/2` quadrants and combines them into
+            only 7 recursive multiplications (`M1..M7`) instead of the
+            8 a direct block-multiplication would need, at the cost of
+            several extra additions — the classic trade that gives an
+            asymptotic edge (O(n^log2(7)) ~= O(n^2.807) instead of
+            O(n^3)) once `n` is large enough for the extra additions'
+            constant-factor overhead to stop mattering. Recurses all the
+            way down to `n == 1` (a bare scalar multiply) rather than
+            switching to naive multiplication above some cutover size —
+            simplicity over shaving a constant factor, the same call
+            this library makes elsewhere (e.g. mod_pow's plain-
+            multiplication approach in numbertheory.hpp). */
+        template <typename T>
+        Matrix<T> strassen_multiply_square(const Matrix<T>& A,
+                                           const Matrix<T>& B, nat_t n)
+        {
+            if (n == 1)
+            {
+                Matrix<T> result(1, 1, T());
+                result(0, 0) = A(0, 0) * B(0, 0);
+                return result;
+            }
+
+            nat_t half = n / 2;
+
+            Matrix<T> a11 = submatrix(A, 0, 0, half);
+            Matrix<T> a12 = submatrix(A, 0, half, half);
+            Matrix<T> a21 = submatrix(A, half, 0, half);
+            Matrix<T> a22 = submatrix(A, half, half, half);
+
+            Matrix<T> b11 = submatrix(B, 0, 0, half);
+            Matrix<T> b12 = submatrix(B, 0, half, half);
+            Matrix<T> b21 = submatrix(B, half, 0, half);
+            Matrix<T> b22 = submatrix(B, half, half, half);
+
+            Matrix<T> m1 =
+                strassen_multiply_square(a11 + a22, b11 + b22, half);
+            Matrix<T> m2 = strassen_multiply_square(a21 + a22, b11, half);
+            Matrix<T> m3 = strassen_multiply_square(a11, b12 - b22, half);
+            Matrix<T> m4 = strassen_multiply_square(a22, b21 - b11, half);
+            Matrix<T> m5 = strassen_multiply_square(a11 + a12, b22, half);
+            Matrix<T> m6 =
+                strassen_multiply_square(a21 - a11, b11 + b12, half);
+            Matrix<T> m7 =
+                strassen_multiply_square(a12 - a22, b21 + b22, half);
+
+            Matrix<T> c11 = m1 + m4 - m5 + m7;
+            Matrix<T> c12 = m3 + m5;
+            Matrix<T> c21 = m2 + m4;
+            Matrix<T> c22 = m1 - m2 + m3 + m6;
+
+            Matrix<T> result(n, n, T());
+
+            for (nat_t i = 0; i < half; ++i)
+            {
+                for (nat_t j = 0; j < half; ++j)
+                {
+                    result(i, j) = c11(i, j);
+                    result(i, half + j) = c12(i, j);
+                    result(half + i, j) = c21(i, j);
+                    result(half + i, half + j) = c22(i, j);
+                }
+            }
+
+            return result;
+        }
+    } // end namespace detail
+
+    /** Strassen's matrix-multiplication algorithm (see
+        detail::strassen_multiply_square() for the actual divide-and-
+        conquer step): pads `A` and `B` up to a common power-of-two
+        square size first (with zeros — multiplying by a zero-padded
+        row/column contributes nothing to the real result, so this is
+        exact, not an approximation), runs the recursive algorithm on
+        the padded matrices, then crops the answer back down to the
+        real `A.num_rows() x B.num_cols()` shape. */
+    template <typename T>
+    Matrix<T> strassen_multiply(const Matrix<T>& A, const Matrix<T>& B)
+    {
+        if (A.num_cols() != B.num_rows())
+        {
+            throw std::domain_error("strassen_multiply: dimension mismatch");
+        }
+
+        nat_t n = A.num_rows();
+
+        if (A.num_cols() > n)
+        {
+            n = A.num_cols();
+        }
+
+        if (B.num_cols() > n)
+        {
+            n = B.num_cols();
+        }
+
+        nat_t padded_size = 1;
+
+        while (padded_size < n)
+        {
+            padded_size *= 2;
+        }
+
+        Matrix<T> a_padded(padded_size, padded_size, T());
+        Matrix<T> b_padded(padded_size, padded_size, T());
+
+        for (nat_t i = 0; i < A.num_rows(); ++i)
+        {
+            for (nat_t j = 0; j < A.num_cols(); ++j)
+            {
+                a_padded(i, j) = A(i, j);
+            }
+        }
+
+        for (nat_t i = 0; i < B.num_rows(); ++i)
+        {
+            for (nat_t j = 0; j < B.num_cols(); ++j)
+            {
+                b_padded(i, j) = B(i, j);
+            }
+        }
+
+        Matrix<T> c_padded = detail::strassen_multiply_square(
+            a_padded, b_padded, padded_size);
+
+        Matrix<T> result(A.num_rows(), B.num_cols(), T());
+
+        for (nat_t i = 0; i < A.num_rows(); ++i)
+        {
+            for (nat_t j = 0; j < B.num_cols(); ++j)
+            {
+                result(i, j) = c_padded(i, j);
+            }
+        }
+
+        return result;
+    }
+
 } // end namespace Designar

@@ -66,5 +66,25 @@ int main()
     cout << "\ndot([1,2,3], [4,5,6]) = " << dot(u, v) << endl;
     cout << "norm([3,4]) = " << norm(Vector<real_t>({3.0, 4.0})) << endl;
 
+    // strassen_multiply: same result as the naive Matrix::operator*,
+    // via 7 recursive multiplications instead of 8.
+    Matrix<real_t> P(3, 3, 0.0);
+    Matrix<real_t> Q(3, 3, 0.0);
+
+    for (nat_t i = 0; i < 3; ++i)
+    {
+        for (nat_t j = 0; j < 3; ++j)
+        {
+            P(i, j) = real_t(i * 3 + j + 1);
+            Q(i, j) = real_t((i == j) ? 2 : 0);
+        }
+    }
+
+    cout << "\nP * Q (naive):\n";
+    print_matrix(P * Q);
+
+    cout << "\nstrassen_multiply(P, Q) (should match):\n";
+    print_matrix(strassen_multiply(P, Q));
+
     return 0;
 }

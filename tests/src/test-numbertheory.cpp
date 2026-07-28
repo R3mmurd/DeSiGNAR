@@ -76,5 +76,55 @@ int main()
 
     assert(threw);
 
+    // chinese_remainder_theorem: the classic textbook example (x = 2
+    // mod 3, x = 3 mod 5, x = 2 mod 7 -> x = 23 mod 105).
+    {
+        DynArray<int_t> remainders = {2, 3, 2};
+        DynArray<int_t> moduli = {3, 5, 7};
+        int_t x = chinese_remainder_theorem(remainders, moduli);
+        assert(x == 23);
+
+        for (nat_t i = 0; i < moduli.size(); ++i)
+        {
+            assert(x % moduli[i] == remainders[i]);
+        }
+    }
+
+    {
+        DynArray<int_t> remainders = {5};
+        DynArray<int_t> moduli = {11};
+        assert(chinese_remainder_theorem(remainders, moduli) == 5);
+    }
+
+    bool crt_threw = false;
+
+    try
+    {
+        DynArray<int_t> remainders = {1, 2};
+        DynArray<int_t> moduli = {4, 6}; // gcd(4, 6) == 2, not coprime
+        chinese_remainder_theorem(remainders, moduli);
+    }
+    catch (const std::invalid_argument&)
+    {
+        crt_threw = true;
+    }
+
+    assert(crt_threw);
+
+    crt_threw = false;
+
+    try
+    {
+        DynArray<int_t> remainders = {1};
+        DynArray<int_t> moduli = {2, 3}; // size mismatch
+        chinese_remainder_theorem(remainders, moduli);
+    }
+    catch (const std::invalid_argument&)
+    {
+        crt_threw = true;
+    }
+
+    assert(crt_threw);
+
     return 0;
 }

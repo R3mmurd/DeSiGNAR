@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cassert>
 #include <linearalgebra.hpp>
+#include <random.hpp>
 
 using namespace std;
 using namespace Designar;
@@ -268,6 +269,58 @@ int main()
         assert(threw);
 
         cout << "Matrix: dimension-mismatch error checking Everything ok!\n";
+    }
+
+    // strassen_multiply: must agree with the naive Matrix::operator*
+    // for every shape, including ones that aren't a power of two (the
+    // padding path) and rectangular (non-square) ones.
+    {
+        rng_t rng(2026);
+
+        for (int_t trial = 0; trial < 20; ++trial)
+        {
+            nat_t r = 1 + random_uniform<nat_t>(rng, 20);
+            nat_t k = 1 + random_uniform<nat_t>(rng, 20);
+            nat_t c = 1 + random_uniform<nat_t>(rng, 20);
+
+            Matrix<real_t> a(r, k, 0.0);
+            Matrix<real_t> b(k, c, 0.0);
+
+            for (nat_t i = 0; i < r; ++i)
+            {
+                for (nat_t j = 0; j < k; ++j)
+                {
+                    a(i, j) = real_t(random_uniform<int_t>(rng, -10, 10));
+                }
+            }
+
+            for (nat_t i = 0; i < k; ++i)
+            {
+                for (nat_t j = 0; j < c; ++j)
+                {
+                    b(i, j) = real_t(random_uniform<int_t>(rng, -10, 10));
+                }
+            }
+
+            assert(a * b == strassen_multiply(a, b));
+        }
+
+        bool threw = false;
+
+        try
+        {
+            Matrix<real_t> a(2, 3, 0.0);
+            Matrix<real_t> b(4, 2, 0.0);
+            strassen_multiply(a, b);
+        }
+        catch (const domain_error&)
+        {
+            threw = true;
+        }
+
+        assert(threw);
+
+        cout << "strassen_multiply: Everything ok!\n";
     }
 
     cout << "Everything ok!\n";
