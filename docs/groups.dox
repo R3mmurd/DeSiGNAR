@@ -60,9 +60,15 @@
  * classic randomized algorithms (randomized order statistics,
  * Miller-Rabin primality testing, reservoir sampling, Karger's min-cut),
  * a generic backtracking search (with N-Queens as the canonical
- * application), and the classic dynamic-programming examples
- * (matrix-chain multiplication order, longest common subsequence,
- * optimal polygon triangulation, 0/1 knapsack).
+ * application), the classic dynamic-programming examples (matrix-chain
+ * multiplication order, longest common subsequence, optimal polygon
+ * triangulation, 0/1 knapsack), and — for two classic NP-hard
+ * problems — both an exact/DP technique and a heuristic side by side:
+ * fractional knapsack's optimal greedy solution next to 0/1 knapsack's
+ * DP one, and the traveling salesman problem's nearest-neighbor
+ * heuristic (no guarantee) next to its MST-based 2-approximation
+ * (proven bound, metric instances), plus greedy graph coloring
+ * (Welsh-Powell).
  */
 
 /**
