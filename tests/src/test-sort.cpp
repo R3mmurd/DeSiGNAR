@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <algorithm>
 #include <array.hpp>
 #include <list.hpp>
 #include <sort.hpp>
@@ -214,6 +215,55 @@ int main()
         assert(single.equal({42}));
 
         cout << "counting_sort/radix_sort: Everything ok!\n";
+    }
+
+    // bucket_sort: uniformly distributed real_t keys in [0, 1).
+    {
+        rng_t rng(11);
+
+        for (int_t trial = 0; trial < 30; ++trial)
+        {
+            nat_t n = random_uniform(rng, 200) + 1;
+            DynArray<real_t> a;
+
+            for (nat_t i = 0; i < n; ++i)
+            {
+                a.append(random(rng));
+            }
+
+            DynArray<real_t> expected = a;
+            std::sort(expected.begin(), expected.end());
+
+            bucket_sort(a);
+
+            for (nat_t i = 0; i < a.size(); ++i)
+            {
+                // bucket_sort only ever moves values around, never
+                // computes with them, so bit-exact equality is the
+                // correct expectation here; spelled without `==`/`!=`
+                // to avoid -Wfloat-equal.
+                assert(!(a[i] < expected[i]) && !(expected[i] < a[i]));
+            }
+        }
+
+        DynArray<real_t> empty;
+        bucket_sort(empty);
+        assert(empty.is_empty());
+
+        DynArray<real_t> single = {0.5};
+        bucket_sort(single);
+        assert(!(single[0] < 0.5) && !(0.5 < single[0]));
+
+        // boundary: a key of exactly 1.0 must not index out of bounds
+        DynArray<real_t> boundary = {0.0, 0.999999, 1.0, 0.5};
+        bucket_sort(boundary);
+
+        for (nat_t i = 1; i < boundary.size(); ++i)
+        {
+            assert(boundary[i - 1] <= boundary[i]);
+        }
+
+        cout << "bucket_sort: Everything ok!\n";
     }
 
     // sift_up()/sift_down() directly — heap_sort()/FixedHeap/DynHeap all
