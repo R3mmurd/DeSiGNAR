@@ -43,7 +43,13 @@
 /**
  * @defgroup Geometry Computational geometry
  * @brief 2D points/vectors/segments/polygons/triangles and the algorithms
- * that operate on them: closest-pair, quadtrees, and Voronoi diagrams.
+ * that operate on them: closest-pair, quadtrees, Voronoi diagrams,
+ * Delaunay triangulation, polygon triangulation (ear-clipping and
+ * monotone-decomposition, side by side) with the art-gallery guard
+ * bound, polygon partition (monotone, trapezoidal, convex), line
+ * arrangements, and polygon/polygon intersection (convex and
+ * non-convex); plus a minimal 3D point/plane pair used only for
+ * point-in-polyhedron testing.
  */
 
 /**
