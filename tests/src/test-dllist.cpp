@@ -181,6 +181,36 @@ int main()
                 "Everything ok!\n";
     }
 
+    // Iterator::insert_next()/insert_prev(): linking a new node adjacent
+    // to the current one without desyncing num_items or needing to
+    // splice raw DLNode pointers by hand (github.com/R3mmurd/DeSiGNAR
+    // issue #54).
+    {
+        DLList<int_t> dl = {1, 2, 5};
+        auto it = dl.begin();
+        it.next(); // current == 2
+
+        it.insert_next(3); // 1 2 3 5, current still 2
+        assert(dl.size() == 4);
+        assert(it.get_current() == 2);
+
+        it.insert_prev(10); // 1 10 2 3 5
+        assert(dl.size() == 5);
+        assert(dl.equal({1, 10, 2, 3, 5}));
+
+        // At end(), insert_next() becomes a new first element and
+        // insert_prev() a new last element (mirroring insert()/append()
+        // on the underlying DL sentinel).
+        DLList<int_t> dl2 = {1, 2, 3};
+        auto e = dl2.end();
+        e.insert_next(0);
+        e.insert_prev(4);
+        assert(dl2.equal({0, 1, 2, 3, 4}));
+
+        cout << "DLList::Iterator: insert_next()/insert_prev() Everything "
+                "ok!\n";
+    }
+
     cout << "Everything ok!\n";
 
     return 0;
