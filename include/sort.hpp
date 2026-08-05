@@ -7,9 +7,9 @@
 /** @file sort.hpp
     @brief Searching and sorting: binary/sequential search, and the
     classic comparison sorts (insertion, selection, bubble, shell,
-    merge, quick, heap) plus the non-comparison counting/radix sorts,
-    on both arrays and linked lists where each algorithm's own shape
-    makes that a natural fit.
+    merge, quick, heap) plus the non-comparison counting/radix/bucket
+    sorts, on both arrays and linked lists where each algorithm's own
+    shape makes that a natural fit.
     @ingroup Sorting
 */
 
@@ -1030,6 +1030,78 @@ namespace Designar
     inline void radix_sort(ArrayType& a)
     {
         radix_sort(a, a.size());
+    }
+
+    /** Bucket sort (CLRS): for `n` keys assumed uniformly distributed
+        over `[0, 1)`, scaling a key by `n` and truncating gives its
+        bucket index directly — no comparisons needed to place it, the
+        same "use the key's value, not pairwise comparison" trick
+        counting_sort/radix_sort use — so with a uniform input this
+        runs in expected O(n), below every comparison sort's
+        Omega(n lg n) floor. Each bucket is small enough on average
+        (O(1) keys, when the uniformity assumption actually holds) that
+        sorting it with plain insertion_sort doesn't cost anything
+        asymptotically; concatenating the buckets in index order then
+        produces the final sorted sequence. A key that lands exactly on
+        `1.0` (or anything that rounds up to bucket `n` due to floating-
+        point error) is clamped into the last bucket rather than
+        indexing out of bounds. */
+    template <class ArrayType>
+    void bucket_sort(ArrayType& a, int_t l, int_t r)
+    {
+        using T = typename ArrayType::DataType;
+
+        static_assert(std::is_floating_point<T>::value,
+                     "bucket_sort requires a floating-point DataType "
+                     "(keys in [0, 1))");
+
+        if (l >= r)
+        {
+            return;
+        }
+
+        nat_t n = nat_t(r - l + 1);
+        DynArray<DynArray<T>> buckets(n, DynArray<T>());
+
+        for (int_t i = l; i <= r; ++i)
+        {
+            T key = a[i];
+            nat_t idx = nat_t(key * T(n));
+
+            if (idx >= n)
+            {
+                idx = n - 1;
+            }
+
+            buckets[idx].append(key);
+        }
+
+        for (nat_t i = 0; i < n; ++i)
+        {
+            insertion_sort(buckets[i]);
+        }
+
+        int_t pos = l;
+
+        for (nat_t i = 0; i < n; ++i)
+        {
+            for (nat_t j = 0; j < buckets[i].size(); ++j)
+            {
+                a[pos++] = buckets[i][j];
+            }
+        }
+    }
+
+    template <class ArrayType>
+    inline void bucket_sort(ArrayType& a, int_t size)
+    {
+        bucket_sort(a, 0, size - 1);
+    }
+
+    template <class ArrayType>
+    inline void bucket_sort(ArrayType& a)
+    {
+        bucket_sort(a, a.size());
     }
 
     template <typename T, class Cmp>

@@ -30,11 +30,28 @@ int main()
 
     FloydWarshall<GT> fw(g);
 
-    cout << "distance A->D: " << fw.distance_between(a, d) << endl;
+    cout << "FloydWarshall distance A->D: " << fw.distance_between(a, d)
+         << endl;
 
-    cout << "path A->D: ";
+    cout << "FloydWarshall path A->D: ";
 
     for (auto* node : fw.path_between(a, d))
+    {
+        cout << node->get_info() << " ";
+    }
+
+    cout << endl;
+
+    // Johnson: same graph, agrees with FloydWarshall on every pair — the
+    // sparse-graph-friendly alternative (Bellman-Ford reweighting, then
+    // one Dijkstra per source) to FloydWarshall's dense O(V^3) approach.
+    Johnson<GT> jo(g);
+
+    cout << "\nJohnson distance A->D: " << jo.distance_between(a, d) << endl;
+
+    cout << "Johnson path A->D: ";
+
+    for (auto* node : jo.path_between(a, d))
     {
         cout << node->get_info() << " ";
     }

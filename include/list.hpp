@@ -528,6 +528,49 @@ namespace Designar
                 --list_ptr->num_items;
                 return ret_val;
             }
+
+            /** Links a new node right after the current position, without
+                needing to splice raw SLNode pointers by hand or desync
+                num_items (github.com/R3mmurd/DeSiGNAR issue #54). There is
+                no insert_prev() counterpart here: a singly-linked node has
+                no predecessor link, so linking before the current position
+                would require the same predecessor-tracking del() already
+                relies on, and still couldn't be done through curr alone.
+                At end() (curr == nullptr) this appends, the only sensible
+                reading of "insert after the past-the-end position". */
+            T& insert_next(const T& item)
+            {
+                Node* node = new Node(item);
+                link_next(node);
+                return node->get_item();
+            }
+
+            T& insert_next(T&& item)
+            {
+                Node* node = new Node(std::forward<T>(item));
+                link_next(node);
+                return node->get_item();
+            }
+
+        private:
+            void link_next(Node* node)
+            {
+                if (curr == nullptr)
+                {
+                    ((BaseList*)list_ptr)->append(node);
+                }
+                else
+                {
+                    curr->insert_next(node);
+
+                    if (curr == ((BaseList*)list_ptr)->get_last())
+                    {
+                        ((BaseList*)list_ptr)->get_last() = node;
+                    }
+                }
+
+                ++list_ptr->num_items;
+            }
         };
 
         Iterator begin()
@@ -905,6 +948,47 @@ namespace Designar
                 delete p;
                 --list_ptr->num_items;
                 return ret_val;
+            }
+
+            /** Links a new node right after the current position without
+                disturbing list_ptr's num_items bookkeeping the way manual
+                DL::insert_next() calls would. At end() the current
+                position is the list's own sentinel, so this becomes
+                equivalent to DLList::insert() (new first element). */
+            T& insert_next(const T& item)
+            {
+                Node* node = new Node(item);
+                Base::get_location()->insert_next(node);
+                ++list_ptr->num_items;
+                return node->get_item();
+            }
+
+            T& insert_next(T&& item)
+            {
+                Node* node = new Node(std::forward<T>(item));
+                Base::get_location()->insert_next(node);
+                ++list_ptr->num_items;
+                return node->get_item();
+            }
+
+            /** Links a new node right before the current position. At
+                end() the current position is the list's own sentinel, so
+                this becomes equivalent to DLList::append() (new last
+                element). */
+            T& insert_prev(const T& item)
+            {
+                Node* node = new Node(item);
+                Base::get_location()->insert_prev(node);
+                ++list_ptr->num_items;
+                return node->get_item();
+            }
+
+            T& insert_prev(T&& item)
+            {
+                Node* node = new Node(std::forward<T>(item));
+                Base::get_location()->insert_prev(node);
+                ++list_ptr->num_items;
+                return node->get_item();
             }
         };
 

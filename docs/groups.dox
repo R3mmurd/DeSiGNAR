@@ -14,7 +14,8 @@
  * @brief Container types beyond the basic array/list/stack/queue/heap/map/
  * set family (which live directly under the library's root, undocumented
  * top-level headers): B-trees, B+ trees, skip lists, tries, LRU caches,
- * pairing heaps, bloom filters, and union-find.
+ * bloom filters, union-find, the double-ended queue (Deque), and the
+ * mergeable-heap family (pairing, leftist, binomial, Fibonacci).
  */
 
 /**
@@ -31,22 +32,31 @@
 /**
  * @defgroup Graphs Graphs and graph algorithms
  * @brief Directed/undirected graph containers plus the classic algorithms
- * built on top of them: shortest paths (all-pairs), max flow, bipartite
- * matching, bridge-finding, and strongly-connected-components (both
- * Kosaraju's two-pass algorithm and Tarjan's single-DFS-pass algorithm,
- * kept side by side for comparison).
+ * built on top of them: shortest paths, both single-source
+ * (Dijkstra/Bellman-Ford/A*) and all-pairs (FloydWarshall and Johnson,
+ * kept side by side as the dense- vs. sparse-graph-friendly choice), max
+ * flow, bipartite matching, bridge-finding, and strongly-connected-
+ * components (both Kosaraju's two-pass algorithm and Tarjan's
+ * single-DFS-pass algorithm, kept side by side for comparison).
  */
 
 /**
  * @defgroup Geometry Computational geometry
  * @brief 2D points/vectors/segments/polygons/triangles and the algorithms
- * that operate on them: closest-pair, quadtrees, and Voronoi diagrams.
+ * that operate on them: closest-pair, quadtrees, Voronoi diagrams,
+ * Delaunay triangulation, polygon triangulation (ear-clipping and
+ * monotone-decomposition, side by side) with the art-gallery guard
+ * bound, polygon partition (monotone, trapezoidal, convex), line
+ * arrangements, and polygon/polygon intersection (convex and
+ * non-convex); plus a minimal 3D point/plane pair used only for
+ * point-in-polyhedron testing.
  */
 
 /**
  * @defgroup Sorting Sorting
- * @brief Comparison-based sorting algorithms and the heterogeneous
- * (type-erased key) search helpers used by the map/set containers.
+ * @brief Comparison-based sorting algorithms, the non-comparison
+ * counting/radix/bucket sorts, and the heterogeneous (type-erased key)
+ * search helpers used by the map/set containers.
  */
 
 /**
@@ -54,19 +64,33 @@
  * @brief Algorithms expressed over iterators or containers in general,
  * independent of any specific data structure: string algorithms, the
  * container/iterator algorithm mixins reused across the library,
- * elementary number theory (gcd, modular exponentiation/inverse), and
- * the classic randomized algorithms (randomized order statistics,
- * Miller-Rabin primality testing, reservoir sampling, Karger's min-cut).
+ * elementary number theory (gcd, modular exponentiation/inverse, the
+ * Chinese remainder theorem), the classic randomized algorithms
+ * (randomized order statistics, Miller-Rabin primality testing,
+ * reservoir sampling, Karger's min-cut), textbook RSA public-key
+ * cryptography built on top of Miller-Rabin/modular arithmetic, a
+ * generic backtracking search (with N-Queens as the canonical
+ * application), the classic dynamic-programming examples (matrix-chain
+ * multiplication order, longest common subsequence, optimal polygon
+ * triangulation, 0/1 knapsack), and — for two classic NP-hard
+ * problems — both an exact/DP technique and a heuristic side by side:
+ * fractional knapsack's optimal greedy solution next to 0/1 knapsack's
+ * DP one, and the traveling salesman problem's nearest-neighbor
+ * heuristic (no guarantee) next to its MST-based 2-approximation
+ * (proven bound, metric instances), plus greedy graph coloring
+ * (Welsh-Powell).
  */
 
 /**
  * @defgroup Hashing Hashing
- * @brief Open-addressing (OpenAddressingHashTable) and separate-chaining
- * (SeparateChainingHashTable) hash table implementations underlying
- * HashMap/HashSet; the hash-function collection backing them
- * (super_fast_hash) plus MD5/SHA-1/SHA-256 for real security use; and
- * HashChain, the classic iterated hash chain used by one-time-password
- * schemes and simple blockchain-style structures.
+ * @brief Open-addressing (OpenAddressingHashTable), separate-chaining
+ * (SeparateChainingHashTable), and extendible (ExtendibleHashTable —
+ * directory-of-buckets, splitting/doubling on overflow) hash table
+ * implementations, the first two underlying HashMap/HashSet; the
+ * hash-function collection backing them (super_fast_hash) plus
+ * MD5/SHA-1/SHA-256 for real security use; and HashChain, the classic
+ * iterated hash chain used by one-time-password schemes and simple
+ * blockchain-style structures.
  */
 
 /**
@@ -101,7 +125,12 @@
 
 /**
  * @defgroup LinearAlgebra Linear algebra
- * @brief Vector and matrix types with the usual arithmetic operations.
+ * @brief Vector and matrix types with the usual arithmetic operations,
+ * plus Strassen's algorithm (matrix multiplication via 7 recursive
+ * multiplications instead of 8, asymptotically faster than the naive
+ * approach) and `Polynomial`/the Fast Fourier Transform (`fft`/`ifft`,
+ * and the FFT-based polynomial multiplication built on them, O(n lg n)
+ * instead of the naive O(n^2) convolution).
  */
 
 /**

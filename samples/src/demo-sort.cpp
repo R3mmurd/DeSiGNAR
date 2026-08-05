@@ -47,5 +47,19 @@ int main()
 
     demo("radix_sort", [](DynArray<int_t>& a) { radix_sort(a); });
 
+    // bucket_sort needs floating-point keys in [0, 1), so it can't share
+    // the int_t-only demo() helper above.
+    DynArray<real_t> b = {0.42, 0.13, 0.99, 0.05, 0.71, 0.36, 0.88};
+    bucket_sort(b);
+
+    cout << "bucket_sort: ";
+
+    for (nat_t i = 0; i < b.size(); ++i)
+    {
+        cout << b[i] << " ";
+    }
+
+    cout << endl;
+
     return 0;
 }

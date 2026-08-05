@@ -276,6 +276,40 @@ int main()
         cout << "NodeSLList::split(): Everything ok!\n";
     }
 
+    // Iterator::insert_next(): linking a new node right after the current
+    // one without desyncing num_items or needing to splice raw SLNode
+    // pointers by hand (github.com/R3mmurd/DeSiGNAR issue #54). There is
+    // no insert_prev() here: a singly-linked node has no predecessor
+    // link.
+    {
+        SLList<int_t> sl = {1, 2, 5};
+        auto it = sl.begin();
+        it.next(); // current == 2
+
+        it.insert_next(3); // 1 2 3 5, current still 2
+        assert(sl.size() == 4);
+        assert(it.get_current() == 2);
+        assert(sl.equal({1, 2, 3, 5}));
+
+        // Inserting right after the tail must keep get_last() correct,
+        // verified indirectly through append()'s cached-tail fast path.
+        auto tail_it = sl.begin();
+        tail_it.next();
+        tail_it.next();
+        tail_it.next(); // current == 5, the tail
+        tail_it.insert_next(6);
+        sl.append(7);
+        assert(sl.equal({1, 2, 3, 5, 6, 7}));
+
+        // At end(), insert_next() appends (the only sensible reading of
+        // "insert after the past-the-end position").
+        auto e = sl.end();
+        e.insert_next(8);
+        assert(sl.equal({1, 2, 3, 5, 6, 7, 8}));
+
+        cout << "SLList::Iterator: insert_next() Everything ok!\n";
+    }
+
     cout << "Everything ok!\n";
 
     return 0;
