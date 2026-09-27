@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Append macro directory to CMake Path
 list(APPEND CMAKE_MODULE_PATH
-  "${CMAKE_SOURCE_DIR}/cmake/macros")
+  "${PROJECT_SOURCE_DIR}/cmake/macros")
 
 # Import cmake options
 include(CTest)
