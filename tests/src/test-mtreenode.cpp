@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#include <nodesdef.hpp>
+#include <mtreenode.hpp>
 
 using namespace Designar;
 
@@ -44,6 +44,7 @@ int main()
     root->append_child(second_child);
     assert(root->has_children());
     assert(second_child->has_parent());
+    assert(second_child->get_parent() == root);
     assert(!second_child->has_siblings());
     assert(!second_child->has_children());
     assert(root->get_first_child() == second_child);

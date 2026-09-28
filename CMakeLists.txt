@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(Designar VERSION 4.0.0)
+project(Designar VERSION 4.0.1)
 
 # Set C++ Required version
 SET(CMAKE_CXX_STANDARD 17)
@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Append macro directory to CMake Path
 list(APPEND CMAKE_MODULE_PATH
-  "${CMAKE_SOURCE_DIR}/cmake/macros")
+  "${PROJECT_SOURCE_DIR}/cmake/macros")
 
 # Import cmake options
 include(CTest)

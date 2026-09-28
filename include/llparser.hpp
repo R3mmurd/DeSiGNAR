@@ -29,7 +29,7 @@
 
 #include <array.hpp>
 #include <stack.hpp>
-#include <nodesdef.hpp>
+#include <mtreenode.hpp>
 #include <grammar.hpp>
 #include <lexer.hpp>
 
@@ -47,7 +47,7 @@ namespace Designar
         std::string lexeme;
     };
 
-    /** The parse tree itself is a plain MTreeNode (nodesdef.hpp) —
+    /** The parse tree itself is a plain MTreeNode (mtreenode.hpp) —
         already this library's general M-ary tree node, no reason for a
         second tree type. Callers own the tree LLParser::parse() returns
         and must eventually `ParseTreeNode::destroy_tree(root)` it, the
